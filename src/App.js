@@ -59,9 +59,9 @@ function App() {
         rot={[-1.57, 0, 1.57]} />
       <Button clickHandler={() => !micStarted? startMic(true): null}
         position={[0, 0, 4]}
-        scale={[1 + blendShape[1], 1 + blendShape[0] * 5, 1 + blendShape[2] * 10]} 
+        scale={[1 + blendShape[1] * 5, 1 + blendShape[0] * 5, 1 + blendShape[2] * 5]} 
         rotation={[0.5, 0.5, 0]}/>
-      {micStarted ? <LipSync blendShapeHandler={(shapes) => setBlendShape([shapes.BlendShapeLips, shapes.BlendShapeKiss, shapes.BlendShapeKiss])} /> : null}
+      {micStarted ? <LipSync blendShapeHandler={(shapes) => setBlendShape([shapes.BlendShapeMouth, shapes.BlendShapeLips, shapes.BlendShapeKiss])} /> : null}
       <DefaultXRControllers />
     </VRCanvas>
   );
