@@ -20,7 +20,7 @@ import './styles.css'
 
 import Button from './Components/Button.js'
 import Model from './Components/Model.js'
-import LipSync from './Components/LipSync.js'
+import LipSync from './Components/LipSync.js' 
 
 function PlayerExample() {
   const { player } = useXR()
