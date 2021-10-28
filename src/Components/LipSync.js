@@ -55,7 +55,7 @@ function LipSync(props) {
             // share this "MediaStream" object using RTCPeerConnection API
             console.log("getUserMedia success");
 
-            tempStream.addTrack(stream.getAudioTracks()[0]);
+            tempStream.addTrack(stream.getAudioTracks()[0]); //could pass in external stream here
             var input = audioContext.createMediaStreamSource(tempStream);
             window.userSpeechAnalyzer = audioContext.createAnalyser();
             window.userSpeechAnalyzer.smoothingTimeConstant = 0.5;
