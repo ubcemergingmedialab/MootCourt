@@ -17,7 +17,8 @@ import { Box } from '@react-three/drei'
 import './styles.css'
 
 import Model from './Components/Model.js'
-import Avatar from './Components/Avatar'
+import Avatar from './Components/Avatar.js'
+import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
 
 function HitTestExample() {
@@ -40,8 +41,10 @@ function App() {
         // modelLeft={"https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/left-hand-black-webxr-tracking-ready/model.gltf"}
         // modelRight={"https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/right-hand-black-webxr-tracking-ready/model.gltf"}
         />
-        <Avatar avatarPos={[-3,-4, -2]} avatarRot={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
-        <Avatar avatarPos={[0,-3, -4]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
+        {
+        //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
+      }
+        <JudgeAvatar position={[0,-3, -4]} modelUrl={"./models/testvid_default.glb"} utteranceSplit={5000}/>
         <Model modelUrl="./models/courtroomOct27.glb"
           pos={[0, -4, 3.5]}
           rot={[0, 0, 0]}
