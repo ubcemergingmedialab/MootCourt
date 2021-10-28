@@ -17,14 +17,14 @@ function Button(props) {
             onSelect={() => setColor((Math.random() * 0xffffff) | 0)}
             onHover={() => setHover(true)}
             onBlur={() => setHover(false)}>
-            <Box scale={hover ? [1.5, 1.5, 1.5] : [1, 1, 1]} args={[0.4, 0.1, 0.1]} {...props}
+            <Box scale={hover ? [1.5, 1.5, 1.5] : [1, 1, 1]} args={[0.4, 0.1, 0.1]} position={props.position} rotation={props.rotation} scale={props.scale}
                 onClick={() => {
                     setColor((Math.random() * 0xffffff) | 0)
                     props.clickHandler()
                 }}>
                 <meshStandardMaterial attach="material" color={color} />
                 {<Text position={[0, 0, 0.06]} fontSize={0.05} color="#000" anchorX="center" anchorY="middle">
-                    Hello react-xr!
+                    {props.buttonText}
                 </Text>}
             </Box>
         </Interactive>
