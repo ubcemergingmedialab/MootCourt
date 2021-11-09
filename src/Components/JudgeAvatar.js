@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
+function JudgeAvatar({ position, utteranceSplit }) {
     const [currentText, setText] = useState("")
     const [textIndex, setTextIndex] = useState(0)
     const [repeatingQuestion, setRepeatingQuestion] = useState(false)
     const [firstQuestion, setFirstQuestion] = useState(false)
+    // useControls hook with a modelUrl variable. Pass in array of available modelUrls
+    // eg. modelUrls = ["models/model1.glb", "models/model2.glb"]
+    // const { modelUrl } = useControls({modelUrl: {options: modelUrls}})
     const listOfUtterances = [
         "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
         "Should not we presume that the trial judge knows the law and applied the correct law?",
