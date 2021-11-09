@@ -40,7 +40,7 @@ const VoiceSelect = ({ updateVoice }) => {
     return null
 }
 
-function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, readyToSpeak }) {
+function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak }) {
     const [micStarted, startMic] = useState(false) //call navigator.mediaDevices.getUserMedia or grab audio stream for lip syncing
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
     const { speak } = useSpeechSynthesis()
@@ -70,11 +70,14 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, readyTo
 
     useEffect(() => {
         console.log('speaking')
-        speak({text: textToSay, voice: voice})
+        speak({text: textToSay, voice: voice, rate: 0.6})
     }, [textToSay]) // changes in textToSay will cause new utterance to start
     useEffect(() => {
         voicesReady && readyToSpeak()
     }, [voicesReady]) // let caller know it can start sending utterances to say
+    useEffect(() => {
+        speak({text: textToSay, voice: voice, rate: 0.6})
+    }, [utteranceRepeat])
     return (<>
         <Suspense fallback={null}>
             <mesh rotation={rotation} position={position}>

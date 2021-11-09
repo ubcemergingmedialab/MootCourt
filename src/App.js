@@ -13,11 +13,13 @@ import {
   ARCanvas,
   DefaultXRControllers,
 } from '@react-three/xr'
+import { useFrame, useThree } from '@react-three/fiber'
 import { Box } from '@react-three/drei'
 import './styles.css'
 
 import Model from './Components/Model.js'
 import Avatar from './Components/Avatar.js'
+import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
 
@@ -35,6 +37,7 @@ function App() {
   return (
     <>
       <VRCanvas>
+      <Compass ></Compass>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <Hands
@@ -44,9 +47,9 @@ function App() {
         {
         //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
       }
-        <JudgeAvatar position={[0,-3, -4]} modelUrl={"./models/testvid_default.glb"} utteranceSplit={5000}/>
+        <JudgeAvatar position={[2,-3, -4]} modelUrl={"./models/testvid_default.glb"} utteranceSplit={180000}/>
         <Model modelUrl="./models/courtroomOct27.glb"
-          pos={[0, -4, 3.5]}
+          pos={[0, -40, 3.5]}
           rot={[0, 0, 0]}
           sca={[0.06, 0.06, 0.06]} />
         <DefaultXRControllers />
