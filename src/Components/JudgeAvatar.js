@@ -28,12 +28,19 @@ function JudgeAvatar({ position, utteranceSplit }) {
     // useControls hook with a modelUrl variable. Pass in array of available modelUrls
     // eg. modelUrls = ["models/model1.glb", "models/model2.glb"]
     // const { modelUrl } = useControls({modelUrl: {options: modelUrls}})
-    const [skin, setSkin] = useState("default");
+    const [skin, setSkin] = useState();
     const updateSkin = (skinUpdate) => {
         console.log("updating judge skins ", skinUpdate);
         setSkin(skinUpdate);
     }
-
+    useEffect(() => {
+        File modelPath = new File("./models/");  //gets the model path for models
+        String modelList[] = modelpath.list();   //lists all model urls in the models folder
+        const avaliableSkins = modelList;
+        if (avaliableSkins.length > 0) {
+            setSkin(avaliableSkins[0])
+        }
+    }, [])
 
     const listOfUtterances = [
         "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
