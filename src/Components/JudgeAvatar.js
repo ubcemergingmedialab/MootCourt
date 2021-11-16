@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
 
-import java.io.File;
-import java.io.IOException;
+//import java.io.File;
+//import java.io.IOException;
 
 const SkinSelect = ({ updateSkin }) => {
-    File modelPath = new File("./models/");  //gets the model path for models
-    String modelList[] = modelpath.list();   //lists all model urls in the models folder
+    //File modelPath = new File("./models/");  //gets the model path for models
+    //String modelList[] = modelpath.list();   //lists all model urls in the models folder
+
+    const fs = require('fs');
+    modelList = fs.readdirSync('./models/');
+
     const judgeSkins = modelList;
     const judgeSkinObject = {}
     for (let i = 0; i < judgeSkins.length; i++) {
@@ -34,8 +38,12 @@ function JudgeAvatar({ position, utteranceSplit }) {
         setSkin(skinUpdate);
     }
     useEffect(() => {
-        File modelPath = new File("./models/");  //gets the model path for models
-        String modelList[] = modelpath.list();   //lists all model urls in the models folder
+       //File modelPath = new File("./models/");  //gets the model path for models
+       //String modelList[] = modelpath.list();   //lists all model urls in the models folder
+
+       const fs = require('fs');
+       modelList = fs.readdirSync('./models/');
+
         const avaliableSkins = modelList;
         if (avaliableSkins.length > 0) {
             setSkin(avaliableSkins[0])
