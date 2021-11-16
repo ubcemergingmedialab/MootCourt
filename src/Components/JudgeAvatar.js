@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
+import { useControls } from 'leva'
 
 //import java.io.File;
 //import java.io.IOException;
@@ -9,18 +10,22 @@ const SkinSelect = ({ updateSkin }) => {
     //File modelPath = new File("./models/");  //gets the model path for models
     //String modelList[] = modelpath.list();   //lists all model urls in the models folder
 
-    const fs = require('fs');
-    modelList = fs.readdirSync('./models/');
+    // const fs = require('fs');
+    // const modelList = fs.readdirSync('./models/judge_avatar/'); // file names instead of file paths? (dynamically :())
+
+    //manual implementatino of modellist -> brute force
+
+    const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
 
     const judgeSkins = modelList;
     const judgeSkinObject = {}
     for (let i = 0; i < judgeSkins.length; i++) {
         judgeSkinObject[judgeSkins[i]] = judgeSkins[i];
     }
-    const { judgeskin } = useControls({ judge: { options: judgeSkinObject } })
+    const { judge } = useControls({ judge: { options: judgeSkinObject } })
     useEffect(() => {
-        updateSkin(judgeskin)
-    }, [judgeskin])
+        updateSkin(judge)
+    }, [judge])
     return null
 }
 
@@ -33,6 +38,7 @@ function JudgeAvatar({ position, utteranceSplit }) {
     // eg. modelUrls = ["models/model1.glb", "models/model2.glb"]
     // const { modelUrl } = useControls({modelUrl: {options: modelUrls}})
     const [skin, setSkin] = useState();
+
     const updateSkin = (skinUpdate) => {
         console.log("updating judge skins ", skinUpdate);
         setSkin(skinUpdate);
@@ -41,8 +47,10 @@ function JudgeAvatar({ position, utteranceSplit }) {
        //File modelPath = new File("./models/");  //gets the model path for models
        //String modelList[] = modelpath.list();   //lists all model urls in the models folder
 
-       const fs = require('fs');
-       modelList = fs.readdirSync('./models/');
+       //const fs = require('fs');
+       // const modelList = fs.readdirSync('./models/');
+
+        const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
 
         const avaliableSkins = modelList;
         if (avaliableSkins.length > 0) {
@@ -82,7 +90,8 @@ function JudgeAvatar({ position, utteranceSplit }) {
             rotation={[0.2, 0.2, 0]}
             buttonText={"Pause Animation"} /> : null}
 
-        <Avatar position={position} modelUrl={modelUrl} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
+        <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
+        <SkinSelect updateSkin={updateSkin}> </SkinSelect>
     </>)
 }
 
