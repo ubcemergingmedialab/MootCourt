@@ -2,6 +2,24 @@ import { useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
 
+import java.io.File;
+import java.io.IOException;
+
+const SkinSelect = ({ updateSkin }) => {
+    File modelPath = new File("./models/");  //gets the model path for models
+    String modelList[] = modelpath.list();   //lists all model urls in the models folder
+    const judgeSkins = modelList;
+    const judgeSkinObject = {}
+    for (let i = 0; i < judgeSkins.length; i++) {
+        judgeSkinObject[judgeSkins[i]] = judgeSkins[i];
+    }
+    const { judgeskin } = useControls({ judge: { options: judgeSkinObject } })
+    useEffect(() => {
+        updateSkin(judgeskin)
+    }, [judgeskin])
+    return null
+}
+
 function JudgeAvatar({ position, utteranceSplit }) {
     const [currentText, setText] = useState("")
     const [textIndex, setTextIndex] = useState(0)
@@ -10,6 +28,13 @@ function JudgeAvatar({ position, utteranceSplit }) {
     // useControls hook with a modelUrl variable. Pass in array of available modelUrls
     // eg. modelUrls = ["models/model1.glb", "models/model2.glb"]
     // const { modelUrl } = useControls({modelUrl: {options: modelUrls}})
+    const [skin, setSkin] = useState("default");
+    const updateSkin = (skinUpdate) => {
+        console.log("updating judge skins ", skinUpdate);
+        setSkin(skinUpdate);
+    }
+
+
     const listOfUtterances = [
         "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
         "Should not we presume that the trial judge knows the law and applied the correct law?",

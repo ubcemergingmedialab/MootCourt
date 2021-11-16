@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react'
+voicimport React, { Suspense, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom';
 import { useSpeechSynthesis } from 'react-speech-kit';
 import {
