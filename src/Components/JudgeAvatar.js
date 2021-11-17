@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
+import { useControls } from 'leva'
 
 const listOfUtterances = [[
     "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
@@ -17,6 +18,29 @@ const listOfUtterances = [[
     "Were the errors you argue significant enough to justify the remedy you are seeking?  In other words, would the result at trial necessarily have been different if those errors did not occur?"
 ]]
 
+const SkinSelect = ({ updateSkin }) => {
+    //File modelPath = new File("./models/");  //gets the model path for models
+    //String modelList[] = modelpath.list();   //lists all model urls in the models folder
+
+    // const fs = require('fs');
+    // const modelList = fs.readdirSync('./models/judge_avatar/'); // file names instead of file paths? (dynamically :())
+
+    //manual implementatino of modellist -> brute force
+
+    const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
+
+    const judgeSkins = modelList;
+    const judgeSkinObject = {}
+    for (let i = 0; i < judgeSkins.length; i++) {
+        judgeSkinObject[judgeSkins[i]] = judgeSkins[i];
+    }
+    const { judge } = useControls({ judge: { options: judgeSkinObject } })
+    useEffect(() => {
+        updateSkin(judge)
+    }, [judge])
+    return null
+}
+
 function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
     const [utteranceIndex, setUtteranceIndex] = useState(0)
     const [currentText, setText] = useState(listOfUtterances[0][0])
@@ -25,6 +49,26 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
     const [firstQuestion, setFirstQuestion] = useState(false)
     let waitingInterval;
     const utteranceListLength = listOfUtterances[utteranceIndex].length
+    const [skin, setSkin] = useState();
+
+    const updateSkin = (skinUpdate) => {
+        console.log("updating judge skins ", skinUpdate);
+        setSkin(skinUpdate);
+    }
+    useEffect(() => {
+       //File modelPath = new File("./models/");  //gets the model path for models
+       //String modelList[] = modelpath.list();   //lists all model urls in the models folder
+
+       //const fs = require('fs');
+       // const modelList = fs.readdirSync('./models/');
+
+        const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
+
+        const avaliableSkins = modelList;
+        if (avaliableSkins.length > 0) {
+            setSkin(avaliableSkins[0])
+        }
+    }, [])
     const readyToSpeak = () => { // start chain of utterances when avatar has loaded voices
         setFirstQuestion(true)
         setText(listOfUtterances[utteranceIndex][0])
@@ -57,7 +101,9 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
             position={[position[0] - 2, position[1] + 2, position[2]]}
             scale={[2, 2, 2]}
             buttonText={"Utterance List 2"} />
-        <Avatar position={position} modelUrl={modelUrl} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
+
+        <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
+        <SkinSelect updateSkin={updateSkin}> </SkinSelect>
     </>)
 }
 
