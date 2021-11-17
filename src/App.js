@@ -13,8 +13,9 @@ import {
   ARCanvas,
   DefaultXRControllers,
 } from '@react-three/xr'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useFrame, useThree, extend } from '@react-three/fiber'
 import { Box } from '@react-three/drei'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './styles.css'
 
 import Model from './Components/Model.js'
@@ -22,6 +23,24 @@ import Avatar from './Components/Avatar.js'
 import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
+
+extend({ OrbitControls })
+
+const Controls = () => {
+  const orbitRef = useRef();
+  const { camera, gl } = useThree();
+  useFrame((delta, state) => {
+    orbitRef.current.update();
+  })
+  return (
+    <orbitControls
+      maxPolarAngle={Math.PI * 2}
+      minPolarAngle={Math.PI / 3}
+      ref={orbitRef}
+      args={[camera, gl.domElement]}
+    />
+  )
+}
 
 function HitTestExample() {
   const ref = useRef()
@@ -37,7 +56,6 @@ function App() {
   return (
     <>
       <VRCanvas>
-      <Compass ></Compass>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <Hands
@@ -45,15 +63,18 @@ function App() {
         // modelRight={"https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/right-hand-black-webxr-tracking-ready/model.gltf"}
         />
         {
-        //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
-      }
-        <JudgeAvatar position={[2,-3, -4]} modelUrl={"./models/testvid_default.glb"} utteranceSplit={180000}/>
+          //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
+        }
+        <Controls />
+        <JudgeAvatar position={[2, -2, -4]} modelUrl={"./models/testvid_default.glb"} utteranceSplit={180000} />
         <Model modelUrl="./models/courtroomOct27.glb"
-          pos={[0, -40, 3.5]}
+          pos={[0, -30, 3.5]}
           rot={[0, 0, 0]}
           sca={[0.06, 0.06, 0.06]} />
         <DefaultXRControllers />
-        <Player startPosition={[0, 0.5, 0]}/>
+        <Player startPosition={[0, 0.5, 0]} >
+
+        </Player>
       </VRCanvas>
     </>
   );
