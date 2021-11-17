@@ -37,7 +37,7 @@ function App() {
   return (
     <>
       <VRCanvas>
-      <Compass ></Compass>
+        <Compass ></Compass>
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
         <Hands
@@ -45,15 +45,23 @@ function App() {
         // modelRight={"https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/right-hand-black-webxr-tracking-ready/model.gltf"}
         />
         {
-        //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
-      }
-        <JudgeAvatar position={[2,-3, -4]} utteranceSplit={180000}/>
-        <Model modelUrl="./models/courtroomOct27.glb"
-          pos={[0, -40, 3.5]}
+          //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
+        }
+        <JudgeAvatar position={[2, -3, -4]} utteranceSplit={180000} />
+        <Model modelUrl="./models/courtroompropsNov17.glb"
+          pos={[0, -3, 3.5]}
+          rot={[0, 0, 0]}
+          sca={[0.06, 0.06, 0.06]} />
+        <Model modelUrl="./models/courtroomwallsNov17.glb"
+          pos={[0, -3, 3.5]}
+          rot={[0, 0, 0]}
+          sca={[0.06, 0.06, 0.06]} />
+        <Model modelUrl="./models/courtroomdesksNov17.glb"
+          pos={[0, -3, 3.5]}
           rot={[0, 0, 0]}
           sca={[0.06, 0.06, 0.06]} />
         <DefaultXRControllers />
-        <Player startPosition={[0, 0.5, 0]}/>
+        <Player startPosition={[0, 0.5, 0]} />
       </VRCanvas>
     </>
   );
