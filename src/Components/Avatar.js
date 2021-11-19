@@ -43,7 +43,7 @@ const VoiceSelect = ({ updateVoice }) => {
 function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak }) {
     const [micStarted, startMic] = useState(false) //call navigator.mediaDevices.getUserMedia or grab audio stream for lip syncing
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
-    const { speak } = useSpeechSynthesis()
+    const { speak, cancel } = useSpeechSynthesis()
     const [voice, setVoice] = useState(); // used to rerender avatar with a new voice based on user decision. Currently decided by leva, could add prop to decide this externally
     const [voicesReady, setVoicesReady] = useState(false) // causes rerender on voices loaded
     const [animationPause, setAnimationPause] = useState(false) // allows button to control avatar animations
@@ -70,19 +70,21 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
 
     useEffect(() => {
         console.log('speaking')
+        cancel()
         speak({text: textToSay, voice: voice, rate: 0.6})
     }, [textToSay]) // changes in textToSay will cause new utterance to start
     useEffect(() => {
         voicesReady && readyToSpeak()
     }, [voicesReady]) // let caller know it can start sending utterances to say
     useEffect(() => {
+        cancel()
         speak({text: textToSay, voice: voice, rate: 0.6})
     }, [utteranceRepeat])
     return (<>
         <Suspense fallback={null}>
             <mesh rotation={rotation} position={position}>
                 {buttonOffset? (<><Button clickHandler={() => {
-                    window.speechSynthesis.cancel()
+                    cancel()
                     speak({ text: textToSay, voice: voice })
                 }}
                     position={buttonOffset}

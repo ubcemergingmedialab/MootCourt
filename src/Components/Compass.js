@@ -7,28 +7,32 @@ function Compass() {
     const { camera } = useThree()
     const coneRef = useRef()
     useFrame(() => {
-        coneRef.current.rotation.x = camera.rotation.x + -Math.PI / 2
-        coneRef.current.rotation.y = camera.rotation.y
-        coneRef.current.rotation.z = camera.rotation.z
+        //coneRef.current.setRotationFromQuaternion(camera.quaternion.normalize())
     })
 
     const compassRef = useRef()
     useFrame(() => {
-        compassRef.current.rotation.x = camera.rotation.x
-        compassRef.current.rotation.y = camera.rotation.y
-        compassRef.current.rotation.z = camera.rotation.z
+        compassRef.current.position.x = camera.position.x
+        compassRef.current.position.y = camera.position.y
+        compassRef.current.position.z = camera.position.z
     })
     return (
-        <mesh ref={compassRef} scale={[0.2, 0.2, 0.2]} position={[4, -0.5, 1]}>
-            <mesh scale={[4, 4, 4]}>
+        <mesh ref={compassRef}
+        scale={[2, 2, 2]}>
+            <mesh>
+                
+            <mesh scale={[0.2, 0.2, 0.2]} position={[0.5, 0.2, 0]}>
                 <dodecahedronBufferGeometry attach="geometry"> </dodecahedronBufferGeometry>
-                <meshStandardMaterial attach="material" color={new Color(1, 1, 1)} opacity={0.7} transparent={true}></meshStandardMaterial>
+                <meshStandardMaterial transparent={false} opacity={0.6} color={"red"}></meshStandardMaterial>
+            </mesh>
+                <dodecahedronBufferGeometry attach="geometry"> </dodecahedronBufferGeometry>
+                <meshStandardMaterial transparent={true} opacity={0.6}></meshStandardMaterial>
             </mesh>
             <mesh
                 ref={coneRef}
-                scale={[0.3, 0.3, 0.3]}
+                scale={[0.15, 0.15, 0.15]}
             >
-                <coneGeometry attach="geometry" args={[2, 6, 20]}></coneGeometry>
+                <coneGeometry attach="geometry" args={[1, 3, 20]}></coneGeometry>
                 <meshPhysicalMaterial attach="material" color={"red"}></meshPhysicalMaterial>
             </mesh>
         </mesh>

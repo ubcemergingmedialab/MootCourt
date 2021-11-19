@@ -13,8 +13,9 @@ import {
   ARCanvas,
   DefaultXRControllers,
 } from '@react-three/xr'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useFrame, useThree, extend } from '@react-three/fiber'
 import { Box } from '@react-three/drei'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './styles.css'
 
 import Model from './Components/Model.js'
@@ -23,6 +24,24 @@ import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
 import SettingsPage from './Components/SettingsPage'
+
+extend({ OrbitControls })
+
+const Controls = () => {
+  const orbitRef = useRef();
+  const { camera, gl } = useThree();
+  useFrame((delta, state) => {
+    orbitRef.current.update();
+  })
+  return (
+    <orbitControls
+      maxPolarAngle={Math.PI * 2}
+      minPolarAngle={Math.PI / 3}
+      ref={orbitRef}
+      args={[camera, gl.domElement]}
+    />
+  )
+}
 
 function HitTestExample() {
   const ref = useRef()
