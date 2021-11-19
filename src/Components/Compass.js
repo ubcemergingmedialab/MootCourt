@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Camera } from 'three'
+import { Camera, Color } from 'three'
 import { useXR } from '@react-three/xr'
 
 function Compass() {
@@ -19,14 +19,14 @@ function Compass() {
         compassRef.current.rotation.z = camera.rotation.z
     })
     return (
-        <mesh ref={compassRef}>
-            <mesh>
+        <mesh ref={compassRef} scale={[0.2, 0.2, 0.2]} position={[4, -0.5, 1]}>
+            <mesh scale={[4, 4, 4]}>
                 <dodecahedronBufferGeometry attach="geometry"> </dodecahedronBufferGeometry>
+                <meshStandardMaterial attach="material" color={new Color(1, 1, 1)} opacity={0.7} transparent={true}></meshStandardMaterial>
             </mesh>
             <mesh
                 ref={coneRef}
-                position={[0, 2, -5]}
-                scale={[0.2, 0.2, 0.2]}
+                scale={[0.3, 0.3, 0.3]}
             >
                 <coneGeometry attach="geometry" args={[2, 6, 20]}></coneGeometry>
                 <meshPhysicalMaterial attach="material" color={"red"}></meshPhysicalMaterial>

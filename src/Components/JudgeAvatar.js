@@ -35,9 +35,10 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
 
     return (<>
         {firstQuestion ? <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setRepeatingQuestion(!repeatingQuestion)}
+        scale={[3, 3, 3]}
             position={[position[0] - 1, position[1], position[2]]}
             rotation={[0.2, 0.2, 0]}
-            buttonText={"Pause Animation"} /> : null}
+            buttonText={"Repeat Question"} /> : null}
 
         <Avatar position={position} modelUrl={modelUrl} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
     </>)
