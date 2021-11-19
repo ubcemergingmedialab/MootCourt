@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\Components"
   ],
-  "SelectedNode": "\\src\\App.js",
+  "SelectedNode": "\\src\\Components\\JudgeAvatar.js",
   "PreviewInSolutionExplorer": false
 }
