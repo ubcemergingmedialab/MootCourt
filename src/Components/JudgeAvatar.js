@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
 import { useControls } from 'leva'
+import { useFrame } from '@react-three/fiber'
 
 const listOfUtterances = [[
     "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
@@ -42,14 +43,17 @@ const SkinSelect = ({ updateSkin }) => {
     return null
 }
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
+let nextQuestionTime = -1; // -1 means there is no question to be asked next. counts down until
+
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, animated = true }) {
     const [utteranceIndex, setUtteranceIndex] = useState(0)
     const [currentText, setText] = useState(listOfUtterances[0][0])
     const [textIndex, setTextIndex] = useState(0)
     const [repeatingQuestion, setRepeatingQuestion] = useState(false)
     const [firstQuestion, setFirstQuestion] = useState(false)
-    let waitingInterval;
+    const [readyToSpeak, setReadyToSpeak] = useState(false)
     const utteranceListLength = listOfUtterances[utteranceIndex].length
+    let questionInterval;
 
     const [skin, setSkin] = useState();
 
@@ -64,16 +68,37 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
         //const fs = require('fs');
         // const modelList = fs.readdirSync('./models/');
 
-        const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
+        const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb'] //might be better to put this into a json file or db
 
         const avaliableSkins = modelList;
         if (avaliableSkins.length > 0) {
             setSkin(avaliableSkins[0])
         }
+
     }, [])
-    const readyToSpeak = () => { // start chain of utterances when avatar has loaded voices
-        setText(listOfUtterances[utteranceIndex][0])
+
+    useEffect(() => {
+        if (readyToSpeak) {
+            console.log('ready to speak')
+            questionInterval = window.setInterval(() => {
+                if (nextQuestionTime <= 0 && speaks) {
+                    nextQuestionTime = utteranceSplit ? utteranceSplit + Math.random() * 30000 : 180000 + Math.random() * 30000
+                    setText(listOfUtterances[utteranceIndex][textIndex])
+                    setTextIndex((textIndex + 1) % utteranceListLength)
+                } else {
+                    nextQuestionTime -= 1000
+                }
+                console.log(nextQuestionTime)
+            }, 1000)
+        }
+    }, [readyToSpeak])
+    const readyToSpeakHandler = () => { // start chain of utterances when avatar has loaded voices, passed down to prop in Avatar
+        console.log('calling ready to speak handler')
+        if (speaks) {
+            setReadyToSpeak(true)
+        }
     }
+    /*
     useEffect(() => { // when the utterance changes, start wait for the next one
         waitingInterval = setTimeout(() => {
             setFirstQuestion(true)
@@ -83,27 +108,24 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
     useEffect(() => { // when utterance index changes, immediately start corresponding utterance
         console.log("text index effect " + textIndex)
         setText(listOfUtterances[utteranceIndex][textIndex])
-    }, [textIndex])
+    }, [textIndex])*/
 
     return (<>
-        {firstQuestion ? <Button clickHandler={() => /*!micStarted? startMic(true): null*/ {
-            clearTimeout(waitingInterval)
+        {speaks ? <>{firstQuestion ? <Button clickHandler={() => /*!micStarted? startMic(true): null*/ {
             setText(listOfUtterances[utteranceIndex][textIndex])
             setRepeatingQuestion(!repeatingQuestion)
         }}
             position={[position[0] - 1, position[1] + 3, position[2]]}
             buttonText={"Repeat Question"}
-            scale={[2, 2, 2]} /> : null}
-        <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setUtteranceIndex(0)}
-            position={[position[0] - 1, position[1] + 4, position[2]]}
-            scale={[2, 2, 2]}
-            buttonText={"Utterance List 1"} />
-        <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setUtteranceIndex(1)}
-            position={[position[0] - 2, position[1] + 4, position[2]]}
-            scale={[2, 2, 2]}
-            buttonText={"Utterance List 2"} />
-
-        <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
+            scale={[2, 2, 2]} /> : null}  <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setUtteranceIndex(0)}
+                position={[position[0] - 1, position[1] + 4, position[2]]}
+                scale={[2, 2, 2]}
+                buttonText={"Utterance List 1"} />
+            <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setUtteranceIndex(1)}
+                position={[position[0] - 2, position[1] + 4, position[2]]}
+                scale={[2, 2, 2]}
+                buttonText={"Utterance List 2"} /></> : null}
+        <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated}></Avatar>
         <SkinSelect updateSkin={updateSkin}> </SkinSelect>
     </>)
 }

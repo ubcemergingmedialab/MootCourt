@@ -40,7 +40,7 @@ const VoiceSelect = ({ updateVoice }) => {
     return null
 }
 
-function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak }) {
+function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated=true }) {
     const [micStarted, startMic] = useState(false) //call navigator.mediaDevices.getUserMedia or grab audio stream for lip syncing
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
     const { speak, cancel } = useSpeechSynthesis()
@@ -100,7 +100,7 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
                     pos={[0, 0, 0]}
                     rot={[0, 0, 0]}
                     sca={[2, 2, 2]}
-                    startAnimation={true}
+                    startAnimation={animated}
                     pauseAnimation={animationPause} ></Model>
                 {micStarted ? <LipSync blendShapeHandler={(shapes) => setBlendShape([shapes.BlendShapeMouth, shapes.BlendShapeLips, shapes.BlendShapeKiss])} /> : null}
                 {voicesReady ? <VoiceSelect updateVoice={updateVoice} /> : null}</mesh>
