@@ -22,6 +22,7 @@ import Avatar from './Components/Avatar.js'
 import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
+import Subtitle from './Components/Subtitle.js'
 
 function HitTestExample() {
   const ref = useRef()
@@ -47,7 +48,8 @@ function App() {
         {
         //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
       }
-        <JudgeAvatar position={[2,-3, -4]} utteranceSplit={180000}/>
+        <JudgeAvatar position={[2, -3, -4]} utteranceSplit={180000} />
+        <Subtitle position={[2, -3, -4]} />
         <Model modelUrl="./models/courtroomOct27.glb"
           pos={[0, -40, 3.5]}
           rot={[0, 0, 0]}
