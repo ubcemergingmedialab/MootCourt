@@ -38,7 +38,7 @@ function Subtitle({ textToSay }) {
 
     return (<>
         <text
-                    position-z={3}
+                    position-z={1}
                     rotation={rotation}
                     {...opts}
                     text={textToSay}
