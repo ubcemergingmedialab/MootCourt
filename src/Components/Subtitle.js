@@ -1,77 +1,59 @@
-import React, { useEffect } from 'react'
+//import React, { useEffect } from 'react'
 import { useXR } from '@react-three/xr'
 import { useControls } from 'leva'
-import { useState } from 'react'
+//import { useState } from 'react'
 
 
-import Avatar from './Avatar.js'
-
-import { Canvas, useThree, useLoader } from '@react-three/fiber';
-import * as THREE from "three";
-import JudgeAvatar from './JudgeAvatar.js'
-
+import React, { useState } from "react";
+import { extend, Canvas } from "@react-three/fiber";
 import { Text } from "troika-three-text";
-import WebFont from 'webfontloader';
+import fonts from "./fonts";
 
-//import Roboto from "./Roboto_Regular.json"
+extend({ Text });
 
-//Provides subtitles/ text representation for users 
+// const text = "\(owo)/ subtitles here (o3o)//*";
 
+function Subtitle({ textToSay }) {
+    // State:
+    const [rotation, setRotation] = useState([0, 0, 0, 0]);
+    const [opts, setOpts] = useState({
+        font: "Roboto Slab",
+        fontSize: .1,
+        color: "#05337d",
+        maxWidth: 300,
+        lineHeight: 1,
+        letterSpacing: 0,
+        textAlign: "justify",
+        materialType: "MeshPhongMaterial"
+    });
 
-// avatar TextToSay -> utterance changes 
-// judge avatar text to say -> utterance changes
-// 
-
-const subtitle_default_text = "This is a subtitle object for the judge.";
-
-
-function Subtitle({ position, textToSay }) {
-
-    const [currentText, setText] = useState("");
- //   const font = new THREE.FontLoader().parse(); // might need to load font files?
- //   const textOptions = {
- //       font,
- //       size: 5,
- //       height: 1
-  //  };
-
-  //  const TextDisplay({ updateText }) => {
-        // JudgeAvatar.currentText;
-        //get.JudgeAvatar.TextToSay
-        // everytime judge updates run use effect
- ////       useEffect(() => {
-  //          updateSkin(judge)
- //       }, [judge])
-
-    //    return null;
-    //}
-
-    // parse JSON file with Three
-    const font = new THREE.FontLoader().parse('./fonts/Serat_Ultra_Regular.json');
-
-    // configure font geometry
-    const textOptions = {
-        font,
-        size: 5,
-        height: 1
+    // Handlers:
+    const onMouseMove = e => {
+        setRotation([
+            ((e.clientY / e.target.offsetHeight - 0.5) * -Math.PI) / 8,
+            ((e.clientX / e.target.offsetWidth - 0.5) * -Math.PI) / 8,
+            0
+        ]);
     };
 
-
-
     return (<>
-        <mesh>
-            <textGeometry attach='geometry' args={['three.js', textOptions]} />
-            <meshStandardMaterial attach='material' />
-        </mesh>
-    </>)
+        <text
+                    position-z={3.5}
+                    rotation={rotation}
+                    {...opts}
+                    text={textToSay}
+                    font={fonts[opts.font]}
+                    anchorX="center"
+                    anchorY="middle"
+                >
+                    {opts.materialType === "MeshPhongMaterial" ? (
+                        <meshPhongMaterial attach="material" color={opts.color} />
+                    ) : null}
+                </text>
+
+                <pointLight position={[-100, 0, -160]} />
+                <pointLight position={[0, 0, -170]} />
+                <pointLight position={[100, 0, -160]} />
+   </> );
 }
-
 export default Subtitle
-
-        //<mesh>
-      //      <textGeometry attach='geometry' args={['three.js', textOptions]} />
-      //      <meshStandardMaterial attach='material' color="hotpink" />
-      //      <mesh rotation={2,2,2} position={position} />
-      //  </mesh>
-
-//<TextDisplay updateText={updateText}> </TextDisplay> //might need to adjust brackets

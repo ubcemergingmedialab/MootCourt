@@ -3,6 +3,8 @@ import Avatar from './Avatar.js'
 import Button from './Button.js'
 import { useControls } from 'leva'
 
+import Subtitle from './Subtitle.js'
+
 //import java.io.File;
 //import java.io.IOException;
 
@@ -91,6 +93,7 @@ function JudgeAvatar({ position, utteranceSplit }) {
             buttonText={"Pause Animation"} /> : null}
 
         <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
+        <Subtitle textToSay={currentText}/>
         <SkinSelect updateSkin={updateSkin}> </SkinSelect>
     </>)
 }

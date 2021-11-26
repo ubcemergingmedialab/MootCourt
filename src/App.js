@@ -47,7 +47,8 @@ function App() {
         />
         {
           //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
-        }
+              }
+              <Subtitle />
         <JudgeAvatar position={[2, -3, -4]} utteranceSplit={180000} />
         <Model modelUrl="./models/courtroompropsNov17.glb"
           pos={[0, -3, 3.5]}
@@ -60,7 +61,7 @@ function App() {
         <Model modelUrl="./models/courtroomdesksNov17.glb"
           pos={[0, -3, 3.5]}
           rot={[0, 0, 0]}
-          sca={[0.06, 0.06, 0.06]} />
+                  sca={[0.06, 0.06, 0.06]} />
         <DefaultXRControllers />
         <Player startPosition={[0, 0.5, 0]} />
       </VRCanvas>

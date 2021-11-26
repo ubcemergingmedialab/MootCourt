@@ -2,11 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\public\\models",
-    "\\public\\models\\judge_avatar",
+    "\\public\\fonts",
     "\\src",
     "\\src\\Components"
   ],
-  "SelectedNode": "\\public\\models\\judge_avatar\\human_female.glb",
+  "SelectedNode": "\\src\\Components\\JudgeAvatar.js",
   "PreviewInSolutionExplorer": false
 }
