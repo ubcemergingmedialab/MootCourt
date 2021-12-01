@@ -40,13 +40,23 @@ const VoiceSelect = ({ updateVoice }) => {
     return null
 }
 
-function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak }) {
+//const deleteOldSkin = ({})
+
+function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak, skinState }) {
     const [micStarted, startMic] = useState(false) //call navigator.mediaDevices.getUserMedia or grab audio stream for lip syncing
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
     const { speak } = useSpeechSynthesis()
     const [voice, setVoice] = useState(); // used to rerender avatar with a new voice based on user decision. Currently decided by leva, could add prop to decide this externally
     const [voicesReady, setVoicesReady] = useState(false) // causes rerender on voices loaded
     const [animationPause, setAnimationPause] = useState(false) // allows button to control avatar animations
+    //const [skinState, setSkinState] = useState("modelUrl"); //identifies the skin as original (in no replacement is needed or new in which old model must be deleted)
+
+    const updateSkin = (deleteOldSkin) => {
+        if (skinState != "") {
+            this.Model.dispose();
+            skinState = modelUrl;
+        }
+    }
     const updateVoice = (voiceUpdate) => {
         console.log("updating voices ", voiceUpdate);
         setVoice(voiceUpdate);

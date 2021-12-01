@@ -41,9 +41,12 @@ function JudgeAvatar({ position, utteranceSplit }) {
     // const { modelUrl } = useControls({modelUrl: {options: modelUrls}})
     const [skin, setSkin] = useState();
 
+    const [skinState, setSkinState] = useState("");
+
     const updateSkin = (skinUpdate) => {
         console.log("updating judge skins ", skinUpdate);
         setSkin(skinUpdate);
+        setSkinState("NewSkin");
     }
     useEffect(() => {
        //File modelPath = new File("./models/");  //gets the model path for models
@@ -92,7 +95,7 @@ function JudgeAvatar({ position, utteranceSplit }) {
             rotation={[0.2, 0.2, 0]}
             buttonText={"Pause Animation"} /> : null}
 
-        <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion}></Avatar>
+        <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeak} utteranceRepeat={repeatingQuestion} skinState={skinState}></Avatar>
         <Subtitle textToSay={currentText}/>
         <SkinSelect updateSkin={updateSkin}> </SkinSelect>
     </>)
