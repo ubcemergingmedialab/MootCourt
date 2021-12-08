@@ -59,30 +59,30 @@ function HitTestExample() {
 
 function App() {
   const [presentationStarted, setPresentationStarted] = useState(false)
-  const [LandingPage, setLandingPageStarted] = useState(true)
-  const [HomePage, setHomePageStarted] = useState(false)
-  const [SetupPageActive, setSetupPageActive] = useState(false)
+  const [landingPageActive, setLandingPageActive] = useState(true)
+  const [homePageActive, setHomePageActive] = useState(false)
+  const [setupPageActive, setSetupPageActive] = useState(false)
   const landing = function () {
-    setLandingPageStarted(true)
-    setHomePageStarted(false)
+    setLandingPageActive(true)
+    setHomePageActive(false)
     setSetupPageActive (false)
     setPresentationStarted(false)
   }
   const home = function () {
-    setLandingPageStarted(false)
-    setHomePageStarted(true)
+    setLandingPageActive(false)
+    setHomePageActive(true)
     setSetupPageActive (false)
     setPresentationStarted(false)
   }
   const setup = function () {
-    setLandingPageStarted(false)
-    setHomePageStarted(false)
+    setLandingPageActive(false)
+    setHomePageActive(false)
     setSetupPageActive (true)
     setPresentationStarted(false)
   }
   const presentation = function () {
-    setLandingPageStarted(false)
-    setHomePageStarted(false)
+    setLandingPageActive(false)
+    setHomePageActive(false)
     setSetupPageActive (false)
     setPresentationStarted(true)
   }
@@ -125,10 +125,10 @@ function App() {
 
 
 
-          {LandingPage? <LandingPage></LandingPage>:null}
-          {HomePage? <HomePage></HomePage>:null}
+          {landingPageActive? <LandingPage></LandingPage>:null}
+          {homePageActive? <HomePage></HomePage>:null}
           {/* <button type="button" onClick={() => { setPresentationStarted(true) }}>Start Moot Practice</button> */}
-          {SetupPageActive? <SetupPage></SetupPage> : null}
+          {setupPageActive? <SetupPage></SetupPage> : null}
     </>
   );
 }
