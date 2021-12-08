@@ -11394,15 +11394,34 @@
     "troika-three-utils" "^0.43.0"
     "troika-worker-utils" "^0.43.0"
 
+"troika-three-text@^0.44.0":
+  "integrity" "sha512-YwqXczjXQ4yq2a2ufO9icOIjeJutE/ODS8PHmmt/WAzVFqoiqeemclp/Ewiqm0+sdI1KnWRm6lj8df/zmhU3Og=="
+  "resolved" "https://registry.npmjs.org/troika-three-text/-/troika-three-text-0.44.0.tgz"
+  "version" "0.44.0"
+  dependencies:
+    "bidi-js" "^1.0.2"
+    "troika-three-utils" "^0.44.0"
+    "troika-worker-utils" "^0.44.0"
+
 "troika-three-utils@^0.43.0":
   "integrity" "sha512-UVc4jOob1VjrX0awA0dHxmHZ8yvgq8W/kmtihMnMeObm0HNOobPKAWm/N6o34/k/FPgOtUMDHYgkw+TG2RNouA=="
   "resolved" "https://registry.npmjs.org/troika-three-utils/-/troika-three-utils-0.43.0.tgz"
   "version" "0.43.0"
 
+"troika-three-utils@^0.44.0":
+  "integrity" "sha512-gaEpqrlWnkrVU5UgUx+YZTC8NrhsA2Tt6zEIbn3WNuom7pLtrgjuHpAM72gif7DoYdOWEyFco3Zb6rpJh9Fodg=="
+  "resolved" "https://registry.npmjs.org/troika-three-utils/-/troika-three-utils-0.44.0.tgz"
+  "version" "0.44.0"
+
 "troika-worker-utils@^0.43.0":
   "integrity" "sha512-8YXWwfviJ1N/9+nuE5dT9RFttmDsIF8CP7d6rRsBBhH55il3fBqpFSuzTlOcdgC1yq8Hmhi6GgIl6eK4Zt+hTw=="
   "resolved" "https://registry.npmjs.org/troika-worker-utils/-/troika-worker-utils-0.43.0.tgz"
   "version" "0.43.0"
+
+"troika-worker-utils@^0.44.0":
+  "integrity" "sha512-/ETcH1rUoO9hVBL6Ifea2WOoGPw90ncrk8b8SJKTLtzcQvEWRIZ4eUxlVCtU93fLechCV+DWPs1y8+Bjh1WaJg=="
+  "resolved" "https://registry.npmjs.org/troika-worker-utils/-/troika-worker-utils-0.44.0.tgz"
+  "version" "0.44.0"
 
 "tryer@^1.0.1":
   "integrity" "sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA=="
@@ -11841,6 +11860,11 @@
   "integrity" "sha512-PFMKIY+bRSXlMxVAQ+m2aw9c/ioUYfDgrYot0YUa+/xa0sakubWhSDyxAKwzymvXVdF4CZI71g06W+mqhzu6ig=="
   "resolved" "https://registry.npmjs.org/web-vitals/-/web-vitals-1.1.2.tgz"
   "version" "1.1.2"
+
+"webfontloader@^1.6.28":
+  "integrity" "sha1-23hhKSU8tujq5UwvsF+HCvZnW64="
+  "resolved" "https://registry.npmjs.org/webfontloader/-/webfontloader-1.6.28.tgz"
+  "version" "1.6.28"
 
 "webgl-constants@^1.1.1":
   "integrity" "sha512-LkBXKjU5r9vAW7Gcu3T5u+5cvSvh5WwINdr0C+9jpzVB41cjQAP5ePArDtk/WHYdVj0GefCgM73BA7FlIiNtdg=="

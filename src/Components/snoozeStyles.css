@@ -1,0 +1,11 @@
+div.snooze {
+    background-color: white;
+}
+
+div.snoozeInner {
+    padding: 1em 1em 0em 1em;
+}
+
+button.snooze {
+    width: 100%;
+}
