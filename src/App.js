@@ -23,8 +23,11 @@ import Avatar from './Components/Avatar.js'
 import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
-import SettingsPage from './Components/SettingsPage'
 import Timer from './Components/Timer.js'
+import SetupPage from './Components/SetupPage'
+import LandingPage from './Components/LandingPage'
+import HomePage from './Components/HomePage'
+
 
 extend({ OrbitControls })
 
@@ -56,9 +59,32 @@ function HitTestExample() {
 
 function App() {
   const [presentationStarted, setPresentationStarted] = useState(false)
-  const [settingsPageActive, setSettingsPageActive] = useState(false)
-  const hideSettingsPage = function () {
-    setSettingsPageActive(false)
+  const [LandingPage, setLandingPageStarted] = useState(true)
+  const [HomePage, setHomePageStarted] = useState(false)
+  const [SetupPageActive, setSetupPageActive] = useState(false)
+  const landing = function () {
+    setLandingPageStarted(true)
+    setHomePageStarted(false)
+    setSetupPageActive (false)
+    setPresentationStarted(false)
+  }
+  const home = function () {
+    setLandingPageStarted(false)
+    setHomePageStarted(true)
+    setSetupPageActive (false)
+    setPresentationStarted(false)
+  }
+  const setup = function () {
+    setLandingPageStarted(false)
+    setHomePageStarted(false)
+    setSetupPageActive (true)
+    setPresentationStarted(false)
+  }
+  const presentation = function () {
+    setLandingPageStarted(false)
+    setHomePageStarted(false)
+    setSetupPageActive (false)
+    setPresentationStarted(true)
   }
   return (
     <>
@@ -94,11 +120,15 @@ function App() {
               sca={[0.06, 0.06, 0.06]} />
             <DefaultXRControllers />
             <Player startPosition={[0, 0.5, 0]} />
-          </VRCanvas> <Timer isPresentationStarted={presentationStarted}></Timer></> : <>
-          <button type="button" onClick={() => { setPresentationStarted(true) }}>Start Moot Practice</button>
-          <button type="button" onClick={() => { setSettingsPageActive(true) }}>Settings </button>
+          </VRCanvas> <Timer isPresentationStarted={presentationStarted}></Timer></>: null}
 
-          {settingsPageActive ? <SettingsPage hideSettingsPage={hideSettingsPage}></SettingsPage> : null}</>}
+
+
+
+          {LandingPage? <LandingPage></LandingPage>:null}
+          {HomePage? <HomePage></HomePage>:null}
+          {/* <button type="button" onClick={() => { setPresentationStarted(true) }}>Start Moot Practice</button> */}
+          {SetupPageActive? <SetupPage></SetupPage> : null}
     </>
   );
 }
