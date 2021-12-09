@@ -1,4 +1,4 @@
-import SetupPage from "./SetupPage"
+import './homepageStyles.css'
 
 
 function HomePage({SetupPage}){

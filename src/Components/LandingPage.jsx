@@ -1,4 +1,4 @@
-
+import './landingpageStyles.css'
 function LandingPage({HomePage}){
     return(<>
         <div>
