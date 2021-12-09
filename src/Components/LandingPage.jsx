@@ -1,10 +1,10 @@
 import './landingpageStyles.css'
-function LandingPage({HomePage}){
+
+function LandingPage({homePage}){
     return(<>
         <div>
             <h1>Moot court simulator to help you practice!</h1>
-            <button onClick={()=> {HomePage()}}>Click me to begin</button>
-            <button>Settings</button>
+            <button onClick={()=> {homePage()}}>Click me to begin</button>
         </div>
     </>)
 }

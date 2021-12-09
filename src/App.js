@@ -121,14 +121,10 @@ function App() {
             <DefaultXRControllers />
             <Player startPosition={[0, 0.5, 0]} />
           </VRCanvas> <Timer isPresentationStarted={presentationStarted}></Timer></>: null}
-
-
-
-
-          {landingPageActive? <LandingPage></LandingPage>:null}
-          {homePageActive? <HomePage></HomePage>:null}
-          {/* <button type="button" onClick={() => { setPresentationStarted(true) }}>Start Moot Practice</button> */}
-          {setupPageActive? <SetupPage></SetupPage> : null}
+          {landingPageActive? <LandingPage homePage={home}></LandingPage>:null}
+          {homePageActive? <HomePage setupPage={setup}></HomePage>:null}
+          {setupPageActive? <SetupPage presentationPage={presentation}></SetupPage> : null}
+          
     </>
   );
 }
