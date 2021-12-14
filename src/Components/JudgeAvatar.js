@@ -90,15 +90,15 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit }) {
             setText(listOfUtterances[utteranceIndex][textIndex])
             setRepeatingQuestion(!repeatingQuestion)
         }}
-            position={[position[0] - 1, position[1] + 1, position[2]]}
+            position={[position[0] - 1, position[1] + 2.5, position[2]]}
             buttonText={"Repeat Question"}
             scale={[2, 2, 2]} /> : null}
         <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setUtteranceIndex(0)}
-            position={[position[0] - 1, position[1] + 2, position[2]]}
+            position={[position[0] - 1, position[1] + 3, position[2]]}
             scale={[2, 2, 2]}
             buttonText={"Utterance List 1"} />
         <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setUtteranceIndex(1)}
-            position={[position[0] - 2, position[1] + 2, position[2]]}
+            position={[position[0] - 2, position[1] + 3, position[2]]}
             scale={[2, 2, 2]}
             buttonText={"Utterance List 2"} />
 
