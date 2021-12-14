@@ -1,0 +1,36 @@
+.timerContainer {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 100px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
+    width: 150px;
+}
+
+.timerLight {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    position: relative;
+    margin-right: 10px;
+    width: 42px;
+    height: 42px;
+    border-radius: 200px;
+}
+
+.timerText {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 30px;
+    margin: auto;
+    position: relative;
+}

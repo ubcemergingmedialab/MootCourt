@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Camera } from 'three'
+import { Camera, Color } from 'three'
 import { useXR } from '@react-three/xr'
 
 function Compass() {

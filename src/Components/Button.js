@@ -17,7 +17,7 @@ function Button(props) {
             onSelect={() => setColor((Math.random() * 0xffffff) | 0)}
             onHover={() => setHover(true)}
             onBlur={() => setHover(false)}>
-            <Box scale={hover ? [1.5, 1.5, 1.5] : [1, 1, 1]} args={[0.4, 0.1, 0.1]} position={props.position} rotation={props.rotation} scale={props.scale}
+            <Box args={[0.4, 0.1, 0.1]} position={props.position} rotation={props.rotation} scale={props.scale}
                 onClick={() => {
                     setColor((Math.random() * 0xffffff) | 0)
                     props.clickHandler()
