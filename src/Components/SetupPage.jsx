@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './setupStyles.css'
 
-function SetupPage({presentationPage}) {
-    const [show,setShow]= useState (false);
+function SetupPage({presentationPage, homePage}) {
+    const [show,setShow]= useState(false);
     const handleOpen= ()=>{
         setShow(!show);
     }
@@ -11,7 +11,7 @@ function SetupPage({presentationPage}) {
         <div> 
             <h1>Moot Practice Setup</h1>
             <button onClick={()=> {presentationPage()}}>Start</button>
-            <button> Back</button>
+            <button onClick={()=> {homePage()}}>Back</button>
         </div>
         <div>
             <h1>Position</h1>
