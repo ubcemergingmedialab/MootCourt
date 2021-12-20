@@ -1,21 +1,204 @@
-body{
-    width: 100%;
-    height:100%;
+/* this is for the body and foundational formatting */
+.setup{
+    width: 100vw;
+    height:100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color:#F7E7D0;
 }
-
-button {
-    background-color: grey;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
+.header{
+    width: 400px;
+    height:90px;
+    background-color: #6DA7D9;
+    border-radius: 7px;
+    border: 2px black solid;
+    box-shadow: 9px 7px #14223C;
+}
+.select-box{
+    display:flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+}
+/* formatting ends */
+/* this is for the accordion */
+.accordion-container{
+    width: 800px;
+    display:flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+}
+.accordion{
+    border: 2px black solid;
+    background-color: #6DA7D9;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+}
+.accordion-title{
+    margin-left: 30px;
+    display:flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+}
+.accordion-title:hover{
+    cursor: pointer;
+}
+.accordion-content{
+    overflow: hidden;
+    margin-left: 1em;
+    max-height: 1000px;
+    transition: max-height 1s ease-in-out;
+    background-color: #FDCE27;
+    border-radius: 7px;
+}
+.content{
+    display: block;
+    margin-left: 1em;
+}
+/* accordion ends */
+/* this is for the input and toggles */
+.input-wrapper{
+    margin-left: 3em;
+    background-color: transparent;
+    border-radius: 7px;
+    border: 2px black solid;
+    width: 100px;
+}
+.input-header{ 
+    display: table-row;
+    justify-content: left;
+    text-align: left;
+}
+.wrg-toggle {
+    touch-action: pan-x;
     display: inline-block;
-    font-size: 16px;
-    margin: 12px;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .toggle-input {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  .toggle-checked, .toggle-unchecked {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 0;
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  .toggle-checked {
+    left: 8px;
+  }
+  .toggle-unchecked {
+    opacity: 1;
+    right: 10px;
+  }
+  
+  .toggle-unchecked span, 
+  .toggle-checked span {
+    align-items: center;
+    display: flex;
+    height: 10px;
+    justify-content: center;
+    position: relative;
+    width: 10px;
+  }
+  
+  .toggle-container{
+    width: 50px;
+    height: 24px;
+    padding: 0;
+    border-radius: 30px;
+    background-color: #4d4d4d;
+    transition: all .2s ease;
+  }
+  
+  .toggle-circle{
+    transition: all .5s cubic-bezier(.23,1,.32,1) 0ms;
+    top: 1px;
+    left: 1px;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #4d4d4d;
+    border-radius: 50%;
+    background-color: #fafafa;
+    box-sizing: border-box;
+    transition: all .25s ease;
+  }
+/* input and toggle ends */
+/* this is for everything to do with buttons */
+.button-header{
+    display: table-column;
+    margin:2em 2em 2em 2em ;
 }
+button{
+    border: 2px solid black;
+    border-radius: 7px;
+    width:150px;
+    height: 40px;
+}
+button:hover{
+    cursor: pointer;
+}
+.button-type1{
+    background-color: #c2c2c2;
+    box-shadow:7px 5px #14223C;
+    border: 2px black solid;
+    margin-right: 600px;
+}
+.button-type2{
+    background-color: #6DA7D9;
+    box-shadow:7px 5px #14223C;
+    border: 2px #FDCE27 solid;
+    margin-top: 100px;
+}
+.button-type3{
+    box-shadow:7px 5px#FDCE27 ;
+    margin: 5px 5px;
+}
+.button-type4{
+    box-shadow:7px 5px #14223C;
+    border: 2px #FDCE27 solid;
+    margin: 5px 5px;
+}
+.nobgbutton{
+    background-color: transparent;
+    margin-left: 700px;
+    margin-right: 50px;
+}
+.nobgbutton:hover{
+    cursor: pointer;
+}
+/* button end */
+
