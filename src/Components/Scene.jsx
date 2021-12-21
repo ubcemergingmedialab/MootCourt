@@ -1,9 +1,20 @@
+import { useEffect, useState } from 'react'
 import { VRCanvas, Hands, DefaultXRControllers } from '@react-three/xr'
+import { useSpring, animated } from '@react-spring/three'
 import JudgeAvatar from './JudgeAvatar'
 import Model from './Model'
 import Player from './Player'
 
 export default function Scene() {
+    const [animateCamera, setAnimateCamera] = useState(false)
+    const props = useSpring({rotation: animateCamera? [0,0, 0]: [0,-Math.PI/2,0], config: {duration: 10000}})
+    const AnimatedPlayer = animated(Player)
+    useEffect(() => {
+        setTimeout(() => {
+            console.log('animating camera')
+            setAnimateCamera(true)
+        }, 1000)
+    }, [])
     return (<>
         <VRCanvas>
             <ambientLight />
@@ -33,5 +44,5 @@ export default function Scene() {
                 rot={[0, 0, 0]}
                 sca={[0.06, 0.06, 0.06]} />
             <DefaultXRControllers />
-            <Player startPosition={[0, 0.5, 0]} /></VRCanvas></>)
+            <AnimatedPlayer position={[0, 0.5, 0]} rotation={props.rotation} /></VRCanvas></>)
 }

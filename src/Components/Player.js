@@ -1,13 +1,17 @@
 import React, {useEffect} from 'react'
+import { useFrame } from '@react-three/fiber'
 import { useXR } from '@react-three/xr'
 
-function Player({startPosition}) {
+function Player({position, rotation}) {
     const { player } = useXR()
-    useEffect(() => {
-        player.position.x = startPosition[0]
-        player.position.y = startPosition[1]
-        player.position.z = startPosition[2]
-    },[])
+    useFrame(() => {
+        player.position.x = position[0]
+        player.position.y = position[1]
+        player.position.z = position[2]
+        player.rotation.x = rotation[0]
+        player.rotation.y = rotation[1]
+        player.rotation.z = rotation[2]
+    })
 
     return (<mesh></mesh>)
 }

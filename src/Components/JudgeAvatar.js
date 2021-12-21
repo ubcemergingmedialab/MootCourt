@@ -28,7 +28,7 @@ const SkinSelect = ({ updateSkin }) => {
 
     //manual implementatino of modellist -> brute force
 
-    const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
+    const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
 
     const judgeSkins = modelList;
     const judgeSkinObject = {}
@@ -67,7 +67,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, anima
         //const fs = require('fs');
         // const modelList = fs.readdirSync('./models/');
 
-        const modelList = ['human_female.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb'] //might be better to put this into a json file or db
+        const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb'] //might be better to put this into a json file or db
 
         const avaliableSkins = modelList;
         if (avaliableSkins.length > 0) {

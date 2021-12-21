@@ -43,7 +43,7 @@ function App() {
   return (
     <>
       {presentationStarted ?
-        <><Scene></Scene><Timer isPresentationStarted={presentationStarted}></Timer></> : <>
+        <><Scene presentationStarted={presentationStarted}></Scene><Timer isPresentationStarted={presentationStarted}></Timer></> : <>
           <button type="button" onClick={() => { setPresentationStarted(true) }}>Start Moot Practice</button>
           <button type="button" onClick={() => { setSettingsPageActive(true) }}>Settings </button>
 

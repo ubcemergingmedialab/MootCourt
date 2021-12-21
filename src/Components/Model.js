@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation }) {
+function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, activeAnimation }) {
     const [gltf, setGltf] = useState();
     const [mixer, setMixer] = useState(null);
     useEffect(() => {
@@ -13,10 +13,13 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation }) {
             if(gltf.animations.length > 0) {
                 let mixer = new THREE.AnimationMixer(gltf.scene)
                 setMixer(mixer)
+                
                 gltf.animations.forEach(clip => {
                     const action = mixer.clipAction(clip)
-                    action.play()
+                    //action.play()
+                    //console.log('existing animation: ', action.name, action.duration, action.tracks)
                 })
+                console.log(gltf.animations)
             }
             gltf.scene.traverse(child => {
                 if(child.isMesh) {
@@ -27,6 +30,13 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation }) {
             })
         });
     }, [modelUrl])
+
+    useEffect(()=> {
+        if(mixer && activeAnimation && mixer.existingAction(activeAnimation)) {
+            let action = mixer.clipAction(activeAnimation)
+            action.play()
+        }
+    },[mixer, activeAnimation])
 
     useFrame((state, delta) => {
         if(startAnimation) {
