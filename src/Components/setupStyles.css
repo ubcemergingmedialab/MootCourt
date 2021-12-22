@@ -61,17 +61,19 @@
     border-radius: 7px;
 }
 .content{
-    display: block;
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    grid-row-gap:1px;
     margin-left: 1em;
 }
 /* accordion ends */
 /* this is for the input and toggles */
 .input-wrapper{
-    margin-left: 3em;
     background-color: transparent;
     border-radius: 7px;
     border: 2px black solid;
     width: 100px;
+    height:30px;
 }
 .input-header{ 
     display: table-row;
@@ -83,8 +85,7 @@
     display: inline-block;
     width: 60px;
     height: 34px;
-  }
-  
+}  
   /* Hide default HTML checkbox */
   .switch input {
     opacity: 0;
@@ -93,7 +94,7 @@
 }
   
   /* The slider */
-  .slider {
+.slider.round {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -103,9 +104,9 @@
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+    border-radius: 34px;
+}
+.slider.round:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -115,30 +116,19 @@
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
+    border-radius: 50%;
+}
+input:checked + .slider {
     background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
+}
+input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
+}
+input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  /* .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  } */
+}
   
 /* input and toggle ends */
 /* this is for everything to do with buttons */
@@ -168,16 +158,15 @@ button:hover{
     margin-top: 100px;
 }
 .button-type3{
-    box-shadow:7px 5px#FDCE27 ;
-    margin: 5px 5px;
-}
-.button-type4{
     box-shadow:7px 5px #14223C;
-    border: 2px #FDCE27 solid;
+    background-color: #FDCE27;
     margin: 5px 5px;
 }
 .button-type4{
-    background-color:  #FDCE27;
+    box-shadow:7px 5px #FDCE27;
+    background-color: #14223C;
+    color: #F7E7D0;
+    border: 2px black solid;
     margin: 5px 5px;
 }
 .nobgbutton{

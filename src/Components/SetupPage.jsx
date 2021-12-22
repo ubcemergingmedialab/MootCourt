@@ -14,9 +14,21 @@ function SetupPage({presentationPage, homePage}) {
     const accessOpen= ()=>{
         setShowAccess(!showAccess);
     }
-    const [toggle, setToggle]=useState(false);
-    const triggerToggle= () => {
-            setToggle(!toggle)
+    const [randomToggle, setRandomToggle]=useState(false);
+    const triggerRandomToggle= () => {
+            setRandomToggle(!randomToggle)
+    }
+    const [delayToggle, setDelayToggle]=useState(false);
+    const triggerDelayToggle= () => {
+            setDelayToggle(!delayToggle)
+    }
+    const [cutOffToggle, setCutOffToggle]=useState(false);
+    const triggerCutOffToggle= () => {
+            setCutOffToggle(!cutOffToggle)
+    }
+    const [closedCaptionToggle, setClosedCaptionToggle]=useState(false);
+    const triggerClosedCaptionToggle= () => {
+            setClosedCaptionToggle(!closedCaptionToggle)
     }
     
     
@@ -49,30 +61,33 @@ function SetupPage({presentationPage, homePage}) {
                     </div>
                     {showQuestion && (
                     <div className="accordion-content"> 
+                    
                         <div className="content">
-                            <form> 
-                                <label className="input-header">
-                                    <h3>Interval</h3>
-                                    <p>Approximate time between when questions will be asked</p>
-                                </label>
-                                <input className="input-wrapper" type="text"/>
-                            </form>
+                            <label className="input-header">
+                                <h3>Interval</h3>
+                                <p>Approximate time between when questions will be asked</p>
+                            </label>
+                            <input className="input-wrapper" type="text" placeholder="minutes"/>
                         </div>   
                        
                         <div className="content">
-                            <label className="input-header">
+                            <div className="input-header">
                                 <h3>Randomized Questions</h3>
                                 <p>Randomize the order that the questions will be asked</p>
-                                <input type="checkbox"/>
-                                        <span></span>
+                            </div>
+                            <label className="switch">
+                                <input type="checkbox" onClick={() => {triggerRandomToggle()}} checked={randomToggle? true : false}/>
+                                    <span className="slider round"></span>
                             </label>
                         </div>
                         <div className="content">
-                            <h3>Delay Questions</h3>
-                            <p>Allow the ability to delay when the next question will be asked</p>
+                            <div className="input-header">
+                                <h3>Delay Questions</h3>
+                                <p>Allow the ability to delay when the next question will be asked</p>
+                            </div>
                             <label className="switch">
-                                <input type="checkbox" onClick={() => {triggerToggle()}} checked={toggle? false : true} />
-                                    <span className="slider"></span>
+                                <input type="checkbox" onClick={() => {triggerDelayToggle()}} checked={delayToggle? true : false}/>
+                                    <span className="slider round"></span>
                             </label>
                             
                         </div>
@@ -90,38 +105,34 @@ function SetupPage({presentationPage, homePage}) {
                     {showTimer &&(
                     <div className="accordion-content">
                         <div className="content">
-                            <form>
                                 <label className="input-header">
                                     <h3>Total Time</h3>
                                     <p>Total amount of time allowed for the oral presentation</p>
                                 </label>
-                                <input type="text"/>
-                            </form>
+                                <input className="input-wrapper" type="text" placeholder="minutes"/>
                         </div> 
                         <div className="content">
-                            <form>
                                 <label className="input-header">
                                     <h3>First Warning</h3>
                                     <p>Time when first warning is given</p>
                                 </label>
-                                <input type="text"/>
-                            </form>
+                                <input className="input-wrapper" type="text" placeholder="minutes"/>
                         </div>
                         <div className="content">
-                            <form>
                                 <label className="input-header">
                                     <h3>Second Warning</h3>
                                     <p>Time when second warning is given</p>
                                 </label>
-                                <input type="text"/>
-                            </form>
+                                <input className="input-wrapper" type="text" placeholder="minutes"/>
                         </div>
                         <div className="content">
-                            <label className="input-header">
+                            <div className="input-header">
                                 <h3>Cut Off Presentation</h3>
                                 <p>Stop the oral presentation when the time is over</p>
-                                    <input type="checkbox"/>
-                                        <span></span>
+                            </div>
+                            <label className="switch">
+                                <input type="checkbox" onClick={() => {triggerCutOffToggle()}} checked={cutOffToggle? true : false}/>
+                                    <span className="slider round"></span>
                             </label>
                         </div>
                     </div>
@@ -134,11 +145,13 @@ function SetupPage({presentationPage, homePage}) {
                     {showAccess&&(
                     <div className="accordion-content">
                         <div className="content">
-                            <label className="input-header switch">
+                            <div className="input-header">
                                 <h3>Closed Captions</h3>
                                 <p>Show closed captions on the screen during animations</p>
-                                    <input type="checkbox"/>
-                                        <span className="slider round"></span>
+                            </div>
+                            <label className="switch">
+                                <input type="checkbox"/>
+                                    <span className="slider round" onClick={() => {triggerClosedCaptionToggle()}} checked={closedCaptionToggle? true : false}></span>
                             </label>
                         </div>
                     </div>
