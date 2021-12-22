@@ -4,7 +4,7 @@ import Button from './Button.js'
 import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
 
-const listOfUtterances = [[
+const testlistOfUtterances = [[
     "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
     "Should not we presume that the trial judge knows the law and applied the correct law?",
     "Are not some of the facts of the cases you rely upon much different from the facts of this case?",
@@ -45,7 +45,7 @@ const SkinSelect = ({ updateSkin }) => {
 
 let nextQuestionTime = -1; // -1 means there is no question to be asked next. counts down until
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, animated = true }) {
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, animated = true, listOfUtterances=testlistOfUtterances }) {
     const [utteranceIndex, setUtteranceIndex] = useState(0)
     const [currentText, setText] = useState(listOfUtterances[0][0])
     const [textIndex, setTextIndex] = useState(0)

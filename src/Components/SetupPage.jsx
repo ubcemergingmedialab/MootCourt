@@ -71,7 +71,7 @@ function SetupPage({presentationPage, homePage}) {
                             <h3>Delay Questions</h3>
                             <p>Allow the ability to delay when the next question will be asked</p>
                             <label className="switch">
-                                <input type="checkbox" checked/>
+                                <input type="checkbox" onClick={() => {triggerToggle()}} checked={toggle? false : true} />
                                     <span className="slider"></span>
                             </label>
                             
