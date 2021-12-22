@@ -60,26 +60,21 @@ function SetupPage({presentationPage, homePage}) {
                         </div>   
                        
                         <div className="content">
-                            <label className="input-header switch">
+                            <label className="input-header">
                                 <h3>Randomized Questions</h3>
                                 <p>Randomize the order that the questions will be asked</p>
                                 <input type="checkbox"/>
-                                        <span className="slider round"></span>
+                                        <span></span>
                             </label>
                         </div>
                         <div className="content">
                             <h3>Delay Questions</h3>
                             <p>Allow the ability to delay when the next question will be asked</p>
-                            <div onChange={triggerToggle} className="toggle">
-                                <div className="toggle-container">
-                                    <input className="toggle-input" type="checkbox"/>
-                                    <div className="toggle-checked">
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                    <div className="toggle-circle"></div>   
-                                </div>
-                            </div>
+                            <label className="switch">
+                                <input type="checkbox" checked/>
+                                    <span className="slider"></span>
+                            </label>
+                            
                         </div>
                         <div className="content">
                             <button>Add your own questions</button>
@@ -122,11 +117,11 @@ function SetupPage({presentationPage, homePage}) {
                             </form>
                         </div>
                         <div className="content">
-                            <label className="input-header switch">
+                            <label className="input-header">
                                 <h3>Cut Off Presentation</h3>
                                 <p>Stop the oral presentation when the time is over</p>
                                     <input type="checkbox"/>
-                                        <span className="slider round"></span>
+                                        <span></span>
                             </label>
                         </div>
                     </div>
