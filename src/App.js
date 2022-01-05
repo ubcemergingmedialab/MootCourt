@@ -23,11 +23,6 @@ import Avatar from './Components/Avatar.js'
 import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
-<<<<<<< HEAD
-import SettingsPage from './Components/SettingsPage.jsx'
-import Timer from './Components/Timer.js'
-import Subtitle from './Components/Subtitle.js'
-=======
 import Timer from './Components/Timer.js'
 import SetupPage from './Components/SetupPage'
 import LandingPage from './Components/LandingPage'
@@ -51,7 +46,6 @@ const Controls = () => {
     />
   )
 }
->>>>>>> 838e70f916edd4343ee988dfd3087d9488f078e3
 
 function HitTestExample() {
   const ref = useRef()
