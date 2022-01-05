@@ -20,10 +20,6 @@ const listOfUtterances = [[
     "Were the errors you argue significant enough to justify the remedy you are seeking?  In other words, would the result at trial necessarily have been different if those errors did not occur?"
 ]]
 
-
-//import java.io.File;
-//import java.io.IOException;
-
 const SkinSelect = ({ updateSkin }) => {
     //File modelPath = new File("./models/");  //gets the model path for models
     //String modelList[] = modelpath.list();   //lists all model urls in the models folder
