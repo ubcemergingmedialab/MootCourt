@@ -12,9 +12,11 @@ import Avatar from './Components/Avatar.js'
 import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
-import SettingsPage from './Components/SettingsPage'
 import Timer from './Components/Timer.js'
-import Scene from './Components/Scene'
+import SetupPage from './Components/SetupPage'
+import LandingPage from './Components/LandingPage'
+import HomePage from './Components/HomePage'
+
 
 extend({ OrbitControls })
 
@@ -35,19 +37,71 @@ const Controls = () => {
 }
 
 function App() {
-  const [presentationStarted, setPresentationStarted] = useState(false)
-  const [settingsPageActive, setSettingsPageActive] = useState(false)
-  const hideSettingsPage = function () {
-    setSettingsPageActive(false)
+  const Presentation = 0
+  const Landing = 1
+  const Home = 2
+  const Setup = 3
+  const [appState, setAppState] = useState(Landing)
+
+  const landing = function () {
+    setAppState(Landing)
   }
+  const home = function () {
+    setAppState(Home)
+  }
+  const setup = function () {
+    setAppState(Setup)
+  }
+  const presentation = function () {
+    setAppState(Presentation)
+  }
+
   return (
     <>
+<<<<<<< HEAD
       {presentationStarted ?
         <><Scene presentationStarted={presentationStarted}></Scene><Timer isPresentationStarted={presentationStarted}></Timer></> : <>
           <button type="button" onClick={() => { setPresentationStarted(true) }}>Start Moot Practice</button>
           <button type="button" onClick={() => { setSettingsPageActive(true) }}>Settings </button>
+=======
+      {appState==Presentation ?
+        <>
+          <VRCanvas style={{ position: "absolute" }}>
+            <Compass ></Compass>
+            <ambientLight />
+            <pointLight position={[10, 10, 10]} />
+            <Hands
+            // modelLeft={"https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/left-hand-black-webxr-tracking-ready/model.gltf"}
+            // modelRight={"https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/right-hand-black-webxr-tracking-ready/model.gltf"}
+            />
+            {
+              //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
+            }
+            <JudgeAvatar position={[-2, -2, -4]} utteranceSplit={180000} animated={false} />
 
-          {settingsPageActive ? <SettingsPage hideSettingsPage={hideSettingsPage}></SettingsPage> : null}</>}
+            <JudgeAvatar position={[0, -2, -4]} utteranceSplit={180000} speaks={true} />
+
+            <JudgeAvatar position={[2, -2, -4]} utteranceSplit={180000} animated={false} />
+            <Model modelUrl="./models/courtroompropsNov17.glb"
+              pos={[0, -3, 3.5]}
+              rot={[0, 0, 0]}
+              sca={[0.06, 0.06, 0.06]} />
+            <Model modelUrl="./models/courtroomwallsNov17.glb"
+              pos={[0, -3, 3.5]}
+              rot={[0, 0, 0]}
+              sca={[0.06, 0.06, 0.06]} />
+            <Model modelUrl="./models/courtroomdesksNov17.glb"
+              pos={[0, -3, 3.5]}
+              rot={[0, 0, 0]}
+              sca={[0.06, 0.06, 0.06]} />
+            <DefaultXRControllers />
+            <Player startPosition={[0, 0.5, 0]} />
+          </VRCanvas> <Timer isPresentationStarted={appState==Presentation}></Timer></> : null}
+      {(appState== Landing)? <LandingPage homePage={home}></LandingPage> : null}
+      {(appState== Home) ? <HomePage setupPage={setup}></HomePage> : null}
+      {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home}></SetupPage> : null}
+>>>>>>> fc262c964112f5001f8402e7f1bb4b099c881c9d
+
     </>
   );
 }
