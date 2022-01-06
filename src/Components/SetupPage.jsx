@@ -1,41 +1,96 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './setupStyles.css'
 
-function SetupPage({presentationPage, homePage}) {
-    const [showQuestion,setShowQuestion]= useState(false);
-    const questionOpen= ()=>{
+function SetupPage({ presentationPage, homePage, updateConfig }) {
+    const [showQuestion, setShowQuestion] = useState(false);
+    const questionOpen = () => {
         setShowQuestion(!showQuestion);
     }
-    const [showTimer,setShowTimer]= useState(false);
-    const timerOpen= ()=>{
+    const [showTimer, setShowTimer] = useState(false);
+    const timerOpen = () => {
         setShowTimer(!showTimer);
     }
-    const [showAccess,setShowAccess]= useState(false);
-    const accessOpen= ()=>{
+    const [showAccess, setShowAccess] = useState(false);
+    const accessOpen = () => {
         setShowAccess(!showAccess);
     }
-    const [randomToggle, setRandomToggle]=useState(false);
-    const triggerRandomToggle= () => {
-            setRandomToggle(!randomToggle)
+    const [randomToggle, setRandomToggle] = useState(false);
+    const triggerRandomToggle = () => {
+        setRandomToggle(!randomToggle)
     }
-    const [delayToggle, setDelayToggle]=useState(false);
-    const triggerDelayToggle= () => {
-            setDelayToggle(!delayToggle)
+    const [delayToggle, setDelayToggle] = useState(false);
+    const triggerDelayToggle = () => {
+        setDelayToggle(!delayToggle)
     }
-    const [cutOffToggle, setCutOffToggle]=useState(false);
-    const triggerCutOffToggle= () => {
-            setCutOffToggle(!cutOffToggle)
+    const [cutOffToggle, setCutOffToggle] = useState(false);
+    const triggerCutOffToggle = () => {
+        setCutOffToggle(!cutOffToggle)
     }
-    const [closedCaptionToggle, setClosedCaptionToggle]=useState(false);
-    const triggerClosedCaptionToggle= () => {
-            setClosedCaptionToggle(!closedCaptionToggle)
+    const [closedCaptionToggle, setClosedCaptionToggle] = useState(false);
+    const triggerClosedCaptionToggle = () => {
+        setClosedCaptionToggle(!closedCaptionToggle)
+    }
+
+    const [questionInterval, setQuestionInterval] = useState(3)
+
+    const handleQuestionIntervalChange = (e) => {
+        setQuestionInterval(e.target.value)
     }
     
-    
+    const [totalTime, setTotalTime] = useState(20)
+    const [firstWarning, setFirstWarning] = useState(15)
+    const [secondWarning, setSecondWarning] = useState(17)
+
+    const handleTotalTimeChange = (e) => {
+        setTotalTime(e.target.value)
+    }
+
+    const handleFirstWarningChange = (e) => {
+        setFirstWarning(e.target.value)
+    }
+
+    const handleSecondWarningChange = (e) => {
+        setSecondWarning(e.target.value)
+    }
+
+    let defaults = {}
+    useEffect(() => {
+        defaults = {
+            random: randomToggle,
+            delay: delayToggle,
+            cutoff: cutOffToggle,
+            closedCaption: closedCaptionToggle,
+            questionInterval,
+            totalTime,
+            firstWarning,
+            secondWarning
+        }
+    }, [])
+
+    const [config, setConfig] = useState(defaults)
+
+    useEffect(() => {
+        updateConfig(config)
+    }, [config])
+
+    useEffect(() => {
+        setConfig({
+            random: randomToggle,
+            delay: delayToggle,
+            cutoff: cutOffToggle,
+            closedCaption: closedCaptionToggle,
+            questionInterval,
+            totalTime,
+            firstWarning,
+            secondWarning
+        })
+    }, [randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning])
+
+
     return (<>
         <body className="setup">
-            <div> 
-                <button className="button-type1"onClick={()=> {homePage()}}>Back</button>
+            <div>
+                <button className="button-type1" onClick={() => { homePage() }}>Back</button>
             </div>
             <div className="header">
                 <h1>Moot Practice Setup</h1>
@@ -60,108 +115,108 @@ function SetupPage({presentationPage, homePage}) {
                         <h2 className="accordion-title">Questions</h2>
                     </div>
                     {showQuestion && (
-                    <div className="accordion-content"> 
-                    
-                        <div className="content">
-                            <label className="input-header">
-                                <h3>Interval</h3>
-                                <p>Approximate time between when questions will be asked</p>
-                            </label>
-                            <input className="input-wrapper" type="text" placeholder="minutes"/>
-                        </div>   
-                       
-                        <div className="content">
-                            <div className="input-header">
-                                <h3>Randomized Questions</h3>
-                                <p>Randomize the order that the questions will be asked</p>
+                        <div className="accordion-content">
+
+                            <div className="content">
+                                <label className="input-header">
+                                    <h3>Interval</h3>
+                                    <p>Approximate time between when questions will be asked</p>
+                                </label>
+                                <input className="input-wrapper" type="text" placeholder="minutes" value={questionInterval} onChange={handleQuestionIntervalChange} />
                             </div>
-                            <label className="switch">
-                                <input type="checkbox" onClick={() => {triggerRandomToggle()}} checked={randomToggle? true : false}/>
+
+                            <div className="content">
+                                <div className="input-header">
+                                    <h3>Randomized Questions</h3>
+                                    <p>Randomize the order that the questions will be asked</p>
+                                </div>
+                                <label className="switch">
+                                    <input type="checkbox" onClick={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
                                     <span className="slider round"></span>
-                            </label>
-                        </div>
-                        <div className="content">
-                            <div className="input-header">
-                                <h3>Delay Questions</h3>
-                                <p>Allow the ability to delay when the next question will be asked</p>
+                                </label>
                             </div>
-                            <label className="switch">
-                                <input type="checkbox" onClick={() => {triggerDelayToggle()}} checked={delayToggle? true : false}/>
+                            <div className="content">
+                                <div className="input-header">
+                                    <h3>Delay Questions</h3>
+                                    <p>Allow the ability to delay when the next question will be asked</p>
+                                </div>
+                                <label className="switch">
+                                    <input type="checkbox" onClick={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
                                     <span className="slider round"></span>
-                            </label>
-                            
+                                </label>
+
+                            </div>
+                            <div className="content">
+                                <button>Add your own questions</button>
+                            </div>
                         </div>
-                        <div className="content">
-                            <button>Add your own questions</button>
-                        </div>
-                    </div>
                     )}
                 </div>
                 <div>
                     <div className="accordion" onClick={timerOpen}>
                         <h2 className="accordion-title">Timer</h2>
                     </div>
-                    
-                    {showTimer &&(
-                    <div className="accordion-content">
-                        <div className="content">
+
+                    {showTimer && (
+                        <div className="accordion-content">
+                            <div className="content">
                                 <label className="input-header">
                                     <h3>Total Time</h3>
                                     <p>Total amount of time allowed for the oral presentation</p>
                                 </label>
-                                <input className="input-wrapper" type="text" placeholder="minutes"/>
-                        </div> 
-                        <div className="content">
+                                <input className="input-wrapper" type="text" placeholder="minutes" value={totalTime} onChange={handleTotalTimeChange} />
+                            </div>
+                            <div className="content">
                                 <label className="input-header">
                                     <h3>First Warning</h3>
                                     <p>Time when first warning is given</p>
                                 </label>
-                                <input className="input-wrapper" type="text" placeholder="minutes"/>
-                        </div>
-                        <div className="content">
+                                <input className="input-wrapper" type="text" placeholder="minutes" value={firstWarning} onChange={handleFirstWarningChange}/>
+                            </div>
+                            <div className="content">
                                 <label className="input-header">
                                     <h3>Second Warning</h3>
                                     <p>Time when second warning is given</p>
                                 </label>
-                                <input className="input-wrapper" type="text" placeholder="minutes"/>
-                        </div>
-                        <div className="content">
-                            <div className="input-header">
-                                <h3>Cut Off Presentation</h3>
-                                <p>Stop the oral presentation when the time is over</p>
+                                <input className="input-wrapper" type="text" placeholder="minutes" value={secondWarning} onChange={handleSecondWarningChange}/>
                             </div>
-                            <label className="switch">
-                                <input type="checkbox" onClick={() => {triggerCutOffToggle()}} checked={cutOffToggle? true : false}/>
+                            <div className="content">
+                                <div className="input-header">
+                                    <h3>Cut Off Presentation</h3>
+                                    <p>Stop the oral presentation when the time is over</p>
+                                </div>
+                                <label className="switch">
+                                    <input type="checkbox" onClick={() => { triggerCutOffToggle() }} checked={cutOffToggle ? true : false} />
                                     <span className="slider round"></span>
-                            </label>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    )} 
+                    )}
                 </div>
                 <div>
                     <div className="accordion" onClick={accessOpen}>
                         <h2 className="accordion-title">Accessibility</h2>
                     </div>
-                    {showAccess&&(
-                    <div className="accordion-content">
-                        <div className="content">
-                            <div className="input-header">
-                                <h3>Closed Captions</h3>
-                                <p>Show closed captions on the screen during animations</p>
+                    {showAccess && (
+                        <div className="accordion-content">
+                            <div className="content">
+                                <div className="input-header">
+                                    <h3>Closed Captions</h3>
+                                    <p>Show closed captions on the screen during animations</p>
+                                </div>
+                                <label className="switch">
+                                    <input type="checkbox" />
+                                    <span className="slider round" onClick={() => { triggerClosedCaptionToggle() }} checked={closedCaptionToggle ? true : false}></span>
+                                </label>
                             </div>
-                            <label className="switch">
-                                <input type="checkbox"/>
-                                    <span className="slider round" onClick={() => {triggerClosedCaptionToggle()}} checked={closedCaptionToggle? true : false}></span>
-                            </label>
                         </div>
-                    </div>
                     )}
-                </div> 
+                </div>
             </div>
             <div>
                 <a className="nobgbutton">Reset to default</a>
-                <button className="button-type2" onClick={()=> {presentationPage()}}>Start</button>
-            </div>  
+                <button className="button-type2" onClick={() => { presentationPage() }}>Start</button>
+            </div>
         </body>
     </>)
 }

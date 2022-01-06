@@ -77,6 +77,10 @@ function App() {
     setAppState(Presentation)
   }
 
+  const updateConfig = (config) => {
+    console.log('app got new config', JSON.stringify(config))
+  }
+
   return (
     <>
       {appState==Presentation ?
@@ -114,7 +118,7 @@ function App() {
           </VRCanvas> <Timer isPresentationStarted={appState==Presentation}></Timer></> : null}
       {(appState== Landing)? <LandingPage homePage={home}></LandingPage> : null}
       {(appState== Home) ? <HomePage setupPage={setup}></HomePage> : null}
-      {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home}></SetupPage> : null}
+      {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig}></SetupPage> : null}
 
     </>
   );
