@@ -30,7 +30,16 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
     const triggerClosedCaptionToggle = () => {
         setClosedCaptionToggle(!closedCaptionToggle)
     }
-
+    const Appellant = 0
+    const Respondent = 1
+    const [positionState, setPositionState] = useState(Appellant)
+  
+    const appellant = function () {
+      setPositionState(Appellant)
+    }
+    const respondent = function () {
+      setPositionState(Respondent)
+    
     const [questionInterval, setQuestionInterval] = useState(3)
 
     const handleQuestionIntervalChange = (e) => {
@@ -56,6 +65,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
     let defaults = {}
     useEffect(() => {
         defaults = {
+            position: positionState,
             random: randomToggle,
             delay: delayToggle,
             cutoff: cutOffToggle,
@@ -75,6 +85,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
 
     useEffect(() => {
         setConfig({
+            position:positionState,
             random: randomToggle,
             delay: delayToggle,
             cutoff: cutOffToggle,
@@ -84,11 +95,11 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
             firstWarning,
             secondWarning
         })
-    }, [randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning])
+    }, [positionState,randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning])
 
 
     return (<>
-        <body className="setup">
+        <div className="page-setup">
             <div>
                 <button className="button-type1" onClick={() => { homePage() }}>Back</button>
             </div>
@@ -99,8 +110,8 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
                 <div className="button-header">
                     <h2>Position</h2>
                     <p>Position determines the question set</p>
-                    <button className="button-type3">Appellant</button>
-                    <button className="button-type4">Respondent</button>
+                    <button className="button-type3" onClick={()=>{appellant()}}>Appellant</button>
+                    <button className="button-type4" onClick={()=>{respondent()}}>Respondent</button>
                 </div>
                 <div className="button-header">
                     <h2>Environment</h2>
@@ -129,25 +140,29 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
                             </div>
 
                             <div className="content">
-                                <div>
+                                <div className="content-stretch">
                                     <h3>Randomized Questions</h3>
                                     <p>Randomize the order that the questions will be asked</p>
                                 </div>
-                                <label className="switch">
-                                    <input type="checkbox" onClick={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
-                                    <span className="slider round"></span>
-                                </label>
+                                <div className="switch">
+                                    <label>
+                                        <input type="checkbox" onClick={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
+                                        <span className="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
                             <div className="content">
                             
-                                <div>
+                                <div className="content-stretch"> 
                                     <h3>Delay Questions</h3>
                                     <p>Allow the ability to delay when the next question will be asked</p>
                                 </div>
-                                <label className="switch">
-                                    <input type="checkbox" onClick={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
-                                    <span className="slider round"></span>
-                                </label>
+                                <div className="switch">
+                                    <label>
+                                        <input type="checkbox" onClick={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
+                                        <span className="slider round"></span>
+                                    </label>
+                                </div>
 
                             </div>
                             <div className="content">
@@ -194,14 +209,16 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
                                 </div>
                             </div>
                             <div className="content">
-                                <div>
+                                <div className="content-stretch">
                                     <h3>Cut Off Presentation</h3>
                                     <p>Stop the oral presentation when the time is over</p>
                                 </div>
-                                <label className="switch">
-                                    <input type="checkbox" onClick={() => { triggerCutOffToggle() }} checked={cutOffToggle ? true : false} />
-                                    <span className="slider round"></span>
-                                </label>
+                                <div className="switch">
+                                    <label>
+                                        <input type="checkbox" onClick={() => { triggerCutOffToggle() }} checked={cutOffToggle ? true : false} />
+                                        <span className="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -213,14 +230,16 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
                     {showAccess && (
                         <div className="accordion-content">
                             <div className="content">
-                                <div>
+                                <div className="content-stretch">
                                     <h3>Closed Captions</h3>
                                     <p>Show closed captions on the screen during animations</p>
                                 </div>
-                                <label className="switch">
-                                    <input type="checkbox" />
-                                    <span className="slider round" onClick={() => { triggerClosedCaptionToggle() }} checked={closedCaptionToggle ? true : false}></span>
-                                </label>
+                                <div className="switch">
+                                    <label>
+                                        <input type="checkbox" />
+                                        <span className="slider round" onClick={() => { triggerClosedCaptionToggle() }} checked={closedCaptionToggle ? true : false}></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     )}
@@ -230,7 +249,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
                 <a className="nobgbutton">Reset to default</a>
                 <button className="button-type2" onClick={() => { presentationPage() }}>Start</button>
             </div>
-        </body>
+        </div>
     </>)
 }
 

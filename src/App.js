@@ -27,7 +27,7 @@ import Timer from './Components/Timer.js'
 import SetupPage from './Components/SetupPage'
 import LandingPage from './Components/LandingPage'
 import HomePage from './Components/HomePage'
-import AddQuestions from './Components/AddQuestions'
+import AddQuestionsPage from './Components/AddQuestionsPage'
 
 
 extend({ OrbitControls })
@@ -124,7 +124,7 @@ function App() {
       {(appState== Landing)? <LandingPage homePage={home}></LandingPage> : null}
       {(appState== Home) ? <HomePage setupPage={setup}></HomePage> : null}
       {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} addQuestionsPage={addQuestions}></SetupPage> : null}
-
+      {(appState== AddQuestions) ? <AddQuestionsPage setupPage={setup} ></AddQuestionsPage> : null}
     </>
   );
 }
