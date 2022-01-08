@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import './setupStyles.css'
 
-function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig }) {
+function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig }) {
+    const [popupOpen, setPopupOpen] = useState(false);
+    const togglePopup = () => {
+      setPopupOpen(!popupOpen);
+    }
+
     const [showQuestion, setShowQuestion] = useState(false);
     const questionOpen = () => {
         setShowQuestion(!showQuestion);
@@ -39,6 +44,17 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
     }
     const respondent = function () {
       setPositionState(Respondent)
+    }
+    const Daytime = 0
+    const Nighttime = 1
+    const [environmentState, setEnvironmentState] = useState(Daytime)
+  
+    const daytime = function () {
+      setEnvironmentState(Daytime)
+    }
+    const nighttime = function () {
+      setEnvironmentState(Nighttime)
+    }
     
     const [questionInterval, setQuestionInterval] = useState(3)
 
@@ -66,6 +82,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
     useEffect(() => {
         defaults = {
             position: positionState,
+            environment: environmentState,
             random: randomToggle,
             delay: delayToggle,
             cutoff: cutOffToggle,
@@ -86,6 +103,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
     useEffect(() => {
         setConfig({
             position:positionState,
+            environment: environmentState,
             random: randomToggle,
             delay: delayToggle,
             cutoff: cutOffToggle,
@@ -95,7 +113,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
             firstWarning,
             secondWarning
         })
-    }, [positionState,randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning])
+    }, [positionState, environmentState, randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning])
 
 
     return (<>
@@ -116,8 +134,8 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
                 <div className="button-header">
                     <h2>Environment</h2>
                     <p>A description for environment</p>
-                    <button className="button-type3">Daytime</button>
-                    <button className="button-type4">Nighttime</button>
+                    <button className="button-type3" onClick={()=>{daytime()}}>Daytime</button>
+                    <button className="button-type4" onClick={()=>{nighttime()}}>Nighttime</button>
                 </div>
             </div>
             <div className="accordion-container">
@@ -166,7 +184,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPage, updateConfig 
 
                             </div>
                             <div className="content">
-                                <button onClick={() => { addQuestionsPage() }} >Add your own questions</button>
+                                <button onClick={() => { addQuestionsPopup() }}>Add your own questions</button>
                             </div>
                         </div>
                     )}
