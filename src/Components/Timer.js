@@ -32,7 +32,7 @@ function Timer({ isPresentationStarted, startingTime }) {
             setTimeText(msToTime(currentTime))
         }, 1000)
     }, [])
-    return <>{isPresentationStarted ? <div className={"timerContainer"} style={{bottom: -window.innerHeight + 60, left: window.innerWidth - 160, backgroundColor: "white"}}>
+    return <>{isPresentationStarted ? <div className={"timerContainer"} style={{bottom: 60, left: window.innerWidth - 160, backgroundColor: "white"}}>
         <div className={"timerText"}>{timeText}</div><div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
     </div> : null}</>
 }

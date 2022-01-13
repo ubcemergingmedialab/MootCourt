@@ -60,6 +60,7 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     const updateVoice = (voiceUpdate) => {
         console.log("updating voices ", voiceUpdate);
         setVoice(voiceUpdate);
+        setVoicesReady(true)
     } // function to pass into VoiceSelect component
     window.speechSynthesis.onvoiceschanged = () => {
         console.log('voices ready');

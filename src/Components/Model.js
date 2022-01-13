@@ -40,6 +40,10 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
                     child.material.side = THREE.FrontSide
                 }
             })
+        }, (xhr) => {
+
+        }, (err) => {
+            console.log('error happend loading model', modelUrl)
         });
     }, [modelUrl])
 

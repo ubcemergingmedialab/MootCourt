@@ -56,7 +56,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
       setEnvironmentState(Nighttime)
     }
     
-    const [questionInterval, setQuestionInterval] = useState(3)
+    const [questionInterval, setQuestionInterval] = useState(1)
 
     const handleQuestionIntervalChange = (e) => {
         setQuestionInterval(e.target.value)
@@ -92,6 +92,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
             firstWarning,
             secondWarning
         }
+        setConfig(defaults)
     }, [])
 
     const [config, setConfig] = useState(defaults)
@@ -164,7 +165,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
                                 </div>
                                 <div className="switch">
                                     <label>
-                                        <input type="checkbox" onClick={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
+                                        <input type="checkbox" onChange={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
                                         <span className="slider round"></span>
                                     </label>
                                 </div>
@@ -177,7 +178,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
                                 </div>
                                 <div className="switch">
                                     <label>
-                                        <input type="checkbox" onClick={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
+                                        <input type="checkbox" onChange={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
                                         <span className="slider round"></span>
                                     </label>
                                 </div>

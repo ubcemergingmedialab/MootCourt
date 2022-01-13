@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
 import { useControls } from 'leva'
@@ -45,7 +45,7 @@ const SkinSelect = ({ updateSkin }) => {
 
 let nextQuestionTime = Number.MAX_SAFE_INTEGER; // -1 means there is no question to be asked next. counts down until
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, animated = true, listOfUtterances=testlistOfUtterances }) {
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances = testlistOfUtterances }) {
     const [utteranceIndex, setUtteranceIndex] = useState(0)
     const [currentText, setText] = useState("")
     const [textIndex, setTextIndex] = useState(0)
@@ -79,7 +79,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, anima
 
         const avaliableSkins = modelList;
         if (avaliableSkins.length > 0) {
-            setSkin(avaliableSkins[0])
+            setSkin(avaliableSkins[1])
         }
 
     }, [])
@@ -88,13 +88,16 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, anima
         if (readyToSpeak) {
             console.log('ready to speak')
             questionInterval = window.setInterval(() => {
-                if (nextQuestionTime <= 0 && speaks) {
-                    nextQuestionTime = utteranceSplit ? utteranceSplit + Math.random() * 30000 : 180000 + Math.random() * 30000
+                if (nextQuestionTime <= 0) {
+                    console.log('utterance split again', utteranceSplit)
+                    nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
                     setTextIndex(prevTextIndex => (prevTextIndex + 1) % utteranceListLength)
 
                     console.log("speaking " + textIndex)
-                } else if (nextQuestionTime == Number.MAX_SAFE_INTEGER) {
-                    nextQuestionTime = utteranceSplit ? utteranceSplit + Math.random() * 30000 : 180000 + Math.random() * 30000
+                } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
+
+                    console.log('utterance split first', utteranceSplit)
+                    nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
                     setFirstQuestion(true)
                     setText("")
                     setTextIndex(0)
@@ -113,9 +116,9 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, anima
         }
     }, [textIndex])
     const readyToSpeakHandler = () => { // start chain of utterances when avatar has loaded voices, passed down to prop in Avatar
-        if (speaks) {
-            setReadyToSpeak(true)
-        }
+        console.log('updating ready to speak')
+        setReadyToSpeak(true)
+
     }
     /*
     useEffect(() => { // when the utterance changes, start wait for the next one
@@ -129,17 +132,17 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks = false, anima
         setText(listOfUtterances[utteranceIndex][textIndex])
     }, [textIndex])*/
 
-    return (<>
+    return (<><Suspense fallback={null}>
         {firstQuestion ? <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setRepeatingQuestion(!repeatingQuestion)}
             position={[position[0] - 1, position[1], position[2]]}
             rotation={[0.2, 0.2, 0]}
             buttonText={"Pause Animation"} /> : null}
 
-        <Avatar position={position} modelUrl={'./models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} skinState={skinState} animated={animated}></Avatar>
+        <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} skinState={skinState} animated={animated}></Avatar>
         <Subtitle textToSay={currentText} />
         <SkinSelect updateSkin={updateSkin}></SkinSelect>
-        {(speaks && (snoozeTimeLeft <= 20) && (snoozeTimeLeft > 0)) ? <QuestionSnooze timeLeft={snoozeTimeLeft} position={position} snoozeQuestion={snoozeQuestionHandler}></QuestionSnooze> : null}
-    </>)
+        {((snoozeTimeLeft <= 20) && (snoozeTimeLeft > 0)) ? <QuestionSnooze timeLeft={snoozeTimeLeft} position={position} snoozeQuestion={snoozeQuestionHandler}></QuestionSnooze> : null}
+    </Suspense></>)
 }
 
 export default JudgeAvatar;

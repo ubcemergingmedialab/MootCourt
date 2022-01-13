@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { useSpeechSynthesis } from 'react-speech-kit';
 import {
 } from '@react-three/xr'
@@ -40,6 +40,7 @@ function App() {
   const Setup = 3
   const AddQuestions = 4
   const [appState, setAppState] = useState(Landing)
+  const [config, setConfig] = useState({})
 
   const landing = function () {
     setAppState(Landing)
@@ -53,22 +54,23 @@ function App() {
   const presentation = function () {
     setAppState(Presentation)
   }
-  const addQuestions = function (){
+  const addQuestions = function () {
     setAppState(AddQuestions)
   }
 
   const updateConfig = (config) => {
     console.log('app got new config', JSON.stringify(config))
+    setConfig(config)
   }
 
   return (
     <>
-      {appState==Presentation ?
-        <><Scene></Scene> <Timer isPresentationStarted={appState==Presentation}></Timer></> : null}
-      {(appState== Landing)? <LandingPage homePage={home}></LandingPage> : null}
-      {(appState== Home) ? <HomePage setupPage={setup}></HomePage> : null}
-      {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} addQuestionsPopup={addQuestions}></SetupPage> : null}
-      {(appState== AddQuestions) ? <AddQuestionsPopup setupPage={setup} ></AddQuestionsPopup> : null}
+      {appState == Presentation ?
+        <><Suspense fallback={null}><Scene appConfig={config}></Scene> <Timer isPresentationStarted={appState == Presentation}></Timer></Suspense></> : null}
+      {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
+      {(appState == Home) ? <HomePage setupPage={setup}></HomePage> : null}
+      {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} addQuestionsPopup={addQuestions}></SetupPage> : null}
+      {(appState == AddQuestions) ? <AddQuestionsPopup setupPage={setup} ></AddQuestionsPopup> : null}
     </>
   );
 }
