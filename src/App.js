@@ -19,7 +19,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './styles.css'
 
 import Model from './Components/Model.js'
-import Avatar from './Components/Avatar.js'
 import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
@@ -27,7 +26,6 @@ import Timer from './Components/Timer.js'
 import SetupPage from './Components/SetupPage'
 import LandingPage from './Components/LandingPage'
 import HomePage from './Components/HomePage'
-import AddQuestionsPopup from './Components/AddQuestionsPopup'
 
 
 extend({ OrbitControls })
@@ -63,7 +61,6 @@ function App() {
   const Landing = 1
   const Home = 2
   const Setup = 3
-  const AddQuestions = 4
   const [appState, setAppState] = useState(Landing)
 
   const landing = function () {
@@ -77,9 +74,6 @@ function App() {
   }
   const presentation = function () {
     setAppState(Presentation)
-  }
-  const addQuestions = function (){
-    setAppState(AddQuestions)
   }
 
   const updateConfig = (config) => {
@@ -123,8 +117,7 @@ function App() {
           </VRCanvas> <Timer isPresentationStarted={appState==Presentation}></Timer></> : null}
       {(appState== Landing)? <LandingPage homePage={home}></LandingPage> : null}
       {(appState== Home) ? <HomePage setupPage={setup}></HomePage> : null}
-      {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} addQuestionsPopup={addQuestions}></SetupPage> : null}
-      {(appState== AddQuestions) ? <AddQuestionsPopup setupPage={setup} ></AddQuestionsPopup> : null}
+      {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} ></SetupPage> : null}
     </>
   );
 }
