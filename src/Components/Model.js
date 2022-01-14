@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Group } from 'three'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber';
@@ -36,9 +36,8 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation }) {
         }
     })
     return gltf ?
-        (<group>
+        (<group >
             <primitive
-
                 position={pos}
                 rotation={rot}
                 scale={sca}

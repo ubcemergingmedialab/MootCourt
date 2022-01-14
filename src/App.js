@@ -19,7 +19,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './styles.css'
 
 import Model from './Components/Model.js'
-import Avatar from './Components/Avatar.js'
 import Compass from './Components/Compass.js'
 import JudgeAvatar from './Components/JudgeAvatar.js'
 import Player from './Components/Player.js'
@@ -58,39 +57,34 @@ function HitTestExample() {
 }
 
 function App() {
-  const [presentationStarted, setPresentationStarted] = useState(false)
-  const [landingPageActive, setLandingPageActive] = useState(true)
-  const [homePageActive, setHomePageActive] = useState(false)
-  const [setupPageActive, setSetupPageActive] = useState(false)
+  const Presentation = 0
+  const Landing = 1
+  const Home = 2
+  const Setup = 3
+  const [appState, setAppState] = useState(Landing)
+
   const landing = function () {
-    setLandingPageActive(true)
-    setHomePageActive(false)
-    setSetupPageActive (false)
-    setPresentationStarted(false)
+    setAppState(Landing)
   }
   const home = function () {
-    setLandingPageActive(false)
-    setHomePageActive(true)
-    setSetupPageActive (false)
-    setPresentationStarted(false)
+    setAppState(Home)
   }
   const setup = function () {
-    setLandingPageActive(false)
-    setHomePageActive(false)
-    setSetupPageActive (true)
-    setPresentationStarted(false)
+    setAppState(Setup)
   }
   const presentation = function () {
-    setLandingPageActive(false)
-    setHomePageActive(false)
-    setSetupPageActive (false)
-    setPresentationStarted(true)
+    setAppState(Presentation)
   }
+
+  const updateConfig = (config) => {
+    console.log('app got new config', JSON.stringify(config))
+  }
+
   return (
     <>
-      {presentationStarted ?
+      {appState==Presentation ?
         <>
-          <VRCanvas style={{position: "absolute"}}>
+          <VRCanvas style={{ position: "absolute" }}>
             <Compass ></Compass>
             <ambientLight />
             <pointLight position={[10, 10, 10]} />
@@ -101,11 +95,11 @@ function App() {
             {
               //<Avatar position={[-3,-4, -2]} rotation={[0, 0.8, 0]} buttonOffset={[-2, 4, 0]} modelUrl={"./models/testvid_default.glb"}/>
             }
-            <JudgeAvatar position={[-2, -2, -4]} utteranceSplit={180000} animated={false}/>
+            <JudgeAvatar position={[-2, -2, -4]} utteranceSplit={180000} animated={false} />
 
-            <JudgeAvatar position={[0, -2, -4]} utteranceSplit={180000} speaks={true}/>
+            <JudgeAvatar position={[0, -2, -4]} utteranceSplit={180000} speaks={true} />
 
-            <JudgeAvatar position={[2, -2, -4]} utteranceSplit={180000} animated={false}/>
+            <JudgeAvatar position={[2, -2, -4]} utteranceSplit={180000} animated={false} />
             <Model modelUrl="./models/courtroompropsNov17.glb"
               pos={[0, -3, 3.5]}
               rot={[0, 0, 0]}
@@ -120,11 +114,10 @@ function App() {
               sca={[0.06, 0.06, 0.06]} />
             <DefaultXRControllers />
             <Player startPosition={[0, 0.5, 0]} />
-          </VRCanvas> <Timer isPresentationStarted={presentationStarted}></Timer></>: null}
-          {landingPageActive? <LandingPage homePage={home}></LandingPage>:null}
-          {homePageActive? <HomePage setupPage={setup}></HomePage>:null}
-          {setupPageActive? <SetupPage presentationPage={presentation}></SetupPage> : null}
-          
+          </VRCanvas> <Timer isPresentationStarted={appState==Presentation}></Timer></> : null}
+      {(appState== Landing)? <LandingPage homePage={home}></LandingPage> : null}
+      {(appState== Home) ? <HomePage setupPage={setup}></HomePage> : null}
+      {(appState== Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} ></SetupPage> : null}
     </>
   );
 }

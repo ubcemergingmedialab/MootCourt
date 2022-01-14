@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
+    "\\public\\fonts",
     "\\src",
     "\\src\\Components"
   ],
-  "SelectedNode": "\\src\\Components\\JudgeAvatar.js",
+  "SelectedNode": "\\src\\Components\\Model.js",
   "PreviewInSolutionExplorer": false
 }
