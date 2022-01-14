@@ -1,0 +1,110 @@
+#Home{
+    background-color: #F7E7D0;
+}
+
+#TitleBorder {
+    width: 300px;
+    border: solid #14223C 2px;
+    background-color: #F7E7D0;
+    text-align: center ;
+    color: #14223C;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    box-shadow: 5px 5px #FDCE27;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+#StartButton {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font: inherit;
+    box-sizing: border-box;
+    background-color: transparent;
+    width: 180px;
+    height: 50px;
+    text-align: center;
+    color: black;
+    border: solid #14223C;
+    border-radius: 8px;
+}
+#Start {
+    width: 180px;
+    border: none;
+    background-color:transparent ;
+    text-align: center ;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+#ResourcesButton{
+    margin: 0;
+    padding: 0;
+    border: none;
+    font: inherit;
+    box-sizing: border-box;
+    background-color: transparent;
+    width: 180px;
+    height: 50px;
+    text-align: center;
+    color: white;
+    border: solid #FDCE27;
+    border-radius: 8px;
+}
+#Resources{
+    width: 180px;
+    border: none;
+    background-color:transparent ;
+    text-align: center ;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+#Rectangle{
+        position: relative;
+        width:1000px;
+        height:500px;
+        background:#14223C;
+        border-radius: 8px;
+}
+#RectangleMid{
+    position: absolute;
+    width:800px;
+    height:380px;
+    background:#6DA7D9;
+    border-radius: 8px;
+}
+#RectangleStart{
+    position: absolute;
+    top: 270px;
+    left: 556px;
+    width:180px;
+    height:50px;
+    background:#FDCE27;
+    z-index: 0;
+    border-radius: 8px;
+}
+#RectangleResources{
+    position: absolute;
+    top: 357px;
+    left: 556px;
+    width:180px;
+    height:50px;
+    background:#14223C;
+    z-index: 0;
+    border-radius: 8px;
+}
