@@ -2,7 +2,7 @@ import './homepageStyles.css'
 
 function HomePage({setupPage}){
     return(<>
-        <body id="Home">
+        <div id="Home">
             <div id="Rectangle">
             </div>
             <div id="RectangleMid">
@@ -20,7 +20,7 @@ function HomePage({setupPage}){
             <div id="Resources">
                 <button id="ResourcesButton">Resources</button>
             </div>
-        </body>
+        </div>
     </>)
 }
 
