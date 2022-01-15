@@ -77,16 +77,20 @@
     transform: translateX(-50%) translateY(-50%);
 }
 #Rectangle{
-    position: absolute;
-    width:1000px;
-    height:500px;
-    background:#14223C;
-    border-radius: 8px;
+        position: absolute;
+        width:80%;
+        height:80%;
+        top: 10%;
+        left: 10%;
+        background:#14223C;
+        border-radius: 8px;
 }
 #RectangleMid{
     position: relative;
-    width:800px;
-    height:380px;
+    width:60%;
+    height:60%;
+    left: 20%;
+    top: 20%;
     background:#6DA7D9;
     border-radius: 8px;
 }

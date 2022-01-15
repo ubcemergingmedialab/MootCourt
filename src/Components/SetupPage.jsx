@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react'
+import AddQuestionsPopup from './AddQuestionsPopup';
 import './setupStyles.css'
 
-function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig }) {
+function SetupPage({ presentationPage, homePage, updateConfig }) {
     const [popupOpen, setPopupOpen] = useState(false);
-    const togglePopup = () => {
-      setPopupOpen(!popupOpen);
+    const enableQuestionsPopup = () => {
+        setPopupOpen(true);
+    }
+
+    const disableQuestionsPopup = () => {
+        setPopupOpen(false);
     }
 
     const [showQuestion, setShowQuestion] = useState(false);
@@ -38,30 +43,30 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
     const Appellant = 0
     const Respondent = 1
     const [positionState, setPositionState] = useState(Appellant)
-  
+
     const appellant = function () {
-      setPositionState(Appellant)
+        setPositionState(Appellant)
     }
     const respondent = function () {
-      setPositionState(Respondent)
+        setPositionState(Respondent)
     }
     const Daytime = 0
     const Nighttime = 1
     const [environmentState, setEnvironmentState] = useState(Daytime)
-  
+
     const daytime = function () {
-      setEnvironmentState(Daytime)
+        setEnvironmentState(Daytime)
     }
     const nighttime = function () {
-      setEnvironmentState(Nighttime)
+        setEnvironmentState(Nighttime)
     }
-    
+
     const [questionInterval, setQuestionInterval] = useState(3)
 
     const handleQuestionIntervalChange = (e) => {
         setQuestionInterval(e.target.value)
     }
-    
+
     const [totalTime, setTotalTime] = useState(20)
     const [firstWarning, setFirstWarning] = useState(15)
     const [secondWarning, setSecondWarning] = useState(17)
@@ -102,7 +107,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
 
     useEffect(() => {
         setConfig({
-            position:positionState,
+            position: positionState,
             environment: environmentState,
             random: randomToggle,
             delay: delayToggle,
@@ -116,7 +121,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
     }, [positionState, environmentState, randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning])
 
 
-    return (<>
+    return (<>{popupOpen ? <AddQuestionsPopup disable={disableQuestionsPopup}></AddQuestionsPopup> : null}
         <div className="page-setup">
             <div>
                 <button className="button-type1" onClick={() => { homePage() }}>Back</button>
@@ -128,14 +133,14 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
                 <div className="button-header">
                     <h2>Position</h2>
                     <p>Position determines the question set</p>
-                    <button className="button-type3" onClick={()=>{appellant()}}>Appellant</button>
-                    <button className="button-type4" onClick={()=>{respondent()}}>Respondent</button>
+                    <button className="button-type3" onClick={() => { appellant() }}>Appellant</button>
+                    <button className="button-type4" onClick={() => { respondent() }}>Respondent</button>
                 </div>
                 <div className="button-header">
                     <h2>Environment</h2>
                     <p>A description for environment</p>
-                    <button className="button-type3" onClick={()=>{daytime()}}>Daytime</button>
-                    <button className="button-type4" onClick={()=>{nighttime()}}>Nighttime</button>
+                    <button className="button-type3" onClick={() => { daytime() }}>Daytime</button>
+                    <button className="button-type4" onClick={() => { nighttime() }}>Nighttime</button>
                 </div>
             </div>
             <div className="accordion-container">
@@ -170,8 +175,8 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
                                 </div>
                             </div>
                             <div className="content">
-                            
-                                <div className="content-stretch"> 
+
+                                <div className="content-stretch">
                                     <h3>Delay Questions</h3>
                                     <p>Allow the ability to delay when the next question will be asked</p>
                                 </div>
@@ -184,7 +189,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
 
                             </div>
                             <div className="content">
-                                <button onClick={() => { addQuestionsPopup() }}>Add your own questions</button>
+                                <button onClick={() => { enableQuestionsPopup() }}>Add your own questions</button>
                             </div>
                         </div>
                     )}
@@ -212,7 +217,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
                                     <p>Time when first warning is given</p>
                                 </div>
                                 <div className="input-formatter">
-                                    <input className="input-wrapper" type="text" value={firstWarning} onChange={handleFirstWarningChange}/>
+                                    <input className="input-wrapper" type="text" value={firstWarning} onChange={handleFirstWarningChange} />
                                     <label>minutes</label>
                                 </div>
                             </div>
@@ -222,7 +227,7 @@ function SetupPage({ presentationPage, homePage, addQuestionsPopup, updateConfig
                                     <p>Time when second warning is given</p>
                                 </div>
                                 <div className="input-formatter">
-                                    <input className="input-wrapper" type="text" value={secondWarning} onChange={handleSecondWarningChange}/>
+                                    <input className="input-wrapper" type="text" value={secondWarning} onChange={handleSecondWarningChange} />
                                     <label>minutes</label>
                                 </div>
                             </div>
