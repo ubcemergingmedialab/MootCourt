@@ -9,6 +9,7 @@ import './styles.css'
 
 import Scene from './Components/Scene'
 import Timer from './Components/Timer.js'
+import PauseButton from './Components/PauseButton';
 import SetupPage from './Components/SetupPage'
 import LandingPage from './Components/LandingPage'
 import HomePage from './Components/HomePage'
@@ -41,6 +42,7 @@ function App() {
   const AddQuestions = 4
   const [appState, setAppState] = useState(Landing)
   const [config, setConfig] = useState({})
+  const [paused, setPaused] = useState(false);
 
   const landing = function () {
     setAppState(Landing)
@@ -63,10 +65,17 @@ function App() {
     setConfig(config)
   }
 
+  const pauseHandler = () => {
+    console.log("pause toggle")
+    setPaused(!paused)
+  }
+
   return (
     <>
       {appState == Presentation ?
-        <><Suspense fallback={null}><Scene appConfig={config}></Scene> <Timer isPresentationStarted={appState == Presentation}></Timer></Suspense></> : null}
+        <><Suspense fallback={null}><Scene appConfig={config} appPaused={paused}></Scene> 
+        <Timer isPresentationStarted={appState == Presentation}></Timer>
+        <PauseButton togglePause={pauseHandler} appPaused={paused}/></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
       {(appState == Home) ? <HomePage setupPage={setup}></HomePage> : null}
       {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} addQuestionsPopup={addQuestions}></SetupPage> : null}

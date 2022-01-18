@@ -34,3 +34,18 @@
     margin: auto;
     position: relative;
 }
+
+.pauseContainer {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 100px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
+    width: 150px;
+}

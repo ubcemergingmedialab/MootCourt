@@ -45,7 +45,7 @@ const SkinSelect = ({ updateSkin }) => {
 
 let nextQuestionTime = Number.MAX_SAFE_INTEGER; // -1 means there is no question to be asked next. counts down until
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances = testlistOfUtterances }) {
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances = testlistOfUtterances, appPaused }) {
     const [utteranceIndex, setUtteranceIndex] = useState(0)
     const [currentText, setText] = useState("")
     const [textIndex, setTextIndex] = useState(0)
@@ -88,24 +88,26 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
         if (readyToSpeak) {
             console.log('ready to speak')
             questionInterval = window.setInterval(() => {
-                if (nextQuestionTime <= 0) {
-                    console.log('utterance split again', utteranceSplit)
-                    nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
-                    setTextIndex(prevTextIndex => (prevTextIndex + 1) % utteranceListLength)
+                if (!appPaused) {
+                    if (nextQuestionTime <= 0) {
+                        console.log('utterance split again', utteranceSplit)
+                        nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
+                        setTextIndex(prevTextIndex => (prevTextIndex + 1) % utteranceListLength)
 
-                    console.log("speaking " + textIndex)
-                } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
+                        console.log("speaking " + textIndex)
+                    } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
 
-                    console.log('utterance split first', utteranceSplit)
-                    nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
-                    setFirstQuestion(true)
-                    setText("")
-                    setTextIndex(0)
-                } else {
-                    nextQuestionTime -= 1000
+                        console.log('utterance split first', utteranceSplit)
+                        nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
+                        setFirstQuestion(true)
+                        setText("")
+                        setTextIndex(0)
+                    } else {
+                        nextQuestionTime -= 1000
+                    }
+                    setSnoozeTimeLeft(Math.floor(nextQuestionTime / 1000))
+                    console.log(nextQuestionTime)
                 }
-                setSnoozeTimeLeft(Math.floor(nextQuestionTime / 1000))
-                console.log(nextQuestionTime)
             }, 1000)
         }
     }, [readyToSpeak])

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { SphereBufferGeometry } from 'three'
 import "./timer.css"
 
-function Timer({ isPresentationStarted, startingTime }) {
+function Timer({ isPresentationStarted, startingTime, appPaused }) {
     const [timeText, setTimeText] = useState("")
     const [lightColor, setLightColor] = useState("#199E54")
     let currentTime = startingTime ? startingTime : 1200000
@@ -22,17 +22,19 @@ function Timer({ isPresentationStarted, startingTime }) {
     }
     useEffect(() => {
         const timeUpdateInterval = setInterval(() => {
-            if (currentTime <= times[timeIndex].time) {
-                timeIndex++;
+            if (!appPaused) {
+                if (currentTime <= times[timeIndex].time) {
+                    timeIndex++;
+                }
+                if (timeIndex <= times.length) {
+                    setLightColor(times[timeIndex].color)
+                }
+                currentTime -= 1000
+                setTimeText(msToTime(currentTime))
             }
-            if (timeIndex <= times.length) {
-                setLightColor(times[timeIndex].color)
-            }
-            currentTime -= 1000
-            setTimeText(msToTime(currentTime))
         }, 1000)
     }, [])
-    return <>{isPresentationStarted ? <div className={"timerContainer"} style={{bottom: 60, left: window.innerWidth - 160, backgroundColor: "white"}}>
+    return <>{isPresentationStarted ? <div className={"timerContainer"} style={{ bottom: 60, left: window.innerWidth - 160, backgroundColor: "white" }}>
         <div className={"timerText"}>{timeText}</div><div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
     </div> : null}</>
 }
