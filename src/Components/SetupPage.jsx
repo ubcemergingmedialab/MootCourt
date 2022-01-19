@@ -82,7 +82,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     const handleSecondWarningChange = (e) => {
         setSecondWarning(e.target.value)
     }
-
+    
     let defaults = {}
     useEffect(() => {
         defaults = {
@@ -189,7 +189,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
 
                             </div>
                             <div className="content">
-                                <button onClick={() => { enableQuestionsPopup() }}>Add your own questions</button>
+                                <button onClick={() => { enableQuestionsPopup() }} >Add your own questions</button>
                             </div>
                         </div>
                     )}

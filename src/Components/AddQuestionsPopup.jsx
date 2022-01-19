@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CustomQuestion from './CustomQuestion'
 import './addQuestionsStyles.css'
 
 
-function AddQuestionsPopup({ disable }) {
+function AddQuestionsPopup({ disable}) {
     const [questions, setQuestions] = useState({ 1: "new question" })
+
     const updateQuestionHandler = (index) => {
         return function (value) {
             let tempQuestions = {...questions}
@@ -13,14 +14,12 @@ function AddQuestionsPopup({ disable }) {
             setQuestions({...tempQuestions})
         }
     }
-
     const deleteQuestionHandler = function (i) {
         let tempQuestions = { ...questions }
-        delete tempQuestions[i]
+        Object.keys(tempQuestions).length >1 ? delete tempQuestions[i] : console.log("not deleted")
         console.log(tempQuestions)
         setQuestions({...tempQuestions})
     }
-
     const submitQuestionHandler = function (i) {
         let tempQuestions = { ...questions }
         tempQuestions[i + 1] = "new question"
@@ -28,11 +27,13 @@ function AddQuestionsPopup({ disable }) {
     }
 
     return (<>
-        <div className={"popup-box"}>
-            <h1>This is a separate component to add questions for now, but it may be a popup later</h1>
-            <h1>Will need to see how this can be a popup (modal?)</h1>
-            <button type="button" onClick={() => { disable() }}>x</button>
-            <ul>
+        <div className="popup-box">
+            <div className="icon-header">
+                <button className="close-icon" onClick={() => { disable() }} >x</button>
+            </div>
+            <div className="popup-content">
+                <h1>This is a separate component to add questions for now, but it may be a popup later</h1>
+                <h1>Will need to see how this can be a popup (modal?)</h1>
                 {Object.keys(questions).map((e, i) => {
                     return (
                         <li key={"questionListItem-" + e} id={"questionListItem-" + e}>
@@ -42,7 +43,7 @@ function AddQuestionsPopup({ disable }) {
                                 submitQuestion={() => { submitQuestionHandler(e) }}>
                             </CustomQuestion></li>)
                 })}
-            </ul>
+            </div>
         </div>
 
     </>)
