@@ -7,14 +7,7 @@ import { Box } from '@react-three/drei'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './styles.css'
 
-<<<<<<< HEAD
-import Model from './Components/Model.js'
-import Compass from './Components/Compass.js'
-import JudgeAvatar from './Components/JudgeAvatar.js'
-import Player from './Components/Player.js'
-=======
 import Scene from './Components/Scene'
->>>>>>> ac8e53dd936a1b66f23b27f72d1412eb5c31a3d5
 import Timer from './Components/Timer.js'
 import PauseButton from './Components/PauseButton';
 import SetupPage from './Components/SetupPage'
@@ -61,9 +54,6 @@ function App() {
   const presentation = function () {
     setAppState(Presentation)
   }
-  const addQuestions = function () {
-    setAppState(AddQuestions)
-  }
 
   const updateConfig = (config) => {
     console.log('app got new config', JSON.stringify(config))
@@ -84,8 +74,7 @@ function App() {
           <Timer isPresentationStarted={appState == Presentation} appPaused={paused} startingTime={(config.totalTime)* 60000} timerOverHandler={landing}></Timer></div></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
       {(appState == Home) ? <HomePage setupPage={setup}></HomePage> : null}
-      {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} addQuestionsPopup={addQuestions}></SetupPage> : null}
-      {(appState == AddQuestions) ? <AddQuestionsPopup setupPage={setup} ></AddQuestionsPopup> : null}
+      {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig}></SetupPage> : null}
     </>
   );
 }

@@ -38,7 +38,7 @@ export default function Scene({ appConfig, appPaused }) {
 
                     <JudgeAvatar position={[0, -2, -4]} key={"judge_1"} id={"judge_1"}
                         utteranceSplit={window.parseInt(config.questionInterval) * 60000}
-                        speaks={true} subtitles={appConfig.closedCaption} appPaused={appPaused} />
+                        speaks={true} subtitles={appConfig.closedCaption} appPaused={appPaused} snoozeEnabled={appConfig.delay} />
 
                     {/*<JudgeAvatar position={[-2, -2, -4]} key={"judge_0"} id={"judge_0"} utteranceSplit={180000} animated={false} speaks={false} />
                     <JudgeAvatar position={[2, -2, -4]} key={"judge_2"} id={"judge_2"} utteranceSplit={180000} animated={false} speaks={false} />*/}</> : null}
