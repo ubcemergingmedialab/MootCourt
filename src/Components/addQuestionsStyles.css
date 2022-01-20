@@ -1,6 +1,6 @@
 .popup-box {
   position: absolute;
-  background: white;
+  background: #6DA7D9;
   width: 60%;
   height: 100vh;
   top: 20%;
@@ -9,6 +9,7 @@
   box-shadow: 2px 2px 100px;
   box-sizing: border-box;
   z-index: 5;
+  overflow: auto;
   }
 .icon-header{
   position: absolute;
@@ -28,9 +29,18 @@
   font-size: 20px;
 }
 .popup-content{
-  flex-direction: column;
+  position: relative;
+  top: 5%;
   justify-content: center;
-  align-items: center;
-  top: 30%;
-  border: 2px red solid;
+  text-align: center;
+}
+.button-format button{
+  margin: 2em;
+}
+.text-styles{
+  position: relative;
+  left: 3%;
+  text-align: left;
+  width: 800px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
