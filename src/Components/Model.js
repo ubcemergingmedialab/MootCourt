@@ -1,42 +1,72 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Group } from 'three'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
+import { useControls } from 'leva'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation }) {
+
+const AnimationSelect = ({ availableAnimations, updateAnimation }) => {
+    const [{ animation }, set] = useControls(() => ({ animation: { options: availableAnimations } }))
+    useEffect(() => {
+        updateAnimation(animation)
+    }, [animation])
+    return null
+}
+
+function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, activeAnimation, animated }) {
     const [gltf, setGltf] = useState();
     const [mixer, setMixer] = useState(null);
+    const [animationClip, setAnimationClip] = useState(activeAnimation ? activeAnimation : "")
+    const [availableAnimations, setAvailableAnimations] = useState({})
     useEffect(() => {
         new GLTFLoader().load(modelUrl, (gltf) => {
             setGltf(gltf);
-            if(gltf.animations.length > 0) {
+            if (gltf.animations.length > 0) {
                 let mixer = new THREE.AnimationMixer(gltf.scene)
                 setMixer(mixer)
+                let animationObject = {}
                 gltf.animations.forEach(clip => {
                     const action = mixer.clipAction(clip)
                     action.play()
+                    console.log('existing animation: ', clip.name, clip.duration, clip.tracks)
+                    animationObject[clip.name] = clip
                 })
+                setAvailableAnimations(animationObject)
             }
             gltf.scene.traverse(child => {
-                if(child.isMesh) {
+                if (child.isMesh) {
                     child.castShadow = true
                     child.receiveShadow = true
                     child.material.side = THREE.FrontSide
                 }
             })
+        }, (xhr) => {
+
+        }, (err) => {
+            console.log('error happend loading model', modelUrl)
         });
     }, [modelUrl])
 
+    const updateAnimation = (anim) => {
+        setAnimationClip(anim)
+    }
+
+    useEffect(() => {
+        if (mixer && activeAnimation && mixer.existingAction(activeAnimation)) {
+            let action = mixer.clipAction(activeAnimation)
+            action.play()
+        }
+    }, [mixer, animationClip])
+
     useFrame((state, delta) => {
-        if(startAnimation) {
-            if(!pauseAnimation) {
+        if (startAnimation) {
+            if (!pauseAnimation) {
                 mixer?.update(delta)
             }
         }
     })
     return gltf ?
-        (<group >
+        (<>{(animated && gltf.animations.length > 0)?<AnimationSelect availableAnimations={availableAnimations} updateAnimation={updateAnimation}></AnimationSelect>:null}<Suspense fallback={null}></Suspense><group >
             <primitive
                 position={pos}
                 rotation={rot}
@@ -44,7 +74,7 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation }) {
                 object={gltf.scene}>
 
             </primitive>
-        </group >)
+        </group ><Suspense/></>)
         : null
 }
 

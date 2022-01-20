@@ -13,6 +13,7 @@ function LandingPage({homePage}){
                 <p>Click anywhere on the screen to begin</p>
             </div>
         </div>
+    
     </>)
 }
 

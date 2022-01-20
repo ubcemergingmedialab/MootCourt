@@ -97,6 +97,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
             firstWarning,
             secondWarning
         }
+        setConfig(defaults)
     }, [])
 
     const [config, setConfig] = useState(defaults)
@@ -169,7 +170,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                                 </div>
                                 <div className="switch">
                                     <label>
-                                        <input type="checkbox" onClick={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
+                                        <input type="checkbox" onChange={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
                                         <span className="slider round"></span>
                                     </label>
                                 </div>
@@ -182,7 +183,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                                 </div>
                                 <div className="switch">
                                     <label>
-                                        <input type="checkbox" onClick={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
+                                        <input type="checkbox" onChange={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
                                         <span className="slider round"></span>
                                     </label>
                                 </div>
