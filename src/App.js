@@ -67,15 +67,16 @@ function App() {
 
   const pauseHandler = () => {
     console.log("pause toggle")
-    setPaused(!paused)
+    setPaused(prev => !prev)
   }
 
   return (
     <>
       {appState == Presentation ?
-        <><Suspense fallback={null}><Scene appConfig={config} appPaused={paused}></Scene> 
-        <Timer isPresentationStarted={appState == Presentation}></Timer>
-        <PauseButton togglePause={pauseHandler} appPaused={paused}/></Suspense></> : null}
+        <><Suspense fallback={null}><Scene appConfig={config} appPaused={paused}></Scene>
+          <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
+          <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
+          <Timer isPresentationStarted={appState == Presentation} appPaused={paused} startingTime={(config.totalTime)* 60000} timerOverHandler={landing}></Timer></div></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
       {(appState == Home) ? <HomePage setupPage={setup}></HomePage> : null}
       {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig} addQuestionsPopup={addQuestions}></SetupPage> : null}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { useControls } from 'leva'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber';
@@ -66,7 +66,7 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
         }
     })
     return gltf ?
-        (<>{(animated && gltf.animations.length > 0)?<AnimationSelect availableAnimations={availableAnimations} updateAnimation={updateAnimation}></AnimationSelect>:null}<group >
+        (<>{(animated && gltf.animations.length > 0)?<AnimationSelect availableAnimations={availableAnimations} updateAnimation={updateAnimation}></AnimationSelect>:null}<Suspense fallback={null}></Suspense><group >
             <primitive
                 position={pos}
                 rotation={rot}
@@ -74,7 +74,7 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
                 object={gltf.scene}>
 
             </primitive>
-        </group ></>)
+        </group ><Suspense/></>)
         : null
 }
 
