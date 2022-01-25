@@ -1,7 +1,7 @@
 .timerContainer {
+    position: absolute;
     display: flex;
     align-items: stretch;
-    position: relative;
     border: 1px solid #000000;
     box-sizing: border-box;
     border-radius: 100px;
@@ -33,4 +33,14 @@
     margin-right: 30px;
     margin: auto;
     position: relative;
+}
+
+.pauseContainer {
+    background-color: #00000000;
+    position: absolute;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
 }
