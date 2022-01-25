@@ -4,6 +4,7 @@ import './setupStyles.css'
 
 function SetupPage({ presentationPage, homePage, updateConfig }) {
 
+    const [defaults, setDefaults] = useState({})
     const [questionsList, setQuestionsList] = useState([])
     const [popupOpen, setPopupOpen] = useState(false);
     const enableQuestionsPopup = () => {
@@ -14,6 +15,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
         setPopupOpen(false);
     }
 
+    ///state for UI
     const [showQuestion, setShowQuestion] = useState(false);
     const questionOpen = () => {
         setShowQuestion(!showQuestion);
@@ -26,6 +28,8 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     const accessOpen = () => {
         setShowAccess(!showAccess);
     }
+
+    //state for app configuration
     const [randomToggle, setRandomToggle] = useState(false);
     const triggerRandomToggle = () => {
         setRandomToggle(!randomToggle)
@@ -84,10 +88,24 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     const handleSecondWarningChange = (e) => {
         setSecondWarning(e.target.value)
     }
+
+    const setToDefault = () => {
+        setConfig(defaults)
+        setTotalTime(20)
+        setFirstWarning(15)
+        setSecondWarning(17)
+        setQuestionInterval(3)
+        setEnvironmentState(Daytime)
+        setPositionState(Appellant)
+        setClosedCaptionToggle(false)
+        setCutOffToggle(false)
+        setDelayToggle(false)
+        setRandomToggle(false)
+
+    }
     
-    let defaults = {}
     useEffect(() => {
-        defaults = {
+        setDefaults({
             position: positionState,
             environment: environmentState,
             random: randomToggle,
@@ -99,8 +117,20 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
             firstWarning,
             secondWarning,
             questionsList
-        }
-        setConfig(defaults)
+        })
+        setConfig({
+            position: positionState,
+            environment: environmentState,
+            random: randomToggle,
+            delay: delayToggle,
+            cutoff: cutOffToggle,
+            closedCaption: closedCaptionToggle,
+            questionInterval,
+            totalTime,
+            firstWarning,
+            secondWarning,
+            questionsList
+        })
     }, [])
 
     const [config, setConfig] = useState(defaults)
@@ -274,7 +304,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                 </div>
             </div>
             <div>
-                <a className="nobgbutton">Reset to default</a>
+                <button type="button" className="nobgbutton" onClick={() => {setToDefault()}}>Reset to default</button>
                 <button className="button-type2" onClick={() => { presentationPage() }}>Start</button>
             </div>
         </div>
