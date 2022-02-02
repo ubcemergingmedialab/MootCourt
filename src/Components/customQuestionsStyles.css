@@ -3,6 +3,8 @@ input{
     height: 50px;
     border-radius: 8px;
     margin-top: 1em;
+    margin-right: 1em;
+    padding-left: 1em;
 }
 li{
    list-style-type: none; 

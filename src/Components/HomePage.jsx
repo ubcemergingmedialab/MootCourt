@@ -1,7 +1,7 @@
 import './homepageStyles.css'
 
-function HomePage({setupPage}){
-    return(<>
+function HomePage({ setupPage }) {
+    return (<>
         <div id="Home">
             <div id="Rectangle">
             </div>
@@ -10,14 +10,14 @@ function HomePage({setupPage}){
             <div id="TitleBorder">
                 <h1>Moot Court</h1>
             </div>
-            <div id="RectangleStart">
-            </div>
-            <div id="RectangleResources">
-            </div>
             <div id="Start">
-                <button id="StartButton" onClick={()=> {setupPage()}}> Start Moot Practice</button>
+                <div id="RectangleStart">
+                </div>
+                <button id="StartButton" onClick={() => { setupPage() }}> Start Moot Practice</button>
             </div>
             <div id="Resources">
+                <div id="RectangleResources">
+                </div>
                 <button id="ResourcesButton">Resources</button>
             </div>
         </div>

@@ -6,6 +6,20 @@ import Model from './Model'
 import Player from './Player'
 import '../styles.css'
 
+const testlistOfUtterances = [[
+    "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
+    "Should not we presume that the trial judge knows the law and applied the correct law?",
+    "Are not some of the facts of the cases you rely upon much different from the facts of this case?",
+    "Could you please tell the Court exactly where you are in your Factum at this point?",
+],
+[
+    "What does the opposing counsel say about this submission, and why are they not correct?",
+    "As you are aware, we are not bound by any precedents.  Could you please tell the Court why we should follow the law in the main authorities that you rely on?",
+    "What are the policy implications of your submissions, and would they take the law in this area in a positive direction?  Are there not some risks of interpreting the law in this manner?",
+    "What are the implications of your submissions on the goal of keeping our legal rules as simple and predictable as possible?",
+    "Were the errors you argue significant enough to justify the remedy you are seeking?  In other words, would the result at trial necessarily have been different if those errors did not occur?"
+]]
+
 export default function Scene({ appConfig, appPaused }) {
     const [animateCamera, setAnimateCamera] = useState(false)
     const props = useSpring({ rotation: animateCamera ? [0, 0, 0] : [0, -Math.PI / 2, 0], config: { duration: 10000 } })
@@ -36,8 +50,8 @@ export default function Scene({ appConfig, appPaused }) {
                 }
                 {config !== {} ? <>
 
-                    <JudgeAvatar position={[0, -2, -4]} key={"judge_1"} id={"judge_1"}
-                        utteranceSplit={window.parseInt(config.questionInterval) * 60000}
+                    <JudgeAvatar position={[0, -2, -4]} key={"judge_1"} id={"judge_1"} animated={true} listOfUtterances={Object.keys(appConfig["questionsList"]).length > 0? Object.values(appConfig.questionsList) : testlistOfUtterances[appConfig.position]}
+                        utteranceSplit={window.parseInt(config.questionInterval) * 60000} randomizeQuestions={config.randomizeQuestions}
                         speaks={true} subtitles={appConfig.closedCaption} appPaused={appPaused} snoozeEnabled={appConfig.delay} />
 
                     {/*<JudgeAvatar position={[-2, -2, -4]} key={"judge_0"} id={"judge_0"} utteranceSplit={180000} animated={false} speaks={false} />
@@ -46,7 +60,7 @@ export default function Scene({ appConfig, appPaused }) {
                     pos={[0, -3, 3.5]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
-                <Model modelUrl="./models/courtroomwallsNov17.glb"
+                <Model modelUrl="./models/courtroomwallsJan25.glb"
                     pos={[0, -3, 3.5]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />

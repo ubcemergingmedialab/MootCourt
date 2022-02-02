@@ -16,15 +16,15 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     }
 
     ///state for UI
-    const [showQuestion, setShowQuestion] = useState(false);
+    const [showQuestion, setShowQuestion] = useState(true);
     const questionOpen = () => {
         setShowQuestion(!showQuestion);
     }
-    const [showTimer, setShowTimer] = useState(false);
+    const [showTimer, setShowTimer] = useState(true);
     const timerOpen = () => {
         setShowTimer(!showTimer);
     }
-    const [showAccess, setShowAccess] = useState(false);
+    const [showAccess, setShowAccess] = useState(true);
     const accessOpen = () => {
         setShowAccess(!showAccess);
     }
@@ -156,7 +156,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     }, [positionState, environmentState, randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning, questionsList])
 
 
-    return (<>{popupOpen ? <AddQuestionsPopup setQuestionsList={setQuestionsList} disable={disableQuestionsPopup}></AddQuestionsPopup> : null}
+    return (<>{popupOpen ? <AddQuestionsPopup setQuestionsList={setQuestionsList} disable={disableQuestionsPopup} position={positionState}></AddQuestionsPopup> : null}
         <div className="page-setup">
             <div>
                 <button className="button-type1" onClick={() => { homePage() }}>Back</button>

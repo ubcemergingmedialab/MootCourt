@@ -6,19 +6,7 @@ import { useFrame } from '@react-three/fiber'
 import Subtitle from './Subtitle.js'
 import QuestionSnooze from './QuestionSnooze.jsx'
 
-const testlistOfUtterances = [[
-    "Did not the trial court make some findings of fact contrary to your submissions, and should we not defer to those findings of fact?",
-    "Should not we presume that the trial judge knows the law and applied the correct law?",
-    "Are not some of the facts of the cases you rely upon much different from the facts of this case?",
-    "Could you please tell the Court exactly where you are in your Factum at this point?",
-],
-[
-    "What does the opposing counsel say about this submission, and why are they not correct?",
-    "As you are aware, we are not bound by any precedents.  Could you please tell the Court why we should follow the law in the main authorities that you rely on?",
-    "What are the policy implications of your submissions, and would they take the law in this area in a positive direction?  Are there not some risks of interpreting the law in this manner?",
-    "What are the implications of your submissions on the goal of keeping our legal rules as simple and predictable as possible?",
-    "Were the errors you argue significant enough to justify the remedy you are seeking?  In other words, would the result at trial necessarily have been different if those errors did not occur?"
-]]
+
 
 const SkinSelect = ({ updateSkin }) => {
     //File modelPath = new File("./models/");  //gets the model path for models
@@ -44,26 +32,28 @@ const SkinSelect = ({ updateSkin }) => {
 }
 
 let nextQuestionTime = Number.MAX_SAFE_INTEGER; // -1 means there is no question to be asked next. counts down until
+const Appellant = 0
+const Respondent = 1
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances = testlistOfUtterances, appPaused, snoozeEnabled }) {
-    const [utteranceIndex, setUtteranceIndex] = useState(0)
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions}) {
     const [currentText, setText] = useState("")
     const [textIndex, setTextIndex] = useState(0)
     const [repeatingQuestion, setRepeatingQuestion] = useState(false)
     const [firstQuestion, setFirstQuestion] = useState(false)
     const [readyToSpeak, setReadyToSpeak] = useState(false)
     const [snoozeTimeLeft, setSnoozeTimeLeft] = useState(Number.MAX_SAFE_INTEGER)
-    const utteranceListLength = listOfUtterances[utteranceIndex].length
+    const [utterances, setUtterances] = useState(listOfUtterances)
+    const utteranceListLength = listOfUtterances.length
+    randomizeQuestions&& (() => {listOfUtterances.sort(() => (Math.random() > .5) ? 1 : -1); setUtterances(listOfUtterances)})()
     const [questionTimeUpdate, setQuestionTimeUpdate] = useState(false)
     const [animationPaused, setAnimationPaused] = useState(true)
-    let questionInterval;
+    let questionInterval
 
-    const [skin, setSkin] = useState();
-
-    const [skinState, setSkinState] = useState("");
+    const [skin, setSkin] = useState()
+    const [skinState, setSkinState] = useState("")
 
     const updateSkin = (skinUpdate) => {
-        console.log("updating judge skins ", skinUpdate);
+        console.log("updating judge skins ", skinUpdate)
         setSkin(skinUpdate);
         setSkinState("NewSkin");
     }
@@ -90,6 +80,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     useEffect(() => {
         console.log('time effect')
         if (appPaused === false) {
+            console.log(utterances)
             if (nextQuestionTime <= 0) {
                 console.log('utterance split again', utteranceSplit)
                 nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
@@ -109,7 +100,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
             setSnoozeTimeLeft(Math.floor(nextQuestionTime / 1000))
             console.log(nextQuestionTime)
         }
-    }, [questionTimeUpdate, appPaused])
+    }, [questionTimeUpdate, appPaused, utterances])
 
     useEffect(() => {
         console.log('judge is set to ', speaks, readyToSpeak)
@@ -123,7 +114,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
 
     useEffect(() => {
         if (firstQuestion) {
-            setText(listOfUtterances[utteranceIndex][textIndex])
+            setText(utterances[textIndex])
         }
     }, [textIndex])
     const readyToSpeakHandler = () => { // start chain of utterances when avatar has loaded voices, passed down to prop in Avatar
