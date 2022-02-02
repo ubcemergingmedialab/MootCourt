@@ -42,14 +42,18 @@ const VoiceSelect = ({ updateVoice }) => {
 
 //const deleteOldSkin = ({})
 
-function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak, skinState, animated=true }) {
+function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak, skinState, animated = true, animationPause = false, startedSpeaking, finishedSpeaking }) {
     const [micStarted, startMic] = useState(false) //call navigator.mediaDevices.getUserMedia or grab audio stream for lip syncing
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
-    const { speak, cancel } = useSpeechSynthesis()
+
+    const onEnd = () => {
+        finishedSpeaking()
+    }
+    const { speak, cancel } = useSpeechSynthesis({ onEnd })
     const [voice, setVoice] = useState(); // used to rerender avatar with a new voice based on user decision. Currently decided by leva, could add prop to decide this externally
     const [voicesReady, setVoicesReady] = useState(false) // causes rerender on voices loaded
-    const [animationPause, setAnimationPause] = useState(false) // allows button to control avatar animations
     //const [skinState, setSkinState] = useState("modelUrl"); //identifies the skin as original (in no replacement is needed or new in which old model must be deleted)
+
 
     const updateSkin = (deleteOldSkin) => {
         if (skinState != "") {
@@ -60,6 +64,7 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     const updateVoice = (voiceUpdate) => {
         console.log("updating voices ", voiceUpdate);
         setVoice(voiceUpdate);
+        setVoicesReady(true)
     } // function to pass into VoiceSelect component
     window.speechSynthesis.onvoiceschanged = () => {
         console.log('voices ready');
@@ -81,37 +86,27 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     useEffect(() => {
         console.log('speaking')
         cancel()
-        speak({text: textToSay, voice: voice, rate: 0.6})
+        speak({ text: textToSay, voice: voice, rate: 0.7 })
+        startedSpeaking && startedSpeaking()
     }, [textToSay]) // changes in textToSay will cause new utterance to start
     useEffect(() => {
         voicesReady && readyToSpeak()
     }, [voicesReady]) // let caller know it can start sending utterances to say
     useEffect(() => {
         cancel()
-        speak({text: textToSay, voice: voice, rate: 0.6})
+        speak({ text: textToSay, voice: voice, rate: 0.7 })
+        startedSpeaking && startedSpeaking()
     }, [utteranceRepeat])
     return (<>
         <Suspense fallback={null}>
             <mesh rotation={rotation} position={position}>
-                {buttonOffset? (<><Button clickHandler={() => {
-                    cancel()
-                    speak({ text: textToSay, voice: voice })
-                }}
-                    position={buttonOffset}
-                    scale={[2 + blendShape[1] * 5, 2 + blendShape[0] * 5, 2 + blendShape[2] * 5]}
-                    rotation={[0.2, 0.2, 0]}
-                    buttonText={"Speak"} />
-                <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setAnimationPause(!animationPause)}
-                    position={buttonOffset.map((e, i) => {return i === 0? -e: e})}
-                    scale={[2 + blendShape[1] * 5, 2 + blendShape[0] * 5, 2 + blendShape[2] * 5]}
-                    rotation={[0.2, 0.2, 0]}
-                    buttonText={"Pause Animation"} /></>) : null}
                 <Model modelUrl={modelUrl}
                     pos={[0, 0, 0]}
                     rot={[0, 0, 0]}
                     sca={[2, 2, 2]}
                     startAnimation={animated}
-                    pauseAnimation={animationPause} ></Model>
+                    pauseAnimation={animationPause}
+                    animated={animated}></Model>
                 {micStarted ? <LipSync blendShapeHandler={(shapes) => setBlendShape([shapes.BlendShapeMouth, shapes.BlendShapeLips, shapes.BlendShapeKiss])} /> : null}
                 {voicesReady ? <VoiceSelect updateVoice={updateVoice} /> : null}</mesh>
         </Suspense>

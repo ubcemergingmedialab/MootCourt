@@ -2,7 +2,7 @@ import './landingpageStyles.css'
 
 function LandingPage({homePage}){
     return(<>
-        <body id="Land">
+        <div id="Land" onClick={()=> {homePage()}}>
             <div id="HeaderBorder">
                 <h1>Moot Court</h1> 
             </div>
@@ -10,9 +10,10 @@ function LandingPage({homePage}){
                 <h2>Moot court simulator to help you practice!</h2>
             </div>
             <div id="Begin">
-                <button id="BeginButton" onClick={()=> {homePage()}}>Click me to begin</button>
+                <p>Click anywhere on the screen to begin</p>
             </div>
-        </body>
+        </div>
+    
     </>)
 }
 

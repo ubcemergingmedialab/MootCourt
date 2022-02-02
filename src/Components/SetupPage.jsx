@@ -3,6 +3,8 @@ import AddQuestionsPopup from './AddQuestionsPopup';
 import './setupStyles.css'
 
 function SetupPage({ presentationPage, homePage, updateConfig }) {
+
+    const [questionsList, setQuestionsList] = useState([])
     const [popupOpen, setPopupOpen] = useState(false);
     const enableQuestionsPopup = () => {
         setPopupOpen(true);
@@ -82,7 +84,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     const handleSecondWarningChange = (e) => {
         setSecondWarning(e.target.value)
     }
-
+    
     let defaults = {}
     useEffect(() => {
         defaults = {
@@ -95,8 +97,10 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
             questionInterval,
             totalTime,
             firstWarning,
-            secondWarning
+            secondWarning,
+            questionsList
         }
+        setConfig(defaults)
     }, [])
 
     const [config, setConfig] = useState(defaults)
@@ -116,12 +120,13 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
             questionInterval,
             totalTime,
             firstWarning,
-            secondWarning
+            secondWarning,
+            questionsList
         })
-    }, [positionState, environmentState, randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning])
+    }, [positionState, environmentState, randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning, questionsList])
 
 
-    return (<>{popupOpen ? <AddQuestionsPopup disable={disableQuestionsPopup}></AddQuestionsPopup> : null}
+    return (<>{popupOpen ? <AddQuestionsPopup setQuestionsList={setQuestionsList} disable={disableQuestionsPopup}></AddQuestionsPopup> : null}
         <div className="page-setup">
             <div>
                 <button className="button-type1" onClick={() => { homePage() }}>Back</button>
@@ -169,7 +174,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                                 </div>
                                 <div className="switch">
                                     <label>
-                                        <input type="checkbox" onClick={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
+                                        <input type="checkbox" onChange={() => { triggerRandomToggle() }} checked={randomToggle ? true : false} />
                                         <span className="slider round"></span>
                                     </label>
                                 </div>
@@ -182,14 +187,14 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                                 </div>
                                 <div className="switch">
                                     <label>
-                                        <input type="checkbox" onClick={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
+                                        <input type="checkbox" onChange={() => { triggerDelayToggle() }} checked={delayToggle ? true : false} />
                                         <span className="slider round"></span>
                                     </label>
                                 </div>
 
                             </div>
                             <div className="content">
-                                <button onClick={() => { enableQuestionsPopup() }}>Add your own questions</button>
+                                <button className="button-type5"onClick={() => { enableQuestionsPopup() }} >Add your own questions</button>
                             </div>
                         </div>
                     )}

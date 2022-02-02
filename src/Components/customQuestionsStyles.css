@@ -1,0 +1,9 @@
+input{
+    width: 780px;
+    height: 50px;
+    border-radius: 8px;
+    margin-top: 1em;
+}
+li{
+   list-style-type: none; 
+}

@@ -179,6 +179,11 @@ button:hover{
     border: 2px black solid;
     margin: 5px 5px;
 }
+.button-type5{
+    background-color: #14223C;
+    color: #F7E7D0;
+    margin-bottom: 1em;
+}
 .nobgbutton{
     background-color: transparent;
     margin-left: 700px;
