@@ -104,10 +104,9 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
                     pos={[0, 0, 0]}
                     rot={[0, 0, 0]}
                     sca={[2, 2, 2]}
-                    startAnimation={animated}
-                    pauseAnimation={animationPause}
-                    animated={animated}></Model>
-                {micStarted ? <LipSync blendShapeHandler={(shapes) => setBlendShape([shapes.BlendShapeMouth, shapes.BlendShapeLips, shapes.BlendShapeKiss])} /> : null}
+                    startAnimation={true}
+                    pauseAnimation={false}
+                    animated={true}></Model>
                 {voicesReady ? <VoiceSelect updateVoice={updateVoice} /> : null}</mesh>
         </Suspense>
     </>

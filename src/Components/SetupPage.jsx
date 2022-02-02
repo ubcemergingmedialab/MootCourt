@@ -175,7 +175,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                 </div>
                 <div className="button-header">
                     <h2>Environment</h2>
-                    <p>A description for environment</p>
+                    <p>(coming soon!)</p>
                     <button className="button-type3" onClick={() => { daytime() }}>Daytime</button>
                     <button className="button-type4" onClick={() => { nighttime() }}>Nighttime</button>
                 </div>

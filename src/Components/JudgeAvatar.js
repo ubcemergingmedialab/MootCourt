@@ -35,16 +35,15 @@ let nextQuestionTime = Number.MAX_SAFE_INTEGER; // -1 means there is no question
 const Appellant = 0
 const Respondent = 1
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions}) {
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles}) {
     const [currentText, setText] = useState("")
-    const [textIndex, setTextIndex] = useState(0)
+    const [textIndex, setTextIndex] = useState(-1)
     const [repeatingQuestion, setRepeatingQuestion] = useState(false)
     const [firstQuestion, setFirstQuestion] = useState(false)
     const [readyToSpeak, setReadyToSpeak] = useState(false)
     const [snoozeTimeLeft, setSnoozeTimeLeft] = useState(Number.MAX_SAFE_INTEGER)
-    const [utterances, setUtterances] = useState(listOfUtterances)
     const utteranceListLength = listOfUtterances.length
-    randomizeQuestions&& (() => {listOfUtterances.sort(() => (Math.random() > .5) ? 1 : -1); setUtterances(listOfUtterances)})()
+    const [utterances, setUtterances] = useState(randomizeQuestions ? listOfUtterances.sort(() => (Math.random() > .5) ? 1 : -1) : listOfUtterances)
     const [questionTimeUpdate, setQuestionTimeUpdate] = useState(false)
     const [animationPaused, setAnimationPaused] = useState(true)
     let questionInterval
@@ -78,22 +77,19 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     }, [])
 
     useEffect(() => {
-        console.log('time effect')
+        //console.log('time effect')
         if (appPaused === false) {
-            console.log(utterances)
             if (nextQuestionTime <= 0) {
                 console.log('utterance split again', utteranceSplit)
                 nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
+                setFirstQuestion(true)
                 setTextIndex(prevTextIndex => (prevTextIndex + 1) % utteranceListLength)
-
                 console.log("speaking " + textIndex)
             } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
-
                 console.log('utterance split first', utteranceSplit)
                 nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
-                setFirstQuestion(true)
                 setText("")
-                setTextIndex(0)
+                setTextIndex(-1)
             } else {
                 nextQuestionTime -= 1000
             }
@@ -151,7 +147,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
             buttonText={"Pause Animation"} /> : null}
 
         <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} skinState={skinState} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
-        <Subtitle textToSay={currentText} />
+        {subtitles? <Subtitle textToSay={currentText} /> : null}
         <SkinSelect updateSkin={updateSkin}></SkinSelect>
         {(snoozeEnabled && (snoozeTimeLeft <= 20) && (snoozeTimeLeft > 0)) ? <QuestionSnooze timeLeft={snoozeTimeLeft} position={position} snoozeQuestion={snoozeQuestionHandler}></QuestionSnooze> : null}
     </Suspense>)

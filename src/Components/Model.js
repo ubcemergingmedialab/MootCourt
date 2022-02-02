@@ -8,7 +8,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 const AnimationSelect = ({ availableAnimations, updateAnimation }) => {
     const [{ animation }, set] = useControls(() => ({ animation: { options: availableAnimations } }))
     useEffect(() => {
-        updateAnimation(animation)
+        //updateAnimation(animation)
     }, [animation])
     return null
 }
@@ -27,11 +27,11 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
                 let animationObject = {}
                 gltf.animations.forEach(clip => {
                     const action = mixer.clipAction(clip)
+                    //console.log('existing animation: ', clip.name, clip.duration, clip.tracks)
+                    //animationObject[clip.name] = clip
                     action.play()
-                    console.log('existing animation: ', clip.name, clip.duration, clip.tracks)
-                    animationObject[clip.name] = clip
                 })
-                setAvailableAnimations(animationObject)
+                //setAvailableAnimations(animationObject)
             }
             gltf.scene.traverse(child => {
                 if (child.isMesh) {
@@ -51,13 +51,6 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
         setAnimationClip(anim)
     }
 
-    useEffect(() => {
-        if (mixer && activeAnimation && mixer.existingAction(activeAnimation)) {
-            let action = mixer.clipAction(activeAnimation)
-            action.play()
-        }
-    }, [mixer, animationClip])
-
     useFrame((state, delta) => {
         if (startAnimation) {
             if (!pauseAnimation) {
@@ -65,8 +58,9 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
             }
         }
     })
+    /*(animated && gltf.animations.length > 0)?<AnimationSelect availableAnimations={availableAnimations} updateAnimation={updateAnimation}></AnimationSelect>:null*/
     return gltf ?
-        (<>{(animated && gltf.animations.length > 0)?<AnimationSelect availableAnimations={availableAnimations} updateAnimation={updateAnimation}></AnimationSelect>:null}<Suspense fallback={null}></Suspense><group >
+        (<group >
             <primitive
                 position={pos}
                 rotation={rot}
@@ -74,7 +68,7 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
                 object={gltf.scene}>
 
             </primitive>
-        </group ><Suspense/></>)
+        </group >)
         : null
 }
 
