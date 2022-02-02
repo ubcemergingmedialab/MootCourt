@@ -1,0 +1,29 @@
+body {
+    background-color: #14223C;
+    font-family: 'Roboto', sans-serif;
+}
+
+.button-type1 {
+    background-color: #C4C4C4;
+    border: solid #14223C 2px;
+    font-family: inherit;
+    top: 20%;
+    box-shadow: 5px 5px #FDCE27;
+}
+
+#Header {
+    width: 300px;
+    border: solid #14223C 2px;
+    background-color: #6DA7D9;
+    text-align: center ;
+    color: #14223C;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 8px;
+    box-shadow: 5px 5px #F7E7D0;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}

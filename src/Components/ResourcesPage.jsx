@@ -3,8 +3,10 @@ import './resourcesPageStyles.css'
 
 function ResourcesPage({homePage}){
     return(<>
+        <div id="Header">
+                <h1>Moot Resources</h1> 
+            </div>
         <div>
-            <h1>Some words</h1>
             <button className="button-type1" onClick={() => {homePage()}}>Back</button>
         </div>
     </>)
