@@ -40,7 +40,7 @@ function Timer({ isPresentationStarted, startingTime, appPaused, firstWarning })
             setUpdateTimerInterval(prevUpdate => !prevUpdate)
         }, 1000)
     }, [])
-    return <>{isPresentationStarted ? <div className={"timerContainer"} style={{ bottom: 0, right: 0, backgroundColor: "white" }}>
+    return <>{isPresentationStarted ? <div className={"timerContainer"} style={{ bottom: 8, right: 10 }}>
         <div className={"timerText"}>{timeText}</div><div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
     </div> : null}</>
 }

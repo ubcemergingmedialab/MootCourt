@@ -78,7 +78,8 @@ function App() {
           <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
           <Timer isPresentationStarted={appState == Presentation} appPaused={paused} startingTime={(config.totalTime)* 60000} timerOverHandler={landing}></Timer></div></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
-      {(appState == Home) ? <HomePage setupPage={setup}></HomePage> : null}
+      {(appState == Home) ? <HomePage setupPage={setup} resourcesPage={resources}></HomePage> : null}
+      {(appState == Resources) ? <ResourcesPage homePage={home} ></ResourcesPage> : null}
       {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig}></SetupPage> : null}
     </>
   );
