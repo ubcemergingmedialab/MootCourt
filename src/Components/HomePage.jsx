@@ -1,7 +1,7 @@
 import './homepageStyles.css'
 
-function HomePage({ setupPage }) {
-    return (<>
+function HomePage({setupPage, resourcesPage}){
+    return(<>
         <div id="Home">
             <div id="Rectangle">
             </div>
@@ -16,9 +16,7 @@ function HomePage({ setupPage }) {
                 <button id="StartButton" onClick={() => { setupPage() }}> Start Moot Practice</button>
             </div>
             <div id="Resources">
-                <div id="RectangleResources">
-                </div>
-                <button id="ResourcesButton">Resources</button>
+                <button id="ResourcesButton" onClick={()=> {resourcesPage()}}>Resources</button>
             </div>
         </div>
     </>)
