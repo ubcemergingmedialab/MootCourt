@@ -13,6 +13,7 @@ import PauseButton from './Components/PauseButton';
 import SetupPage from './Components/SetupPage'
 import LandingPage from './Components/LandingPage'
 import HomePage from './Components/HomePage'
+import ResourcesPage from './Components/ResourcesPage'
 
 
 extend({ OrbitControls })
@@ -38,6 +39,7 @@ function App() {
   const Landing = 1
   const Home = 2
   const Setup = 3
+  const Resources = 4
   const [appState, setAppState] = useState(Landing)
   const [config, setConfig] = useState({})
   const [paused, setPaused] = useState(false);
@@ -50,6 +52,9 @@ function App() {
   }
   const setup = function () {
     setAppState(Setup)
+  }
+  const resources = function () {
+    setAppState(Resources)
   }
   const presentation = function () {
     setAppState(Presentation)
@@ -73,7 +78,8 @@ function App() {
           <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
           <Timer isPresentationStarted={appState == Presentation} appPaused={paused} startingTime={(config.totalTime)* 60000} timerOverHandler={landing}></Timer></div></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
-      {(appState == Home) ? <HomePage setupPage={setup}></HomePage> : null}
+      {(appState == Home) ? <HomePage setupPage={setup} resourcesPage={resources}></HomePage> : null}
+      {(appState == Resources) ? <ResourcesPage homePage={home} ></ResourcesPage> : null}
       {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig}></SetupPage> : null}
     </>
   );

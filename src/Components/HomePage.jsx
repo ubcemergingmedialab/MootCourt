@@ -1,6 +1,6 @@
 import './homepageStyles.css'
 
-function HomePage({setupPage}){
+function HomePage({setupPage, resourcesPage}){
     return(<>
         <div id="Home">
             <div id="Rectangle">
@@ -14,7 +14,7 @@ function HomePage({setupPage}){
                 <button id="StartButton" onClick={()=> {setupPage()}}> Start Moot Practice</button>
             </div>
             <div id="Resources">
-                <button id="ResourcesButton">Resources</button>
+                <button id="ResourcesButton" onClick={()=> {resourcesPage()}}>Resources</button>
             </div>
         </div>
     </>)
