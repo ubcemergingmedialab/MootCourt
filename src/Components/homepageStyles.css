@@ -31,11 +31,7 @@
     height: 50px;
     text-align: center;
     color: black;
-<<<<<<< HEAD
-    border: 0.15em solid #14223C;
-=======
     border: none;
->>>>>>> 779ae8bcc48aead97adefec4d65a3258d45217fc
     border-radius: 8px;
 }
 #Start {
@@ -65,11 +61,7 @@
     height: 50px;
     text-align: center;
     color: white;
-<<<<<<< HEAD
-    border:0.15em solid #FDCE27;
-=======
     border: none;
->>>>>>> 779ae8bcc48aead97adefec4d65a3258d45217fc
     border-radius: 8px;
 }
 #Resources{
@@ -107,29 +99,3 @@
     background:#6DA7D9;
     border-radius: 8px;
 }
-<<<<<<< HEAD
-#RectangleStart{
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width:180px;
-    height:50px;
-    background:#FDCE27;
-    z-index: -5;
-    border-radius: 8px;
-    
-}
-#RectangleResources{
-    
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width:180px;
-    height:50px;
-    background:#14223C;
-    z-index: -1;
-    border-radius: 8px;
-    
-}
-=======
->>>>>>> 779ae8bcc48aead97adefec4d65a3258d45217fc
