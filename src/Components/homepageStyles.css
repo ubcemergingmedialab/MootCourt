@@ -26,12 +26,12 @@
     border: none;
     font: inherit;
     box-sizing: border-box;
-    background-color: transparent;
+    background-color: #FDCE27;
     width: 180px;
     height: 50px;
     text-align: center;
     color: black;
-    border: solid #14223C;
+    border: none;
     border-radius: 8px;
 }
 #Start {
@@ -54,12 +54,12 @@
     border: none;
     font: inherit;
     box-sizing: border-box;
-    background-color: transparent;
+    background-color: #14223C;
     width: 180px;
     height: 50px;
     text-align: center;
     color: white;
-    border: solid #FDCE27;
+    border: none;
     border-radius: 8px;
 }
 #Resources{
@@ -92,25 +92,5 @@
     left: 20%;
     top: 20%;
     background:#6DA7D9;
-    border-radius: 8px;
-}
-#RectangleStart{
-    position: absolute;
-    top: 270px;
-    left: 556px;
-    width:180px;
-    height:50px;
-    background:#FDCE27;
-    z-index: 0;
-    border-radius: 8px;
-}
-#RectangleResources{
-    position: absolute;
-    top: 357px;
-    left: 556px;
-    width:180px;
-    height:50px;
-    background:#14223C;
-    z-index: 0;
     border-radius: 8px;
 }
