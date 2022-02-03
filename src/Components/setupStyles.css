@@ -169,12 +169,28 @@ button:hover{
 }
 .button-type3{
     box-shadow:7px 5px #14223C;
+    background-color:transparent;
+    margin: 5px 5px;
+}
+.button-type3-active{
+    box-shadow:7px 5px #14223C;
     background-color: #FDCE27;
     margin: 5px 5px;
+    transition: ease-in-out;
+    transition-duration: 1s;
 }
 .button-type4{
     box-shadow:7px 5px #FDCE27;
+    background-color: transparent;
+    color: #14223C;
+    border: 2px black solid;
+    margin: 5px 5px;
+}
+.button-type4-active{
+    box-shadow:7px 5px #FDCE27;
     background-color: #14223C;
+    transition: ease-in-out;
+    transition-duration: 1s;
     color: #F7E7D0;
     border: 2px black solid;
     margin: 5px 5px;

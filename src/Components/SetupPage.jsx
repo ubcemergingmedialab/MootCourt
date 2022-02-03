@@ -11,7 +11,6 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     const enableQuestionsPopup = () => {
         setPopupOpen(true);
     }
-
     const disableQuestionsPopup = () => {
         setPopupOpen(false);
     }
@@ -54,6 +53,18 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     const respondent = function () {
         setPositionState(Respondent)
     }
+
+    const appellantButtonFill = 0
+    const respondentButtonFill = 1
+    const [pButtonFillState, setPButtonFillState] = useState(appellantButtonFill)
+    
+    const appellantButton = function () {
+        setPButtonFillState(appellantButtonFill)
+    }
+    const respondentButton = function () {
+        setPButtonFillState(respondentButtonFill)
+    }
+
     const Daytime = 0
     const Nighttime = 1
     const [environmentState, setEnvironmentState] = useState(Daytime)
@@ -63,6 +74,17 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     }
     const nighttime = function () {
         setEnvironmentState(Nighttime)
+    }
+
+    const daytimeButtonFill = 0
+    const nighttimeButtonFill = 1
+    const [eButtonFillState, setEButtonFillState] = useState(daytimeButtonFill)
+    
+    const daytimeButton = function () {
+        setEButtonFillState(daytimeButtonFill)
+    }
+    const nighttimeButton = function () {
+        setEButtonFillState(nighttimeButtonFill)
     }
 
     const [questionInterval, setQuestionInterval] = useState(3)
@@ -140,14 +162,14 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                 <div className="button-header">
                     <h2>Position</h2>
                     <p>Position determines the question set</p>
-                    <button className="button-type3" onClick={() => { appellant() }}>Appellant</button>
-                    <button className="button-type4" onClick={() => { respondent() }}>Respondent</button>
+                    <button className={ pButtonFillState? "button-type3":"button-type3-active"} onClick={() => { appellant(); appellantButton() }}>Appellant</button>
+                    <button className={!pButtonFillState? "button-type4":"button-type4-active"} onClick={() => { respondent(); respondentButton() }}>Respondent</button>
                 </div>
                 <div className="button-header">
                     <h2>Environment</h2>
                     <p>A description for environment</p>
-                    <button className="button-type3" onClick={() => { daytime() }}>Daytime</button>
-                    <button className="button-type4" onClick={() => { nighttime() }}>Nighttime</button>
+                    <button className={ eButtonFillState? "button-type3":"button-type3-active"} onClick={() => { daytime(); daytimeButton() }}>Daytime</button>
+                    <button className={!eButtonFillState? "button-type4":"button-type4-active"} onClick={() => { nighttime(); nighttimeButton()}}>Nighttime</button>
                 </div>
             </div>
             <div className="accordion-container">
