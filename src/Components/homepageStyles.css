@@ -20,20 +20,6 @@
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
 }
-#StartButton {
-    margin: 0;
-    padding: 0;
-    border: none;
-    font: inherit;
-    box-sizing: border-box;
-    background-color: #FDCE27;
-    width: 180px;
-    height: 50px;
-    text-align: center;
-    color: black;
-    border: none;
-    border-radius: 8px;
-}
 #Start {
     width: 180px;
     border: none;
@@ -48,19 +34,10 @@
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
 }
-#ResourcesButton{
-    margin: 0;
-    padding: 0;
-    border: none;
-    font: inherit;
-    box-sizing: border-box;
-    background-color: #14223C;
-    width: 180px;
-    height: 50px;
-    text-align: center;
-    color: white;
-    border: none;
-    border-radius: 8px;
+.button-type3{
+    box-shadow:7px 5px #14223C;
+    background-color:#FDCE27;
+    margin: 5px 5px;
 }
 #Resources{
     width: 180px;
@@ -75,6 +52,13 @@
     -moz-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
+}
+.button-type4{
+    box-shadow:7px 5px #FDCE27;
+    background-color: #14223C;
+    color: #F7E7D0;
+    border: 2px black solid;
+    margin: 5px 5px;
 }
 #Rectangle{
         position: absolute;

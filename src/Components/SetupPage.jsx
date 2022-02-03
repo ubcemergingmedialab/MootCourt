@@ -153,7 +153,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     return (<>{popupOpen ? <AddQuestionsPopup setQuestionsList={setQuestionsList} disable={disableQuestionsPopup}></AddQuestionsPopup> : null}
         <div className="page-setup">
             <div>
-                <button className="button-type1" onClick={() => { homePage() }}>Back</button>
+                <button className="button-type1 button" onClick={() => { homePage() }}>Back</button>
             </div>
             <div className="header">
                 <h1>Moot Practice Setup</h1>
