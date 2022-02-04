@@ -11,12 +11,10 @@ function HomePage({setupPage, resourcesPage}){
                 <h1>Moot Court</h1>
             </div>
             <div id="Start">
-                <div id="RectangleStart">
-                </div>
-                <button id="StartButton" onClick={() => { setupPage() }}> Start Moot Practice</button>
+                <button className="button-type3" onClick={()=> {setupPage()}}> Start Moot Practice</button>
             </div>
             <div id="Resources">
-                <button id="ResourcesButton" onClick={()=> {resourcesPage()}}>Resources</button>
+                <button className="button-type4" onClick={()=> {resourcesPage()}}>Resources</button>
             </div>
         </div>
     </>)
