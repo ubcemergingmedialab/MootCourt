@@ -327,7 +327,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                     )}
                 </div>
             </div>
-            <div>
+            <div className={"footer-buttons"}>
                 <button type="button" className="nobgbutton" onClick={() => {setToDefault()}}>Reset to default</button>
                 <button className="button-type2" onClick={() => { presentationPage() }}>Start</button>
             </div>

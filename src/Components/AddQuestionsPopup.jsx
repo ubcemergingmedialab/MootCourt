@@ -79,7 +79,7 @@ function AddQuestionsPopup({ disable, setQuestionsList, position }) {
                 <button className="close-icon" onClick={() => { disable() }} >x</button>
             </div>
             <div className="popup-content">
-
+            <span>Custom Questions</span>
                 <div>
                     {Object.keys(questions).map((e, i) => {
                         return (
