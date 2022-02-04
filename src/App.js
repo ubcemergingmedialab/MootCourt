@@ -25,12 +25,12 @@ const Controls = () => {
     orbitRef.current.update();
   })
   return (
-    <orbitControls
-      maxPolarAngle={Math.PI * 2}
-      minPolarAngle={Math.PI / 3}
-      ref={orbitRef}
-      args={[camera, gl.domElement]}
-    />
+      <orbitControls
+          maxPolarAngle={Math.PI * 2}
+          minPolarAngle={Math.PI / 3}
+          ref={orbitRef}
+          args={[camera, gl.domElement]}
+      />
   )
 }
 
@@ -72,11 +72,11 @@ function App() {
 
   return (
     <>
-      {appState == Presentation ?
-        <><Suspense fallback={null}><Scene appConfig={config} appPaused={paused}></Scene>
-          <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
-          <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
-          <Timer isPresentationStarted={appState == Presentation} appPaused={paused} startingTime={(config.totalTime)* 60000} timerOverHandler={landing}></Timer></div></Suspense></> : null}
+     {appState == Presentation ?
+            <><Suspense fallback={null}><Scene appConfig={config} appPaused={paused}></Scene>
+              <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
+                <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
+                <Timer isPresentationStarted={appState == Presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing}></Timer></div></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
       {(appState == Home) ? <HomePage setupPage={setup} resourcesPage={resources}></HomePage> : null}
       {(appState == Resources) ? <ResourcesPage homePage={home} ></ResourcesPage> : null}

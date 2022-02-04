@@ -44,6 +44,8 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     const [snoozeTimeLeft, setSnoozeTimeLeft] = useState(Number.MAX_SAFE_INTEGER)
     const utteranceListLength = listOfUtterances.length
     const [utterances, setUtterances] = useState(randomizeQuestions ? listOfUtterances.sort(() => (Math.random() > .5) ? 1 : -1) : listOfUtterances)
+    const [elapsedTime, setElapsedTime] = useState(0)
+    const [previousTime, setPreviousTime] = useState(Date.now())
     const [questionTimeUpdate, setQuestionTimeUpdate] = useState(false)
     const [animationPaused, setAnimationPaused] = useState(true)
     let questionInterval
@@ -91,10 +93,11 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
                 setText("")
                 setTextIndex(-1)
             } else {
-                nextQuestionTime -= 1000
+                nextQuestionTime -= elapsedTime
+                console.log("time remaining: ", nextQuestionTime)
+                console.log("elapsedTime: ", elapsedTime)
             }
             setSnoozeTimeLeft(Math.floor(nextQuestionTime / 1000))
-            console.log(nextQuestionTime)
         }
     }, [questionTimeUpdate, appPaused, utterances])
 
@@ -107,6 +110,12 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
             }, 1000)
         }
     }, [readyToSpeak, speaks])
+
+    // calculate elapsed time between each tick
+    useEffect(() => {
+        setElapsedTime(Date.now() - previousTime);
+        setPreviousTime(Date.now());
+    }, [questionTimeUpdate])
 
     useEffect(() => {
         if (firstQuestion) {
