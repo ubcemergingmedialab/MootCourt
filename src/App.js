@@ -43,6 +43,7 @@ function App() {
   const [appState, setAppState] = useState(Landing)
   const [config, setConfig] = useState({})
   const [paused, setPaused] = useState(false);
+  const [feedbackHover, setFeedbackHover] = useState(false);
 
   const landing = function () {
     setAppState(Landing)
@@ -74,9 +75,11 @@ function App() {
     <>
      {appState == Presentation ?
             <><Suspense fallback={null}><Scene appConfig={config} appPaused={paused}></Scene>
+            <div style={{display: "flex", flexDirection: "column", alignItems:"flex-end", position: "relative", height: 0}}>
               <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
                 <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
-                <Timer isPresentationStarted={appState == Presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing}></Timer></div></Suspense></> : null}
+                <Timer isPresentationStarted={appState == Presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing}></Timer></div>
+                    <a onPointerEnter={() => {setFeedbackHover(true); console.log("hover")}} onPointerLeave={()=>{setFeedbackHover(false)}} style={{color:feedbackHover? "brown": "blue", position: "relative", bottom: "1em"}} href={"https://ubc.ca1.qualtrics.com/jfe/form/SV_0qbnf0bR2bTIBo2"}>Give us your feedback!</a></div></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
       {(appState == Home) ? <HomePage setupPage={setup} resourcesPage={resources}></HomePage> : null}
       {(appState == Resources) ? <ResourcesPage homePage={home} ></ResourcesPage> : null}

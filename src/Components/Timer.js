@@ -68,7 +68,7 @@ function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWa
     }, [cutoff, updateTimerInterval])
 
     return <>
-        {isPresentationStarted ? <div className={"timerContainer"} style={{ bottom: 0, right: 0, backgroundColor: "white" }}>
+        {isPresentationStarted ? <div className={"timerContainer"} style={{ bottom: "1em", right: 0, backgroundColor: "white" }}>
             <div className={"timerText"}>{timeText}</div>
             <div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
         </div> : null}
