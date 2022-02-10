@@ -11,7 +11,7 @@ function LandingPage({homePage}){
             </div>
             <div id="Begin">
                 <p>Click anywhere on the screen to begin</p>
-                    <a style={{color:"navy"}} href={"https://ubc.ca1.qualtrics.com/jfe/form/SV_0qbnf0bR2bTIBo2"}>Give us your feedback!</a>
+                    <a style={{color:"navy"}} target="black" href={"https://ubc.ca1.qualtrics.com/jfe/form/SV_0qbnf0bR2bTIBo2"}>Give us your feedback!</a>
             </div>
         </div>
     
