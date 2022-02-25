@@ -18,13 +18,13 @@ function Subtitle({ textToSay }) {
     const [rotation, setRotation] = useState([0, 0, 0, 0]);
     const [opts, setOpts] = useState({
         font: "Roboto Slab",
-        fontSize: .1,
+        fontSize: .17,
         color: "#05337d",
-        maxWidth: 300,
+        maxWidth: 100,
         lineHeight: 1,
         letterSpacing: 0,
         textAlign: "justify",
-        materialType: "MeshPhongMaterial"
+        materialType: "MeshPhongMaterial",
     });
 
     // Handlers:

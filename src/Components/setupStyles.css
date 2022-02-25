@@ -17,7 +17,6 @@
     background-color: #6DA7D9;
     border-radius: 7px;
     border: 2px black solid;
-    box-shadow: 9px 7px #14223C;
 }
 .select-box{
     display:flex;
@@ -57,7 +56,7 @@
     margin-left: 1em;
     max-height: 1000px;
     transition: max-height 1s ease-in-out;
-    background-color: #FDCE27;
+    background-color: #FFFFFF;
     border-radius: 7px;
     padding-bottom: 1em;
 }
@@ -133,10 +132,10 @@ label{
     border-radius: 50%;
 }
 input:checked + .slider {
-    background-color: #F7E7D0;
+    background-color: #FFFFFF;
 }
 input:focus + .slider {
-    box-shadow: 0 0 1px #F7E7D0;
+    box-shadow: 0 0 1px #FFFFFF;
 }
 input:checked + .slider:before {
     -webkit-transform: translateX(26px);
@@ -169,7 +168,7 @@ button:hover{
 .button-type2{
     background-color: #6DA7D9;
     box-shadow:7px 5px #14223C;
-    border: 2px #FDCE27 solid;
+    border: 2px #FFFFFF solid;
     margin-top: 2em;
 }
 .button-header>.button-type3{
@@ -179,20 +178,20 @@ button:hover{
 }
 .button-header>.button-type3-active{
     box-shadow:7px 5px #14223C;
-    background-color: #FDCE27;
+    background-color: #FFFFFF;
     margin: 5px 5px;
     transition: ease-in-out;
     transition-duration: 150ms;
 }
 .button-header>.button-type4{
-    box-shadow:7px 5px #FDCE27;
+    box-shadow:7px 5px #FFFFFF;
     background-color: transparent;
     color: #14223C;
     border: 2px black solid;
     margin: 5px 5px;
 }
 .button-header>.button-type4-active{
-    box-shadow:7px 5px #FDCE27;
+    box-shadow:7px 5px #FFFFFF;
     background-color: #14223C;
     transition: ease-in-out;
     transition-duration: 150ms;

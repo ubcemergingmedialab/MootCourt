@@ -13,7 +13,7 @@ const AnimationSelect = ({ availableAnimations, updateAnimation }) => {
     return null
 }
 
-function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, activeAnimation, animated }) {
+function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, activeAnimation, animated }) {
     const [gltf, setGltf] = useState();
     const [mixer, setMixer] = useState(null);
     const [animationClip, setAnimationClip] = useState(activeAnimation ? activeAnimation : "")
@@ -30,6 +30,7 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
                     //console.log('existing animation: ', clip.name, clip.duration, clip.tracks)
                     //animationObject[clip.name] = clip
                     action.play()
+                    mixer.update(0.1)
                 })
                 //setAvailableAnimations(animationObject)
             }
@@ -52,12 +53,13 @@ function Model({ modelUrl, pos, rot, sca, startAnimation, pauseAnimation, active
     }
 
     useFrame((state, delta) => {
-        if (startAnimation) {
-            if (!pauseAnimation) {
+        if (animated) {
+            if (!pauseAnimation && (typeof (pauseAnimation) !== "undefined")) {
                 mixer?.update(delta)
             }
         }
     })
+
     /*(animated && gltf.animations.length > 0)?<AnimationSelect availableAnimations={availableAnimations} updateAnimation={updateAnimation}></AnimationSelect>:null*/
     return gltf ?
         (<group >

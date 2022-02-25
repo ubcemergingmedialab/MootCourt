@@ -15,13 +15,13 @@ function ResourcesPage({homePage}){
             <p>Here we can find mooting resources to best help you strengthen your mooting skills! </p>
         </div>
         <div id="Checklist">
-            <h1><a href="First-Year Moots Procedure Checklist 2020.pdf" target="_blank">First year Moot procedure checklist</a></h1>
+            <h1><a href="First-Year Moots Procedure Checklist 2020.pdf" target="_blank">First Year Moot Procedure Checklist</a></h1>
         </div>
         <div id="Compiled">
-            <h1><a href="Compiled Moot Resources.pdf" target="_blank">General Mooting tips and oral argument criteria</a></h1>
+            <h1><a href="Compiled Moot Resources.pdf" target="_blank">General Mooting Tips and Oral Argument Criteria</a></h1>
         </div>
         <div id="Addressing">
-            <h1><a href="(CandC)Addressing_the_Court_Civil_and_Criminal.pdf" target="_blank">Addressing the court civil and criminal</a></h1>
+            <h1><a href="2021_Appearing_before_the_Court.pdf" target="_blank">Appearing before the Court (Civil and Criminal)</a></h1>
         </div>
         </div>
     </>)

@@ -129,13 +129,15 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     }
 
     const startedSpeakingHandler = () => {
-
+        setAnimationPaused(false)
     }
 
     const finishedSpeakingHandler = () => {
         setTimeout(() => {
             setText("")
         }, 10000)
+        
+        setAnimationPaused(true)
     }
     /*
     useEffect(() => { // when the utterance changes, start wait for the next one

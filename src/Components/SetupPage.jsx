@@ -14,6 +14,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     }
     const disableQuestionsPopup = () => {
         setPopupOpen(false);
+        setShouldQuestionsUpdate(false)
     }
 
     ///state for UI
@@ -53,10 +54,14 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
 
     const appellant = function () {
         setPositionState(Appellant)
+        setShouldQuestionsUpdate(true)
     }
     const respondent = function () {
         setPositionState(Respondent)
+        setShouldQuestionsUpdate(true)
     }
+
+    const [shouldQuestionsUpdate, setShouldQuestionsUpdate] = useState(true)
 
     const appellantButtonFill = 0
     const respondentButtonFill = 1
@@ -180,7 +185,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
     }, [positionState, environmentState, randomToggle, delayToggle, cutOffToggle, closedCaptionToggle, questionInterval, totalTime, firstWarning, secondWarning, questionsList])
 
 
-    return (<>{popupOpen ? <AddQuestionsPopup setQuestionsList={setQuestionsList} disable={disableQuestionsPopup} position={positionState}></AddQuestionsPopup> : null}
+    return (<>{popupOpen ? <AddQuestionsPopup shouldUpdate={shouldQuestionsUpdate} setQuestionsList={setQuestionsList} disable={disableQuestionsPopup} position={positionState}></AddQuestionsPopup> : null}
         <div className="page-setup">
             <div>
                 <button className="button-type1 button" onClick={() => { homePage() }}>Back</button>

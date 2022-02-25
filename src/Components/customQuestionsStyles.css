@@ -6,6 +6,11 @@ input{
     margin-right: 1em;
     padding-left: 1em;
 }
+
+.default {
+    background-color:#c8eef7
+}
+
 li{
    list-style-type: none; 
 }

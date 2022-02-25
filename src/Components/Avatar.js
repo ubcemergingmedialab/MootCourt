@@ -42,7 +42,7 @@ const VoiceSelect = ({ updateVoice }) => {
 
 //const deleteOldSkin = ({})
 
-function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak, skinState, animated = true, animationPause = false, startedSpeaking, finishedSpeaking }) {
+function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak, skinState, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
     const [micStarted, startMic] = useState(false) //call navigator.mediaDevices.getUserMedia or grab audio stream for lip syncing
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
 
@@ -53,7 +53,11 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     const [voice, setVoice] = useState(); // used to rerender avatar with a new voice based on user decision. Currently decided by leva, could add prop to decide this externally
     const [voicesReady, setVoicesReady] = useState(false) // causes rerender on voices loaded
     //const [skinState, setSkinState] = useState("modelUrl"); //identifies the skin as original (in no replacement is needed or new in which old model must be deleted)
-
+    const [isAnimationPaused, setIsAnimationPaused] = useState(true)
+    
+    useEffect(() => {
+        setIsAnimationPaused(animationPause)
+    }, [animationPause])
 
     const updateSkin = (deleteOldSkin) => {
         if (skinState != "") {
@@ -64,22 +68,26 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     const updateVoice = (voiceUpdate) => {
         console.log("updating voices ", voiceUpdate);
         setVoice(voiceUpdate);
+        finishedSpeaking();
         setVoicesReady(true)
     } // function to pass into VoiceSelect component
     window.speechSynthesis.onvoiceschanged = () => {
         console.log('voices ready');
+        finishedSpeaking();
         setVoicesReady(true);
     } // even handler to rerender when speechSynthesis has loaded some voices
     useEffect(() => {
         const availableVoices = window.speechSynthesis.getVoices()
         if (availableVoices.length > 0) {
             setVoice(availableVoices[0])
+            finishedSpeaking()
             setVoicesReady(true)
         }
         window.speechSynthesis.onvoiceschanged = () => {
             setVoice(availableVoices[0])
-            console.log('voices ready');
-            setVoicesReady(true);
+            console.log('voices ready')
+            finishedSpeaking()
+            setVoicesReady(true)
         } // even handler to rerender when speechSynthesis has loaded some voices
     }, []) // voices might have been loaded before component mounts, in which case event will never fire
 
@@ -87,7 +95,7 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
         console.log('speaking')
         cancel()
         speak({ text: textToSay, voice: voice, rate: 0.7 })
-        startedSpeaking && startedSpeaking()
+        startedSpeaking &&  textToSay !== "" && startedSpeaking()
     }, [textToSay]) // changes in textToSay will cause new utterance to start
     useEffect(() => {
         voicesReady && readyToSpeak()
@@ -95,7 +103,7 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     useEffect(() => {
         cancel()
         speak({ text: textToSay, voice: voice, rate: 0.7 })
-        startedSpeaking && startedSpeaking()
+        startedSpeaking &&  textToSay !== "" && startedSpeaking()
     }, [utteranceRepeat])
     return (<>
         <Suspense fallback={null}>
@@ -104,9 +112,8 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
                     pos={[0, 0, 0]}
                     rot={[0, 0, 0]}
                     sca={[2, 2, 2]}
-                    startAnimation={true}
-                    pauseAnimation={false}
-                    animated={true}></Model>
+                    pauseAnimation={isAnimationPaused}
+                    animated={animated}></Model>
                 {voicesReady ? <VoiceSelect updateVoice={updateVoice} /> : null}</mesh>
         </Suspense>
     </>
