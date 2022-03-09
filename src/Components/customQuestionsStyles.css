@@ -11,6 +11,10 @@ input{
     background-color:#c8eef7
 }
 
+.custom {
+    background-color:#ffffff
+}
+
 li{
    list-style-type: none; 
 }

@@ -44,7 +44,7 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
         return function (value) {
             let tempQuestions = { ...questions }
             tempQuestions[index] = value
-            //console.log(tempQuestions)
+            console.log(tempQuestions)
             setQuestions({ ...tempQuestions })
         }
     }
@@ -58,7 +58,9 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
 
     const submitQuestionHandler = function (e, i) {
         let tempQuestions = { ...questions }
-        tempQuestions['custom' + (i + 1)] = ""
+        if(!!!tempQuestions['custom' + (i + 1)]) {
+            tempQuestions['custom' + (i + 1)] = ""
+        }
         setQuestions({ ...tempQuestions })
     }
 
@@ -103,8 +105,8 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
                     })}
                 </div>
 
-                <div className="icon-header">
-                    <button className="close-icon" onClick={() => { disable() }} >Submit</button>
+                <div>
+                    <button className="submit-icon" onClick={() => { disable() }} >Submit</button>
                 </div>
             </div>
         </div>

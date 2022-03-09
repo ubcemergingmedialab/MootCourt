@@ -2,14 +2,14 @@
   position: absolute;
   background: #6DA7D9;
   width: 60%;
-  height: 100vh;
-  top: 20%;
+  top: 10%;
   left: 20%;
   border-radius: 8px;
   box-shadow: 2px 2px 100px;
   box-sizing: border-box;
   z-index: 5;
   overflow: auto;
+  padding: 2em;
   }
 .icon-header{
   position: absolute;
@@ -28,9 +28,23 @@
   border: 1px solid #999;
   font-size: 20px;
 }
+
+.submit-icon {
+  content: 'submit';
+  cursor: pointer;
+  background: #ededed;
+  width: 100px;
+  height: 30px;
+  border-radius: 10%;
+  line-height: 20px;
+  text-align: center;
+  border: 1px solid #999;
+  font-size: 20px;
+}
+
 .popup-content{
   position: relative;
-  top: 5%;
+  top: 10%;
   justify-content: center;
   text-align: center;
 }

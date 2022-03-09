@@ -196,7 +196,7 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
             <div className="select-box">
                 <div className="button-header">
                     <h2>Position</h2>
-                    <p>Position determines the question set</p>
+                    <p>Position determines the question set (overwrites questions in blue)</p>
                     <button className={ pButtonFillState? "button-type3":"button-type3-active"} onClick={() => { appellant(); appellantButton() }}>Appellant</button>
                     <button className={!pButtonFillState? "button-type4":"button-type4-active"} onClick={() => { respondent(); respondentButton() }}>Respondent</button>
                 </div>
