@@ -28,7 +28,7 @@ const defaultQuestions = [[
     "Would you agree that if we find that the trial judge made any errors that there will have to be a new trial ordered?"
 ]]
 
-function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate = true}) {
+function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate = true }) {
     const [showQuestion, setShowQuestion] = useState(true);
     const questionOpen = () => {
         setShowQuestion(!showQuestion);
@@ -58,8 +58,12 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
 
     const submitQuestionHandler = function (e, i) {
         let tempQuestions = { ...questions }
-        if(!!!tempQuestions['custom' + (i + 1)]) {
-            tempQuestions['custom' + (i + 1)] = ""
+        if (!!!tempQuestions['custom' + (e + 1)]) {
+            tempQuestions['custom' + (e + 1)] = ""
+        } else {
+            if(Object.keys(questions).length == 1) {
+                tempQuestions['custom' + (Object.keys(tempQuestions).length + 2)] = ""
+            }
         }
         setQuestions({ ...tempQuestions })
     }
@@ -93,6 +97,10 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
         <div className="popup-box">
             <div className="popup-content">
                 <span>Custom Questions</span>
+
+                <div>
+                    <button className="submit-icon" onClick={() => { disable() }} >Submit</button>
+                </div>
                 <div>
                     {Object.keys(questions).map((e, i) => {
                         return (
