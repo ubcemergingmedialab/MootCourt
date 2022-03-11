@@ -7,7 +7,7 @@ function LandingPage({homePage}){
                 <h1>Moot Court</h1> 
             </div>
             <div id="SubBorder">
-                <h2>Moot court simulator to help you practice!</h2>
+                <p>Moot court simulator to help you practice!</p>
             </div>
             <div id="Begin">
                 <p>Click anywhere on the screen to begin</p>
