@@ -16,7 +16,7 @@
     height:90px;
     background-color: #97D4E9;
     border-radius: 7px;
-    border: 2px black solid;
+    border: 2px #002145 solid;
 }
 .select-box{
     display:flex;
@@ -150,7 +150,7 @@ input:checked + .slider:before {
     margin:2em 4em 2em ;
 }
 button{
-    border: 1px solid black;
+    border: 1px solid #002145;
     border-radius: 7px;
     width:150px;
     height: 40px;
@@ -160,7 +160,7 @@ button:hover{
 }
 .button-type1{
     background-color: #c2c2c2;
-    border: 2px black solid;
+    border: 2px #002145 solid;
     margin-right: 800px;
 
 }
@@ -183,7 +183,7 @@ button:hover{
 .button-header>.button-type4{
     background-color: transparent;
     color: #14223C;
-    border: 2px black solid;
+    border: 2px #002145 solid;
     margin: 5px 5px;
 }
 .button-header>.button-type4-active{
@@ -191,11 +191,11 @@ button:hover{
     transition: ease-in-out;
     transition-duration: 150ms;
     color: #FFFFFF;
-    border: 2px black solid;
+    border: 2px #002145 solid;
     margin: 5px 5px;
 }
 .button-type5{
-    background-color: #14223C;
+    background-color: #002145;
     color: #F7E7D0;
 }
 .nobgbutton{

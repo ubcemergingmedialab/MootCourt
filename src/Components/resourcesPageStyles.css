@@ -1,30 +1,27 @@
 body {
-    background-color: #14223C;
-    font-family: 'Roboto', sans-serif;
+    background-color: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .button-type1-button {
     background-color: #C4C4C4;
-    border: solid #14223C 2px;
+    border: solid #002145 2px;
     font-family: inherit;
     width: 150px;
-    box-shadow: 3px 3px #FDCE27;
     position: fixed;
     top: 5%;
     left: 4%;
 }
 
 #Header {
-    width: 200px;
-    height: 50px;
-    border: solid #14223C 2px;
-    background-color: #6DA7D9;
-    text-align: center ;
-    color: #14223C;
-    font-family: 'Roboto', sans-serif;
-    font-size: 9px;
-    border-radius: 5px;
-    box-shadow: 5px 5px #F7E7D0;
+    width: 400px;
+    height: 90px;
+    border: solid #002145 2px;
+    background-color: #97D4E9;
+    text-align: center;
+    color: #002145;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 7px;
     position: absolute;
     top: 9%;
     left: 50%;
@@ -36,14 +33,10 @@ body {
 #Subtitle {
     width: 1100px;
     height: 75px;
-    border: solid #14223C 2px;
-    background-color: #FDCE27;
     text-align: center ;
-    color: #14223C;
-    font-family: 'Roboto', sans-serif;
+    color: #002145;
+    font-family: 'Arial', sans-serif;
     font-size: 22px;
-    border-radius: 5px;
-    box-shadow: 5px 5px #6DA7D9;
     position: absolute;
     top: 27%;
     left: 50%;
@@ -72,14 +65,13 @@ a:visited{
     width: 300px;
     height: 300px;
     padding: 100px 30px;
-    font-family: 'Roboto', sans-serif;
-    color: black; 
+    font-family: Arial, Helvetica, sans-serif;
+    color: #FFFFFF; 
     text-align: center ;
     font-size: 12px;
-    border: solid #0f1013 2px;
+    border: solid #002145 2px;
     border-radius: 5px;
-    background-color: #6DA7D9;
-    box-shadow: 7px 7px #FDCE27;
+    background-color: #00A7E1;
     position: absolute;
     top: 41%;
     left: 8%;
@@ -89,14 +81,13 @@ a:visited{
     width: 300px;
     height: 300px;
     padding: 90px 30px;
-    font-family: 'Roboto', sans-serif;
-    color: black; 
+    font-family: Arial, Helvetica, sans-serif;
+    color: #002145; 
     text-align: center ;
     font-size: 12px;
-    border: solid #0f1013 2px;
+    border: solid #002145 2px;
     border-radius: 5px;
-    background-color: #F7E7D0;
-    box-shadow: 7px 7px #5194CF;
+    background-color: #97D4E9;
     position: absolute;
     top: 41%;
     left: 38%;
@@ -106,14 +97,13 @@ a:visited{
     width: 300px;
     height: 300px;
     padding: 90px 30px;
-    font-family: 'Roboto', sans-serif;
-    color: black; 
+    font-family: Arial, Helvetica, sans-serif;
+    color: #FFFFFF; 
     text-align: center ;
     font-size: 12px;
-    border: solid #0f1013 2px;
+    border: solid #002145 2px;
     border-radius: 5px;
-    background-color: #FDCE27;
-    box-shadow: 7px 7px #F7E7D0;
+    background-color: #00A7E1;
     position: absolute;
     top: 41%;
     left: 68%;

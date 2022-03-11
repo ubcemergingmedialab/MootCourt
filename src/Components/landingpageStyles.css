@@ -8,7 +8,7 @@
 #HeaderBorder {
     width: 350px;
     padding: 0px 20px;
-    border: solid #14223C 2px;
+    border: solid #002145 2px;
     background-color: #FFFFFF;
     text-align: center ;
     color: #0055b7;
@@ -25,8 +25,8 @@
 #SubBorder {
     width: 500px;
     padding: 10px;
-    text-align: center ;
-    color: #14223C;
+    text-align: center;
+    color: #002145;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: lighter;

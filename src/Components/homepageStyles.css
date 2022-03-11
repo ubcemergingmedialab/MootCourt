@@ -6,11 +6,11 @@
 
 #TitleBorder {
     width: 300px;
-    border: solid #14223C 2px;
+    border: solid #002145 2px;
     background-color: #FFFFFF;
     text-align: center;
-    color: #14223C;
-    font-family: 'Roboto', sans-serif;
+    color: #002145;
+    font-family: 'Arial', sans-serif;
     border-radius: 8px;
     ;
     position: absolute;
@@ -26,7 +26,7 @@
     border: none;
     background-color: transparent;
     text-align: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Arial', sans-serif;
     font-weight: 100;
     border-radius: 8px;
     position: absolute;
@@ -40,6 +40,7 @@
 
 .button-type3 {
     background-color: #6EC4E8;
+    color: #002145;
     margin: 5px 5px;
 }
 
@@ -48,7 +49,7 @@
     border: none;
     background-color: transparent;
     text-align: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Arial', sans-serif;
     line-height: -5px;
     font-weight: 100;
     border-radius: 8px;
@@ -62,9 +63,9 @@
 }
 
 .button-type4 {
-    background-color: #14223C;
-    color: #F7E7D0;
-    border: 1px black solid;
+    background-color: #002145;
+    color: #FFFFFF;
+    border: 1px #002145 solid;
     margin: 5px 5px;
 }
 
@@ -76,7 +77,7 @@
     left: 10%;
     background: #97D4E9;
     border-radius: 8px;
-    border: 2px solid black;
+    border: 2px solid #002145;
 }
 
 #RectangleMid {
@@ -87,5 +88,5 @@
     top: 20%;
     background: #0055B7;
     border-radius: 8px;
-    border: 2px solid black;
+    border: 2px solid #002145;
 }
