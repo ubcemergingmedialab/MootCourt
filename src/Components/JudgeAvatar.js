@@ -35,7 +35,7 @@ let nextQuestionTime = Number.MAX_SAFE_INTEGER; // -1 means there is no question
 const Appellant = 0
 const Respondent = 1
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles}) {
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles, shouldWrapUp}) {
     const [currentText, setText] = useState("")
     const [textIndex, setTextIndex] = useState(-1)
     const [repeatingQuestion, setRepeatingQuestion] = useState(false)
@@ -79,6 +79,12 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     }, [])
 
     useEffect(() => {
+        if(shouldWrapUp) {
+            setText("Council, please conclude your thoughts as the time has run out")
+        }
+    }, [shouldWrapUp])
+
+    useEffect(() => {
         //console.log('time effect')
         if (appPaused === false) {
             if (nextQuestionTime <= 0) {
@@ -90,7 +96,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
             } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
                 console.log('utterance split first', utteranceSplit)
                 nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
-                setText("")
+                setText("Council, you may begin")
                 setTextIndex(-1)
             } else {
                 nextQuestionTime -= elapsedTime

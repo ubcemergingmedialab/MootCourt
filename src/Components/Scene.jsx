@@ -32,7 +32,7 @@ const testlistOfUtterances = [[
     "Would you agree that if we find that the trial judge made any errors that there will have to be a new trial ordered?"
 ]]
 
-export default function Scene({ appConfig, appPaused }) {
+export default function Scene({ appConfig, appPaused, timerWarning }) {
     const [animateCamera, setAnimateCamera] = useState(false)
     //const props = useSpring({ rotation: animateCamera ? [0, 0, 0] : [0, -Math.PI / 2, 0], config: { duration: 10000 } })
     //const AnimatedPlayer = animated(Player)
@@ -65,7 +65,7 @@ export default function Scene({ appConfig, appPaused }) {
 
                     <JudgeAvatar position={[0, -2, -4]} key={"judge_1"} id={"judge_1"} animated={true} listOfUtterances={Object.keys(appConfig["questionsList"]).length > 0? Object.values(appConfig.questionsList) : testlistOfUtterances[appConfig.position]}
                         utteranceSplit={window.parseInt(config.questionInterval) * 60000} randomizeQuestions={config.random}
-                        speaks={true} subtitles={appConfig.closedCaption} appPaused={appPaused} snoozeEnabled={appConfig.delay} subtitles={appConfig.closedCaption}/>
+                        speaks={true} subtitles={appConfig.closedCaption} appPaused={appPaused} snoozeEnabled={appConfig.delay} shouldWrapUp={timerWarning}/>
 
                     {/*<JudgeAvatar position={[-2, -2, -4]} key={"judge_0"} id={"judge_0"} utteranceSplit={180000} animated={false} speaks={false} />
                     <JudgeAvatar position={[2, -2, -4]} key={"judge_2"} id={"judge_2"} utteranceSplit={180000} animated={false} speaks={false} />*/}</> : null}

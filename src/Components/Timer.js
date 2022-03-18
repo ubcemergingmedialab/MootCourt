@@ -3,7 +3,7 @@ import { SphereBufferGeometry } from 'three'
 import "./timer.css"
 
 
-function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWarning, secondWarning, timerOverHandler, setAppState}) {
+function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWarning, secondWarning, timerOverHandler, setAppState, timerWarningHandler}) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeIndex, incrementTimeIndex] = useState(0);
@@ -64,6 +64,8 @@ function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWa
     useEffect(() => {
         if (cutoff && currentTime <= 0) {
             timerOverHandler();
+        } else if (currentTime <= 0) {
+            timerWarningHandler();
         }
     }, [cutoff, updateTimerInterval])
 
