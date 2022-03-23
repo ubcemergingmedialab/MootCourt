@@ -61,7 +61,7 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
         if (!!!tempQuestions['custom' + (e + 1)]) {
             tempQuestions['custom' + (e + 1)] = ""
         } else {
-            if(Object.keys(questions).length == 1) {
+            if (Object.keys(questions).length == 1) {
                 tempQuestions['custom' + (Object.keys(tempQuestions).length + 2)] = ""
             }
         }
@@ -86,8 +86,10 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
                 tempQuestions[i] = questions[i]
             }
 
-            for (let e of defaultQuestions[position ? position : 0]) {
-                tempQuestions[Object.keys(tempQuestions).length + 1] = e
+            if (position !== undefined) {
+                for (let e of defaultQuestions[position ? position : 0]) {
+                    tempQuestions[Object.keys(tempQuestions).length + 1] = e
+                }
             }
             setQuestions({ ...tempQuestions })
         }

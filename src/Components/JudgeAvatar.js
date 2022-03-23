@@ -90,7 +90,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
             } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
                 console.log('utterance split first', utteranceSplit)
                 nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
-                setText("")
+                setText("Council, you may begin your presentation")
                 setTextIndex(-1)
             } else {
                 nextQuestionTime -= elapsedTime
