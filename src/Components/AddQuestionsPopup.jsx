@@ -102,21 +102,38 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
 
                 <div>
                     <button className="submit-icon" onClick={() => { disable() }} >Submit</button>
+                    <input type="file" onChange={(event) => {
+                        var reader = new FileReader();
+
+                        reader.onload = function (event) {
+                            var jsonObj = JSON.parse(event.target.result);
+                            setQuestions(jsonObj)
+                        }
+
+                        reader.readAsText(event.target.files[0]);//credit: https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
+                    }}></input>
                 </div>
                 <div>
                     {Object.keys(questions).map((e, i) => {
                         return (
-                            <p key={"questionListItem-" + e} id={"questionListItem-" + e}>
+                            <div key={"questionListItem-" + e} id={"questionListItem-" + e}>
                                 <CustomQuestion isDefault={!e.includes('custom')} key={"customQuestion-" + e} id={"customQuestion-" + e} defaultValue={questions[e]}
                                     updateQuestion={updateQuestionHandler(e)}
                                     deleteQuestion={() => { deleteQuestionHandler(e) }}
                                     submitQuestion={() => { submitQuestionHandler(e, i) }}>
-                                </CustomQuestion></p>)
+                                </CustomQuestion></div>)
                     })}
                 </div>
 
                 <div>
                     <button className="submit-icon" onClick={() => { disable() }} >Submit</button>
+                    <button onClick={() => {
+                        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(questions));
+                        var dlAnchorElem = document.getElementById('downloadAnchorElem');
+                        dlAnchorElem.setAttribute("href", dataStr);
+                        dlAnchorElem.setAttribute("download", "scene.json");
+                        dlAnchorElem.click();/*credit: https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser*/
+                    }} >Download as JSON</button><a id="downloadAnchorElem"></a>
                 </div>
             </div>
         </div>
