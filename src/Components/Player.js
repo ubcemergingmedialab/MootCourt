@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useXR } from '@react-three/xr'
 
+/** Component that can be used in an XR scene to control player position */
 function Player({position, rotation}) {
     const { player } = useXR()
     useFrame(() => {

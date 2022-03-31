@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { extend, Canvas } from "@react-three/fiber";
 import { Text } from "troika-three-text";
 import fonts from "./fonts";
+import PropTypes from 'prop-types'
 
 extend({ Text });
 
@@ -57,4 +58,10 @@ function Subtitle({ textToSay }) {
         <pointLight position={[100, 0, -160]} />
     </>);
 }
+
+Subtitle.propTypes = {
+    /** changes the text subtitles are currently displaying */
+    textToSay: PropTypes.string
+}
+
 export default Subtitle

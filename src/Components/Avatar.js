@@ -19,11 +19,13 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { useHover } from 'react-use-gesture'
 import * as THREE from 'three'
 import { useControls } from 'leva'
+import PropTypes from 'prop-types';
 import '../styles.css'
 
 import Button from './Button.js'
 import Model from './Model.js'
 import LipSync from './LipSync.js'
+import propTypes from 'prop-types';
 
 const voiceId = Math.random();
 
@@ -42,8 +44,12 @@ const VoiceSelect = ({ updateVoice }) => {
 
 //const deleteOldSkin = ({})
 
-function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteranceRepeat, readyToSpeak, skinState, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
-    const [micStarted, startMic] = useState(false) //call navigator.mediaDevices.getUserMedia or grab audio stream for lip syncing
+/**
+ * A general purpose Avatar component that makes use of web speech synthesis and glb model loading (Model component). Parent can configure/play/puase animation and uses prop functions
+ * to communicate speech synthesis ready, started speaking and finished speaking.
+ */
+function Avatar({ position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
+    const [micStarted, startMic] = useState(false)
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
 
     const onEnd = () => {
@@ -54,17 +60,10 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     const [voicesReady, setVoicesReady] = useState(false) // causes rerender on voices loaded
     //const [skinState, setSkinState] = useState("modelUrl"); //identifies the skin as original (in no replacement is needed or new in which old model must be deleted)
     const [isAnimationPaused, setIsAnimationPaused] = useState(true)
-    
+
     useEffect(() => {
         setIsAnimationPaused(animationPause)
     }, [animationPause])
-
-    const updateSkin = (deleteOldSkin) => {
-        if (skinState != "") {
-            this.Model.dispose();
-            skinState = modelUrl;
-        }
-    }
     const updateVoice = (voiceUpdate) => {
         console.log("updating voices ", voiceUpdate);
         setVoice(voiceUpdate);
@@ -95,7 +94,7 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
         console.log('speaking')
         cancel()
         speak({ text: textToSay, voice: voice, rate: 0.7 })
-        startedSpeaking &&  textToSay !== "" && startedSpeaking()
+        startedSpeaking && textToSay !== "" && startedSpeaking()
     }, [textToSay]) // changes in textToSay will cause new utterance to start
     useEffect(() => {
         voicesReady && readyToSpeak()
@@ -103,7 +102,7 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     useEffect(() => {
         cancel()
         speak({ text: textToSay, voice: voice, rate: 0.7 })
-        startedSpeaking &&  textToSay !== "" && startedSpeaking()
+        startedSpeaking && textToSay !== "" && startedSpeaking()
     }, [utteranceRepeat])
     return (<>
         <Suspense fallback={null}>
@@ -119,6 +118,30 @@ function Avatar({ position, rotation, buttonOffset, modelUrl, textToSay, utteran
     </>
     )
 
+}
+
+
+Avatar.propTypes = {
+     /** used to set the position of the Avatar in 3d space*/
+    position: PropTypes.any,
+     /** used to set the rotation of the Avatar in 3d space*/
+    rotation: PropTypes.any,
+    /** url passed to Model component*/
+    modelUrl: PropTypes.string,
+    /** used to control Avatar speech synthesis*/
+    textToSay: PropTypes.string,
+    /** used to control Avatar speech synthesis, causes repeat of current textToSay*/
+    utteranceRepeat: PropTypes.bool,
+    /** used to message parent that speech synthesis is ready*/
+    readyToSpeak: PropTypes.func,
+    /** configures animations in Model component*/
+    animated: PropTypes.bool,
+    /** pauses/unpauses animations in Model component*/
+    animationPause: PropTypes.bool,
+    /** used to message parent that speech synthesis has started an utterance*/
+    startedSpeaking: PropTypes.func,
+    /** used to message parent that speech synthesis has finished an utterance*/
+    finishedSpeaking: PropTypes.func
 }
 
 export default Avatar;

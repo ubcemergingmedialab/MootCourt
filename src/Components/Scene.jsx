@@ -5,6 +5,7 @@ import JudgeAvatar from './JudgeAvatar'
 import Model from './Model'
 import Player from './Player'
 import '../styles.css'
+import PropTypes from 'prop-types'
 
 const testlistOfUtterances = [[
     "Did not the trial court make some findings of fact that are contrary to your submissions, and should we not defer to those findings of fact?",
@@ -32,7 +33,7 @@ const testlistOfUtterances = [[
     "Would you agree that if we find that the trial judge made any errors that there will have to be a new trial ordered?"
 ]]
 
-export default function Scene({ appConfig, appPaused }) {
+export default function Scene({ appConfig, appPaused, timerWarning }) {
     const [animateCamera, setAnimateCamera] = useState(false)
     //const props = useSpring({ rotation: animateCamera ? [0, 0, 0] : [0, -Math.PI / 2, 0], config: { duration: 10000 } })
     //const AnimatedPlayer = animated(Player)
@@ -65,7 +66,7 @@ export default function Scene({ appConfig, appPaused }) {
 
                     <JudgeAvatar position={[0, -2, -4]} key={"judge_1"} id={"judge_1"} animated={true} listOfUtterances={Object.keys(appConfig["questionsList"]).length > 0? Object.values(appConfig.questionsList) : testlistOfUtterances[appConfig.position]}
                         utteranceSplit={window.parseInt(config.questionInterval) * 60000} randomizeQuestions={config.random}
-                        speaks={true} subtitles={appConfig.closedCaption} appPaused={appPaused} snoozeEnabled={appConfig.delay} subtitles={appConfig.closedCaption}/>
+                        speaks={true} subtitles={appConfig.closedCaption} appPaused={appPaused} snoozeEnabled={appConfig.delay} shouldWrapUp={timerWarning}/>
 
                     {/*<JudgeAvatar position={[-2, -2, -4]} key={"judge_0"} id={"judge_0"} utteranceSplit={180000} animated={false} speaks={false} />
                     <JudgeAvatar position={[2, -2, -4]} key={"judge_2"} id={"judge_2"} utteranceSplit={180000} animated={false} speaks={false} />*/}</> : null}
@@ -83,4 +84,13 @@ export default function Scene({ appConfig, appPaused }) {
                     sca={[0.06, 0.06, 0.06]} />
                 <DefaultXRControllers />
                 </VRCanvas></Suspense></>)
+}
+
+Scene.propTypes = {
+    /** object passed into scene to from the setup page */
+    appConfig: PropTypes.any,
+    /** boolean that gets passed to Judge and set by PauseButton. Judge reacts by stopping time counting*/
+    appPaused: PropTypes.bool,
+    /** boolean that gets passed to Judge and set by Tmer. Judge reacts by making an utterance the the user should wrap up */
+    timerWarning: PropTypes.bool
 }

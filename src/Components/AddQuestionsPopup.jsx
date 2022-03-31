@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import CustomQuestion from './CustomQuestion'
 import './addQuestionsStyles.css'
+import PropTypes from 'prop-types'
 
 const defaultQuestions = [[
     "Did not the trial court make some findings of fact that are contrary to your submissions, and should we not defer to those findings of fact?",
@@ -139,6 +140,17 @@ function AddQuestionsPopup({ disable, setQuestionsList, position, shouldUpdate =
         </div>
 
     </>)
+}
+
+AddQuestionsPopup.propTypes = {
+    /** should set a bool in parent that unmounts this component */
+    disable: PropTypes.func,
+    /** Communicates the calculated list to parent */
+    setQuestionsList: PropTypes.func,
+    /** decides default question list based on Appellant or Respondent */
+    position: PropTypes.bool,
+    /** boolean used in the case the component should avoid overwriting questions list in parent*/
+    shouldUpdate: PropTypes.bool
 }
 
 export default AddQuestionsPopup

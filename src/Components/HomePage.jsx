@@ -1,4 +1,5 @@
 import './homepageStyles.css'
+import PropTypes from 'prop-types'
 
 function HomePage({setupPage, resourcesPage}){
     return(<>
@@ -18,6 +19,13 @@ function HomePage({setupPage, resourcesPage}){
             </div>
         </div>
     </>)
+}
+
+HomePage.propTypes = {
+    /** transitions state machine to be in Setup state */
+    setupPage: PropTypes.func,
+    /** transitions state machine to be in the Homepage state */
+    resourcesPage: PropTypes.func
 }
 
 export default HomePage

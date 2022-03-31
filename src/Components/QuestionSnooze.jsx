@@ -2,6 +2,8 @@ import { Html } from '@react-three/drei'
 import { Suspense } from 'react';
 import { useEffect } from 'react/cjs/react.development';
 import './snoozeStyles.css'
+import PropTypes from 'prop-types'
+
 function QuestionSnooze(props) {
 
     useEffect(() => {
@@ -17,6 +19,11 @@ function QuestionSnooze(props) {
             </Html>
         </mesh>
     </group></Suspense>
+}
+
+QuestionSnooze.propTypes = {
+    /** Communicates to parent that snooze button was pressed */
+    snoozeQuestion: PropTypes.func,
 }
 
 export default QuestionSnooze;

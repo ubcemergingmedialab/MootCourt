@@ -3,6 +3,7 @@ import { useSpring, animated } from 'react-spring'
 import useMeasure from 'react-use-measure'
 import AddQuestionsPopup from './AddQuestionsPopup';
 import './setupStyles.css'
+import PropTypes from 'prop-types'
 
 
 const defaultQuestions = [["Did not the trial court make some findings of fact that are contrary to your submissions, and should we not defer to those findings of fact?",
@@ -282,13 +283,13 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
                             </div>
                             <div className="content">
                                 <button className="button-type5" onClick={() => { enableQuestionsPopup() }} >Add your own questions</button>
-                                {questionsInfo ? <div style={{zIndex: 1, position: "fixed", width: "50%", height: "43%", overflow: "auto", backgroundColor: "#FFFFFFFa", top: "20%", border:"1px solid black" }}>
+                                {questionsInfo ? <div style={{ zIndex: 1, position: "fixed", width: "50%", height: "43%", overflow: "auto", backgroundColor: "#FFFFFFFa", top: "20%", border: "1px solid black" }}>
                                     <ul>
                                         <li> If you make no changes on this page, the default questions in blue will be asked during your presentation. </li>
                                         <li><b>To delete a question:</b> Click the “x” button to the right of each question that you do not want to be asked during your presentation.</li>
                                         <li><b>To amend a question:</b> Click into the textbox of a question to edit the question that you wish to be asked, or to delete all of the text and write a new question.</li>
                                         <li><b>To add a new question:</b> Click into the white textbox below to add your own custom question.
-                                            <ul><li style={{listStyleType: "circle"}}><b>Tip:</b> If you are practicing with someone else, consider having that person enter custom questions that are tailored to your argument to enable you to practice responding to a question without knowing the context of the questions that are coming.</li></ul></li>
+                                            <ul><li style={{ listStyleType: "circle" }}><b>Tip:</b> If you are practicing with someone else, consider having that person enter custom questions that are tailored to your argument to enable you to practice responding to a question without knowing the context of the questions that are coming.</li></ul></li>
                                         <li><b>To save your changes:</b> If you wish to save your changes to the questions, click the “Save” button. </li>
                                         <li><b>To reset to the default questions:</b> Return to the set-up page by clicking "Submit" and use the "reset to default" button and the bottom, or click the Position button again</li>
                                     </ul></div> : null}
@@ -384,6 +385,15 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
             </div>
         </div>
     </>)
+}
+
+SetupPage.propTypes = {
+    /** Transitions app state machine to the Presentation state */
+    presentationPage: PropTypes.func,
+    /** Transitions app state machine to the Homepage state */
+    homePage: PropTypes.func,
+    /** communicates configuration object to parent every time config changes */
+    updateConfig: PropTypes.func
 }
 
 export default SetupPage

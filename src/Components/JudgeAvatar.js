@@ -5,6 +5,7 @@ import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
 import Subtitle from './Subtitle.js'
 import QuestionSnooze from './QuestionSnooze.jsx'
+import PropTypes from 'prop-types'
 
 
 
@@ -35,7 +36,10 @@ let nextQuestionTime = Number.MAX_SAFE_INTEGER; // -1 means there is no question
 const Appellant = 0
 const Respondent = 1
 
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles}) {
+/**
+ * A Component that uses Avatar speech sythesis and Subtitles to implement a simple agent that asks questions on a set time interval. Changes in Judge behaviour should be implemented here.
+ */
+function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles, shouldWrapUp }) {
     const [currentText, setText] = useState("")
     const [textIndex, setTextIndex] = useState(-1)
     const [repeatingQuestion, setRepeatingQuestion] = useState(false)
@@ -77,6 +81,12 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
         }
 
     }, [])
+
+    useEffect(() => {
+        if (shouldWrapUp) {
+            setText("Council, please conclude your thoughts as the time has run out")
+        }
+    }, [shouldWrapUp])
 
     useEffect(() => {
         //console.log('time effect')
@@ -136,7 +146,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
         setTimeout(() => {
             setText("")
         }, 10000)
-        
+
         setAnimationPaused(true)
     }
     /*
@@ -157,11 +167,36 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
             rotation={[0.2, 0.2, 0]}
             buttonText={"Pause Animation"} /> : null}
 
-        <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} skinState={skinState} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
-        {subtitles? <Subtitle textToSay={currentText} /> : null}
+        <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        {subtitles ? <Subtitle textToSay={currentText} /> : null}
         <SkinSelect updateSkin={updateSkin}></SkinSelect>
         {(snoozeEnabled && (snoozeTimeLeft <= 20) && (snoozeTimeLeft > 0)) ? <QuestionSnooze timeLeft={snoozeTimeLeft} position={position} snoozeQuestion={snoozeQuestionHandler}></QuestionSnooze> : null}
     </Suspense>)
+}
+
+JudgeAvatar.propTypes = {
+    /** vector3 describing position of judge, passed to Avatar component */
+    position: PropTypes.any,
+    /** url for the model that should be loaded, passed to Avatar component */
+    modelUrl: PropTypes.string,
+    /** how long judge will wait between questions */
+    utteranceSplit: PropTypes.number,
+    /** whether or not this judge will make use of speech synthesis. */
+    speaks: PropTypes.bool,
+    /** Wheter or not this judge will use animations in the Model, passed to Avatar component*/
+    animated: PropTypes.bool,
+    /** The list of questions the judge will draw on */
+    listOfUtterances: PropTypes.arrayOf(PropTypes.string),
+    /** Judge will react to this boolean by pausing its counting of time till next question */
+    appPaused: PropTypes.bool,
+    /** Whether or not the SnoozeQuestions UI will show */
+    snoozeEnabled: PropTypes.bool,
+    /** if true, questions will be shuffle before presentation starts */
+    randomizeQuestions: PropTypes.bool,
+    /** if true, captions will be shown */
+    subtitles: PropTypes.bool,
+    /** Judge will react to true by asking participant to finish */
+    shouldWrapUp: PropTypes.bool
 }
 
 export default JudgeAvatar;
