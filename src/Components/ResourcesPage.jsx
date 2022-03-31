@@ -1,5 +1,5 @@
 import './resourcesPageStyles.css'
-
+import PropTypes from 'prop-types'
 
 function ResourcesPage({homePage}){
     return(<>
@@ -25,6 +25,11 @@ function ResourcesPage({homePage}){
         </div>
         </div>
     </>)
+}
+
+ResourcesPage.propTypes = {
+    /** Transitions app state machine to the Homepage state */
+    homePage: PropTypes.func,
 }
 
 export default ResourcesPage

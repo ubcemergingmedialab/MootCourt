@@ -5,6 +5,7 @@ import JudgeAvatar from './JudgeAvatar'
 import Model from './Model'
 import Player from './Player'
 import '../styles.css'
+import PropTypes from 'prop-types'
 
 const testlistOfUtterances = [[
     "Did not the trial court make some findings of fact that are contrary to your submissions, and should we not defer to those findings of fact?",
@@ -83,4 +84,13 @@ export default function Scene({ appConfig, appPaused, timerWarning }) {
                     sca={[0.06, 0.06, 0.06]} />
                 <DefaultXRControllers />
                 </VRCanvas></Suspense></>)
+}
+
+Scene.propTypes = {
+    /** object passed into scene to from the setup page */
+    appConfig: PropTypes.any,
+    /** boolean that gets passed to Judge and set by PauseButton. Judge reacts by stopping time counting*/
+    appPaused: PropTypes.bool,
+    /** boolean that gets passed to Judge and set by Tmer. Judge reacts by making an utterance the the user should wrap up */
+    timerWarning: PropTypes.bool
 }

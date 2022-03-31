@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { SphereBufferGeometry } from 'three'
 import "./timer.css"
+import PropTypes from 'prop-types'
 
 
-function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWarning, secondWarning, timerOverHandler, setAppState, timerWarningHandler}) {
+function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWarning, secondWarning, timerOverHandler, setAppState, timerWarningHandler }) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeIndex, incrementTimeIndex] = useState(0);
@@ -25,7 +26,7 @@ function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWa
         let appendToSecond = "";
         // if the value is negative, append '-' before the minute counter
         appendToMin = minutes < 10 ? "0" + appendToMin : appendToMin;
-        appendToMin = isTimeNegative ? "-" + appendToMin: appendToMin;
+        appendToMin = isTimeNegative ? "-" + appendToMin : appendToMin;
         appendToSecond = seconds < 10 ? "0" + appendToSecond : appendToSecond;
         minutes = appendToMin + minutes;
         seconds = appendToSecond + seconds;
@@ -42,7 +43,7 @@ function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWa
                     incrementTimeIndex(timeIndex + 1);
                 }
             }
-        // calculate the remaining time after each tick
+            // calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
         }
     }, [updateTimerInterval, appPaused])
@@ -75,6 +76,25 @@ function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWa
             <div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
         </div> : null}
     </>
+}
+
+Timer.propTypes = {
+    /** keeps timer from starting before presentation does */
+    isPresentationStarted: PropTypes.bool,
+    /** if true, timer will call timerOverHandler which ends the presentation, otherwise timerWarningHandler is used */
+    cutoff: PropTypes.bool,
+    /** number of milliseconds the timer will start counting down from*/
+    startingTime: PropTypes.number,
+    /** stops timer counting if true */
+    appPaused: PropTypes.bool,
+    /** configures timer to change to yellow after this many milliseconds */
+    firstWarning: PropTypes.number,
+    /** configures timer to change to red after this many milliseconds */
+    secondWarning: PropTypes.number,
+    /** gets called if cutoff is true and when timer runs to 0 */
+    timerOverHandler: PropTypes.func,
+    /** gets called if cutoff is false and when timer runs to 0 */
+    timerWarningHandler: PropTypes.func
 }
 
 export default Timer;

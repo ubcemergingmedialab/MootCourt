@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { extend, Canvas } from "@react-three/fiber";
 import { Text } from "troika-three-text";
 import fonts from "./fonts";
+import PropTypes from 'prop-types'
 
 extend({ Text });
 
@@ -19,12 +20,13 @@ function Subtitle({ textToSay }) {
     const [opts, setOpts] = useState({
         font: "Roboto Slab",
         fontSize: .17,
-        color: "#05337d",
+        color: "#BFBFBF",
         maxWidth: 100,
         lineHeight: 1,
         letterSpacing: 0,
         textAlign: "justify",
         materialType: "MeshPhongMaterial",
+        outlineWidth: "10%"
     });
 
     // Handlers:
@@ -56,4 +58,10 @@ function Subtitle({ textToSay }) {
         <pointLight position={[100, 0, -160]} />
     </>);
 }
+
+Subtitle.propTypes = {
+    /** changes the text subtitles are currently displaying */
+    textToSay: PropTypes.string
+}
+
 export default Subtitle

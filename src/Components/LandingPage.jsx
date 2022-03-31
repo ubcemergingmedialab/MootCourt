@@ -1,4 +1,5 @@
 import './landingpageStyles.css'
+import PropTypes from 'prop-types'
 
 function LandingPage({homePage}){
     return(<>
@@ -16,6 +17,11 @@ function LandingPage({homePage}){
         </div>
     
     </>)
+}
+
+LandingPage.propTypes = {
+    /** handler to swap to Home Page in state machine */
+    homepage: PropTypes.func
 }
 
 export default LandingPage

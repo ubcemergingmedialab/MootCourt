@@ -7,13 +7,13 @@ import { Box } from '@react-three/drei'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './styles.css'
 
-import Scene from './Components/Scene'
-import Timer from './Components/Timer.js'
-import PauseButton from './Components/PauseButton';
-import SetupPage from './Components/SetupPage'
-import LandingPage from './Components/LandingPage'
-import HomePage from './Components/HomePage'
-import ResourcesPage from './Components/ResourcesPage'
+import Scene from './components/Scene.jsx'
+import Timer from './components/Timer.js'
+import PauseButton from './components/PauseButton.jsx';
+import SetupPage from './components/SetupPage.jsx'
+import LandingPage from './components/LandingPage.jsx'
+import HomePage from './components/HomePage.jsx'
+import ResourcesPage from './components/ResourcesPage'
 
 
 extend({ OrbitControls })

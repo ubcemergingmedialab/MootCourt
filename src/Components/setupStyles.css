@@ -66,6 +66,7 @@
     display: flex;
     margin-left: 1em;
     flex-direction: row;
+    align-items: center;
 }
 .content-stretch{
     flex-grow: 2;
@@ -183,7 +184,7 @@ button:hover{
 .button-header>.button-type4{
     background-color: transparent;
     color: #14223C;
-    border: 2px #002145 solid;
+    border: 1px #002145 solid;
     margin: 5px 5px;
 }
 .button-header>.button-type4-active{
@@ -191,7 +192,7 @@ button:hover{
     transition: ease-in-out;
     transition-duration: 150ms;
     color: #FFFFFF;
-    border: 2px #002145 solid;
+    border: 1px #002145 solid;
     margin: 5px 5px;
 }
 .button-type5{
@@ -210,4 +211,9 @@ button:hover{
     padding-bottom: 1em;
 }
 /* button end */
+/*styles for questions info modal*/
 
+li {
+    list-style: disc;
+    padding-top: 1.5em;
+}
