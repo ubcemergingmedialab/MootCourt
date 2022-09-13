@@ -132,6 +132,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
             setText(utterances[textIndex])
         }
     }, [textIndex])
+    
     const readyToSpeakHandler = () => { // start chain of utterances when avatar has loaded voices, passed down to prop in Avatar
         console.log('updating ready to speak')
         setReadyToSpeak(true)
