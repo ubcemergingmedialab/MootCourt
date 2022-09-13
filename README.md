@@ -1,6 +1,7 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Note: The most up to date branch in the repository is devDefaults. All the active branches are merged into devDefaults except for speechRecognition. Developers should pull from devDefaults if they wish to see most of the codebase.
 
 ## Available Scripts
 
