@@ -8,18 +8,8 @@ import QuestionSnooze from './QuestionSnooze.jsx'
 import PropTypes from 'prop-types'
 
 
-
 const SkinSelect = ({ updateSkin }) => {
-    //File modelPath = new File("./models/");  //gets the model path for models
-    //String modelList[] = modelpath.list();   //lists all model urls in the models folder
-
-    // const fs = require('fs');
-    // const modelList = fs.readdirSync('./models/judge_avatar/'); // file names instead of file paths? (dynamically :())
-
-    //manual implementatino of modellist -> brute force
-
     const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
-
     const judgeSkins = modelList;
     const judgeSkinObject = {}
     for (let i = 0; i < judgeSkins.length; i++) {
@@ -32,22 +22,20 @@ const SkinSelect = ({ updateSkin }) => {
     return null
 }
 
-let nextQuestionTime = Number.MAX_SAFE_INTEGER; // -1 means there is no question to be asked next. counts down until
-const Appellant = 0
-const Respondent = 1
+let nextQuestionTime = Number.MAX_SAFE_INTEGER;
 
 /**
  * A Component that uses Avatar speech sythesis and Subtitles to implement a simple agent that asks questions on a set time interval. Changes in Judge behaviour should be implemented here.
  */
-function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles, shouldWrapUp }) {
+function DemoJudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles, shouldWrapUp }) {
     const [currentText, setText] = useState("")
-    const [textIndex, setTextIndex] = useState(-1)
+    const [textIndex, setTextIndex] = useState(0)
     const [repeatingQuestion, setRepeatingQuestion] = useState(false)
     const [firstQuestion, setFirstQuestion] = useState(false)
     const [readyToSpeak, setReadyToSpeak] = useState(false)
     const [snoozeTimeLeft, setSnoozeTimeLeft] = useState(Number.MAX_SAFE_INTEGER)
     const utteranceListLength = listOfUtterances.length
-    const [utterances, setUtterances] = useState(randomizeQuestions ? listOfUtterances.sort(() => (Math.random() > .5) ? 1 : -1) : listOfUtterances)
+    const [utterances, setUtterances] = useState(listOfUtterances)
     const [elapsedTime, setElapsedTime] = useState(0)
     const [previousTime, setPreviousTime] = useState(Date.now())
     const [questionTimeUpdate, setQuestionTimeUpdate] = useState(false)
@@ -83,41 +71,30 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     }, [])
 
     useEffect(() => {
-        if (shouldWrapUp) {
-            setText("Council, please conclude your thoughts as the time has run out")
-        }
-    }, [shouldWrapUp])
-
-    useEffect(() => {
         //console.log('time effect')
         if (appPaused === false) {
             if (nextQuestionTime <= 0) {
                 console.log('utterance split again', utteranceSplit)
-                nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
+                nextQuestionTime = utteranceSplit
                 setFirstQuestion(true)
                 setTextIndex(prevTextIndex => (prevTextIndex + 1) % utteranceListLength)
-                console.log("speaking " + textIndex)
+                // console.log("demojudgeavatar speaking: " + utterances[textIndex])
             } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
                 console.log('utterance split first', utteranceSplit)
-                nextQuestionTime = (typeof utteranceSplit === "number" ? (utteranceSplit + Math.random() * 30000) : (180000 + Math.random() * 30000))
-                setText("The demo is now starting.")
+                nextQuestionTime = utteranceSplit
+                setText("Welcome to Moot Court. Your demo will be starting shortly.")
                 setTextIndex(-1)
             } else {
                 nextQuestionTime -= elapsedTime
-                console.log("time remaining: ", nextQuestionTime)
-                console.log("elapsedTime: ", elapsedTime)
             }
             setSnoozeTimeLeft(Math.floor(nextQuestionTime / 1000))
         }
-    }, [questionTimeUpdate, appPaused, utterances])
+    }, [questionTimeUpdate, utterances])
 
     useEffect(() => {
-        console.log('judge is set to ', speaks, readyToSpeak)
         if (readyToSpeak === true && speaks === true) {
             console.log('ready to speak')
-            questionInterval = window.setInterval(() => {
-                setQuestionTimeUpdate(prevUpdate => !prevUpdate)
-            }, 1000)
+            questionInterval = window.setInterval(() => {setQuestionTimeUpdate(prevUpdate => !prevUpdate)}, 1000)
         }
     }, [readyToSpeak, speaks])
 
@@ -150,32 +127,20 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
 
         setAnimationPaused(true)
     }
-    /*
-    useEffect(() => { // when the utterance changes, start wait for the next one
-        waitingInterval = setTimeout(() => {
-            setFirstQuestion(true)
-            setTextIndex((textIndex + 1) % utteranceListLength)
-        }, utteranceSplit ? utteranceSplit + Math.random() * 30000 : 180000 + Math.random() * 30000)
-    }, [currentText])
-    useEffect(() => { // when utterance index changes, immediately start corresponding utterance
-        console.log("text index effect " + textIndex)
-        setText(listOfUtterances[utteranceIndex][textIndex])
-    }, [textIndex])*/
 
     return (<Suspense fallback={null}>
         {firstQuestion ? <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setRepeatingQuestion(!repeatingQuestion)}
             position={[position[0] - 1, position[1], position[2]]}
             rotation={[0.2, 0.2, 0]}
             buttonText={"Pause Animation"} /> : null}
-
         <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
-        {subtitles ? <Subtitle textToSay={currentText} /> : null}
+        {/* {subtitles ? <Subtitle textToSay={currentText} /> : null} */}
         <SkinSelect updateSkin={updateSkin}></SkinSelect>
         {(snoozeEnabled && (snoozeTimeLeft <= 20) && (snoozeTimeLeft > 0)) ? <QuestionSnooze timeLeft={snoozeTimeLeft} position={position} snoozeQuestion={snoozeQuestionHandler}></QuestionSnooze> : null}
     </Suspense>)
 }
 
-JudgeAvatar.propTypes = {
+DemoJudgeAvatar.propTypes = {
     /** vector3 describing position of judge, passed to Avatar component */
     position: PropTypes.any,
     /** url for the model that should be loaded, passed to Avatar component */
@@ -200,4 +165,4 @@ JudgeAvatar.propTypes = {
     shouldWrapUp: PropTypes.bool
 }
 
-export default JudgeAvatar;
+export default DemoJudgeAvatar;
