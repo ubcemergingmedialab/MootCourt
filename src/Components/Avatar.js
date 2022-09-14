@@ -91,9 +91,9 @@ function Avatar({ position, rotation, modelUrl, textToSay, utteranceRepeat, read
     }, []) // voices might have been loaded before component mounts, in which case event will never fire
 
     useEffect(() => {
-        console.log('speaking')
+        console.log('speaking: ' + textToSay)
         cancel()
-        speak({ text: textToSay, voice: voice, rate: 0.7 })
+        speak({ text: textToSay, voice: voice, rate: 1.0 })
         startedSpeaking && textToSay !== "" && startedSpeaking()
     }, [textToSay]) // changes in textToSay will cause new utterance to start
     useEffect(() => {

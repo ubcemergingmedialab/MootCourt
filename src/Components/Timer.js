@@ -14,7 +14,7 @@ function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWa
     const [currentTime, setCurrentTime] = useState(startingTime ? startingTime : 1200000)
     const times = [{ time: firstWarning, message: "", color: "#FAB900" }, { time: secondWarning, message: "", color: "#FA646A" }]
     const msToTime = function (duration) {
-        console.log(duration, "duration");
+        // console.log(duration, "duration");
         let isTimeNegative = duration < 0;
         // use absolute time to calculate displayed time
         duration = Math.abs(duration);
