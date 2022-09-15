@@ -99,7 +99,7 @@ function App() {
               <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
                 <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
                 <Timer isPresentationStarted={appState == Presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing} timerWarningHandler={timerWarningHandler}></Timer>
-                <DemoPositionButton></DemoPositionButton>
+                {/* <DemoPositionButton></DemoPositionButton> */}
                 </div>
                 </div></Suspense></> : null}
       {(appState == Home) ? <HomePage setupPage={setup} resourcesPage={resources} demoPage={demoPage}></HomePage> : null}

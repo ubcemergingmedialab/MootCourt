@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useState, useRef } from 'react'
 import Avatar from './Avatar.js'
 import Button from './Button.js'
 import { useControls } from 'leva'
@@ -6,6 +6,31 @@ import { useFrame } from '@react-three/fiber'
 import Subtitle from './Subtitle.js'
 import QuestionSnooze from './QuestionSnooze.jsx'
 import PropTypes from 'prop-types'
+import { OrbitControls, Stats, Text } from "@react-three/drei";
+
+function Box(props) {
+    // This reference will give us direct access to the mesh
+    const mesh = useRef()
+    // Set up state for the hovered and active state
+    const [hovered, setHover] = useState(false)
+    const [active, setActive] = useState(false)
+    // Subscribe this component to the render-loop, rotate the mesh every frame
+    // useFrame((state, delta) => (mesh.current.rotation.x += 0.01))
+    // Return view, these are regular three.js elements expressed in JSX
+    return (
+      <mesh
+        {...props}
+        ref={mesh}
+        scale ={hovered ? [3.1, 1.1, 0.5] : [3, 1, 0.5]}
+        // scale={[3, 1, 0.5]}
+        onClick={(event) => setActive(!active)}
+        onPointerOver={(event) => setHover(true)}
+        onPointerOut={(event) => setHover(false)}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'}/>
+      </mesh>
+    )
+  } 
 
 
 const SkinSelect = ({ updateSkin }) => {
@@ -22,98 +47,58 @@ const SkinSelect = ({ updateSkin }) => {
     return null
 }
 
-let nextQuestionTime = Number.MAX_SAFE_INTEGER;
-
 /**
  * A Component that uses Avatar speech sythesis and Subtitles to implement a simple agent that asks questions on a set time interval. Changes in Judge behaviour should be implemented here.
  */
 function DemoJudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles, shouldWrapUp }) {
-    const [currentText, setText] = useState("")
+    const [currentText, setText] = useState("initial text state")
     const [textIndex, setTextIndex] = useState(0)
-    const [repeatingQuestion, setRepeatingQuestion] = useState(false)
-    const [firstQuestion, setFirstQuestion] = useState(false)
     const [readyToSpeak, setReadyToSpeak] = useState(false)
-    const [snoozeTimeLeft, setSnoozeTimeLeft] = useState(Number.MAX_SAFE_INTEGER)
     const utteranceListLength = listOfUtterances.length
     const [utterances, setUtterances] = useState(listOfUtterances)
-    const [elapsedTime, setElapsedTime] = useState(0)
-    const [previousTime, setPreviousTime] = useState(Date.now())
-    const [questionTimeUpdate, setQuestionTimeUpdate] = useState(false)
     const [animationPaused, setAnimationPaused] = useState(true)
-    let questionInterval
-
     const [skin, setSkin] = useState()
     const [skinState, setSkinState] = useState("")
+    const [appellantSelection, setAppellantSelection] = useState(false)
+    const [respondentSelection, setRespondentSelection] = useState(false)
+
 
     const updateSkin = (skinUpdate) => {
         console.log("updating judge skins ", skinUpdate)
         setSkin(skinUpdate);
         setSkinState("NewSkin");
     }
-    const snoozeQuestionHandler = (snoozeMilliseconds) => {
-        nextQuestionTime += snoozeMilliseconds
-        setQuestionTimeUpdate(!questionTimeUpdate)
-    }
+
     useEffect(() => {
-        //File modelPath = new File("./models/");  //gets the model path for models
-        //String modelList[] = modelpath.list();   //lists all model urls in the models folder
+        const keyDownHandler = (e) => {
+          console.log("pressed key: " + e.key)
+          setText(utterances[e.key])
+        }
+        document.addEventListener('keydown', keyDownHandler)
+        return () => {
+          document.removeEventListener('keydown', keyDownHandler)
 
-        //const fs = require('fs');
-        // const modelList = fs.readdirSync('./models/');
+        }
+      })
 
+    useEffect(() => {
         const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb'] //might be better to put this into a json file or db
 
         const avaliableSkins = modelList;
         if (avaliableSkins.length > 0) {
             setSkin(avaliableSkins[0])
         }
-
     }, [])
-
-    useEffect(() => {
-        //console.log('time effect')
-        if (appPaused === false) {
-            if (nextQuestionTime <= 0) {
-                console.log('utterance split again', utteranceSplit)
-                nextQuestionTime = utteranceSplit
-                setFirstQuestion(true)
-                setTextIndex(prevTextIndex => (prevTextIndex + 1) % utteranceListLength)
-                // console.log("demojudgeavatar speaking: " + utterances[textIndex])
-            } else if (nextQuestionTime === Number.MAX_SAFE_INTEGER) {
-                console.log('utterance split first', utteranceSplit)
-                nextQuestionTime = utteranceSplit
-                setText("Welcome to Moot Court. Your demo will be starting shortly.")
-                setTextIndex(-1)
-            } else {
-                nextQuestionTime -= elapsedTime
-            }
-            setSnoozeTimeLeft(Math.floor(nextQuestionTime / 1000))
-        }
-    }, [questionTimeUpdate, utterances])
 
     useEffect(() => {
         if (readyToSpeak === true && speaks === true) {
             console.log('ready to speak')
-            questionInterval = window.setInterval(() => {setQuestionTimeUpdate(prevUpdate => !prevUpdate)}, 1000)
         }
     }, [readyToSpeak, speaks])
-
-    // calculate elapsed time between each tick
-    useEffect(() => {
-        setElapsedTime(Date.now() - previousTime);
-        setPreviousTime(Date.now());
-    }, [questionTimeUpdate])
-
-    useEffect(() => {
-        if (firstQuestion) {
-            setText(utterances[textIndex])
-        }
-    }, [textIndex])
 
     const readyToSpeakHandler = () => { // start chain of utterances when avatar has loaded voices, passed down to prop in Avatar
         console.log('updating ready to speak')
         setReadyToSpeak(true)
-
     }
 
     const startedSpeakingHandler = () => {
@@ -122,21 +107,89 @@ function DemoJudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated 
 
     const finishedSpeakingHandler = () => {
         setTimeout(() => {
-            setText("")
-        }, 10000)
-
+            // setText("")
+        }, 5000)
         setAnimationPaused(true)
     }
 
     return (<Suspense fallback={null}>
-        {firstQuestion ? <Button clickHandler={() => /*!micStarted? startMic(true): null*/ setRepeatingQuestion(!repeatingQuestion)}
-            position={[position[0] - 1, position[1], position[2]]}
-            rotation={[0.2, 0.2, 0]}
-            buttonText={"Pause Animation"} /> : null}
-        <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
         {/* {subtitles ? <Subtitle textToSay={currentText} /> : null} */}
+        <Box position={[-3.25, 0, 0]} />
+                    <Box position={[3.25, 0, 0]} />
+                    <Text
+        position={[-1.375, 0, 3]}
+        scale={[2, 2, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+        Appellant
+      </Text>
+      <Text
+        position={[1.375, 0, 3]}
+        scale={[2, 2, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+            Respondent
+        </Text>
+        <Text
+        position={[0, 1.3, 3]}
+        scale={[1, 1, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+            1: Introduction to Moot Court
+        </Text>
+        <Text
+        position={[0, 1.15, 3]}
+        scale={[1, 1, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+            2: Today's Demo
+        </Text>
+        <Text
+        position={[0, 1.0, 3]}
+        scale={[1, 1, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+            3: Demo topic
+        </Text>
+        <Text
+        position={[0, 0.85, 3]}
+        scale={[1, 1, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+            4: Problems with the current policy
+        </Text>
+        <Text
+        position={[0, 0.7, 3]}
+        scale={[1, 1, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+            5: Policy specification
+        </Text>
+        <Text
+        position={[0, 0.55, 3]}
+        scale={[1, 1, 0.5]}
+        color="black" // default
+        anchorX="center" // default
+        anchorY="middle" // default
+        >
+            6: Choose your position
+        </Text>
         <SkinSelect updateSkin={updateSkin}></SkinSelect>
-        {(snoozeEnabled && (snoozeTimeLeft <= 20) && (snoozeTimeLeft > 0)) ? <QuestionSnooze timeLeft={snoozeTimeLeft} position={position} snoozeQuestion={snoozeQuestionHandler}></QuestionSnooze> : null}
     </Suspense>)
 }
 
