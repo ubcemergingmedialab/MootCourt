@@ -6,11 +6,11 @@ import './setupStyles.css'
 import PropTypes from 'prop-types'
 
 
-const defaultQuestions = [["The provincial government, after receiving advice from a number of interested groups, decided to change tipping policy in British Columbia. Complaints about the current policy included: customers feeling pressured to tip at increasingly high rates (including through high percentage “options” provided to them in card machines), tourists not understanding tipping customs in the province; and, some servers being provided little or no tip despite excellent service. The government decided that the new policy is that there would be an automatic tip of 12% provided to each bill where customers were served food or drinks by a server. Tell us if you agree or disagree with this rule! Council, you may begin your presentation.", "Would you not agree that being a server in a restaurant is very hard work and that these persons deserve more than the minimum wage they are usually paid by restaurants?",
+const defaultQuestions = [["","Council, you may begin your presentation.", "Would you not agree that being a server in a restaurant is very hard work and that these persons deserve more than the minimum wage they are usually paid by restaurants?",
     "Would this policy not be fairer in the sense that the tip would not depend on the particular generosity of the person being served?",
-    "Does this policy not simplify the whole restaurant experience because the customer is just presented with a final bill they can pay with a quick tap?"], ["The provincial government, after receiving advice from a number of interested groups, decided to change tipping policy in British Columbia. Complaints about the current policy included: customers feeling pressured to tip at increasingly high rates (including through high percentage “options” provided to them in card machines), tourists not understanding tipping customs in the province; and, some servers being provided little or no tip despite excellent service. The government decided that the new policy is that there would be an automatic tip of 12% provided to each bill where customers were served food or drinks by a server. Tell us if you agree or disagree with this rule! Council, you may begin your presentation.",    "Does this new policy take away any incentive of the server to provide excellent service?",
+    "Does this policy not simplify the whole restaurant experience because the customer is just presented with a final bill they can pay with a quick tap?", "Council, please conclude your thoughts as the time has run out"], ["", "Council, you may begin your presentation.", "Does this new policy take away any incentive of the server to provide excellent service?",
         "We don’t have automatic tips for other types of service work, so why should we have one for restaurants?",
-        "Does this policy not penalize servers who go above and beyond in their service and are appropriately given tips in the 20% range?"]]
+        "Does this policy not penalize servers who go above and beyond in their service and are appropriately given tips in the 20% range?","Council, please conclude your thoughts as the time has run out"]]
 
 function SetupPage({ presentationPage, homePage, updateConfig }) {
     const [positionWarning, setPositionWarning] = useState(false);
@@ -107,15 +107,15 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
         setEButtonFillState(nighttimeButtonFill)
     }
 
-    const [questionInterval, setQuestionInterval] = useState(3)
+    const [questionInterval, setQuestionInterval] = useState(1)
 
     const handleQuestionIntervalChange = (e) => {
         setQuestionInterval(e.target.value)
     }
 
-    const [totalTime, setTotalTime] = useState(20)
-    const [firstWarning, setFirstWarning] = useState(15)
-    const [secondWarning, setSecondWarning] = useState(17)
+    const [totalTime, setTotalTime] = useState(5)
+    const [firstWarning, setFirstWarning] = useState(2)
+    const [secondWarning, setSecondWarning] = useState(1)
 
     const handleTotalTimeChange = (e) => {
         setTotalTime(e.target.value)
@@ -135,10 +135,10 @@ function SetupPage({ presentationPage, homePage, updateConfig }) {
         } else if (positionState === Appellant) {
             setQuestionsList(defaultQuestions[1])
         }
-        setTotalTime(20)
-        setFirstWarning(15)
-        setSecondWarning(17)
-        setQuestionInterval(3)
+        setTotalTime(5)
+        setFirstWarning(2)
+        setSecondWarning(1)
+        setQuestionInterval(1)
         setEnvironmentState(Daytime)
         setClosedCaptionToggle(false)
         setCutOffToggle(false)
