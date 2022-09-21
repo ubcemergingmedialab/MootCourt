@@ -1,7 +1,7 @@
 import './homepageStyles.css'
 import PropTypes from 'prop-types'
 
-function HomePage({setupPage, demoPage, resourcesPage}){
+function HomePage({demoPage, a_presentationPage, r_presentationPage}){
     return(<>
         <div id="Home">
             <div id="Rectangle">
@@ -12,13 +12,13 @@ function HomePage({setupPage, demoPage, resourcesPage}){
                 <h1>Moot Court</h1>
             </div>
             <div id="Start">
-                <button className="button button-type3" onClick={()=> {setupPage()}}> Start Moot Practice</button>
+                <button className="button button-type3" onClick={()=> {a_presentationPage()}}> Moot Practice As Appellant</button>
             </div>
-            <div id="BeginDemo">
-                <button className="button button-type3" onClick={()=> {demoPage()}}> Start Moot Demo</button>
+            <div id="MiddleButton">
+                <button className="button button-type3" onClick={()=> {r_presentationPage()}}> Moot Practice As Respondent</button>
             </div>
             <div id="Resources">
-                <button className="button button-type4" onClick={()=> {resourcesPage()}}>Resources</button>
+                <button className="button button-type4" onClick={()=> {demoPage()}}>Introduction Scene</button>
             </div>
         </div>
     </>)
@@ -28,8 +28,7 @@ HomePage.propTypes = {
     /** transitions state machine to be in Setup state */
     setupPage: PropTypes.func,
     demoPage: PropTypes.func,
-    /** transitions state machine to be in the Homepage state */
-    resourcesPage: PropTypes.func
+    presentationPage: PropTypes.func
 }
 
 export default HomePage

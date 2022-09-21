@@ -7,15 +7,12 @@ import { Box } from '@react-three/drei'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import './styles.css'
 
-import Scene from './components/Scene.jsx'
+import AppellantScene from './components/Scene-Appellant.jsx'
+import RespondentScene from './components/Scene-Respondent.jsx'
 import Timer from './components/Timer.js'
 import PauseButton from './components/PauseButton.jsx';
-import SetupPage from './components/SetupPage.jsx'
-import LandingPage from './components/LandingPage.jsx'
 import HomePage from './components/HomePage.jsx'
-import ResourcesPage from './components/ResourcesPage'
 import DemoPage from './components/DemoPage.jsx'
-import DemoPositionButton from './components/Demo_PositionButton';
 
 
 extend({ OrbitControls })
@@ -37,41 +34,34 @@ const Controls = () => {
 }
 
 function App() {
-  const Presentation = 0
-  const Landing = 1
+  const a_presentation = 0
+  const r_presentation = 1
   const Home = 2
   const Setup = 3
   const Resources = 4
   const Demo = 5
-  const [appState, setAppState] = useState(Demo)
+  const [appState, setAppState] = useState(Home)
   const [config, setConfig] = useState({})
   const [paused, setPaused] = useState(false);
   const [feedbackHover, setFeedbackHover] = useState(false);
   const [timerWarning , setTimerWarning] = useState(false);
 
   const landing = function () {
-    setAppState(Demo)
+    setAppState(Home)
   }
   const home = function () {
-    setAppState(Demo)
+    setAppState(Home)
   }
-  const setup = function () {
-    setAppState(Setup)
+  const appellantPresentation = function () {
+    setAppState(a_presentation)
   }
-  const resources = function () {
-    setAppState(Resources)
-  }
-  const presentation = function () {
-    setAppState(Presentation)
+
+  const respondentPresentation = function () {
+    setAppState(r_presentation)
   }
 
   const demoPage = function() {
     setAppState(Demo)
-  }
-
-  const updateConfig = (config) => {
-    console.log('app got new config', JSON.stringify(config))
-    setConfig(config)
   }
 
   const pauseHandler = () => {
@@ -85,26 +75,29 @@ function App() {
 
   return (
     <>
-     {appState == Presentation ?
-            <><Suspense fallback={null}><Scene appConfig={config} appPaused={paused} timerWarning={timerWarning}></Scene>
+     {appState === a_presentation ?
+            <><Suspense fallback={null}><AppellantScene appPaused={paused} timerWarning={timerWarning}></AppellantScene>
             <div style={{display: "flex", flexDirection: "column", alignItems:"flex-end", position: "relative", height: 0}}>
               <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
-                <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
-                <Timer isPresentationStarted={appState == Presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing} timerWarningHandler={timerWarningHandler}></Timer></div>
-                    <a onPointerEnter={() => {setFeedbackHover(true); console.log("hover")}} onPointerLeave={()=>{setFeedbackHover(false)}} style={{color:feedbackHover? "brown": "blue", position: "relative", bottom: "1em"}} href={"https://ubc.ca1.qualtrics.com/jfe/form/SV_0qbnf0bR2bTIBo2"}>Give us your feedback!</a></div></Suspense></> : null}
-      {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
-      {(appState == Demo) ? 
-            <><Suspense fallback={null}><DemoPage presentationPage={presentation} appConfig={config} appPaused={paused} timerWarning={timerWarning}></DemoPage>
+                <PauseButton isPresentationStarted={appState === a_presentation} togglePause={pauseHandler} />
+                <Timer isPresentationStarted={appState === a_presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing} timerWarningHandler={timerWarningHandler}></Timer></div>
+            </div></Suspense></> : null}
+      {appState === r_presentation ?
+        <><Suspense fallback={null}><RespondentScene appPaused={paused} timerWarning={timerWarning}></RespondentScene>
+            <div style={{display: "flex", flexDirection: "column", alignItems:"flex-end", position: "relative", height: 0}}>
+              <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
+                <PauseButton isPresentationStarted={appState === r_presentation} togglePause={pauseHandler} />
+                <Timer isPresentationStarted={appState === r_presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing} timerWarningHandler={timerWarningHandler}></Timer></div>
+                </div></Suspense></> : null}
+      {(appState === Demo) ? 
+            <><Suspense fallback={null}><DemoPage presentationPage={appellantPresentation} appConfig={config} appPaused={paused} timerWarning={timerWarning}></DemoPage>
             <div style={{display: "flex", flexDirection: "column", alignItems:"flex-end", position: "relative", height: 0}}>
               <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
                 <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />
                 <Timer isPresentationStarted={appState == Presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing} timerWarningHandler={timerWarningHandler}></Timer>
-                {/* <DemoPositionButton></DemoPositionButton> */}
                 </div>
                 </div></Suspense></> : null}
-      {(appState == Home) ? <HomePage setupPage={setup} resourcesPage={resources} demoPage={demoPage}></HomePage> : null}
-      {(appState == Resources) ? <ResourcesPage homePage={home} ></ResourcesPage> : null}
-      {(appState == Setup) ? <SetupPage presentationPage={presentation} homePage={home} updateConfig={updateConfig}></SetupPage> : null}
+      {(appState === Home) ? <HomePage demoPage={demoPage} a_presentationPage={appellantPresentation} r_presentationPage={respondentPresentation}></HomePage> : null}
     </>
   );
 }
