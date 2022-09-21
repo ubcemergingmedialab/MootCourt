@@ -8,11 +8,12 @@ import '../styles.css'
 import PropTypes from 'prop-types'
 
 const testlistOfUtterances = [["Council, you may begin your presentation.", "Would you not agree that being a server in a restaurant is very hard work and that these persons deserve more than the minimum wage they are usually paid by restaurants?",
-"Would this policy not be fairer in the sense that the tip would not depend on the particular generosity of the person being served?",
-"Does this policy not simplify the whole restaurant experience because the customer is just presented with a final bill they can pay with a quick tap?"], 
-["Council, you may begin your presentation.", "Does this new policy take away any incentive of the server to provide excellent service?",
-    "We don’t have automatic tips for other types of service work, so why should we have one for restaurants?",
-    "Does this policy not penalize servers who go above and beyond in their service and are appropriately given tips in the 20% range?"]]
+"Would this policy not be fairer in the sense that the tip would not depend on the particular generosity of the person being served?", 
+"Does this policy not simplify the whole restaurant experience because the customer can be presented with a final bill to pay without calculating tip?"], 
+["Council, you may begin your presentation.", 
+"Does this new policy not take away any incentive of the server to provide excellent service?",
+ "We do not have automatic tips for other types of service work, so why should we have one for restaurant servers?",
+ "Does this policy not penalize servers who go above and beyond in their service and who are appropriately given tips in the 20% range?"]]
 
 export default function Scene({ appConfig, appPaused, timerWarning }) {
     const [animateCamera, setAnimateCamera] = useState(false)

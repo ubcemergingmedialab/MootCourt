@@ -43,17 +43,17 @@ function App() {
   const Setup = 3
   const Resources = 4
   const Demo = 5
-  const [appState, setAppState] = useState(Landing)
+  const [appState, setAppState] = useState(Demo)
   const [config, setConfig] = useState({})
   const [paused, setPaused] = useState(false);
   const [feedbackHover, setFeedbackHover] = useState(false);
   const [timerWarning , setTimerWarning] = useState(false);
 
   const landing = function () {
-    setAppState(Landing)
+    setAppState(Demo)
   }
   const home = function () {
-    setAppState(Home)
+    setAppState(Demo)
   }
   const setup = function () {
     setAppState(Setup)
@@ -94,7 +94,7 @@ function App() {
                     <a onPointerEnter={() => {setFeedbackHover(true); console.log("hover")}} onPointerLeave={()=>{setFeedbackHover(false)}} style={{color:feedbackHover? "brown": "blue", position: "relative", bottom: "1em"}} href={"https://ubc.ca1.qualtrics.com/jfe/form/SV_0qbnf0bR2bTIBo2"}>Give us your feedback!</a></div></Suspense></> : null}
       {(appState == Landing) ? <LandingPage homePage={home}></LandingPage> : null}
       {(appState == Demo) ? 
-            <><Suspense fallback={null}><DemoPage appConfig={config} appPaused={paused} timerWarning={timerWarning}></DemoPage>
+            <><Suspense fallback={null}><DemoPage presentationPage={presentation} appConfig={config} appPaused={paused} timerWarning={timerWarning}></DemoPage>
             <div style={{display: "flex", flexDirection: "column", alignItems:"flex-end", position: "relative", height: 0}}>
               <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
                 <PauseButton isPresentationStarted={appState == Presentation} togglePause={pauseHandler} />

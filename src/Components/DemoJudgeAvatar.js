@@ -8,30 +8,6 @@ import QuestionSnooze from './QuestionSnooze.jsx'
 import PropTypes from 'prop-types'
 import { OrbitControls, Stats, Text } from "@react-three/drei";
 
-function Box(props) {
-    // This reference will give us direct access to the mesh
-    const mesh = useRef()
-    // Set up state for the hovered and active state
-    const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
-    // Subscribe this component to the render-loop, rotate the mesh every frame
-    // useFrame((state, delta) => (mesh.current.rotation.x += 0.01))
-    // Return view, these are regular three.js elements expressed in JSX
-    return (
-      <mesh
-        {...props}
-        ref={mesh}
-        scale ={hovered ? [3.1, 1.1, 0.5] : [3, 1, 0.5]}
-        // scale={[3, 1, 0.5]}
-        onClick={(event) => setActive(!active)}
-        onPointerOver={(event) => setHover(true)}
-        onPointerOut={(event) => setHover(false)}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'}/>
-      </mesh>
-    )
-  } 
-
 
 const SkinSelect = ({ updateSkin }) => {
     const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
@@ -50,7 +26,7 @@ const SkinSelect = ({ updateSkin }) => {
 /**
  * A Component that uses Avatar speech sythesis and Subtitles to implement a simple agent that asks questions on a set time interval. Changes in Judge behaviour should be implemented here.
  */
-function DemoJudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles, shouldWrapUp }) {
+function DemoJudgeAvatar({ presentationPage, position, modelUrl, utteranceSplit, speaks, animated = true, listOfUtterances, appPaused, snoozeEnabled, randomizeQuestions, subtitles, shouldWrapUp }) {
     const [currentText, setText] = useState("initial text state")
     const [textIndex, setTextIndex] = useState(0)
     const [readyToSpeak, setReadyToSpeak] = useState(false)
@@ -115,26 +91,6 @@ function DemoJudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated 
     return (<Suspense fallback={null}>
         <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
         {/* {subtitles ? <Subtitle textToSay={currentText} /> : null} */}
-        <Box position={[-3.25, 0, 0]} />
-                    <Box position={[3.25, 0, 0]} />
-                    <Text
-        position={[-1.375, 0, 3]}
-        scale={[2, 2, 0.5]}
-        color="black" // default
-        anchorX="center" // default
-        anchorY="middle" // default
-        >
-        Appellant
-      </Text>
-      <Text
-        position={[1.375, 0, 3]}
-        scale={[2, 2, 0.5]}
-        color="black" // default
-        anchorX="center" // default
-        anchorY="middle" // default
-        >
-            Respondent
-        </Text>
         <Text
         position={[0, 1.3, 3]}
         scale={[1, 1, 0.5]}
@@ -194,6 +150,7 @@ function DemoJudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated 
 }
 
 DemoJudgeAvatar.propTypes = {
+    presentationPage: PropTypes.func,
     /** vector3 describing position of judge, passed to Avatar component */
     position: PropTypes.any,
     /** url for the model that should be loaded, passed to Avatar component */
