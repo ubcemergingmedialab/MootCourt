@@ -46,7 +46,7 @@ function Box(props) {
     presentationPage: PropTypes.func
 }
 
-export default function DemoScene({ presentationPage, appConfig, appPaused, timerWarning }) {
+export default function DemoScene({ appellantPage, respondentPage, appConfig, appPaused, timerWarning }) {
     const [animateCamera, setAnimateCamera] = useState(false)
     return (<>
         <Suspense fallback={null}>
@@ -56,8 +56,8 @@ export default function DemoScene({ presentationPage, appConfig, appPaused, time
                 <DemoJudgeAvatar position={[0, -3, 2]} key={"judge_1"} id={"judge_1"} animated={true} listOfUtterances={testlistOfUtterances}
                         utteranceSplit={0.5 * 60000} randomizeQuestions={false}
                         speaks={true} subtitles={true} appPaused={appPaused} snoozeEnabled={appConfig.delay} shouldWrapUp={timerWarning}/>
-                <Box presentationPage={presentationPage} position={[-3.25, 0, 0]} appConfig={appConfig} appPaused={appPaused} timerWarning={timerWarning} />
-                    <Box presentationPage={presentationPage} position={[3.25, 0, 0]} />
+                <Box presentationPage={appellantPage} position={[-3.25, 0, 0]} appConfig={appConfig} appPaused={appPaused} timerWarning={timerWarning} />
+                    <Box presentationPage={respondentPage} position={[3.25, 0, 0]} />
                     <Text
         position={[-1.375, 0, 3]}
         scale={[2, 2, 0.5]}
@@ -89,7 +89,8 @@ export default function DemoScene({ presentationPage, appConfig, appPaused, time
 }
 
 DemoScene.propTypes = {
-    presentationPage: PropTypes.func,
+    appellantPage: PropTypes.func,
+    respondentPage: PropTypes.func,
     /** object passed into scene to from the setup page */
     appConfig: PropTypes.any,
     /** boolean that gets passed to Judge and set by PauseButton. Judge reacts by stopping time counting*/

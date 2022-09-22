@@ -40,17 +40,17 @@ function App() {
   const Setup = 3
   const Resources = 4
   const Demo = 5
-  const [appState, setAppState] = useState(Home)
+  const [appState, setAppState] = useState(Demo)
   const [config, setConfig] = useState({})
   const [paused, setPaused] = useState(false);
   const [feedbackHover, setFeedbackHover] = useState(false);
   const [timerWarning , setTimerWarning] = useState(false);
 
   const landing = function () {
-    setAppState(Home)
+    setAppState(Demo)
   }
   const home = function () {
-    setAppState(Home)
+    setAppState(Demo)
   }
   const appellantPresentation = function () {
     setAppState(a_presentation)
@@ -90,7 +90,7 @@ function App() {
                 <Timer isPresentationStarted={appState === r_presentation} appPaused={paused} cutoff = {config.cutoff} startingTime={(config.totalTime)* 60000} firstWarning={config.firstWarning * 60000} secondWarning={config.secondWarning * 60000} timerOverHandler={landing} timerWarningHandler={timerWarningHandler}></Timer></div>
                 </div></Suspense></> : null}
       {(appState === Demo) ? 
-            <><Suspense fallback={null}><DemoPage presentationPage={appellantPresentation} appConfig={config} appPaused={paused} timerWarning={timerWarning}></DemoPage>
+            <><Suspense fallback={null}><DemoPage appellantPage={appellantPresentation} respondentPage={respondentPresentation} appConfig={config} appPaused={paused} timerWarning={timerWarning}></DemoPage>
             <div style={{display: "flex", flexDirection: "column", alignItems:"flex-end", position: "relative", height: 0}}>
               <div style={{display: "flex", flexDirection: "row", position: "relative", boxSizing: "border-box"}}>
                 </div>
