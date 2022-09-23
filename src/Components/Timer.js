@@ -11,7 +11,7 @@ function Timer({ isPresentationStarted, cutoff, startingTime, appPaused, firstWa
     const [timeText, setTimeText] = useState("")
     const [lightColor, setLightColor] = useState("#199E54")
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
-    const [currentTime, setCurrentTime] = useState(startingTime ? startingTime : 1200000)
+    const [currentTime, setCurrentTime] = useState(startingTime ? startingTime : 300000)
     const times = [{ time: firstWarning, message: "", color: "#FAB900" }, { time: secondWarning, message: "", color: "#FA646A" }]
     const msToTime = function (duration) {
         // console.log(duration, "duration");

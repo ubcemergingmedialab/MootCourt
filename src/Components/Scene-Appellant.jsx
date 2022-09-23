@@ -8,8 +8,8 @@ import '../styles.css'
 import PropTypes from 'prop-types'
 import { configure } from '@testing-library/react'
 
-const testlistOfUtterances = ["Council, you may begin your presentation.", "Would you not agree that being a server in a restaurant is very hard work and that these persons deserve more than the minimum wage they are usually paid by restaurants?",
-"Would this policy not be fairer in the sense that the tip would not depend on the particular generosity of the person being served?", 
+const testlistOfUtterances = ["Council, you may begin your presentation.", "Would you not agree that being a server in a restaurant is hard work and that these persons deserve more than the minimum wage they are usually paid by restaurants?",
+"Would this policy not be fairer in the sense that the tip would not depend on the particular generosity of the customer?", 
 "Does this policy not simplify the whole restaurant experience because the customer can be presented with a final bill to pay without calculating tip?"]
 
 export default function AppellantScene({appPaused, timerWarning }) {

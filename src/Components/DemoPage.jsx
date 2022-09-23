@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import DemoJudgeAvatar from './DemoJudgeAvatar'
 import './setupStyles.css'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Stats, Text } from "@react-three/drei";
+import { OrbitControls, Stats, Text, useTexture} from "@react-three/drei";
 
 const testlistOfUtterances = ["Hello, nice to meet you.",
 "Welcome to Moot Court. Moot court is an online tool designed to help law students practice for the psychologically terrifying mandatory moot court exercise during their first few semesters.", 
@@ -46,6 +46,43 @@ function Box(props) {
     presentationPage: PropTypes.func
 }
 
+function AllardLogoPlane(props) {
+  const AllardLogo = useTexture({
+    map: './textures/PALSOL-1.2b-Primary-UBC-Shield.png',
+  })
+  const mesh = useRef()
+  return (
+    <mesh
+      {...props}
+      ref={mesh}
+      >
+      <planeGeometry args={[4.18974359, 0.975, 1]} />
+      <meshStandardMaterial {...AllardLogo} transparent={true} antialiasing={true} />
+    </mesh>
+  )
+}
+
+function EMLLogoPlane(props) {
+  const EMLLogo = useTexture({
+    map: './textures/EML_Alternate_colour.png',
+  })
+  const mesh = useRef()
+  return (
+    <mesh
+      {...props}
+      ref={mesh}
+      >
+      <planeGeometry args={[4.83, 2.829, 1]} />
+      <meshStandardMaterial {...EMLLogo} transparent={true} antialiasing={true} />
+    </mesh>
+  )
+}
+
+Box.propTypes = {
+  /** transitions state machine to be in Setup state */
+  presentationPage: PropTypes.func
+}
+
 export default function DemoScene({ appellantPage, respondentPage, appConfig, appPaused, timerWarning }) {
     const [animateCamera, setAnimateCamera] = useState(false)
     return (<>
@@ -56,6 +93,8 @@ export default function DemoScene({ appellantPage, respondentPage, appConfig, ap
                 <DemoJudgeAvatar position={[0, -3, 2]} key={"judge_1"} id={"judge_1"} animated={true} listOfUtterances={testlistOfUtterances}
                         utteranceSplit={0.5 * 60000} randomizeQuestions={false}
                         speaks={true} subtitles={true} appPaused={appPaused} snoozeEnabled={appConfig.delay} shouldWrapUp={timerWarning}/>
+                <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
+                <EMLLogoPlane position={[4.5, 3.325, 0]} scale={[0.75, 0.75, 0.8]}> </EMLLogoPlane>
                 <Box presentationPage={appellantPage} position={[-3.25, 0, 0]} appConfig={appConfig} appPaused={appPaused} timerWarning={timerWarning} />
                     <Box presentationPage={respondentPage} position={[3.25, 0, 0]} />
                     <Text
