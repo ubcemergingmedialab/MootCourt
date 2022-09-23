@@ -64,7 +64,7 @@ function AllardLogoPlane(props) {
 
 function EMLLogoPlane(props) {
   const EMLLogo = useTexture({
-    map: './textures/EML_Alternate_colour.png',
+    map: './textures/UBC_Alternate_reverse_white.png',
   })
   const mesh = useRef()
   return (
@@ -72,8 +72,8 @@ function EMLLogoPlane(props) {
       {...props}
       ref={mesh}
       >
-      <planeGeometry args={[4.83, 2.829, 1]} />
-      <meshStandardMaterial {...EMLLogo} transparent={true} antialiasing={true} />
+      <planeGeometry args={[4.459, 0.752, 1]} />
+      <meshStandardMaterial {...EMLLogo} transparent={true} antialiasing={true} color={'#102444'}/>
     </mesh>
   )
 }
@@ -94,7 +94,7 @@ export default function DemoScene({ appellantPage, respondentPage, appConfig, ap
                         utteranceSplit={0.5 * 60000} randomizeQuestions={false}
                         speaks={true} subtitles={true} appPaused={appPaused} snoozeEnabled={appConfig.delay} shouldWrapUp={timerWarning}/>
                 <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
-                <EMLLogoPlane position={[4.5, 3.325, 0]} scale={[0.75, 0.75, 0.8]}> </EMLLogoPlane>
+                <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>
                 <Box presentationPage={appellantPage} position={[-3.25, 0, 0]} appConfig={appConfig} appPaused={appPaused} timerWarning={timerWarning} />
                     <Box presentationPage={respondentPage} position={[3.25, 0, 0]} />
                     <Text
