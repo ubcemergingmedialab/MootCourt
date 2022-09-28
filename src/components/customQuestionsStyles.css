@@ -1,0 +1,21 @@
+input{
+    width: 780px;
+    height: 50px;
+    border-radius: 8px;
+    margin-top: 1em;
+    margin-right: 1em;
+    padding-left: 1em;
+    overflow: scroll;
+}
+
+.default {
+    background-color:#c8eef7
+}
+
+.custom {
+    background-color:#ffffff
+}
+
+li{
+   list-style-type: none; 
+}

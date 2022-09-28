@@ -1,0 +1,219 @@
+/* this is for the body and foundational formatting */
+.page-setup{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color:#FFFFFF;
+    height:100%;
+    overflow-y:scroll;
+    padding-top: 1em;
+}
+.header{
+    width: 400px;
+    height:90px;
+    background-color: #97D4E9;
+    border-radius: 7px;
+    border: 2px #002145 solid;
+}
+.select-box{
+    display:flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+}
+/* formatting ends */
+/* this is for the accordion */
+.accordion-container{
+    width: 800px;
+    display:flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+}
+.accordion{
+    border: 2px black solid;
+    background-color: #0055B7;
+    color: #FFFFFF;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    margin: 0px -10px
+}
+.accordion-title{
+    margin-left: 30px;
+    display:flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+}
+.accordion-title:hover{
+    cursor: pointer;
+}
+.accordion-content{
+    max-height: 1000px;
+    transition: max-height 1s ease-in-out;
+    background-color: #97D4E9;
+    padding-bottom: 1em;
+}
+/* accordion ends */
+/* This is for all the things under one heading in an accordion */
+.content{
+    display: flex;
+    margin-left: 1em;
+    flex-direction: row;
+    align-items: center;
+}
+.content-stretch{
+    flex-grow: 2;
+}
+/* subheading ends */
+/* this is for the input and toggles */
+.input-formatter{
+    margin-top: auto;
+    margin-left: auto;
+    width: 200px;
+}
+.input-wrapper{
+    background-color: transparent;
+    border-radius: 7px;
+    border: 2px black solid;
+    margin-top: auto;
+    width: 100px;
+    height:30px;
+}
+label{
+    margin-top: auto;
+    padding: 0.9em;
+}
+.switch {
+    position: relative;
+    margin-top: auto;
+    width: 200px;
+    height: 37px;
+}  
+.switch span{
+    width: 60px;
+}
+  /* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+  
+  /* The slider */
+.slider.round {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border: 2px black solid;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+.slider.round:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 2px;
+    bottom: 3px;
+    background-color: #14223C;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .slider {
+    background-color: #FFFFFF;
+}
+input:focus + .slider {
+    box-shadow: 0 0 1px #FFFFFF;
+}
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+  
+/* input and toggle ends */
+/* this is for everything to do with buttons */
+.button-header{
+    display: table-column;
+    margin:2em 4em 2em ;
+}
+button{
+    border: 1px solid #002145;
+    border-radius: 7px;
+    width:150px;
+    height: 40px;
+}
+button:hover{
+    cursor: pointer;
+}
+.button-type1{
+    background-color: #c2c2c2;
+    border: 2px #002145 solid;
+    margin-right: 800px;
+
+}
+.button-type2{
+    background-color: #6DA7D9;
+    border: 2px #FFFFFF solid;
+    margin-top: 2em;
+}
+.button-header>.button-type3{
+    background-color:transparent;
+    margin: 5px 5px;
+}
+.button-header>.button-type3-active{
+    background-color: #002145;
+    margin: 5px 5px;
+    color: #FFFFFF;
+    transition: ease-in-out;
+    transition-duration: 150ms;
+}
+.button-header>.button-type4{
+    background-color: transparent;
+    color: #14223C;
+    border: 1px #002145 solid;
+    margin: 5px 5px;
+}
+.button-header>.button-type4-active{
+    background-color: #002145;
+    transition: ease-in-out;
+    transition-duration: 150ms;
+    color: #FFFFFF;
+    border: 1px #002145 solid;
+    margin: 5px 5px;
+}
+.button-type5{
+    background-color: #002145;
+    color: #F7E7D0;
+}
+.nobgbutton{
+    background-color: transparent;
+    margin-left: 700px;
+    margin-right: 50px;
+}
+.nobgbutton:hover{
+    cursor: pointer;
+}
+.footer-buttons {
+    padding-bottom: 1em;
+}
+/* button end */
+/*styles for questions info modal*/
+
+li {
+    list-style: disc;
+    padding-top: 1.5em;
+}
