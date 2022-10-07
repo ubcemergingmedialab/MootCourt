@@ -1,10 +1,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import Avatar from './Avatar.js'
-import Button from './Button.js'
 import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
-import Subtitle from './Subtitle.js'
-import QuestionSnooze from './QuestionSnooze.jsx'
 import PropTypes from 'prop-types'
 
 
@@ -96,7 +93,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
 
     return (<Suspense fallback={null}>
         <Avatar id={Math.floor(Math.random() * 1000)} position={position} modelUrl={'models/judge_avatar/' + skin} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
-        {subtitles ? <Subtitle textToSay={currentText} /> : null}
+        {/* {subtitles ? <Subtitle textToSay={currentText} /> : null} */}
         <SkinSelect updateSkin={updateSkin}></SkinSelect>
     </Suspense>)
 }

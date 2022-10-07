@@ -43,7 +43,7 @@ function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, activeAnimation
                 }
             })
         }, (xhr) => {
-
+            // do nothing
         }, (err) => {
             console.log('error happend loading model', modelUrl)
         });

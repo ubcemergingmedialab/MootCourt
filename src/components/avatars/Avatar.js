@@ -1,30 +1,12 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom';
 import { useSpeechSynthesis } from 'react-speech-kit';
-import {
-    VRCanvas,
-    useXREvent,
-    Hands,
-    Select,
-    Hover,
-    useXR,
-    Interactive,
-    RayGrab,
-    useHitTest,
-    ARCanvas,
-    DefaultXRControllers,
-} from '@react-three/xr'
 import { Box, Stage } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useHover } from 'react-use-gesture'
 import * as THREE from 'three'
 import { useControls } from 'leva'
 import PropTypes from 'prop-types';
-import '../styles.css'
-
-import Button from './Button.js'
-import Model from './Model.js'
-import LipSync from './LipSync.js'
+import Model from '../general/Model'
 import propTypes from 'prop-types';
 
 const voiceId = Math.random();
