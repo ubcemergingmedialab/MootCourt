@@ -2,9 +2,9 @@ import * as THREE from 'three'
 import React, { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
-import DemoJudgeAvatar from '../avatars/DemoJudgeAvatar.js'
+import DemoJudgeAvatar from '../avatars/DemoJudgeAvatar'
 import {useTexture} from "@react-three/drei";
-import JudgeAvatar from '../avatars/JudgeAvatar.js'
+import JudgeAvatar from '../avatars/JudgeAvatar'
 
 const testlistOfUtterances = ["Hello, nice to meet you.",
 "Welcome to Moot Court. Moot court is an online tool designed to help law students practice for the psychologically terrifying mandatory moot court exercise during their first few semesters.", 

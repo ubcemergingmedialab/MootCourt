@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState, useRef } from 'react'
-import Avatar from './Avatar.js'
+import Avatar from "./Avatar"
 import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
 import PropTypes from 'prop-types'
@@ -20,9 +20,7 @@ const SkinSelect = ({ updateSkin }) => {
     return null
 }
 
-/**
- * A Component that uses Avatar speech sythesis and Subtitles to implement a simple agent that asks questions on a set time interval. Changes in Judge behaviour should be implemented here.
- */
+
 function DemoJudgeAvatar({animated = true, listOfUtterances}) {
     const [currentText, setText] = useState("initial text state")
     const [textIndex, setTextIndex] = useState(0)
@@ -77,7 +75,9 @@ function DemoJudgeAvatar({animated = true, listOfUtterances}) {
     }
 
     return (<Suspense fallback={null}>
-        <Avatar position={[0, -3, 2.5]} id={Math.floor(Math.random() * 1000)} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        {/* Avatar({ position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) { */}
+
+        <Avatar position={[0, -3, 2.5]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
         <Text
         position={[0, 1.3, 3]}
         scale={[1, 1, 0.5]}
