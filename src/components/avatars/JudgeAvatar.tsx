@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react'
-import Avatar from './Avatar.js'
+import Avatar from '../avatar_components/Avatar'
 import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
 import PropTypes from 'prop-types'
@@ -67,15 +67,6 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
         setSkinState("NewSkin");
     }
 
-    // useEffect(() => {
-    //     const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb'] //might be better to put this into a json file or db
-
-    //     const avaliableSkins = modelList;
-    //     if (avaliableSkins.length > 0) {
-    //         setSkin(avaliableSkins[0])
-    //     }
-
-    // }, [])
 
     const readyToSpeakHandler = () => { // start chain of utterances when avatar has loaded voices, passed down to prop in Avatar
         console.log('updating ready to speak')

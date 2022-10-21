@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { useControls } from 'leva'
 
-const VoiceSelect = ({ updateVoice }) => {
+const SelectOptimalVoice = ({ updateVoice }) => {
     const voices = window.speechSynthesis.getVoices();
     const voiceObject = {}
     let defaultVoice = "Microsoft Linda - English (Canada)";
@@ -39,7 +39,6 @@ const VoiceSelect = ({ updateVoice }) => {
         
     }
 }
-
     for (let i = 0; i < voices.length; i++) {
         voiceObject[voices[i].name] = voices[i];
     }
@@ -50,59 +49,56 @@ const VoiceSelect = ({ updateVoice }) => {
     return null
 }
 
-//const deleteOldSkin = ({})
-
-/**
- * A general purpose Avatar component that makes use of web speech synthesis and glb model loading (Model component). Parent can configure/play/puase animation and uses prop functions
- * to communicate speech synthesis ready, started speaking and finished speaking.
- */
 function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaking, finishedSpeaking }) {
-    const [micStarted, startMic] = useState(false)
-    
     const onEnd = () => {
         finishedSpeaking()
     }
-    const { speak, cancel } = useSpeechSynthesis({ onEnd })
-    const [voice, setVoice] = useState(); // used to rerender avatar with a new voice based on user decision. Currently decided by leva, could add prop to decide this externally
-    const [voicesReady, setVoicesReady] = useState(false) // causes rerender on voices loaded
+    // call "speak" to start speech, "cancel" to pause speech
+    const {speak, cancel} = useSpeechSynthesis({ onEnd })
+    const [voice, setVoice] = useState<SpeechSynthesisVoice>();
+    const [voicesReady, setVoicesReady] = useState<boolean>(false) // causes rerender on voices loaded
 
+    // 1) check if voice is available on the browser.
+    // If voices are available, signal "setvoicesready". SelectOptimalVoice will run.
+    useEffect(() => {
+        const availableVoices = window.speechSynthesis.getVoices()
+        if (availableVoices.length > 0) {
+            setVoice(availableVoices[0])
+            finishedSpeaking()
+            setVoicesReady(true)
+        }
+        window.speechSynthesis.onvoiceschanged = () => {
+            setVoice(availableVoices[0])
+            console.log('voices ready')
+            finishedSpeaking()
+            setVoicesReady(true)
+        }
+    }, [])
+
+    // 4) if the voice is updated by the user during the app usage, any ongoing speech will be cancelled and a new voice will be set.
     const updateVoice = (voiceUpdate) => {
+        cancel()
         console.log("updating voices ", voiceUpdate);
         setVoice(voiceUpdate);
         finishedSpeaking();
         setVoicesReady(true)
-    } // function to pass into VoiceSelect component
+    }
 
-    window.speechSynthesis.onvoiceschanged = () => {
-        console.log('voices ready');
-        finishedSpeaking();
-        setVoicesReady(true);
-    } // even handler to rerender when speechSynthesis has loaded some voices
-
+    // 3) when the textToSay is updated, the previous speech (if it was happening) cancels and a new speech starts. 
     useEffect(() => {
         console.log('speaking: ' + textToSay)
         cancel()
         speak({ text: textToSay, voice: voice, rate: 1.0 })
         startedSpeaking && textToSay !== "" && startedSpeaking()
-    }, [textToSay]) // changes in textToSay will cause new utterance to start
-
-    useEffect(() => {
-        voicesReady && readyToSpeak()
-    }, [voicesReady]) // let caller know it can start sending utterances to say
-
-    useEffect(() => {
-        cancel()
-        speak({ text: textToSay, voice: voice, rate: 0.7 })
-        startedSpeaking && textToSay !== "" && startedSpeaking()
-    }, [utteranceRepeat])
-
+    }, [textToSay])
+    
     return (<>
         <Suspense fallback={null}>
-            {voicesReady ? <VoiceSelect updateVoice={updateVoice} /> : null}
+            {/* 2) when the voice component is ready, the voice select will run and select the most optimal voice. */}
+            {voicesReady ? <SelectOptimalVoice updateVoice={updateVoice} /> : null}
         </Suspense>
     </>
     )
-
 }
 
 export default VoiceComponent;

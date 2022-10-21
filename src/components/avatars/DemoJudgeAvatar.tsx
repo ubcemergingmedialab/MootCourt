@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState, useRef } from 'react'
-import Avatar from "./Avatar"
+import Avatar from "../avatar_components/Avatar"
 import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
 import PropTypes from 'prop-types'
@@ -75,8 +75,6 @@ function DemoJudgeAvatar({animated = true, listOfUtterances}) {
     }
 
     return (<Suspense fallback={null}>
-        {/* Avatar({ position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) { */}
-
         <Avatar position={[0, -3, 2.5]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
         <Text
         position={[0, 1.3, 3]}
@@ -138,7 +136,6 @@ function DemoJudgeAvatar({animated = true, listOfUtterances}) {
 
 DemoJudgeAvatar.propTypes = {
     listOfUtterances: PropTypes.arrayOf(PropTypes.string),
-    /** Judge will react to this boolean by pausing its counting of time till next question */
 }
 
 export default DemoJudgeAvatar;
