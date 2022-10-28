@@ -75,6 +75,15 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
         }
     }, [])
 
+    // 3) when the textToSay is updated, the previous speech (if it was happening) cancels and a new speech starts. 
+    useEffect(() => {
+        console.log('speaking: ' + textToSay)
+        cancel()
+        speak({ text: textToSay, voice: voice, rate: 1.0 })
+        startedSpeaking && textToSay !== "" && startedSpeaking()
+    }, [textToSay])
+        
+
     // 4) if the voice is updated by the user during the app usage, any ongoing speech will be cancelled and a new voice will be set.
     const updateVoice = (voiceUpdate) => {
         cancel()
@@ -83,15 +92,6 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
         finishedSpeaking();
         setVoicesReady(true)
     }
-
-    // 3) when the textToSay is updated, the previous speech (if it was happening) cancels and a new speech starts. 
-    useEffect(() => {
-        console.log('speaking: ' + textToSay)
-        cancel()
-        speak({ text: textToSay, voice: voice, rate: 1.0 })
-        startedSpeaking && textToSay !== "" && startedSpeaking()
-    }, [textToSay])
-    
     return (<>
         <Suspense fallback={null}>
             {/* 2) when the voice component is ready, the voice select will run and select the most optimal voice. */}
