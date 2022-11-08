@@ -2,6 +2,10 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { useControls } from 'leva'
 
+// select optimal female voice for the judge by
+// a) checking for OS
+// b) selecting Linda for Windows and Samantha for Mac
+// c) Google US English as fallback
 const SelectOptimalVoice = ({ updateVoice }) => {
     const voices = window.speechSynthesis.getVoices();
     const voiceObject = {}
@@ -49,6 +53,7 @@ const SelectOptimalVoice = ({ updateVoice }) => {
     return null
 }
 
+// returns voice component of judge.
 function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaking, finishedSpeaking }) {
     const onEnd = () => {
         finishedSpeaking()

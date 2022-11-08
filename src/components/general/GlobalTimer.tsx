@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import {Html} from '@react-three/drei'
 import "./timer.css"
 
 // if app is active, 1) receive total required time 2) set warning times automatically
@@ -69,13 +70,12 @@ function GlobalTimer({isTimerReady, isTimerStarted, timerOverHandler, totalTime,
     }, [])
 
     return <>
-        <Suspense fallback={null}>
+    <Html>
         {isTimerReady ? <div className={"timerContainer"} style={{ bottom: "1em", right: 0, backgroundColor: "white" }}>
             <div className={"timerText"}>{timeText}</div>
             <div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
-            
         </div> : null}
-        </Suspense>
+    </Html>
     </>
 }
 

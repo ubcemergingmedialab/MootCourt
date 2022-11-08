@@ -4,8 +4,6 @@ import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
 import PropTypes from 'prop-types'
 
-
-
 const SkinSelect = ({ updateSkin }) => {
     //File modelPath = new File("./models/");  //gets the model path for models
     //String modelList[] = modelpath.list();   //lists all model urls in the models folder
