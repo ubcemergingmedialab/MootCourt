@@ -83,7 +83,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     return (<Suspense fallback={null}>
         <Avatar position={position} modelUrl={'models/judge_avatar/' + skin} rotation={[0, 0, 0]} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
         {/* {subtitles ? <Subtitle textToSay={currentText} /> : null} */}
-        <SkinSelect updateSkin={updateSkin}></SkinSelect>
+        {/* <SkinSelect updateSkin={updateSkin}></SkinSelect> */}
     </Suspense>)
 }
 

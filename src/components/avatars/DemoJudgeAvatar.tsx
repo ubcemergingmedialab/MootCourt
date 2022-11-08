@@ -130,7 +130,7 @@ function DemoJudgeAvatar({animated = true, listOfUtterances}) {
         >
             6: Choose your position
         </Text>
-        <SkinSelect updateSkin={updateSkin}></SkinSelect>
+        {/* <SkinSelect updateSkin={updateSkin}></SkinSelect> */}
     </Suspense>)
 }
 

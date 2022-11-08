@@ -43,13 +43,13 @@ const SelectOptimalVoice = ({ updateVoice }) => {
         
     }
 }
-    for (let i = 0; i < voices.length; i++) {
-        voiceObject[voices[i].name] = voices[i];
-    }
-    const { voice } = useControls({ voice: { options: voiceObject } })
-    useEffect(() => {
-        updateVoice(voice)
-    }, [voice]) 
+    // for (let i = 0; i < voices.length; i++) {
+    //     voiceObject[voices[i].name] = voices[i];
+    // }
+    // const { voice } = useControls({ voice: { options: voiceObject } })
+    // useEffect(() => {
+    //     updateVoice(voice)
+    // }, [voice]) 
     return null
 }
 

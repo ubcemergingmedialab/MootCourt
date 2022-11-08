@@ -86,8 +86,6 @@ export default function GeneralScene(props:any) {
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <Box position={[-3, 0, 0]} />
-                <Box position={[3, 0, 0]} />
                 <DemoJudgeAvatar listOfUtterances={testlistOfUtterances}></DemoJudgeAvatar>
                 <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
                 <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>
