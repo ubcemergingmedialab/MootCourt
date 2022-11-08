@@ -5,6 +5,7 @@ import Model from '../general/Model.js'
 import DemoJudgeAvatar from '../avatars/DemoJudgeAvatar'
 import {useTexture} from "@react-three/drei";
 import JudgeAvatar from '../avatars/JudgeAvatar'
+import GlobalTimer from '../general/GlobalTimer'
 
 const testlistOfUtterances = ["Hello, nice to meet you.",
 "Welcome to Moot Court. Moot court is an online tool designed to help law students practice for the psychologically terrifying mandatory moot court exercise during their first few semesters.", 
@@ -67,6 +68,19 @@ function EMLLogoPlane(props:any) {
   )
 }
 
+function timerIsOver() {
+  // timer over
+}
+
+function timerWarning() {
+
+}
+
+function pauseApp(){
+  // what to do when app is paused?
+}
+// isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={pauseApp}
+
 export default function GeneralScene(props:any) {
     return (<Canvas>
                 <ambientLight />
@@ -84,6 +98,7 @@ export default function GeneralScene(props:any) {
                     pos={[0, -3, 3.5]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
+                <GlobalTimer> isTimerReady={true} </GlobalTimer>    
             </Canvas>
     )
 }
