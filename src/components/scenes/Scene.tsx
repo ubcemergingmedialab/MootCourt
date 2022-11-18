@@ -7,6 +7,9 @@ import {useTexture} from "@react-three/drei";
 import JudgeAvatar from '../avatars/JudgeAvatar'
 import AppSettings from '../general/AppSettings.js'
 import GlobalTimer from '../general/GlobalTimer'
+import PauseButton from '../general/PauseButton'
+
+let appPaused = false
 
 const testlistOfUtterances = ["Hello, nice to meet you.",
 "Welcome to Moot Court. Moot court is an online tool designed to help law students practice for the psychologically terrifying mandatory moot court exercise during their first few semesters.", 
@@ -77,10 +80,10 @@ function timerWarning() {
 
 }
 
-function pauseApp(){
+function togglePause(){
   // what to do when app is paused?
+  console.log("app is paused")
 }
-// isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={pauseApp}
 
 export default function GeneralScene(props:any) {
     return (<Canvas>
@@ -97,7 +100,8 @@ export default function GeneralScene(props:any) {
                     pos={[0, -3, 3.5]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
-                <GlobalTimer isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={pauseApp}></GlobalTimer>
+                <PauseButton></PauseButton>
+                <GlobalTimer appPaused={appPaused} isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={togglePause}></GlobalTimer>
             </Canvas>
     )
 }

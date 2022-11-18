@@ -5,7 +5,7 @@ import "./timer.css"
 
 // if app is active, 1) receive total required time 2) set warning times automatically
 // ** do not decrement when timer restarts
-function GlobalTimer({isTimerReady, isTimerStarted, timerOverHandler, totalTime, timerWarningHandler, pauseApplicationHandler}) {
+function GlobalTimer({isTimerReady, isTimerStarted, timerOverHandler, totalTime, timerWarningHandler, pauseApplicationHandler, appPaused}) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeText, setTimeText] = useState("");
@@ -33,8 +33,13 @@ function GlobalTimer({isTimerReady, isTimerStarted, timerOverHandler, totalTime,
         let secondsInString = appendToSecond + seconds;
         return minuteInString + ":" + secondsInString
     }
+
     useEffect(() => {
-        if (isTimerStarted) {
+        console.log("app pause status change")
+    }, [appPaused])
+
+    useEffect(() => {
+        if (isTimerStarted && !appPaused) {
             setTimeText(msToTime(currentTime))
             // calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
