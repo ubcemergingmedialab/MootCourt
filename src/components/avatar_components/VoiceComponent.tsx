@@ -8,21 +8,17 @@ import { useControls } from 'leva'
 // c) Google US English as fallback
 const SelectOptimalVoice = ({ updateVoice }) => {
     const voices = window.speechSynthesis.getVoices();
-    const voiceObject = {}
     let defaultVoice = "Microsoft Linda - English (Canada)";
-
+    const voiceObject = {}
     let isMac = navigator.platform.toUpperCase().indexOf('MAC')>=0;
 
     console.log("is this mac? " + isMac);
-
     if (isMac){
         defaultVoice = "Samantha"
         }else{
         defaultVoice = "Microsoft Linda - English (Canada)"
         }
-    
-    console.log("Testing SpeechSynthesis");
-    
+        
     if (voices[0].name !== defaultVoice){
         if (voices.some(item => item.name === defaultVoice)){
             for (let i = 0; i < voices.length; i++){
@@ -40,16 +36,16 @@ const SelectOptimalVoice = ({ updateVoice }) => {
                 voices[i] = tmp;
             }
         } 
-        
     }
 }
-    // for (let i = 0; i < voices.length; i++) {
-    //     voiceObject[voices[i].name] = voices[i];
-    // }
-    // const { voice } = useControls({ voice: { options: voiceObject } })
-    // useEffect(() => {
-    //     updateVoice(voice)
-    // }, [voice]) 
+    for (let i = 0; i < voices.length; i++) {
+        voiceObject[voices[i].name] = voices[i];
+    }
+    const { voice } = useControls({ voice: { options: voiceObject } })
+    useEffect(() => {
+        updateVoice(voice)
+    }, [voice]) 
+
     return null
 }
 
@@ -74,7 +70,8 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
         }
         window.speechSynthesis.onvoiceschanged = () => {
             setVoice(availableVoices[0])
-            console.log('voices ready')
+            console.log('voices reset')
+            console.log('voice:', voice)
             finishedSpeaking()
             setVoicesReady(true)
         }
@@ -97,6 +94,7 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
         finishedSpeaking();
         setVoicesReady(true)
     }
+
     return (<>
         <Suspense fallback={null}>
             {/* 2) when the voice component is ready, the voice select will run and select the most optimal voice. */}

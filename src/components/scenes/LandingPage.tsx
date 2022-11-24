@@ -2,11 +2,13 @@ import * as THREE from 'three'
 import React, { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
+import DemoJudgeAvatar from '../avatars/DemoJudgeAvatar'
 import {useTexture} from "@react-three/drei";
+import JudgeAvatar from '../avatars/JudgeAvatar_Original'
 import AppSettings from '../general/AppSettings.js'
 import GlobalTimer from '../general/GlobalTimer'
 import PauseButton from '../general/PauseButton'
-import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
+import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
 
 let appPaused = false
 
@@ -17,6 +19,26 @@ const testlistOfUtterances = ["Hello, nice to meet you.",
 "The new policy responds to complaints about the current tipping policy, which include: pressure on customers to tip for service at increasingly high rates (including high-percentage default tipping suggestions when paying using a credit card machine); inappropriate tips by tourists who do not understand tipping customs in the province; and no or low tips for servers despite excellent service.",
 "The new policy states that there will be an automatic tip of 12% added to each bill where customers were served food or drinks by a server.", 
 "Do you agree or disagree with the new tipping policy? Choose a position: appellant or respondent."]
+
+
+function Box(props: ThreeElements['mesh']) {
+  const ref = useRef<THREE.Mesh>(null!)
+  const [hovered, hover] = useState(false)
+  const [clicked, click] = useState(false)
+  useFrame((state, delta) => (ref.current.rotation.x += 0.01))
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      scale={clicked ? 1.5 : 1}
+      onClick={(event) => click(!clicked)}
+      onPointerOver={(event) => hover(true)}
+      onPointerOut={(event) => hover(false)}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+    </mesh>
+  )
+}
 
 
 function AllardLogoPlane(props:any) {
@@ -64,13 +86,11 @@ function togglePause(){
   console.log("app is paused")
 }
 
-export default function GeneralScene(props:any) {
+export default function LandingPage(props:any) {
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <SceneJudgeAvatar listOfUtterances={testlistOfUtterances}></SceneJudgeAvatar>
-                <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
-                <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>
+                <LandingPageJudgeAvatar listOfUtterances={testlistOfUtterances}></LandingPageJudgeAvatar>
                 <Model modelUrl="./models/courtroompropsNov17.glb"
                     pos={[0, -3, 3]}
                     rot={[0, 0, 0]}
@@ -79,11 +99,6 @@ export default function GeneralScene(props:any) {
                     pos={[0, -3, 3.5]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
-                <Model modelUrl="./models/courtroomdesksNov17.glb"
-                    pos={[0, -3.25, 4.5]}
-                    rot={[0, 0, 0]}
-                    sca={[0.055, 0.055, 0.055]} />
-                <GlobalTimer appPaused={appPaused} isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={togglePause}></GlobalTimer>
             </Canvas>
     )
 }
