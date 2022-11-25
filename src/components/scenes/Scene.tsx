@@ -5,9 +5,9 @@ import Model from '../general/Model.js'
 import {Html, useTexture} from "@react-three/drei";
 import AppSettings from '../general/AppSettings.js'
 import GlobalTimer from '../general/GlobalTimer'
-import PauseButton from '../general/PauseButton'
+import PauseButton from '../buttons/PauseButton'
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
-import BackToLandingButton from '../general/BackToLandingButton';
+import BackToLandingButton from '../buttons/BackToLandingButton';
 
 let appPaused = false
 

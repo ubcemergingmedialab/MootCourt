@@ -16,11 +16,4 @@ function PauseButton({ togglePause }) {
     </>
 }
 
-PauseButton.propTypes = {
-    /** Communicates to parent that the pause button was pressed */
-    togglePause: PropTypes.func,
-    /** keeps Pause UI from showing until app is in Presentation state */
-    isPresentationStarted: PropTypes.bool
-}
-
 export default PauseButton;

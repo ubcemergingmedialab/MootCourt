@@ -7,9 +7,9 @@ import {Html, useTexture} from "@react-three/drei";
 import JudgeAvatar from '../avatars/JudgeAvatar_Original'
 import AppSettings from '../general/AppSettings.js'
 import GlobalTimer from '../general/GlobalTimer'
-import PauseButton from '../general/PauseButton'
+import PauseButton from '../buttons/PauseButton'
 import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
-import BackToSceneButton from '../general/BackToSceneButton'
+import BackToSceneButton from '../buttons/BackToSceneButton'
 
 let appPaused = false
 

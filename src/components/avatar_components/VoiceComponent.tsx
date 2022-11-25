@@ -24,17 +24,12 @@ const SelectOptimalVoice = ({ updateVoice }) => {
             for (let i = 0; i < voices.length; i++){
                 if(voices[i].name === defaultVoice){
                     optimalVoice = voices[i]
-                    // let tmp = voices[0];
-                    // voices[0] = voices[i];
-                    // voices[i] = tmp;
                 }
             }
         } else {
         for (let i = 0; i < voices.length; i++){
             if (voices[i].name === "Google US English"){
-                let tmp = voices[0];
-                voices[0] = voices[i];
-                voices[i] = tmp;
+                optimalVoice = voices[i]
             }
         } 
     }
