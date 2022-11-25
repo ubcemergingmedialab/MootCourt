@@ -41,7 +41,7 @@ const SelectOptimalVoice = ({ updateVoice }) => {
 }
 
 // returns voice component of judge.
-function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaking, finishedSpeaking }) {
+function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaking, finishedSpeaking, appPaused}) {
     const onEnd = () => {
         finishedSpeaking()
     }
@@ -75,6 +75,12 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
         speak({ text: textToSay, voice: voice, rate: 1.0 })
         startedSpeaking && textToSay !== "" && startedSpeaking()
     }, [textToSay])
+
+    useEffect(() => {
+        if (appPaused) {
+            cancel()
+        }
+    }, [appPaused])
         
 
     // 4) if the voice is updated by the user during the app usage, any ongoing speech will be cancelled and a new voice will be set.

@@ -2,7 +2,6 @@ import React, {Suspense, useState} from 'react'
 import './App.css';
 import GeneralScene from './components/scenes/Scene';
 import LandingPage from './components/scenes/LandingPage'
-import { isParameter } from 'typescript';
 
 function App() {
   // Define loadable pages
@@ -31,7 +30,7 @@ function App() {
   // Upon being called, set the "isPaused" value to be opposite from the previous value
   const pauseHandler = () => {
     setPaused(prev => !prev)
-    console.log("pause toggled, is app now paused?", paused)
+    console.log("pause toggled, App Paused?", paused)
   }
 
   return (

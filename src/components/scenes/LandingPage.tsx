@@ -2,12 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
-import DemoJudgeAvatar from '../avatars/DemoJudgeAvatar'
 import {Html, useTexture} from "@react-three/drei";
-import JudgeAvatar from '../avatars/JudgeAvatar_Original'
-import AppSettings from '../general/AppSettings.js'
-import GlobalTimer from '../general/GlobalTimer'
-import PauseButton from '../buttons/PauseButton'
 import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
 import BackToSceneButton from '../buttons/BackToSceneButton'
 
@@ -52,19 +47,6 @@ function EMLLogoPlane(props:any) {
       <meshStandardMaterial {...EMLLogo} transparent={true} color={'#102444'}/>
     </mesh>
   )
-}
-
-function timerIsOver() {
-  // timer over
-}
-
-function timerWarning() {
-
-}
-
-function togglePause(){
-  // what to do when app is paused?
-  console.log("app is paused")
 }
 
 export default function LandingPage({updateAppState}) {

@@ -56,7 +56,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <SceneJudgeAvatar listOfUtterances={testlistOfUtterances}></SceneJudgeAvatar>
+                <SceneJudgeAvatar listOfUtterances={testlistOfUtterances} appPaused={appPaused}></SceneJudgeAvatar>
                 <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
                 <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>
                 <Model modelUrl="./models/courtroompropsNov17.glb"
@@ -71,7 +71,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                     pos={[0, -3.25, 4.5]}
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
-                {/* Wrap the HTML components here */}
+                {/* Wrap all the HTML components here */}
                 <Html fullscreen>
                 <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={0.2 * 60 * 1000} noNegativeTime={true}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>

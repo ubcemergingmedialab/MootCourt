@@ -36,6 +36,7 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
 
     useEffect(() => {
         console.log("app pause status change")
+        setElapsedTime(0)
     }, [appPaused])
 
     useEffect(() => {

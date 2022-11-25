@@ -6,12 +6,12 @@ import VoiceComponent from './VoiceComponent';
  * A general purpose Avatar component that makes use of web speech synthesis and glb model loading (Model component). Parent can configure/play/puase animation and uses prop functions
  * to communicate speech synthesis ready, started speaking and finished speaking.
  */
-function Avatar({ position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
+function Avatar({ appPaused, position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
 
     return (<>
         <Suspense fallback={null}>
             <AnimationComponent position={position} rotation={rotation} modelUrl={modelUrl} animated={animated} animationPause={animationPause}></AnimationComponent>
-            <VoiceComponent textToSay={textToSay} utteranceRepeat={utteranceRepeat} readyToSpeak={readyToSpeak} startedSpeaking={startedSpeaking} finishedSpeaking={finishedSpeaking}></VoiceComponent>
+            <VoiceComponent appPaused={appPaused} textToSay={textToSay} utteranceRepeat={utteranceRepeat} readyToSpeak={readyToSpeak} startedSpeaking={startedSpeaking} finishedSpeaking={finishedSpeaking}></VoiceComponent>
         </Suspense>
     </>
     )
