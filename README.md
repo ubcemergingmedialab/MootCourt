@@ -1,6 +1,9 @@
 # Moot Court
 Practice Mooting Online!
 
+## Documentation
+- [Development Documentation](https://github.com/ubcemergingmedialab/MootCourt/blob/typescript/Development%20Documentation.md)
+
 ## Dependencies
 - Created using `npx create-react-app moot-court --template typescript`
 - ESLint: `npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin`
