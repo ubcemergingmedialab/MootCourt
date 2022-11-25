@@ -10,10 +10,9 @@ function PauseButton({ togglePause }) {
     return <>
     <Html fullscreen>
     {<div className={"pauseContainer"} style={{ bottom: "1em", right: 150 }}>
-        {/* <button className="pause-button" onClick={() => { togglePause(); setIsPaused(!isPaused) }}>
+        <button className="pause-button" onClick={() => { togglePause(); setIsPaused(!isPaused) }}>
             {isPaused ? "Continue App" : "Pause App"}
-        </button> */}
-        <button onClick={() => console.log("button clicked!!")}>HTML Button?</button>
+        </button>
     </div>}
     </Html>
     </>
