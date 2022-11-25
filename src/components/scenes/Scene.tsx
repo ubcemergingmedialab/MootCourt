@@ -79,7 +79,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
                 <PauseButton togglePause={togglePause}></PauseButton>
-                <GlobalTimer appPaused={appPaused} isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={togglePause}></GlobalTimer>
+                {/* <GlobalTimer appPaused={appPaused} isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={togglePause}></GlobalTimer> */}
             </Canvas>
     )
 }
