@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import "./timer.css"
+import "../general/timer.css"
 import {Html} from '@react-three/drei'
 import PropTypes from 'prop-types'
 
