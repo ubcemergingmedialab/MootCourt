@@ -38,7 +38,7 @@ function App() {
     <Suspense fallback={null}>
     <div style={{height: '100vh'}}>
     {/* Send in the app configuration to be edited by the Landing Page*/}
-    {(appState === Landing) ? <LandingPage></LandingPage> : null}
+    {(appState === Landing) ? <LandingPage updateAppState={updateState}></LandingPage> : null}
     {/* Send in the app configuration and "paused" boolean to the main app*/}
     {(appState === Scene) ? <GeneralScene appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState}></GeneralScene> : null}
     </div>

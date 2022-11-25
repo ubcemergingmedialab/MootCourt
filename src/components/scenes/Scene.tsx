@@ -2,11 +2,12 @@ import * as THREE from 'three'
 import React, { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
-import {useTexture} from "@react-three/drei";
+import {Html, useTexture} from "@react-three/drei";
 import AppSettings from '../general/AppSettings.js'
 import GlobalTimer from '../general/GlobalTimer'
 import PauseButton from '../general/PauseButton'
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
+import BackToLandingButton from '../general/BackToLandingButton';
 
 let appPaused = false
 
@@ -78,8 +79,12 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                     pos={[0, -3.25, 4.5]}
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
+                {/* Wrap the HTML components here */}
+                <Html fullscreen>
                 <GlobalTimer appPaused={appPaused} isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={togglePause}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>
+                <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>
+                </Html>
             </Canvas>
     )
 }

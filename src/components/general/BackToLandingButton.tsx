@@ -7,13 +7,11 @@ function BackToLandingButton({ updateAppState }) {
     // internal check of pause state to change button setting
 
     return <>
-    <Html fullscreen>
     {<div className={"pauseContainer"} style={{ bottom: "1em", left: 150 }}>
         <button className="pause-button" onClick={() => { updateAppState(0)}}>
             {"Back to Setup"}
         </button>
     </div>}
-    </Html>
     </>
 }
 

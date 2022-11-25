@@ -8,13 +8,11 @@ function PauseButton({ togglePause }) {
     const [isPaused, setIsPaused] = useState(false)
 
     return <>
-    <Html fullscreen>
     {<div className={"pauseContainer"} style={{ bottom: "1em", right: 150 }}>
         <button className="pause-button" onClick={() => { togglePause(); setIsPaused(!isPaused) }}>
             {isPaused ? "Continue App" : "Pause App"}
         </button>
     </div>}
-    </Html>
     </>
 }
 
