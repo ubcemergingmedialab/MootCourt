@@ -5,7 +5,7 @@ import "./timer.css"
 
 // if app is active, 1) receive total required time 2) set warning times automatically
 // ** do not decrement when timer restarts
-function GlobalTimer({isTimerReady, isTimerStarted, timerOverHandler, totalTime, timerWarningHandler, pauseApplicationHandler, appPaused}) {
+function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeText, setTimeText] = useState("");
@@ -39,18 +39,12 @@ function GlobalTimer({isTimerReady, isTimerStarted, timerOverHandler, totalTime,
     }, [appPaused])
 
     useEffect(() => {
-        if (isTimerStarted && !appPaused) {
+        if (!appPaused) {
             setTimeText(msToTime(currentTime))
             // calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
         }
     }, [updateTimerInterval])
-
-    useEffect(() => {
-        if (!isTimerStarted) {
-            pauseApplicationHandler();
-        }
-    }, [isTimerStarted])
 
     // set time update tick (update at every interval)
     useEffect(() => {
@@ -63,22 +57,21 @@ function GlobalTimer({isTimerReady, isTimerStarted, timerOverHandler, totalTime,
     useEffect(() => {
         setElapsedTime(Date.now() - previousTime);
         setPreviousTime(Date.now());
+        console.log("current time", currentTime)
     }, [updateTimerInterval])
 
-    // cutoff timer when cutoff set to true and time remaining is negative
+    // if no negative time is set to true, return to landing page
     useEffect(() => {
-        if (currentTime <= 0) {
-            timerOverHandler();
-        } else if (currentTime <= 0) {
-            timerWarningHandler();
+        if (currentTime <= 0 && noNegativeTime) {
+            updateAppState(0);
         }
-    }, [])
+    }, [updateTimerInterval])
 
     return <>
-        {isTimerReady ? <div className={"timerContainer"} style={{ bottom: "1em", right: 0, backgroundColor: "white" }}>
+        {<div className={"timerContainer"} style={{ bottom: "1em", right: 0, backgroundColor: "white" }}>
             <div className={"timerText"}>{timeText}</div>
             <div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
-        </div> : null}
+        </div>}
     </>
 }
 

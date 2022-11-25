@@ -52,14 +52,6 @@ function EMLLogoPlane(props:any) {
   )
 }
 
-function timerIsOver() {
-  // timer over
-}
-
-function timerWarning() {
-
-}
-
 export default function GeneralScene({appConfig, appPaused, togglePause, updateAppState}) {
     return (<Canvas>
                 <ambientLight />
@@ -81,7 +73,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                     sca={[0.055, 0.055, 0.055]} />
                 {/* Wrap the HTML components here */}
                 <Html fullscreen>
-                <GlobalTimer appPaused={appPaused} isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={togglePause}></GlobalTimer>
+                <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={0.2 * 60 * 1000} noNegativeTime={true}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>
                 <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>
                 </Html>
