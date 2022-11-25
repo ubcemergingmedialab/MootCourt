@@ -21,26 +21,6 @@ const testlistOfUtterances = ["Hello, nice to meet you.",
 "Do you agree or disagree with the new tipping policy? Choose a position: appellant or respondent."]
 
 
-function Box(props: ThreeElements['mesh']) {
-  const ref = useRef<THREE.Mesh>(null!)
-  const [hovered, hover] = useState(false)
-  const [clicked, click] = useState(false)
-  useFrame((state, delta) => (ref.current.rotation.x += 0.01))
-  return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={clicked ? 1.5 : 1}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-    </mesh>
-  )
-}
-
-
 function AllardLogoPlane(props:any) {
   const AllardLogo = useTexture({
     map: './textures/PALSOL-1.2b-Primary-UBC-Shield.png',

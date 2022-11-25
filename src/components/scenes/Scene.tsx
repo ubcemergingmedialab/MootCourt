@@ -59,12 +59,7 @@ function timerWarning() {
 
 }
 
-function togglePause(){
-  // what to do when app is paused?
-  console.log("app is paused")
-}
-
-export default function GeneralScene(props:any) {
+export default function GeneralScene({appConfig, appPaused, togglePause, updateAppState}) {
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
@@ -83,6 +78,7 @@ export default function GeneralScene(props:any) {
                     pos={[0, -3.25, 4.5]}
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
+                <PauseButton togglePause={togglePause}></PauseButton>
                 <GlobalTimer appPaused={appPaused} isTimerReady={true} isTimerStarted={true} timerOverHandler={timerIsOver} totalTime={20 * 60} timerWarningHandler={timerWarning} pauseApplicationHandler={togglePause}></GlobalTimer>
             </Canvas>
     )
