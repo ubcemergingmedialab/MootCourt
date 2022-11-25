@@ -9,7 +9,7 @@ import { useControls } from 'leva'
 const SelectOptimalVoice = ({ updateVoice }) => {
     const voices = window.speechSynthesis.getVoices();
     let defaultVoice = "Microsoft Linda - English (Canada)";
-    const voiceObject = {}
+    let optimalVoice = {}
     let isMac = navigator.platform.toUpperCase().indexOf('MAC')>=0;
 
     console.log("is this mac? " + isMac);
@@ -23,9 +23,10 @@ const SelectOptimalVoice = ({ updateVoice }) => {
         if (voices.some(item => item.name === defaultVoice)){
             for (let i = 0; i < voices.length; i++){
                 if(voices[i].name === defaultVoice){
-                    let tmp = voices[0];
-                    voices[0] = voices[i];
-                    voices[i] = tmp;
+                    optimalVoice = voices[i]
+                    // let tmp = voices[0];
+                    // voices[0] = voices[i];
+                    // voices[i] = tmp;
                 }
             }
         } else {
@@ -38,14 +39,9 @@ const SelectOptimalVoice = ({ updateVoice }) => {
         } 
     }
 }
-    for (let i = 0; i < voices.length; i++) {
-        voiceObject[voices[i].name] = voices[i];
-    }
-    const { voice } = useControls({ voice: { options: voiceObject } })
     useEffect(() => {
-        updateVoice(voice)
-    }, [voice]) 
-
+        updateVoice(optimalVoice)
+    }, [optimalVoice]) 
     return null
 }
 
