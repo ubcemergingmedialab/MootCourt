@@ -9,9 +9,9 @@ function App() {
   const Scene = 1
 
   // Define which page the app has currently loaded
-  const [appState, setAppState] = useState(Scene)
+  const [appState, setAppState] = useState(Landing)
   // App configuration (timer, questions custom settings etc.)
-  const [config, setConfig] = useState({})
+  const [config, setConfig] = useState({/*load it from default*/})
   // global check for app pause
   const [paused, setPaused] = useState(false);
 
@@ -37,7 +37,7 @@ function App() {
     <Suspense fallback={null}>
     <div style={{height: '100vh'}}>
     {/* Send in the app configuration to be edited by the Landing Page*/}
-    {(appState === Landing) ? <LandingPage updateAppState={updateState}></LandingPage> : null}
+    {(appState === Landing) ? <LandingPage updateAppState={updateState} updateConfig={updateConfig}></LandingPage> : null}
     {/* Send in the app configuration and "paused" boolean to the main app*/}
     {(appState === Scene) ? <GeneralScene appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState}></GeneralScene> : null}
     </div>

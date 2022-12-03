@@ -14,8 +14,10 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
     const [currentTime, setCurrentTime] = useState(totalTime)
 
+    
+    // Displaying remaining time in milliseconds as minute:second format. 
+    // if negative values are enabled, keep counting down instead of going back to the landing page. 
     const msToTime = function (duration) {
-        // console.log(duration, "duration");
         let isTimeNegative = duration < 0;
         // use absolute time to calculate displayed time
         duration = Math.abs(duration);
@@ -34,11 +36,15 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
         return minuteInString + ":" + secondsInString
     }
 
+    // When the app pauses, reset the elapsed time as 0 so the timer doesn't decrement too fast
+    // when the pause-play button is repeatedly pressed
+
     useEffect(() => {
         console.log("app pause status change")
         setElapsedTime(0)
     }, [appPaused])
 
+    // If app is in play mode, update the timer text and "current time" (remaining time in the countdown)
     useEffect(() => {
         if (!appPaused) {
             setTimeText(msToTime(currentTime))
@@ -47,7 +53,9 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
         }
     }, [updateTimerInterval])
 
-    // set time update tick (update at every interval)
+    // Every 1000 milliseconds, update the timer. 
+    // Note that the frequency of this function running is not always 1000ms - 
+    // Store a separate counter to accurately calculate time elapsed between two frames of the app (see useEffect below)
     useEffect(() => {
         const timeUpdateInterval = window.setInterval(() => {
             setUpdateTimerInterval(prevUpdate => !prevUpdate)
