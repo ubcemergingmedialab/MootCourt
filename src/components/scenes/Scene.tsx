@@ -8,6 +8,7 @@ import GlobalTimer from '../general/GlobalTimer'
 import PauseButton from '../buttons/PauseButton'
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
 import BackToLandingButton from '../buttons/BackToLandingButton';
+import SceneMenu from '../ui/SceneMenu'
 
 let appPaused = false
 
@@ -74,7 +75,8 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
                 <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={0.2 * 60 * 1000} noNegativeTime={true}></GlobalTimer>
-                <PauseButton togglePause={togglePause}></PauseButton>
+            <PauseButton togglePause={togglePause}></PauseButton>
+                <SceneMenu updateAppState={updateAppState}></SceneMenu>
                 <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>
                 </Html>
             </Canvas>

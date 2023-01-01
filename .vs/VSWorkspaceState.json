@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\public",
-    "\\public\\fonts",
     "\\src",
-    "\\src\\Components"
+    "\\src\\components",
+    "\\src\\components\\buttons",
+    "\\src\\components\\scenes",
+    "\\src\\components\\ui"
   ],
   "PreviewInSolutionExplorer": false
 }
