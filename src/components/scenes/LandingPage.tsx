@@ -5,6 +5,7 @@ import Model from '../general/Model.js'
 import {Html, useTexture} from "@react-three/drei";
 import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
 import BackToSceneButton from '../buttons/BackToSceneButton'
+import LandingPageMenu from '../ui/LandingPageMenu'
 
 let appPaused = false
 
@@ -62,9 +63,10 @@ export default function LandingPage({updateAppState, updateConfig}) {
                     pos={[0, -3, 3.5]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
-                <Html fullscreen>
-                  <BackToSceneButton updateAppState={updateAppState}></BackToSceneButton>
-                  <button onClick={() => {updateConfig({})}}>Update Config</button>
+        <Html fullscreen>
+                  <LandingPageMenu updateAppState={updateAppState}></LandingPageMenu>
+                  {/* <BackToSceneButton updateAppState={updateAppState}></BackToSceneButton> */}
+                  {/* <button onClick={() => {updateConfig({})}}>Update Config</button> */}
                 </Html>
             </Canvas>
     )
