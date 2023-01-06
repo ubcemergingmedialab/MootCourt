@@ -135,32 +135,50 @@ function LandingPageMenu({ updateAppState }) {
         </div>}
 
         {<div className="stayhidden" id="Questions">
-            <h1> Questions </h1>
-            <h2> Interval </h2> 
-            <input type="text" value="default value"></input> <h3> Minutes </h3>
-            <h2> Randomize </h2>
-
-            <div className="toggle-container">
+        <div className="sideMenuContents">
+        <div className="sideMenuTitleText"> Questions
+        <div className="hr-1"></div>
+        </div> 
+        <div className="questionPageGrid">
+        <div className="gridLeftSide1">
+            <div className="gridLeftSideText"> Interval </div>
+        </div>
+        <div className="gridLeftSide2">
+            <div className="gridLeftSideText"> Randomize </div>
+        </div>
+        <div className="gridLeftSide3">
+            <div className="gridLeftSideText"> Delay </div>
+        </div>
+        <div className="gridRightSide1">
+            <input type="text" value="default value"></input>
+            {/* <div className="gridLeftSideText"> Minutes </div> */}
+        </div>
+        <div className="gridRightSide2">
+        <div className="toggle-container">
                 <input type="checkbox" />
                 <div className="slider round"></div>
             </div>
-
-            <h2> Delay </h2>
-
-            <div className="toggle-container">
+        </div>
+        <div className="gridRightSide3">
+        <div className="toggle-container">
                 <input type="checkbox" />
                 <div className="slider round"></div>
             </div>
-
-            <h2> Add </h2>
-            <img src="./textures/Info.png"></img>
-            <input type="text" value=""></input>
-            <input type="text" value=""></input>
-            <br />
-
+        </div>
+        <div className="gridLeftSide4">
+        {/* <div className="toggle-container"> */}
+        <div className="gridLeftSideText"> Add
+        </div>
+        {/* <img src="./textures/Info.png"></img> */}
+        {/* </div> */}
+        </div>
+            {/* <img src="./textures/Info.png"></img> */}
+            {/* <input type="text" value=""></input>
+            <input type="text" value=""></input> */}
+            </div>
             <button className="button" type="button" onClick={(event) => pressBackFromQuestions()}>Back</button>
             <button className="button" type="button" onClick={(event) => pressNextFromQuestions()}>Next</button>
-
+            </div>
         </div>}
 
         {<div className="stayhidden" id="Timer">

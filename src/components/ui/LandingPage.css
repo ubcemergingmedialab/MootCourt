@@ -85,6 +85,56 @@
     border-color: #F7CA18;
 }
 
+.questionPageGrid {
+    display: grid;
+    margin-top: 7.5%;
+    margin-left: 10%;
+    margin-bottom: 5%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 12.5vh);
+}
+
+.gridLeftSideText {
+    color: white;
+    font-family: Verdana;
+    font-size: 1.5vw;
+}
+
+.gridLeftSide1 {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.gridLeftSide2 {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.gridLeftSide3 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.gridLeftSide4 {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.gridRightSide1{
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.gridRightSide2{
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.gridRightSide3{
+    grid-column: 2;
+    grid-row: 3;
+}
+
 .bigLabelText {
     width: 531px;
     height: 106px;
@@ -119,9 +169,6 @@
     display: none;
 }
 
-
-
-
 .toggle-container {
     position: relative;
     display: inline-block;
@@ -140,6 +187,8 @@
 
 .slider {
     position: absolute;
+    height: 5vh;
+    width: 10vh;
     top: 0;
     left: 0;
     right: 0;
@@ -153,22 +202,22 @@
     .slider::before {
         content: "";
         position: absolute;
-        height: 24px;
-        width: 24px;
-        left: 8px;
-        bottom: 8px;
+        height: 3.5vh;
+        width: 3.5vh;
+        left: 1vh;
+        bottom: 0.75vh;
         background-color: #fff;
         transition: 0.2s;
         pointer-events: none;
     }
 
     .slider::after {
-        position: absolute;
+        position: relative;
         content: "";
-        height: 24px;
-        width: 24px;
-        right: 10px;
-        bottom: 6px;
+        height: 3.5vh;
+        width: 3.5vh;
+        left: 5vh;
+        bottom: 0.75vh;
         transition: 0.2s;
         pointer-events: none;
         color: #fff;
