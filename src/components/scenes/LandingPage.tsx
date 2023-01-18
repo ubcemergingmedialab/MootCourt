@@ -50,7 +50,7 @@ function EMLLogoPlane(props:any) {
   )
 }
 
-export default function LandingPage({updateAppState}) {
+export default function LandingPage({updateAppState, updateConfig}) {
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
@@ -65,7 +65,8 @@ export default function LandingPage({updateAppState}) {
                     sca={[0.06, 0.06, 0.06]} />
         <Html fullscreen>
                   <LandingPageMenu updateAppState={updateAppState}></LandingPageMenu>
-                  <BackToSceneButton updateAppState={updateAppState}></BackToSceneButton>
+                  {/* <BackToSceneButton updateAppState={updateAppState}></BackToSceneButton> */}
+                  {/* <button onClick={() => {updateConfig({})}}>Update Config</button> */}
                 </Html>
             </Canvas>
     )

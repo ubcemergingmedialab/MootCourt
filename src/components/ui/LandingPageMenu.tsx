@@ -3,243 +3,182 @@ import { Html } from '@react-three/drei'
 import PropTypes from 'prop-types'
 import './LandingPage.css';
 
-
-function pressStart() {
-    const thisID = document.getElementById("Main");
-    const nextID = document.getElementById("Position");
+function resetDisplayedUI(ID1, ID2) {
+    const thisID = document.getElementById(ID1);
+    const nextID = document.getElementById(ID2);
     if (thisID != null && nextID != null) {
         thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
+        nextID.className = 'sideMenuBackground';
     }
+}
+
+
+function pressStart() {
+    resetDisplayedUI("Main", "Position");
 }
 
 
 function pressAppellant() {
-    const thisID = document.getElementById("Position");
-    const nextID = document.getElementById("SetUp");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Position", "SetUp");
 }
 
 
 function pressRespondant() {
-    const thisID = document.getElementById("Position");
-    const nextID = document.getElementById("SetUp");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Position", "SetUp");
 }
 
 
 function pressCustomize() {
-    const thisID = document.getElementById("SetUp");
-    const nextID = document.getElementById("Questions");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("SetUp", "Questions");
 }
 
 
 function pressDefault() {
-    const thisID = document.getElementById("SetUp");
-    const nextID = document.getElementById("Main");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("SetUp", "Main");
 }
 
 
 function pressAbout() {
-    const thisID = document.getElementById("Main");
-    const nextID = document.getElementById("About");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Main", "About");
 }
 
 
 function pressTutorial() {
-    const thisID = document.getElementById("Main");
-    const nextID = document.getElementById("Tutorial");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Main", "Tutorial");
 }
 
 
 function pressMootingResources() {
-    const thisID = document.getElementById("Main");
-    const nextID = document.getElementById("MootingResources");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Main", "MootingResources");
 }
 
 
 function pressFeedback() {
-    const thisID = document.getElementById("Main");
-    const nextID = document.getElementById("Feedback");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Main", "Feedback");
 }
 
 
 function pressBackToMenu() {
-    const thisID = document.getElementById("About");
-    const nextID = document.getElementById("Main");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("About", "Main");
 }
 
 
 function pressBackToMenu2() {
-    const thisID = document.getElementById("Tutorial");
-    const nextID = document.getElementById("Main");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Tutorial", "Main");
 }
 
 
 function pressBackToMenu3() {
-    const thisID = document.getElementById("MootingResources");
-    const nextID = document.getElementById("Main");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("MootingResources", "Main");
 }
 
 
 function pressBackFromQuestions() {
-    const thisID = document.getElementById("Questions");
-    const nextID = document.getElementById("SetUp");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Questions", "SetUp");
 }
 
 
 function pressNextFromQuestions() {
-    const thisID = document.getElementById("Questions");
-    const nextID = document.getElementById("Timer");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Questions", "Timer");
 }
 
 
 function pressBackFromTimer() {
-    const thisID = document.getElementById("Timer");
-    const nextID = document.getElementById("Questions");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Timer", "Questions");
 }
 
 
 function pressStartMooting() {
-    const thisID = document.getElementById("Timer");
-    const nextID = document.getElementById("Main");
-    if (thisID != null && nextID != null) {
-        thisID.className = 'stayhidden';
-        nextID.className = 'pageBackground';
-    }
+    resetDisplayedUI("Timer", "Main");
 }
-
-
-
-
-
-
-
 
 function LandingPageMenu({ updateAppState }) {
 
     return <>
-        {<div className="pageBackground" id="Main">
-            <br />< br />
-            <h1> Moot Court </h1>
-            <hr className= "yellow_underline"></hr>
-            <br />
+        {<div className="sideMenuBackground" id="Main">
+            <div className="sideMenuContents">
+            <div className="sideMenuTitleText"> Moot Court
+            <div className="hr-1"></div>
+            </div>
+            <div className="buttonFlexBox">
             <button className="button" type="button" id="Start" onClick={(event) => pressStart()}> START </button>
-            <br /><br />
-            <button className="button" type="button" onClick={(event) => pressAbout()} >ABOUT</button>
-            <br /><br />
-            <button className="button" type="button" onClick={(event) => pressTutorial()}>TUTORIAL</button>
-            <br /><br />
+            <button className="button" type="button" onClick={(event) => pressAbout()} > ABOUT</button>
+            <button className="button" type="button" onClick={(event) => pressTutorial()}> TUTORIAL </button>
             <button className="button" type="button" onClick={(event) => pressMootingResources()}>MOOTING RESOURCES</button>
-            <br /><br />
-            <button className="buttonFeedback" type="button" onClick={(event) => pressFeedback()}>GIVE US FEEDBACK?</button>
+            <button className="buttonFeedback" type="button" onClick={(event) => pressFeedback()}>GIVE FEEDBACK</button>
+            </div>
+            </div>
         </div>}
 
         {<div className="stayhidden" id="Position">
-            <br />
-            <h1> Position </h1>
-            <br /><br />
+            <div className="sideMenuContents">
+            <div className="sideMenuTitleText"> Position
+            <div className="hr-2"></div>
+            </div>
+            <div className="buttonFlexBox-Position">
             <button className="button" type="button" onClick={(event) => pressAppellant()} >APPELLANT</button>
-            <br /><br />
-            <button className="button" type="button" onClick={(event) => pressRespondant()}>RESPONDANT</button>
-            <br /><br />
+            <button className="button" type="button" onClick={(event) => pressRespondant()}>RESPONDENT</button>
+            </div>
+            </div>
         </div>}
 
         {<div className="stayhidden" id="SetUp">
-            <br />
-            <h1> SetUp </h1> <br /><br />
-            <button className="button" type="button" onClick={(event) => pressCustomize()}>CUSTOMIZE</button>
-            <br /><br />
-            <button className="button" type="button" onClick={(event) => pressDefault()}>DEFAULT</button>
-            <br /><br />
+            <div className="sideMenuContents">
+            <div className="sideMenuTitleText"> Setup
+            <div className="hr-2"></div>
+            </div> 
+            <div className="buttonFlexBox-Position">
+            <button className="button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
+            <button className="button" type="button" onClick={(event) => pressDefault()}>Default</button>
+            </div>
+            </div>
         </div>}
 
         {<div className="stayhidden" id="Questions">
-            <br />
-            <h1> Questions </h1> <br />
-            <h2> Interval </h2>
-            <input type="text" value="default value"></input> <h3> Minutes </h3>
-            <br />
-            <h2> Randomize </h2>
-
-            <div className="toggle-container">
+        <div className="sideMenuContents">
+        <div className="sideMenuTitleText"> Questions
+        <div className="hr-1"></div>
+        </div> 
+        <div className="questionPageGrid">
+        <div className="gridLeftSide1">
+            <div className="gridLeftSideText"> Interval </div>
+        </div>
+        <div className="gridLeftSide2">
+            <div className="gridLeftSideText"> Randomize </div>
+        </div>
+        <div className="gridLeftSide3">
+            <div className="gridLeftSideText"> Delay </div>
+        </div>
+        <div className="gridRightSide1">
+            <input type="text" value="default value"></input>
+            {/* <div className="gridLeftSideText"> Minutes </div> */}
+        </div>
+        <div className="gridRightSide2">
+        <div className="toggle-container">
                 <input type="checkbox" />
                 <div className="slider round"></div>
             </div>
-
-            <br />
-            <h2> Delay </h2>
-
-            <div className="toggle-container">
+        </div>
+        <div className="gridRightSide3">
+        <div className="toggle-container">
                 <input type="checkbox" />
                 <div className="slider round"></div>
             </div>
-
-            <br />
-
-            <h2> Add </h2>
-            <img src="./textures/Info.png"></img>
-            <input type="text" value=""></input>
-            <input type="text" value=""></input>
-            <br />
-
+        </div>
+        <div className="gridLeftSide4">
+        {/* <div className="toggle-container"> */}
+        <div className="gridLeftSideText"> Add
+        </div>
+        {/* <img src="./textures/Info.png"></img> */}
+        {/* </div> */}
+        </div>
+            {/* <img src="./textures/Info.png"></img> */}
+            {/* <input type="text" value=""></input>
+            <input type="text" value=""></input> */}
+            </div>
             <button className="button" type="button" onClick={(event) => pressBackFromQuestions()}>Back</button>
             <button className="button" type="button" onClick={(event) => pressNextFromQuestions()}>Next</button>
-
+            </div>
         </div>}
 
         {<div className="stayhidden" id="Timer">
@@ -304,9 +243,7 @@ function LandingPageMenu({ updateAppState }) {
 
                 <button className="button" type="button" onClick={(event) => pressBackToMenu3()}>Back to Menu</button>
             </div>
-
         }
-
     </>
 }
 

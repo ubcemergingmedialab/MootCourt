@@ -72,11 +72,11 @@ function SceneJudgeAvatar({animated = true, listOfUtterances, appPaused}) {
         setAnimationPaused(true)
     }
 
-    useEffect(() => {
-        if (appPaused) {
-            setAnimationPaused(false)
-        }
-    }, [appPaused])
+    // useEffect(() => {
+    //     if (appPaused) {
+    //         setAnimationPaused(false)
+    //     }
+    // }, [appPaused])
 
     return (<Suspense fallback={null}>
         <Avatar appPaused={appPaused} position={[0, -2.5, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>

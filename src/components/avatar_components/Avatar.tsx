@@ -10,7 +10,7 @@ function Avatar({ appPaused, position, rotation, modelUrl, textToSay, utteranceR
 
     return (<>
         <Suspense fallback={null}>
-            <AnimationComponent position={position} rotation={rotation} modelUrl={modelUrl} animated={animated} animationPause={animationPause}></AnimationComponent>
+            <AnimationComponent appPaused={appPaused} position={position} rotation={rotation} modelUrl={modelUrl} animated={animated} animationPause={animationPause}></AnimationComponent>
             <VoiceComponent appPaused={appPaused} textToSay={textToSay} utteranceRepeat={utteranceRepeat} readyToSpeak={readyToSpeak} startedSpeaking={startedSpeaking} finishedSpeaking={finishedSpeaking}></VoiceComponent>
         </Suspense>
     </>

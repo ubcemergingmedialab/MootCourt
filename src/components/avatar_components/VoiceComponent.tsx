@@ -47,7 +47,7 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
     }
     // call "speak" to start speech, "cancel" to pause speech
     const {speak, cancel} = useSpeechSynthesis({ onEnd })
-    const [voice, setVoice] = useState<SpeechSynthesisVoice>();
+    const [voice, setVoice] = useState<SpeechSynthesisVoice>()
     const [voicesReady, setVoicesReady] = useState<boolean>(false) // causes rerender on voices loaded
 
     // 1) check if voice is available on the browser.
@@ -70,12 +70,18 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
 
     // 3) when the textToSay is updated, the previous speech (if it was happening) cancels and a new speech starts. 
     useEffect(() => {
-        console.log('speaking: ' + textToSay)
-        cancel()
-        speak({ text: textToSay, voice: voice, rate: 1.0 })
-        startedSpeaking && textToSay !== "" && startedSpeaking()
+        if (!appPaused) {
+            console.log('speaking: ' + textToSay)
+            cancel()
+            speak({ text: textToSay, voice: voice, rate: 1.0 })
+            startedSpeaking && textToSay !== "" && startedSpeaking()
+        } else {
+            console.log("global app state set as paused, speech input detected but not reading text")
+        }
     }, [textToSay])
 
+    // Does not guarantee that sound won't play when app is in pause state but new text is received. 
+    // Above function uses boolean check to prevent this scenario
     useEffect(() => {
         if (appPaused) {
             cancel()

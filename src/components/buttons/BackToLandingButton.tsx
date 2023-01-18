@@ -11,7 +11,8 @@ function BackToLandingButton({ updateAppState }) {
         <button className="pause-button" onClick={() => { updateAppState(0)}}>
             {"Back to Setup"}
         </button>
-    </div>}
+    </div>
+    }
     </>
 }
 
