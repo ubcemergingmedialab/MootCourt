@@ -94,6 +94,8 @@ function pressStartMooting() {
 
 function LandingPageMenu({ updateAppState }) {
 
+    // AppState : const Scene = 1
+
     return <>
         {<div className="sideMenuBackground" id="Main">
             <div className="sideMenuContents">
@@ -129,7 +131,7 @@ function LandingPageMenu({ updateAppState }) {
             </div> 
             <div className="buttonFlexBox-Position">
             <button className="button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
-            <button className="button" type="button" onClick={(event) => pressDefault()}>Default</button>
+            <button className="button" type="button" onClick={(event) => updateAppState(1)}>Default</button>
             </div>
             </div>
         </div>}
@@ -150,8 +152,8 @@ function LandingPageMenu({ updateAppState }) {
             <div className="gridLeftSideText"> Delay </div>
         </div>
         <div className="gridRightSide1">
-            <input type="text" value="default value"></input>
-            {/* <div className="gridLeftSideText"> Minutes </div> */}
+            <input type="number" min="1"></input>
+            <div className="gridLeftSideText"> Minutes </div>
         </div>
         <div className="gridRightSide2">
         <div className="toggle-container">
@@ -166,42 +168,29 @@ function LandingPageMenu({ updateAppState }) {
             </div>
         </div>
         <div className="gridLeftSide4">
-        {/* <div className="toggle-container"> */}
-        <div className="gridLeftSideText"> Add
         </div>
-        {/* <img src="./textures/Info.png"></img> */}
-        {/* </div> */}
-        </div>
-            {/* <img src="./textures/Info.png"></img> */}
-            {/* <input type="text" value=""></input>
-            <input type="text" value=""></input> */}
             </div>
             <button className="button" type="button" onClick={(event) => pressBackFromQuestions()}>Back</button>
             <button className="button" type="button" onClick={(event) => pressNextFromQuestions()}>Next</button>
-            </div>
+        </div>
         </div>}
 
         {<div className="stayhidden" id="Timer">
-            <br />
-            <h1> Timer </h1> <br /><br />
+        <div className="sideMenuContents">
+            <div className="sideMenuTitleText"> Timer
+            <div className="hr-2"></div>
+            </div>
             <h2> Total Durartion</h2>
-            <input type="text" value="default value"></input> <h3>Minutes </h3>
-            <h2> First Warning </h2>
-            <input type="text" value="default value"></input> <h3>Minutes </h3>
-            <h2> Second Warning </h2>
-            <input type="text" value="default value"></input> <h3>Minutes </h3>
+            <input type="number"></input>
+            
             <h2> Stop Presentation </h2>
             <div className="toggle-container">
                 <input type="checkbox" />
                 <div className="slider round"></div>
             </div>
-            <h2> Introduction Time </h2>
-            <h3>Minutes </h3>
-            <h3>Seconds </h3>
-
             <button className="button" type="button" onClick={(event) => pressBackFromTimer()}>Back</button>
-            <button className="button" type="button" onClick={(event) => pressStartMooting()}>Start Mooting!</button>
- 
+            <button className="button" type="button" onClick={(event) => updateAppState(1)}>Start Mooting!</button>
+            </div>
         </div>}
 
         {<div className="stayhidden" id="About">
