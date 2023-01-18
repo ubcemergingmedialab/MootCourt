@@ -178,40 +178,40 @@ function LandingPageMenu({ updateAppState }) {
             <h1> Moot Court </h1>
             <hr className= "yellow_underline"></hr>
             <br />
-            <button className="button" type="button" id="Start" onClick={(event) => pressStart()}> Start </button>
+            <button className="button" type="button" id="Start" onClick={(event) => pressStart()}> START </button>
             <br /><br />
-            <button className="button" type="button" onClick={(event) => pressAbout()} >About</button>
+            <button className="button" type="button" onClick={(event) => pressAbout()} >ABOUT</button>
             <br /><br />
-            <button className="button" type="button" onClick={(event) => pressTutorial()}>Tutorial</button>
+            <button className="button" type="button" onClick={(event) => pressTutorial()}>TUTORIAL</button>
             <br /><br />
-            <button className="button" type="button" onClick={(event) => pressMootingResources()}>Mooting Resources</button>
+            <button className="button" type="button" onClick={(event) => pressMootingResources()}>MOOTING RESOURCES</button>
             <br /><br />
-            <button className="buttonFeedback" type="button" onClick={(event) => pressFeedback()}>Give us feedback?</button>
+            <button className="buttonFeedback" type="button" onClick={(event) => pressFeedback()}>GIVE US FEEDBACK?</button>
         </div>}
 
         {<div className="stayhidden" id="Position">
             <br />
             <h1> Position </h1>
             <br /><br />
-            <button className="button" type="button" onClick={(event) => pressAppellant()} >Appellant</button>
+            <button className="button" type="button" onClick={(event) => pressAppellant()} >APPELLANT</button>
             <br /><br />
-            <button className="button" type="button" onClick={(event) => pressRespondant()}>Respondant</button>
+            <button className="button" type="button" onClick={(event) => pressRespondant()}>RESPONDANT</button>
             <br /><br />
         </div>}
 
         {<div className="stayhidden" id="SetUp">
             <br />
             <h1> SetUp </h1> <br /><br />
-            <button className="button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
+            <button className="button" type="button" onClick={(event) => pressCustomize()}>CUSTOMIZE</button>
             <br /><br />
-            <button className="button" type="button" onClick={(event) => pressDefault()}>Default</button>
+            <button className="button" type="button" onClick={(event) => pressDefault()}>DEFAULT</button>
             <br /><br />
         </div>}
 
         {<div className="stayhidden" id="Questions">
             <br />
             <h1> Questions </h1> <br />
-            <h2> Interval </h2> 
+            <h2> Interval </h2>
             <input type="text" value="default value"></input> <h3> Minutes </h3>
             <br />
             <h2> Randomize </h2>
