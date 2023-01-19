@@ -9,7 +9,7 @@ function App() {
   const Scene = 1
 
   // Define which page the app has currently loaded
-  const [appState, setAppState] = useState(Landing)
+  const [appState, setAppState] = useState(Scene)
   // App configuration (timer, questions custom settings etc.)
   const [config, setConfig] = useState({/*load it from default*/})
   // global check for app pause

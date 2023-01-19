@@ -152,6 +152,7 @@
 }
 
 .gridRightSide2{
+    float: left;
     grid-column: 2;
     grid-row: 2;
 }

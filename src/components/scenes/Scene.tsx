@@ -76,7 +76,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                 <Html fullscreen>
                 <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={0.2 * 60 * 1000} noNegativeTime={true}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>
-                <SceneMenu updateAppState={updateAppState}></SceneMenu>
+                {/* <SceneMenu updateAppState={updateAppState}></SceneMenu> */}
                 <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>
                 </Html>
             </Canvas>
