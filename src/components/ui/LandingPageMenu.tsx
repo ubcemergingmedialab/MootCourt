@@ -175,21 +175,48 @@ function LandingPageMenu({ updateAppState}) {
         </div>
         </div>}
 
+        
         {<div className="stayhidden" id="Timer">
-        <div className="sideMenuContents">
-            <div className="sideMenuTitleText"> Timer
-            <div className="hr-2"></div>
-            </div>
-            <h2> Total Durartion</h2>
-            <input type="number"></input>
-            
-            <h2> Stop Presentation </h2>
-            <div className="toggle-container">
-                <input type="checkbox" />
-                <div className="slider round"></div>
-            </div>
-            <button className="button" type="button" onClick={(event) => pressBackFromTimer()}>Back</button>
-            <button className="button" type="button" onClick={(event) => updateAppState(1)}>Start Mooting!</button>
+            <div className="sideMenuInner">
+                <h1> Timer </h1>
+                <div className="formitem">
+                    <label htmlFor="TotalDuration"> Total Durartion</label>
+                    <div className="gridRightSide1">
+                        <input type="number" min="1"></input>
+                    </div>
+                    <div className="FieldDescription">Minutes </div>
+                </div>
+                <div className="formitem">
+                    <label htmlFor="FirstWarning" > First Warning </label>
+                    <div className="gridRightSide1">
+                        <input type="number" min="1"></input>
+                    </div>
+                    <div className="FieldDescription">Minutes </div>
+                </div>
+                <div className="formitem">
+                    <label htmlFor="SecondWarning"> Second Warning </label>
+                    <div className="gridRightSide1">
+                        <input type="number" min="1"></input>
+                    </div>
+                    <div className="FieldDescription">Minutes </div>
+                 </div>
+                <label> Stop Presentation </label>
+                <div className="toggle-container">
+                    <input type="checkbox" />
+                    <div className="slider round"></div>
+                </div>
+                <h2> Introduction Time </h2>
+                <div className="gridRightSide1">
+                    <input type="number" min="1"></input>
+                </div>
+                <h3>Minutes </h3>
+                <div className="gridRightSide1">
+                    <input type="number" min="1"></input>
+                </div>
+                <h3>Seconds </h3>
+
+                <button className="button" type="button" onClick={(event) => pressBackFromTimer()}>Back</button>
+                <button className="button" type="button" onClick={(event) => pressStartMooting()}>Start Mooting!</button>
             </div>
         </div>}
 
