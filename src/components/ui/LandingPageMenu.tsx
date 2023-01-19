@@ -92,7 +92,7 @@ function pressStartMooting() {
     resetDisplayedUI("Timer", "Main");
 }
 
-function LandingPageMenu({ updateAppState }) {
+function LandingPageMenu({ updateAppState}) {
 
     return <>
         {<div className="sideMenuBackground" id="Main">
@@ -150,7 +150,7 @@ function LandingPageMenu({ updateAppState }) {
             <div className="gridLeftSideText"> Delay </div>
         </div>
         <div className="gridRightSide1">
-            <input type="text" value="default value"></input>
+            <input type="text" defaultValue="default value"></input>
             {/* <div className="gridLeftSideText"> Minutes </div> */}
         </div>
         <div className="gridRightSide2">
@@ -182,26 +182,35 @@ function LandingPageMenu({ updateAppState }) {
         </div>}
 
         {<div className="stayhidden" id="Timer">
-            <br />
-            <h1> Timer </h1> <br /><br />
-            <h2> Total Durartion</h2>
-            <input type="text" value="default value"></input> <h3>Minutes </h3>
-            <h2> First Warning </h2>
-            <input type="text" value="default value"></input> <h3>Minutes </h3>
-            <h2> Second Warning </h2>
-            <input type="text" value="default value"></input> <h3>Minutes </h3>
-            <h2> Stop Presentation </h2>
-            <div className="toggle-container">
-                <input type="checkbox" />
-                <div className="slider round"></div>
-            </div>
-            <h2> Introduction Time </h2>
-            <h3>Minutes </h3>
-            <h3>Seconds </h3>
+            <div className="sideMenuInner">
+                <h1> Timer </h1>
+                <div className="formitem">
+                    <label htmlFor="TotalDuration"> Total Durartion</label>
+                    <input name="TotalDuration" type="text" value="default value"></input>
+                    <div className="FieldDescription">Minutes </div>
+                </div>
+                <div className="formitem">
+                    <label htmlFor="FirstWarning" > First Warning </label>
+                    <input name="FirstWarning" type="text" value="default value"></input>
+                    <div className="FieldDescription">Minutes </div>
+                </div>
+                <div className="formitem">
+                    <label htmlFor="SecondWarning"> Second Warning </label>
+                    <input name="SecondWarning" type="text" value="default value"></input>
+                    <div className="FieldDescription">Minutes </div>
+                 </div>
+                <label> Stop Presentation </label>
+                <div className="toggle-container">
+                    <input type="checkbox" />
+                    <div className="slider round"></div>
+                </div>
+                <h2> Introduction Time </h2>
+                <h3>Minutes </h3>
+                <h3>Seconds </h3>
 
-            <button className="button" type="button" onClick={(event) => pressBackFromTimer()}>Back</button>
-            <button className="button" type="button" onClick={(event) => pressStartMooting()}>Start Mooting!</button>
- 
+                <button className="button" type="button" onClick={(event) => pressBackFromTimer()}>Back</button>
+                <button className="button" type="button" onClick={(event) => pressStartMooting()}>Start Mooting!</button>
+            </div>
         </div>}
 
         {<div className="stayhidden" id="About">
@@ -232,13 +241,13 @@ function LandingPageMenu({ updateAppState }) {
                 <br />
                 <h1> Resources - Coming Soon! Or until I can locate the file </h1> <br /><br />
                 <button className="button" type="button">
-                    <a href="First-Year Moots Procedure Checklist 2020.pdf" target="_blank">First Year Moot Procedure Checklist</a>
+                    <a href="./pdf/First-Year Moots Procedure Checklist 2020.pdf">First Year Moot Procedure Checklist</a>
                 </button>
                 <button className="button" type="button">
-                    <a href="Compiled Moot Resources.pdf" target="_blank">General Mooting Tips and Oral Argument Criteria</a>
+                    <a href="./pdf/Compiled Moot Resources.pdf">General Mooting Tips and Oral Argument Criteria</a>
                 </button>
                 <button className="button" type="button">
-                    <a href="2021_Appearing_before_the_Court.pdf" target="_blank">Appearing before the Court (Civil and Criminal)</a>
+                    <a href="./pdf/2021_Appearing_before_the_Court.pdf">Appearing before the Court (Civil and Criminal)</a>
                 </button>
 
                 <button className="button" type="button" onClick={(event) => pressBackToMenu3()}>Back to Menu</button>

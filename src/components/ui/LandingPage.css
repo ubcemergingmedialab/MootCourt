@@ -7,12 +7,38 @@
     background: #002145;
     opacity: 0.9;
     border-radius: 25px 0px 0px 25px;
+    color: white;
 }
 
 .sideMenuContents{
     position: relative;
     top: 7.5%;
     height: 92.5%;
+}
+
+.formitem{
+    width: 100%;
+}
+
+.sideMenuInner{
+    padding: 0 30px;
+
+}
+
+.sideMenuInner input {
+    width: 10%;
+    display: inline-block;
+}
+
+.sideMenuInner label {
+    width: 60%;
+    display: inline-block;
+
+}
+
+.sideMenuInner .FieldDescription {
+    display: inline-block;
+    margin-left: 20px;
 }
 
 .sideMenuTitleText {
