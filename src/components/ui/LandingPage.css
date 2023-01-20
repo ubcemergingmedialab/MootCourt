@@ -1,4 +1,35 @@
+@font-face {
+    font-family: Whitney;
+    src: url("../fonts/Whitney/Whitney-Light.otf");
+    font-weight: light;
+}
+@font-face {
+    font-family: Whitney;
+    src: url("../fonts/Whitney/Whitney-Book.otf");
+    font-weight: normal;
+}
+@font-face {
+    font-family: Whitney;
+    src: url("../fonts/Whitney/Whitney-Bold.otf");
+    font-weight: bold;
+}
 
+body,
+body * {
+    box-sizing: border-box;
+    font-family: Whitney;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-size: 5.5vw;
+    margin: 0 0 0.3em 0;
+    text-align: center;
+    line-height: 1em;
+    letter-spacing: 0.05em;
+}
+
+/* Start Side menu */
 .sideMenuBackground {
     position: relative;
     width: 50%;
@@ -8,51 +39,83 @@
     opacity: 0.9;
     border-radius: 25px 0px 0px 25px;
     color: white;
+    padding-top: 8.5vh;
+    padding-bottom: 6.5vh;
+    font-family: "Whitney", Verdana, sans-serif;
+}
+
+/* Container inside side menu */
+.sideMenuInner {
+    padding: 0 30px;
+    display: flex;  
+    flex-direction: column;
+    height: 100%;
 }
 
 .sideMenuContents{
-    position: relative;
+    /* position: relative;
     top: 7.5%;
-    height: 92.5%;
+    height: 92.5%; */
+    padding-top: 7vh;
+    flex-grow: 1;
 }
 
-.formitem{
+.sideMenuBottom {
+    text-align: center;
+}
+
+
+/* Individual form items; these are listed in linear order, in a single column. */
+.formitem {
     width: 100%;
+    margin: 0 4.5vw 4vh 4.5vw;
 }
 
-.sideMenuInner{
-    padding: 0 30px;
-
+.subformitem {
+    width: 50%;
+    display: inline-block;
 }
+
+.sideMenuInner .long-formitem label {
+    width: 100%;
+    margin-bottom: 4vh;
+}
+
+
+.sideMenuInner .long-formitem input {
+    width: 20%;
+}
+
 
 .sideMenuInner input {
     width: 10%;
     display: inline-block;
+    border: 0;
 }
 
 .sideMenuInner label {
-    width: 60%;
+    width: 50%;
     display: inline-block;
-
+    font-size: 2.7vw;
 }
 
 .sideMenuInner .FieldDescription {
     display: inline-block;
     margin-left: 20px;
+    font-size: 2.5vw;
 }
 
 .sideMenuTitleText {
-    font-family: Verdana;
-    font-size: 5vw;
+    /* font-size: 5vw;
     font-weight: bold;
     color: white;
-    text-align: center;
+    text-align: center; */
 }
 
 .buttonFlexBox {
-    position: relative;
+    /* position: relative;
     top: 2vh;
-    height: 80%;
+    height: 80%; */
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -60,35 +123,60 @@
 }
 
 .buttonFlexBox-Position {
-    position: relative;
+    /* position: relative;
     top: 10vh;
     height: 40%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-around; */
 }
 
 .button {
     background: #FFFFFF;
-    width: 20vw;
+    font-weight: light;
+    /* width: 20vw; */
+    /* font-family: Verdana; */
     height: 10vh;
-    font-family: Verdana;
-    font-size: 1.5vw;
-    font-weight: bold;
+    font-size: 2.75vw;
+    text-transform: uppercase;
+    border: 0;
+    transition: 0.4s;
 }
 
 .button:hover {
     background: #F5D247;
 }
 
+
+.large-button {
+    margin-right: 2vw;
+    height: 7vh;
+    padding: 0 4.5vw;
+    margin-top: 2vh;
+}
+
+.large-button:first-of-type {
+    margin-top: 0;
+}
+
+.large-button:last-of-type {
+    margin-right: 0;
+}
+
+.wide-button {
+    width: 73%;
+    margin-bottom: 4.65vh;
+}
+
+
 .buttonFeedback {
-    width: 20vw;
-    height: 10vh;
+    /* width: 20vw;
+    height: 10vh; */
     background: #F7CA18;
-    font-family: Verdana;
-    font-size: 1.5vw;
-    font-weight: bold;
+    /* font-family: Verdana; */
+    /* font-size: 1.5vw;
+    font-weight: bold; */
 }
 
 .hr-1 {
@@ -116,16 +204,15 @@
     margin-top: 7.5%;
     margin-left: 10%;
     margin-bottom: 5%;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 12.5vh);
+    /* grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 12.5vh); */
 }
 
-.gridLeftSideText {
+/* .gridLeftSideText {
     color: white;
-    font-family: Verdana;
     font-size: 1.5vw;
-}
-
+} */
+/* 
 .gridLeftSide1 {
     grid-column: 1;
     grid-row: 1;
@@ -146,26 +233,26 @@
     grid-row: 4;
 }
 
-.gridRightSide1{
+.gridRightSide1 {
     grid-column: 2;
     grid-row: 1;
 }
 
-.gridRightSide2{
+.gridRightSide2 {
     float: left;
     grid-column: 2;
     grid-row: 2;
 }
 
-.gridRightSide3{
+.gridRightSide3 {
     grid-column: 2;
     grid-row: 3;
-}
+} */
 
 .bigLabelText {
     width: 531px;
     height: 106px;
-    font-family: 'Open Sans';
+    /* font-family: 'Open Sans'; */
     font-style: normal;
     font-weight: 700;
     font-size: 78px;
@@ -177,7 +264,7 @@
     position: absolute;
     width: 142px;
     height: 54px;
-    font-family: 'Open Sans';
+    /* font-family: 'Open Sans'; */
     font-style: normal;
     font-weight: 400;
     font-size: 40px;
@@ -204,13 +291,12 @@
     pointer-events: none;
 }
 
-
-    .toggle-container input {
-        opacity: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: all;
-    }
+.toggle-container input {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: all;
+}
 
 .slider {
     position: absolute;
@@ -226,48 +312,226 @@
     pointer-events: none;
 }
 
-    .slider::before {
-        content: "";
-        position: absolute;
-        height: 3.5vh;
-        width: 3.5vh;
-        left: 1vh;
-        bottom: 0.75vh;
-        background-color: #fff;
-        transition: 0.2s;
-        pointer-events: none;
-    }
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 3.5vh;
+    width: 3.5vh;
+    left: 1vh;
+    bottom: 0.75vh;
+    background-color: #fff;
+    transition: 0.2s;
+    pointer-events: none;
+}
 
-    .slider::after {
-        position: relative;
-        content: "";
-        height: 3.5vh;
-        width: 3.5vh;
-        left: 5vh;
-        bottom: 0.75vh;
-        transition: 0.2s;
-        pointer-events: none;
-        color: #fff;
-    }
+.slider::after {
+    position: relative;
+    content: "";
+    height: 3.5vh;
+    width: 3.5vh;
+    left: 5vh;
+    bottom: 0.75vh;
+    transition: 0.2s;
+    pointer-events: none;
+    color: #fff;
+}
 
 
 input:checked + .slider {
     background-color: #F7CA18;
 }
 
-    input:checked + .slider:before {
-        transform: translateX(40px);
-    }
+input:checked + .slider:before {
+    transform: translateX(40px);
+}
 
-    input:checked + .slider:after {
-        content: "";
-        left: 8px;
-    }
+input:checked + .slider:after {
+    content: "";
+    left: 8px;
+}
 
 .slider.round {
     border-radius: 34px;
 }
 
-    .slider.round:before {
-        border-radius: 50%;
+.slider.round:before {
+    border-radius: 50%;
+}
+
+
+input[type=number] {
+    height: 5vh;
+    position: relative;
+    top: -5px;
+}
+
+
+.number-input-container {
+    width: 244px;
+
+    display: grid;
+    grid-template-columns: 48px auto 48px;
+}
+
+.number-input-container label {
+    display: inline-block;
+
+    margin-bottom: 4px;
+
+    font-size: 12px;
+    line-height: 24px;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: var(--color-blue-dark);
+}
+
+.number-input-container .number-input {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    background-color: var(--color-mustard-extra-light);
+
+    overflow: hidden;
+}
+
+.number-input-container input[type="number"] {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    -moz-appearance: none;
+    appearance: none;
+
+    position: relative;
+
+    width: 100%;
+    min-width: 100%;
+    height: 48px;
+
+    background-color: var(--color-mustard-extra-light);
+
+    border: 1px solid var(--color-mustard-light);
+    border-left: 1px solid rgba(0, 0, 0, 0);
+    border-right: 1px solid rgba(0, 0, 0, 0);
+    border-radius: none;
+
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+
+    transition: all 0.2s ease-out;
+}
+
+.number-input-container input[type="number"]:focus {
+    background-color: white;
+
+    border: 1px solid var(--color-mustard-midtone);
+
+    outline: none;
+}
+
+.number-input-container input[type="number"]::-webkit-inner-spin-button,
+.number-input-container input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-input-container input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.number-input-container button {
+    position: relative;
+
+    height: 100%;
+
+    margin-top: 32px;
+    padding: 12px 16px;
+
+    background-color: var(--color-mustard-extra-light);
+
+    border: 1px solid var(--color-mustard-light);
+    border-radius: none;
+
+    transition: all 0.1s ease-out;
+
+    cursor: pointer;
+
+    -webkit-appearance: none;
+
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.number-input-container button {
+    margin: 0;
+    color: var(--color-black);
+}
+
+.number-input-container button:active,
+.number-input-container button:focus {
+    outline: none;
+}
+
+.number-input-container button::after {
+    content: "";
+
+    position: absolute;
+
+    opacity: 1;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    transition: inherit;
+
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.number-input-container button:disabled {
+    pointer-events: none;
+}
+
+.number-input-container button:disabled::after {
+    opacity: 0.25;
+}
+
+.number-input-container .button-decrement::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 12H7' stroke='%23112C34' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+.number-input-container .button-increment::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 7V17' stroke='%23112C34' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 12H7' stroke='%23112C34' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+.number-input-container .button-decrement {
+    border-right: none;
+}
+
+.number-input-container .button-increment {
+    border-left: none;
+}
+
+@media (hover: hover) {
+    .number-input-container input[type="number"]:hover,
+    .number-input-container button:hover {
+        background-color: white;
     }
+
+    .number-input-container button:active {
+        background-color: var(--color-mustard-extra-light);
+        transform: translateY(1px);
+    }
+}
+
+@media (hover: none) {
+    .number-input-container button:active {
+        background-color: white;
+        transform: translateY(1px);
+    }
+}
