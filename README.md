@@ -8,8 +8,8 @@ Typescript version of the branch, along with the updated UI.
 ## External Assets
 
 ### Included
--[DeepMotion Animation/Rigging](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
--[Judge Model] (https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
+- [DeepMotion Animation/Rigging](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
+- [Judge Model](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
 
 ## Versioning
 - TBD
@@ -59,5 +59,5 @@ Barbara Wang BA, JD
 - installing the above modules may lead to error *"unable to resolve dependency tree"*. Force install instead (overrides warning for incompatible react versions, shouldn't break the code)
 
 ## Documentation
--[Development Documentation](https://github.com/ubcemergingmedialab/MootCourt/blob/typescript/Development%20Documentation.md)
--[Project Wiki](https://wiki.ubc.ca/Documentation:Moot_Court#Introduction)
+- [Development Documentation](https://github.com/ubcemergingmedialab/MootCourt/blob/typescript/Development%20Documentation.md)
+- [Project Wiki](https://wiki.ubc.ca/Documentation:Moot_Court#Introduction)
