@@ -158,7 +158,9 @@ function LandingPageMenu({ updateAppState}) {
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">
-                        <label htmlFor="Randomize">Randomize</label>
+                        <div className="label-wrapper">
+                            <label htmlFor="Randomize">Randomize</label>
+                        </div>
                         <div className="toggle-container">
                             <input type="checkbox" />
                             <div className="slider round"></div>
