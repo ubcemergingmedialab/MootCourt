@@ -58,8 +58,8 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 <SceneJudgeAvatar listOfUtterances={testlistOfUtterances} appPaused={appPaused}></SceneJudgeAvatar>
-                <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
-                <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>
+{/*                <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
+                <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>*/}
                 <Model modelUrl="./models/courtroompropsNov17.glb"
                     pos={[0, -3, 3]}
                     rot={[0, 0, 0]}

@@ -18,21 +18,21 @@ const testlistOfUtterances = ["Hello, nice to meet you.",
 "Do you agree or disagree with the new tipping policy? Choose a position: appellant or respondent."]
 
 
-function AllardLogoPlane(props:any) {
-  const AllardLogo = useTexture({
-    map: './textures/PALSOL-1.2b-Primary-UBC-Shield.png',
-  })
-  const mesh = useRef()
-  return (
-    <mesh
-      {...props}
-      ref={mesh}
-      >
-      <planeGeometry args={[4.18974359, 0.975, 1]} />
-      <meshStandardMaterial {...AllardLogo} transparent={true} />
-    </mesh>
-  )
-}
+// function AllardLogoPlane(props:any) {
+//   const AllardLogo = useTexture({
+//     map: './textures/PALSOL-1.2b-Primary-UBC-Shield.png',
+//   })
+//   const mesh = useRef()
+//   return (
+//     <mesh
+//       {...props}
+//       ref={mesh}
+//       >
+//       <planeGeometry args={[4.18974359, 0.975, 1]} />
+//       <meshStandardMaterial {...AllardLogo} transparent={true} />
+//     </mesh>
+//   )
+// }
 
 function EMLLogoPlane(props:any) {
   const EMLLogo = useTexture({

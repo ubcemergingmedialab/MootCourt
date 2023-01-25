@@ -12,7 +12,6 @@ function resetDisplayedUI(ID1, ID2) {
     }
 }
 
-
 function pressStart() {
     resetDisplayedUI("Main", "Position");
 }
@@ -90,6 +89,14 @@ function pressBackFromTimer() {
 
 function pressStartMooting() {
     resetDisplayedUI("Timer", "Main");
+}
+
+function incrementNumber(element) {
+  element.parentNode.querySelector('input[type=number]').stepUp()
+}
+
+function decrementNumber(element) {
+  element.parentNode.querySelector('input[type=number]').stepDown()
 }
 
 function setInterval() {
@@ -194,11 +201,17 @@ function LandingPageMenu({ updateAppState}) {
                 <div className="sideMenuContents">
                     <div className="formitem">
                         <label htmlFor="Interval">Interval</label>
-                        <input name="Interval" type="number" min="1" id = "setInterval" onClick={(event) => setInterval()}></input>
+                        <div className="increment-decrement-wrapper">
+                            <button onClick={(event) => decrementNumber(document.getElementById("interval-field"))} >-</button>
+                            <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5"></input>
+                            <button onClick={(event) => incrementNumber(document.getElementById("interval-field"))} >+</button>
+                        </div>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">
-                        <label htmlFor="Randomize">Randomize</label>
+                        <div className="label-wrapper">
+                            <label htmlFor="Randomize">Randomize</label>
+                        </div>
                         <div className="toggle-container">
                             <input type="checkbox" id="setrandomizeQuestions" onClick={(event) => setrandomizeQuestions()}/>
                             <div className="slider round"></div>
@@ -210,8 +223,8 @@ function LandingPageMenu({ updateAppState}) {
                             <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay()} />
                             <div className="slider round"></div>
                         </div>
-                    </div>               
-                </div> 
+                    </div>
+                </div>
                 <div className="sideMenuBottom">
                     <button className="button large-button" type="button" onClick={(event) => pressBackFromQuestions()}>Back</button>
                     <button className="button large-button" type="button" onClick={(event) => pressNextFromQuestions()}>Next</button>
@@ -290,7 +303,7 @@ function LandingPageMenu({ updateAppState}) {
                     <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu()}>Back to Menu</button>
                 </div>
             </div>
-            
+
         </div>}
 
 
