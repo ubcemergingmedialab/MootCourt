@@ -54,6 +54,7 @@ function EMLLogoPlane(props:any) {
 }
 
 export default function GeneralScene({appConfig, appPaused, togglePause, updateAppState}) {
+
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
@@ -74,7 +75,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                     sca={[0.055, 0.055, 0.055]} />
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
-                <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={0.2 * 60 * 1000} noNegativeTime={true}></GlobalTimer>
+                <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={appConfig.totalTime} noNegativeTime={appConfig.stopPresentation}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>
                 {/* <SceneMenu updateAppState={updateAppState}></SceneMenu> */}
                 <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>

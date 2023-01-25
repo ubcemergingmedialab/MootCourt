@@ -5,6 +5,7 @@ import "./timer.css"
 
 // if app is active, 1) receive total required time 2) set warning times automatically
 // ** do not decrement when timer restarts
+// time received in seconds, convert to ms for more accurate time count
 function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
@@ -13,7 +14,7 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
     const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
-    const [currentTime, setCurrentTime] = useState(totalTime)
+    const [currentTime, setCurrentTime] = useState(totalTime * 1000)
 
     
     // Displaying remaining time in milliseconds as minute:second format. 

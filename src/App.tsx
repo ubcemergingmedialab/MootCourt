@@ -11,7 +11,8 @@ function App() {
   // Define which page the app has currently loaded
   const [appState, setAppState] = useState(Scene)
   // App configuration (timer, questions custom settings etc.)
-  const [config, setConfig] = useState({/*load it from default*/})
+  // const [config, setConfig] = useState({/*load it from default*/})
+  const [config, setConfig] = useState({totalTime: 1200, stopPresentation: true})
   // global check for app pause
   const [paused, setPaused] = useState(false);
 
