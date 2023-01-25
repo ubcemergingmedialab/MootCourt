@@ -3,6 +3,9 @@ import { Html } from '@react-three/drei'
 import PropTypes from 'prop-types'
 import './LandingPage.css';
 
+
+
+
 function resetDisplayedUI(ID1, ID2) {
     const thisID = document.getElementById(ID1);
     const nextID = document.getElementById(ID2);
@@ -99,11 +102,12 @@ function decrementNumber(element) {
   element.parentNode.querySelector('input[type=number]').stepDown()
 }
 
+//minor issue with id and css
 function setInterval() {
-    //updateConfig.setInterval() = document.getElementById("setInterval").value * 1000 * 60;
+   // updateConfig.setInterval() = document.getElementById("interval-field").value * 1000 * 60;
 }
 
-function setrandomizeQuestions() {
+function settingrandomizeQuestions() {
     //updateConfig.setrandomizeQuestions() = document.getElementById("setrandomizeQuestions").value;
 }
 
@@ -117,7 +121,7 @@ function settotalTime() {
 
 }
 
-function setfirstWarning() {
+function settingfirstWarning() {
      //updateConfig.setfirstWarning() = document.getElementById("setfirstWarning").value * 1000 * 60;
 
 }
@@ -138,10 +142,104 @@ function setIntroductionTime() {
     //updateConfig.setIntroductionTime() = (document.getElementById("setIntroductionMinutes").value * 1000 * 60) + (document.getElementById("setIntroductionSeconds").value * 1000);
 }
 
+const AQuestionsDefault = [
+    "Did not the trial court make some findings of fact that are contrary to your submissions, and should we not defer to those findings of fact?",
+    "Should not we presume that the trial judge knows the law and applied the correct law?",
+    "Are not some of the facts of the cases you rely upon very different from the facts of this case?",
+    "Could you please tell the Court exactly where you are in your Factum at this point?",
+    "What does the opposing counsel say about this submission, and why are they not correct?",
+    "Could you please tell the Court exactly where you are in your Factum at this point?",
+    "What does the opposing counsel say about this submission, and why are they not correct?",
+    "As you are aware, we are not bound by any precedents. Could you please tell the Court why we should follow the law in the main authorities that you rely upon?",
+    "What are the policy implications of your submissions, and would they take the law in this area in a positive direction? Are there not some risks of interpreting the law in this manner?",
+    "What are the implications of your submissions on the goal of keeping our legal rules as simple and predictable as possible?",
+    "Were the errors you argue significant enough to justify the remedy you are seeking? In other words, would the result at trial necessarily have been different if those errors did not occur?"
+]
 
-function LandingPageMenu({ updateAppState}) {
+const RQuestionsDefault = [
+    "Did not some of the evidence at trial support the positions of the Appellant on the issues before this Court?",
+    "Is it not the main role of this Court to look for any possible error from the trial below in order to protect against a wrongful conviction?",
+    "Are not some of the facts of the cases you rely upon very different from the facts of this case?",
+    "Would you agree that the trial judge did not articulate the legal tests as clearly as they could have?",
+    "Is there at least a possibility that the trial judge used legal tests inconsistent with those set out in the authorities, and if there is any uncertainty on this issue, should we not err on the side of ordering a new trial?",
+    "Could you please tell the Court exactly where you are in your Factum at this point?",
+    "What does the opposing counsel say about this submission, and why are they not correct?",
+    "As you are aware, we are not bound by any precedents. Could you please tell the Court why we should follow the law in the main authorities that you rely upon?",
+    "Your friend also argues that the evidence did not support the findings the trial judge made. Should we be able to reconsider the evidence in this case and conclude that different findings should have been made?",
+    "Would you agree that if we find that the trial judge made any errors that there will have to be a new trial ordered?"
+]
+
+function LandingPageMenu({ updateAppState, updateConfig}) {
 
     // AppState : const Scene = 1
+
+    const [defaults, setDefaults] = useState({})
+    const [config, setConfig] = useState(defaults)
+    const [playerPosition, setPlayerPosition] = useState("Appellant");
+    const [totalTime, setTotalTime] = useState(1200);
+    const [questionInterval, setquestionInterval] = useState(5);
+    const [AQuestions, setAQuestions] = useState([AQuestionsDefault])
+    const [RQuestions, setFQuestions] = useState([RQuestionsDefault]);
+    const [randomizeQuestions, setrandomizeQuestions] = useState(false);
+    const[delay, setdelay] = useState(false);
+    const [firstWarning, setfirstWarning] = useState(600);
+    const [secondWarning, setsecondWarning] = useState(300);
+    const [introductionTime, setintroductionTime] = useState(150);
+
+
+
+    useEffect(() => {
+        updateConfig(config)
+    }, [config])
+
+    // initialize default and config
+    useEffect(() => {
+        setDefaults({
+            playerPosition: playerPosition,
+            totalTime: totalTime,
+            questionInterval: questionInterval,
+            AQuestions: AQuestions,
+            RQuestions: RQuestions,
+            randomizeQuestions: randomizeQuestions,
+            delay: delay,
+            firstWarning: firstWarning,
+            secondWarning: secondWarning,
+            introductionTime: introductionTime
+        })
+
+        setConfig({
+            playerPosition: playerPosition,
+            totalTime: totalTime,
+            questionInterval: questionInterval,
+            AQuestions: AQuestions,
+            RQuestions: RQuestions,
+            randomizeQuestions: randomizeQuestions,
+            delay: delay,
+            firstWarning: firstWarning,
+            secondWarning: secondWarning,
+            introductionTime: introductionTime
+        })
+
+    }, [])
+
+    //updates config only
+    useEffect(() => {
+        setConfig({
+            playerPosition: playerPosition,
+            totalTime: totalTime,
+            questionInterval: questionInterval,
+            AQuestions: AQuestions,
+            RQuestions: RQuestions,
+            randomizeQuestions: randomizeQuestions,
+            delay: delay,
+            firstWarning: firstWarning,
+            secondWarning: secondWarning,
+            introductionTime: introductionTime
+        })
+
+    }, [playerPosition, totalTime, questionInterval, AQuestions, RQuestions, randomizeQuestions, delay, firstWarning, secondWarning, introductionTime])
+
+
 
     return <>
         {<div className="sideMenuBackground" id="Main">
@@ -203,7 +301,7 @@ function LandingPageMenu({ updateAppState}) {
                         <label htmlFor="Interval">Interval</label>
                         <div className="increment-decrement-wrapper">
                             <button onClick={(event) => decrementNumber(document.getElementById("interval-field"))} >-</button>
-                            <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5"></input>
+                            <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onClick={(event) => setInterval()}></input>
                             <button onClick={(event) => incrementNumber(document.getElementById("interval-field"))} >+</button>
                         </div>
                         <div className="FieldDescription">minutes</div>
@@ -213,7 +311,7 @@ function LandingPageMenu({ updateAppState}) {
                             <label htmlFor="Randomize">Randomize</label>
                         </div>
                         <div className="toggle-container">
-                            <input type="checkbox" id="setrandomizeQuestions" onClick={(event) => setrandomizeQuestions()}/>
+                            <input type="checkbox" id="setrandomizeQuestions" onClick={(event) => settingrandomizeQuestions()} />
                             <div className="slider round"></div>
                         </div>
                     </div>
@@ -246,7 +344,7 @@ function LandingPageMenu({ updateAppState}) {
                     </div>
                     <div className="formitem">
                         <label htmlFor="FirstWarning">First warning</label>
-                        <input type="number" min="1" id="setfirstWarning" onClick={(event) => setfirstWarning()}></input>
+                        <input type="number" min="1" id="setfirstWarning" onClick={(event) => settingfirstWarning()} ></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">
