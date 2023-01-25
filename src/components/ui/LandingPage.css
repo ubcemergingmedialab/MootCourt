@@ -31,6 +31,7 @@ h1 {
 
 /* Start Side menu */
 .sideMenuBackground {
+    transition: 0.5s;
     position: relative;
     width: 50%;
     height: 100%;
@@ -46,17 +47,22 @@ h1 {
     font-family: "Whitney", Verdana, sans-serif;
 }
 
-/*@media only screen and (min-width: 1800px) {
+@media only screen and (max-width: 1024px) {
     .sideMenuBackground {
-        width: 30%;
+        width: 66.6%;
     }
 }
-*/
+
+@media only screen and (min-width: 1800px) {
+    .sideMenuBackground {
+        width: 33.3%;
+    }
+}
 
 /* Container inside side menu */
 .sideMenuInner {
     padding: 0 30px;
-    display: flex;  
+    display: flex;
     flex-direction: column;
     height: 100%;
 }
@@ -122,7 +128,7 @@ h1 {
 }
 
 .sideMenuInner label {
-    width: 50%;
+    width: 40%;
 /*    display: inline-block;*/
     font-size: 2.7vw;
     float: left;
@@ -242,7 +248,7 @@ h1 {
     color: white;
     font-size: 1.5vw;
 } */
-/* 
+/*
 .gridLeftSide1 {
     grid-column: 1;
     grid-row: 1;
@@ -387,7 +393,7 @@ input:checked + .slider:after {
 }
 
 .slider.round {
-    border-radius: 25%/50%; 
+    border-radius: 25%/50%;
 }
 
 .slider.round:before {
@@ -585,3 +591,42 @@ input[type=number] {
 .arr-left  {transform:rotate(135deg);}
 .arr-up    {transform:rotate(-135deg);}
 .arr-down  {transform:rotate(45deg);}
+/* End chevrons/arrows */
+
+input[type="number"] {
+  -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.increment-decrement-wrapper {
+  line-height: 50px;
+  display: flex;
+  float: left;
+}
+
+.increment-decrement-wrapper input[type="number"] {
+  text-align: center;
+  height: 4vh;
+  width: 4vh;
+  background: #F7CA18;
+  font-weight: bold;
+  font-size: 1.5em;
+  top: 0;
+}
+
+.increment-decrement-wrapper button {
+  /* top: -5px; */
+  border: 5px solid #F7CA18;
+  width: 4vh;
+  height: 4vh;
+  position: relative;
+  background-color: rgba(0,0,0,0);
+  color: #F7CA18;
+  font-size: 2em;
+}
