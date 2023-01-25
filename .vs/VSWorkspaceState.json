@@ -1,10 +1,16 @@
 {
   "ExpandedNodes": [
     "",
+    "\\src",
     "\\src\\components",
+    "\\src\\components\\avatars",
+    "\\src\\components\\avatar_components",
     "\\src\\components\\buttons",
+    "\\src\\components\\fonts",
+    "\\src\\components\\general",
     "\\src\\components\\scenes",
     "\\src\\components\\ui"
   ],
+  "SelectedNode": "\\src\\components\\scenes\\Scene.tsx",
   "PreviewInSolutionExplorer": false
 }

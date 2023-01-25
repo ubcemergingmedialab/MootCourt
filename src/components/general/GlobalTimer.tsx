@@ -9,6 +9,7 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeText, setTimeText] = useState("");
+    const [warningState, setWarningState] = useState(0);
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
     const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
@@ -48,10 +49,18 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     useEffect(() => {
         if (!appPaused) {
             setTimeText(msToTime(currentTime))
+
+            if (warningState < times.length) {
+                if (currentTime <= times[warningState].time) {
+                    setLightColor(times[warningState].color)
+                    setWarningState(warningState + 1);
+                }
+            }
             // calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
         }
     }, [updateTimerInterval])
+
 
     // Every 1000 milliseconds, update the timer. 
     // Note that the frequency of this function running is not always 1000ms - 
