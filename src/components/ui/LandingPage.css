@@ -98,11 +98,12 @@ h1 {
 #Main .buttonFlexBox button,
 #Timer .formitem {
     flex: 1;
-    margin: 0 4.5vw;
+    /* margin: 0 4.5vw; */
 }
 
-#Main .buttonFlexBox button {
+#Main .buttonFlexBox {
     max-height: 16%;
+    border-radius: 20px;
 }
 
 .subformitem {

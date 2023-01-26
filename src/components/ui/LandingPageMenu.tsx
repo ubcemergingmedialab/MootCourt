@@ -162,9 +162,7 @@ function LandingPageMenu({ updateAppState}) {
                     <div className="formitem">
                         <label htmlFor="Interval">Interval</label>
                         <div className="increment-decrement-wrapper">
-                            <button onClick={(event) => decrementNumber(document.getElementById("interval-field"))} >-</button>
                             <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5"></input>
-                            <button onClick={(event) => incrementNumber(document.getElementById("interval-field"))} >+</button>
                         </div>
                         <div className="FieldDescription">minutes</div>
                     </div>
