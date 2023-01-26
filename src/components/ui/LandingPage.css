@@ -116,7 +116,7 @@ h1 {
 }
 
 #Main .buttonFlexBox {
-    max-height: 16%;
+    max-height: 60%;
     border-radius: 20px;
 }
 
@@ -145,14 +145,14 @@ h1 {
 .sideMenuInner label {
     width: 40%;
 /*    display: inline-block;*/
-    font-size: 2.7vw;
+    font-size: 2vw;
     float: left;
 }
 
 .sideMenuInner .FieldDescription {
     display: inline-block;
     margin-left: 20px;
-    font-size: 2.5vw;
+    font-size: 1.5vw;
 }
 
 .sideMenuTitleText {
