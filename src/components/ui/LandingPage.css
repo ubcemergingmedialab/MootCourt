@@ -29,10 +29,24 @@ h1 {
     letter-spacing: 0.05em;
 }
 
+.logoOverlay {
+  width: 100vw;
+  height: 100px;
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.logoOverlay img {
+  max-height: 60px;
+  margin: 20px 60px 20px 20px;
+}
+
 /* Start Side menu */
 .sideMenuBackground {
     transition: 0.5s;
     position: relative;
+    z-index: 100;
     width: 50%;
     height: 100%;
     height: calc(100% - 20px);

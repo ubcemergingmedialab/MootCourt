@@ -172,6 +172,10 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
 
     // AppState : const Scene = 1
     return <>
+        {<div className="logoOverlay">
+          <img src={require('../images/PALSOL-1.2b-Primary-UBC-Shield.png')} />
+          <img src={require('../images/EML_Alternate_colour.png')} />
+        </div>}
         {<div className="sideMenuBackground" id="Main">
             <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
@@ -246,11 +250,7 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
                     <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
                         <div className="toggle-container">
-<<<<<<< HEAD
-                            <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay(updateConfig)} />
-=======
                             <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay('7')} />
->>>>>>> c601984a11c98fea12a529e6868a67d4d7434a59
                             <div className="slider round"></div>
                         </div>
                     </div>
@@ -296,11 +296,7 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
                     <div className="formitem">
                         <label htmlFor="StopPresentation">Stop presentation</label>
                         <div className="toggle-container">
-<<<<<<< HEAD
-                            <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={(event) => setStopPresentation(updateConfig)}/>
-=======
                             <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={(event) => setStopPresentation('0')}/>
->>>>>>> c601984a11c98fea12a529e6868a67d4d7434a59
                             <div className="slider round"></div>
                         </div>
                     </div>
