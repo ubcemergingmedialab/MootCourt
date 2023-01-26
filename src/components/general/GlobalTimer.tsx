@@ -16,6 +16,7 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
     const [currentTime, setCurrentTime] = useState(totalTime * 1000)
 
+
     
     // Displaying remaining time in milliseconds as minute:second format. 
     // if negative values are enabled, keep counting down instead of going back to the landing page. 

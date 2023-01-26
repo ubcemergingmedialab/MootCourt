@@ -3,6 +3,9 @@ import { Html } from '@react-three/drei'
 import PropTypes from 'prop-types'
 import './LandingPage.css';
 
+
+
+
 function resetDisplayedUI(ID1, ID2) {
     const thisID = document.getElementById(ID1);
     const nextID = document.getElementById(ID2);
@@ -99,16 +102,30 @@ function decrementNumber(element) {
   element.parentNode.querySelector('input[type=number]').stepDown()
 }
 
+//minor issue with id and css
 function setInterval() {
-    //updateConfig.setInterval() = document.getElementById("setInterval").value * 1000 * 60;
+    /*if (document.getElementById("interval-field") != null) {
+        if (document.getElementById("interval-field").value != null) {
+            setquestionInterval(document.getElementById("interval-field").value * 1000 * 60);
+        }
+    }*/
 }
 
-function setrandomizeQuestions() {
+function settingrandomizeQuestions() {
     //updateConfig.setrandomizeQuestions() = document.getElementById("setrandomizeQuestions").value;
+
+   /* if (document.getElementById("").value != null) {
+        if (document.getElementById("").value == false) {
+            setrandomizeQuestions(true);
+        } else false;
+    }*/
 }
 
-function setDelay() {
-    //updateConfig.setDelay() = document.getElementById("setDelay").value * 1000 * 60;
+function setDelay(updateConfig) {
+  /*  var setDelayelement = document.getElementById("setStopPresentation");
+    if (setDelayelement != null) {
+        updateConfig('7' + setDelayelement)
+    } */
 }
 
 function settotalTime() {
@@ -117,20 +134,32 @@ function settotalTime() {
 
 }
 
-function setfirstWarning() {
-     //updateConfig.setfirstWarning() = document.getElementById("setfirstWarning").value * 1000 * 60;
+function settingfirstWarning(updateConfig) {
+   /* var firstwarningelement = document.getElementById("setfirstWarning");
+    if (firstwarningelement != null) {
+        //the value below should have firstwarningelment.value (but this input has issues)
+        var firstwarningtimecalc = 1000 * 60;
+        updateConfig('8' + firstwarningtimecalc.toString)
+    }*/
 
 }
 
 
-function setsecondwarning() {
-    //updateConfig.setsecondwarning() = document.getElementById("setsecondwarning").value * 1000 * 60;
-
+function setsecondwarning(updateConfig) {
+   /* var secondwarningelement = document.getElementById("setSecondWarning");
+    if (secondwarningelement != null) {
+        //the value below should have secondwarningelement.value (but this input has issues)
+        var firstwarningtimecalc = 1000 * 60;
+        updateConfig('9' + firstwarningtimecalc.toString)
+    } */
 }
 
 
-function setStopPresentation() {
-     //updateConfig.setStopPresentation() = document.getElementById("setStopPresentation").value;
+function setStopPresentation(updateConfig) {
+    /*var setStopPresentationelement = document.getElementById("setStopPresentation");
+    if (setStopPresentationelement != null) {
+        updateConfig('9' + setStopPresentationelement)
+    }*/
 
 }
 
@@ -139,11 +168,13 @@ function setIntroductionTime() {
 }
 
 
-function LandingPageMenu({updateAppState}) {
-
+function LandingPageMenu({updateAppState, updateConfig}) {
     // AppState : const Scene = 1
-
     return <>
+        {<div className="logoOverlay">
+          <img src={require('../images/PALSOL-1.2b-Primary-UBC-Shield.png')} />
+          <img src={require('../images/EML_Alternate_colour.png')} />
+        </div>}
         {<div className="sideMenuBackground" id="Main">
             <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
@@ -202,9 +233,7 @@ function LandingPageMenu({updateAppState}) {
                     <div className="formitem">
                         <label htmlFor="Interval">Interval</label>
                         <div className="increment-decrement-wrapper">
-                            <button onClick={(event) => decrementNumber(document.getElementById("interval-field"))} >-</button>
-                            <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5"></input>
-                            <button onClick={(event) => incrementNumber(document.getElementById("interval-field"))} >+</button>
+                            <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onClick={(event) => setInterval()}></input>
                         </div>
                         <div className="FieldDescription">minutes</div>
                     </div>
@@ -213,14 +242,14 @@ function LandingPageMenu({updateAppState}) {
                             <label htmlFor="Randomize">Randomize</label>
                         </div>
                         <div className="toggle-container">
-                            <input type="checkbox" id="setrandomizeQuestions" onClick={(event) => setrandomizeQuestions()}/>
+                            <input type="checkbox" id="setrandomizeQuestions" onClick={(event) => settingrandomizeQuestions()} />
                             <div className="slider round"></div>
                         </div>
                     </div>
                     <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
                         <div className="toggle-container">
-                            <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay()} />
+                            <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay('7')} />
                             <div className="slider round"></div>
                         </div>
                     </div>
@@ -246,12 +275,12 @@ function LandingPageMenu({updateAppState}) {
                     </div>
                     <div className="formitem">
                         <label htmlFor="FirstWarning">First warning</label>
-                        <input type="number" min="1" id="setfirstWarning" onClick={(event) => setfirstWarning()}></input>
+                        <input type="number" min="1" id="setfirstWarning" onClick={(event) => settingfirstWarning('8')} ></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">
                         <label htmlFor="SecondWarning">Second warning</label>
-                        <input type="number" min="1" id="setsecondwarning" onClick={(event) => setsecondwarning()}></input>
+                        <input type="number" min="1" id="setsecondwarning" onClick={(event) => setsecondwarning('9')}></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     {/* <div className="formitem">
@@ -266,7 +295,7 @@ function LandingPageMenu({updateAppState}) {
                     <div className="formitem">
                         <label htmlFor="StopPresentation">Stop presentation</label>
                         <div className="toggle-container">
-                            <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={(event) => setStopPresentation()}/>
+                            <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={(event) => setStopPresentation('0')}/>
                             <div className="slider round"></div>
                         </div>
                     </div>
@@ -290,7 +319,7 @@ function LandingPageMenu({updateAppState}) {
         </div>}
 
         {<div className="stayhidden" id="About">
-        <   div className="sideMenuInner">
+            <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
                     <h1>About</h1>
                     <div className="hr-2"></div>
@@ -303,7 +332,6 @@ function LandingPageMenu({updateAppState}) {
                     <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu()}>Back to Menu</button>
                 </div>
             </div>
-
         </div>}
 
 
@@ -334,7 +362,6 @@ function LandingPageMenu({updateAppState}) {
                         <div className="hr-2"></div>
                     </div>
                     <div className="sideMenuContents">
-                    
                         <button className="button large-button" type="button">
                             <a href="./pdf/First-Year Moots Procedure Checklist 2020.pdf">First Year Moot Procedure Checklist</a>
                         </button>

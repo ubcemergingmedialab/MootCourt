@@ -64,7 +64,7 @@ export default function LandingPage({updateAppState, updateConfig}) {
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
         <Html fullscreen>
-                  <LandingPageMenu updateAppState={updateAppState}></LandingPageMenu>
+            <LandingPageMenu updateAppState={updateAppState} updateConfig={updateConfig} ></LandingPageMenu>
                   {/* <BackToSceneButton updateAppState={updateAppState}></BackToSceneButton> */}
                   {/* <button onClick={() => {updateConfig({})}}>Update Config</button> */}
                 </Html>

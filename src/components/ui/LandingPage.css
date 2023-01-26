@@ -29,10 +29,24 @@ h1 {
     letter-spacing: 0.05em;
 }
 
+.logoOverlay {
+  width: 100vw;
+  height: 100px;
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.logoOverlay img {
+  max-height: 60px;
+  margin: 20px 60px 20px 20px;
+}
+
 /* Start Side menu */
 .sideMenuBackground {
     transition: 0.5s;
     position: relative;
+    z-index: 100;
     width: 50%;
     height: 100%;
     height: calc(100% - 20px);
@@ -98,11 +112,12 @@ h1 {
 #Main .buttonFlexBox button,
 #Timer .formitem {
     flex: 1;
-    margin: 0 4.5vw;
+    /* margin: 0 4.5vw; */
 }
 
-#Main .buttonFlexBox button {
-    max-height: 16%;
+#Main .buttonFlexBox {
+    max-height: 60%;
+    border-radius: 20px;
 }
 
 .subformitem {
@@ -130,14 +145,14 @@ h1 {
 .sideMenuInner label {
     width: 40%;
 /*    display: inline-block;*/
-    font-size: 2.7vw;
+    font-size: 2vw;
     float: left;
 }
 
 .sideMenuInner .FieldDescription {
     display: inline-block;
     margin-left: 20px;
-    font-size: 2.5vw;
+    font-size: 1.5vw;
 }
 
 .sideMenuTitleText {
@@ -173,10 +188,11 @@ h1 {
     /* width: 20vw; */
     /* font-family: Verdana; */
     height: 10vh;
-    font-size: 2.75vw;
+    font-size: 1.75vw;
     text-transform: uppercase;
     border: 0;
     transition: 0.4s;
+    border-radius: 20px;
 }
 
 .button:hover {
@@ -203,6 +219,8 @@ h1 {
 .wide-button {
     width: 73%;
     margin-bottom: 4.65vh;
+    padding: 20px;
+    font-size: 2vw;
 }
 
 
