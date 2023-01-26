@@ -119,7 +119,7 @@ function App() {
                 setsecondWarning(parseInt(second))
                 break;
 
-            case 10:
+            case 0:
                 setintroductionTime(parseInt(second))
                 break;
 

@@ -122,10 +122,10 @@ function settingrandomizeQuestions() {
 }
 
 function setDelay(updateConfig) {
-    var setDelayelement = document.getElementById("setStopPresentation");
+  /*  var setDelayelement = document.getElementById("setStopPresentation");
     if (setDelayelement != null) {
         updateConfig('7' + setDelayelement)
-    }
+    } */
 }
 
 function settotalTime() {
@@ -135,31 +135,31 @@ function settotalTime() {
 }
 
 function settingfirstWarning(updateConfig) {
-    var firstwarningelement = document.getElementById("setfirstWarning");
+   /* var firstwarningelement = document.getElementById("setfirstWarning");
     if (firstwarningelement != null) {
         //the value below should have firstwarningelment.value (but this input has issues)
         var firstwarningtimecalc = 1000 * 60;
         updateConfig('8' + firstwarningtimecalc.toString)
-    }
+    }*/
 
 }
 
 
 function setsecondwarning(updateConfig) {
-    var secondwarningelement = document.getElementById("setSecondWarning");
+   /* var secondwarningelement = document.getElementById("setSecondWarning");
     if (secondwarningelement != null) {
         //the value below should have secondwarningelement.value (but this input has issues)
         var firstwarningtimecalc = 1000 * 60;
         updateConfig('9' + firstwarningtimecalc.toString)
-    }
+    } */
 }
 
 
 function setStopPresentation(updateConfig) {
-    var setStopPresentationelement = document.getElementById("setStopPresentation");
+    /*var setStopPresentationelement = document.getElementById("setStopPresentation");
     if (setStopPresentationelement != null) {
         updateConfig('9' + setStopPresentationelement)
-    }
+    }*/
 
 }
 
@@ -246,7 +246,11 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
                     <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
                         <div className="toggle-container">
+<<<<<<< HEAD
                             <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay(updateConfig)} />
+=======
+                            <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay('7')} />
+>>>>>>> c601984a11c98fea12a529e6868a67d4d7434a59
                             <div className="slider round"></div>
                         </div>
                     </div>
@@ -272,12 +276,12 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
                     </div>
                     <div className="formitem">
                         <label htmlFor="FirstWarning">First warning</label>
-                        <input type="number" min="1" id="setfirstWarning" onClick={(event) => settingfirstWarning(updateConfig)} ></input>
+                        <input type="number" min="1" id="setfirstWarning" onClick={(event) => settingfirstWarning('8')} ></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">
                         <label htmlFor="SecondWarning">Second warning</label>
-                        <input type="number" min="1" id="setsecondwarning" onClick={(event) => setsecondwarning(updateConfig)}></input>
+                        <input type="number" min="1" id="setsecondwarning" onClick={(event) => setsecondwarning('9')}></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     {/* <div className="formitem">
@@ -292,7 +296,11 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
                     <div className="formitem">
                         <label htmlFor="StopPresentation">Stop presentation</label>
                         <div className="toggle-container">
+<<<<<<< HEAD
                             <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={(event) => setStopPresentation(updateConfig)}/>
+=======
+                            <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={(event) => setStopPresentation('0')}/>
+>>>>>>> c601984a11c98fea12a529e6868a67d4d7434a59
                             <div className="slider round"></div>
                         </div>
                     </div>
