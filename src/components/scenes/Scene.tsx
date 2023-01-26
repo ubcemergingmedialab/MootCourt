@@ -54,11 +54,11 @@ function EMLLogoPlane(props:any) {
 }
 
 export default function GeneralScene({appConfig, appPaused, togglePause, updateAppState}) {
-
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <SceneJudgeAvatar listOfUtterances={testlistOfUtterances} appPaused={appPaused}></SceneJudgeAvatar>
+                <SceneJudgeAvatar listOfUtterances={appConfig.playerPosition === "Appellant"? appConfig.AQuestions : appConfig.RQuestions}
+                appPaused={appPaused}></SceneJudgeAvatar>
 {/*                <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
                 <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>*/}
                 <Model modelUrl="./models/courtroompropsNov17.glb"
