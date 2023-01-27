@@ -168,8 +168,7 @@ function setIntroductionTime() {
 }
 
 
-function LandingPageMenu({ updateAppState, updateConfig}) {
-
+function LandingPageMenu({updateAppState, updateConfig}) {
     // AppState : const Scene = 1
     return <>
         {<div className="logoOverlay">
@@ -312,7 +311,7 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button large-button" type="button" onClick={(event) => pressBackFromTimer()}>Back</button>
-                    <button className="button large-button" type="button" onClick={(event) => pressStartMooting()}>Start Mooting!</button>
+                    <button className="button large-button" type="button" onClick={(event) => updateAppState(1)}>Start Mooting!</button>
                 </div>
             </div>
         </div>}

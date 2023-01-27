@@ -57,7 +57,8 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <SceneJudgeAvatar listOfUtterances={testlistOfUtterances} appPaused={appPaused}></SceneJudgeAvatar>
+                <SceneJudgeAvatar listOfUtterances={appConfig.playerPosition === "Appellant"? appConfig.AQuestions : appConfig.RQuestions}
+                appPaused={appPaused}></SceneJudgeAvatar>
 {/*                <AllardLogoPlane position={[-4.5, 3.2, 0]} scale={[0.8, 0.8, 0.8]} > </AllardLogoPlane>
                 <EMLLogoPlane position={[4.5, 3.2, 0]} scale={[0.7, 0.7, 0.7]}> </EMLLogoPlane>*/}
                 <Model modelUrl="./models/courtroompropsNov17.glb"
@@ -74,7 +75,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                     sca={[0.055, 0.055, 0.055]} />
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
-                <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={0.2 * 60 * 1000} noNegativeTime={true}></GlobalTimer>
+                <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} totalTime={appConfig.totalTime} noNegativeTime={appConfig.stopPresentation}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>
                 {/* <SceneMenu updateAppState={updateAppState}></SceneMenu> */}
                 <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>
