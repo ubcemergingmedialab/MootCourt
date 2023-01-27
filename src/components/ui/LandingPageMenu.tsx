@@ -233,9 +233,7 @@ function LandingPageMenu({ updateAppState, updateConfig}) {
                 <div className="sideMenuContents">
                     <div className="formitem">
                         <label htmlFor="Interval">Interval</label>
-                        <div className="increment-decrement-wrapper">
-                            <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onClick={(event) => setInterval()}></input>
-                        </div>
+                        <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onClick={(event) => setInterval()}></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">

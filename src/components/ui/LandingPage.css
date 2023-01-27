@@ -29,16 +29,24 @@ h1 {
     letter-spacing: 0.05em;
 }
 
+@media only screen and (min-width: 1600px) {
+  h1 {
+    font-size: 4vw;
+  }
+}
+
 .logoOverlay {
   width: 100vw;
-  height: 100px;
+  height: 90px;
   background: white;
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
 }
+
 .logoOverlay img {
-  max-height: 60px;
+  max-height: 50px;
   margin: 20px 60px 20px 20px;
 }
 
@@ -69,7 +77,19 @@ h1 {
 
 @media only screen and (min-width: 1800px) {
     .sideMenuBackground {
-        width: 33.3%;
+        width: 40%;
+    }
+
+    .sideMenuBottom .large-button {
+      height: 6vh;
+      padding: 0 2vw;
+      font-size: 1vw;
+    }
+}
+
+@media only screen and (max-height: 800px) {
+    .sideMenuBackground {
+        padding-top: 5vh;
     }
 }
 
@@ -103,6 +123,16 @@ h1 {
     float: left;
     line-height: 3em;
 }
+
+@media only screen and (max-height: 850px) {
+  .sideMenuContents {
+    padding-top: 5%
+  }
+  .formitem {
+    margin-bottom: 1vh;
+  }
+}
+
 
 #Main .buttonFlexBox {
     flex: 1;
@@ -221,6 +251,12 @@ h1 {
     margin-bottom: 4.65vh;
     padding: 20px;
     font-size: 2vw;
+}
+
+@media only screen and (min-width: 1600px) {
+  .wide-button {
+    font-size: 1.5vw;
+  }
 }
 
 
@@ -434,15 +470,11 @@ input[type=number] {
 
 .number-input-container label {
     display: inline-block;
-
     margin-bottom: 4px;
-
     font-size: 12px;
     line-height: 24px;
-
     letter-spacing: 2px;
     text-transform: uppercase;
-
     color: var(--color-blue-dark);
 }
 
@@ -503,23 +535,15 @@ input[type=number] {
 
 .number-input-container button {
     position: relative;
-
     height: 100%;
-
     margin-top: 32px;
     padding: 12px 16px;
-
     background-color: var(--color-mustard-extra-light);
-
     border: 1px solid var(--color-mustard-light);
     border-radius: none;
-
     transition: all 0.1s ease-out;
-
     cursor: pointer;
-
     -webkit-appearance: none;
-
     -webkit-transform: scale(1);
     transform: scale(1);
 }
@@ -613,8 +637,11 @@ input[type=number] {
 
 input[type="number"] {
   -webkit-appearance: textfield;
-     -moz-appearance: textfield;
-          appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
 }
 
 input[type=number]::-webkit-inner-spin-button,
