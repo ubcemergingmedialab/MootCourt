@@ -1,0 +1,677 @@
+@font-face {
+    font-family: Whitney;
+    src: url("../fonts/Whitney/Whitney-Light.otf");
+    font-weight: light;
+}
+@font-face {
+    font-family: Whitney;
+    src: url("../fonts/Whitney/Whitney-Book.otf");
+    font-weight: normal;
+}
+@font-face {
+    font-family: Whitney;
+    src: url("../fonts/Whitney/Whitney-Bold.otf");
+    font-weight: bold;
+}
+
+body,
+body * {
+    box-sizing: border-box;
+    font-family: Whitney;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-size: 5.5vw;
+    margin: 0 0 0.3em 0;
+    text-align: center;
+    line-height: 1em;
+    letter-spacing: 0.05em;
+}
+
+@media only screen and (min-width: 1600px) {
+  h1 {
+    font-size: 4vw;
+  }
+}
+
+.logoOverlay {
+  width: 100vw;
+  height: 90px;
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+}
+
+.logoOverlay img {
+  max-height: 50px;
+  margin: 20px 60px 20px 20px;
+}
+
+/* Start Side menu */
+.sideMenuBackground {
+    transition: 0.5s;
+    position: relative;
+    z-index: 100;
+    width: 50%;
+    height: 100%;
+    height: calc(100% - 20px);
+    margin-top: 10px;
+    float: right;
+    background: #002145;
+    opacity: 0.9;
+    border-radius: 25px 0px 0px 25px;
+    color: white;
+    padding-top: 8.5vh;
+    padding-bottom: 6.5vh;
+    font-family: "Whitney", Verdana, sans-serif;
+}
+
+@media only screen and (max-width: 1024px) {
+    .sideMenuBackground {
+        width: 66.6%;
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    .sideMenuBackground {
+        width: 40%;
+    }
+
+    .sideMenuBottom .large-button {
+      height: 6vh;
+      padding: 0 2vw;
+      font-size: 1vw;
+    }
+}
+
+@media only screen and (max-height: 800px) {
+    .sideMenuBackground {
+        padding-top: 5vh;
+    }
+}
+
+/* Container inside side menu */
+.sideMenuInner {
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sideMenuContents {
+    /* position: relative;
+    top: 7.5%;
+    height: 92.5%; */
+    padding-top: 10%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sideMenuBottom {
+    text-align: center;
+}
+
+
+/* Individual form items; these are listed in linear order, in a single column. */
+.formitem {
+    width: 100%;
+    margin: 0 4.5vw 4vh 4.5vw;
+    float: left;
+    line-height: 3em;
+}
+
+@media only screen and (max-height: 850px) {
+  .sideMenuContents {
+    padding-top: 5%
+  }
+  .formitem {
+    margin-bottom: 1vh;
+  }
+}
+
+
+#Main .buttonFlexBox {
+    flex: 1;
+    justify-content: space-between;
+}
+
+#Main .buttonFlexBox button,
+#Timer .formitem {
+    flex: 1;
+    /* margin: 0 4.5vw; */
+}
+
+#Main .buttonFlexBox {
+    max-height: 60%;
+    border-radius: 20px;
+}
+
+.subformitem {
+    width: 50%;
+    display: inline-block;
+}
+
+.sideMenuInner .long-formitem label {
+    width: 100%;
+    margin-bottom: 2%;
+}
+
+
+.sideMenuInner .long-formitem input {
+    width: 20%;
+}
+
+
+.sideMenuInner input {
+    width: 10%;
+    display: inline-block;
+    border: 0;
+}
+
+.sideMenuInner label {
+    width: 40%;
+/*    display: inline-block;*/
+    font-size: 2vw;
+    float: left;
+}
+
+.sideMenuInner .FieldDescription {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 1.5vw;
+}
+
+.sideMenuTitleText {
+    /* font-size: 5vw;
+    font-weight: bold;
+    color: white;
+    text-align: center; */
+}
+
+.buttonFlexBox {
+    /* position: relative;
+    top: 2vh;
+    height: 80%; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.buttonFlexBox-Position {
+    /* position: relative;
+    top: 10vh;
+    height: 40%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around; */
+}
+
+.button {
+    background: #FFFFFF;
+    font-weight: light;
+    /* width: 20vw; */
+    /* font-family: Verdana; */
+    height: 10vh;
+    font-size: 1.75vw;
+    text-transform: uppercase;
+    border: 0;
+    transition: 0.4s;
+    border-radius: 20px;
+}
+
+.button:hover {
+    background: #F5D247;
+}
+
+
+.large-button {
+    margin-right: 1vw;
+    margin-left: 1vw;
+    height: 7vh;
+    padding: 0 4.5vw;
+    margin-top: 2vh;
+}
+
+/*.large-button:first-of-type {
+    margin-top: 0;
+}
+
+.large-button:last-of-type {
+    margin-right: 0;
+}*/
+
+.wide-button {
+    width: 73%;
+    margin-bottom: 4.65vh;
+    padding: 20px;
+    font-size: 2vw;
+}
+
+@media only screen and (min-width: 1600px) {
+  .wide-button {
+    font-size: 1.5vw;
+  }
+}
+
+
+.buttonFeedback {
+    /* width: 20vw;
+    height: 10vh; */
+    background: #F7CA18;
+    /* font-family: Verdana; */
+    /* font-size: 1.5vw;
+    font-weight: bold; */
+}
+
+.hr-1 {
+    align-content : center;
+    height: 0.5vh;
+    width : 70%;
+    margin-left : auto;
+    margin-right : auto;
+    background-color: #F7CA18;
+    border-color: #F7CA18;
+}
+
+.hr-2 {
+    align-content : center;
+    height: 0.5vh;
+    width : 55%;
+    margin-left : auto;
+    margin-right : auto;
+    background-color: #F7CA18;
+    border-color: #F7CA18;
+}
+
+.questionPageGrid {
+    display: grid;
+    margin-top: 7.5%;
+    margin-left: 10%;
+    margin-bottom: 5%;
+    /* grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 12.5vh); */
+}
+
+/* .gridLeftSideText {
+    color: white;
+    font-size: 1.5vw;
+} */
+/*
+.gridLeftSide1 {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.gridLeftSide2 {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.gridLeftSide3 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.gridLeftSide4 {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.gridRightSide1 {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.gridRightSide2 {
+    float: left;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.gridRightSide3 {
+    grid-column: 2;
+    grid-row: 3;
+} */
+
+.bigLabelText {
+    width: 531px;
+    height: 106px;
+    /* font-family: 'Open Sans'; */
+    font-style: normal;
+    font-weight: 700;
+    font-size: 78px;
+    line-height: 106px;
+    color: #FFFFFF;
+}
+
+.textLabel {
+    position: absolute;
+    width: 142px;
+    height: 54px;
+    /* font-family: 'Open Sans'; */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 54px;
+    color: #FFFFFF;
+}
+
+.fillIn {
+    position: absolute;
+    width: 429px;
+    height: 50px;
+    background: #D9D9D9;
+}
+
+.stayhidden {
+    display: none;
+}
+
+.toggle-container {
+    position: relative;/*
+    display: inline-block;*/
+    float: left;
+    /*width: 80px;
+    height: 40px;*/
+    pointer-events: none;
+}
+
+.toggle-container input {
+    opacity: 0;
+    pointer-events: all;
+}
+
+.toggle-container input,
+.toggle-container .slider {
+    position: absolute;
+    height: 5vh;
+    width: 10vh;
+/*    top: -0.5vh;*/
+}
+
+.slider {
+    cursor: pointer;
+    background-color: rgba(0,0,0,0);
+    transition: 0.4s;
+    pointer-events: none;
+    border: 5px solid #F7CA18;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 80%;
+    width: 36%;
+    left: 6%;
+/*    bottom: 0.75vh;*/
+    background-color: #F7CA18;
+    transition: 0.2s;
+    pointer-events: none;
+    top: 10%;
+
+}
+
+.slider::after {
+    position: relative;
+    content: "";
+    height: 3.5vh;
+    width: 3.5vh;
+    left: 5vh;
+    bottom: 0.75vh;
+    transition: 0.2s;
+    pointer-events: none;
+    color: #fff;
+}
+
+
+input:checked + .slider {
+    background-color: rgba(0,0,0,0);
+    background-color: #F7CA18;
+}
+
+input:checked + .slider:before {
+/*    transform: translateX(124%);*/
+    left: 60%;
+    background-color: #002145;
+}
+
+input:checked + .slider:after {
+    content: "";
+/*    left: 8px;*/
+}
+
+.slider.round {
+    border-radius: 25%/50%;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+
+input[type=number] {
+    height: 5vh;
+    position: relative;
+    top: -5px;
+}
+
+
+.number-input-container {
+    width: 244px;
+    display: grid;
+    grid-template-columns: 48px auto 48px;
+}
+
+.number-input-container label {
+    display: inline-block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-blue-dark);
+}
+
+.number-input-container .number-input {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    background-color: var(--color-mustard-extra-light);
+
+    overflow: hidden;
+}
+
+.number-input-container input[type="number"] {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    -moz-appearance: none;
+    appearance: none;
+
+    position: relative;
+
+    width: 100%;
+    min-width: 100%;
+    height: 48px;
+
+    background-color: var(--color-mustard-extra-light);
+
+    border: 1px solid var(--color-mustard-light);
+    border-left: 1px solid rgba(0, 0, 0, 0);
+    border-right: 1px solid rgba(0, 0, 0, 0);
+    border-radius: none;
+
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+
+    transition: all 0.2s ease-out;
+}
+
+.number-input-container input[type="number"]:focus {
+    background-color: white;
+
+    border: 1px solid var(--color-mustard-midtone);
+
+    outline: none;
+}
+
+.number-input-container input[type="number"]::-webkit-inner-spin-button,
+.number-input-container input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-input-container input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.number-input-container button {
+    position: relative;
+    height: 100%;
+    margin-top: 32px;
+    padding: 12px 16px;
+    background-color: var(--color-mustard-extra-light);
+    border: 1px solid var(--color-mustard-light);
+    border-radius: none;
+    transition: all 0.1s ease-out;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.number-input-container button {
+    margin: 0;
+    color: var(--color-black);
+}
+
+.number-input-container button:active,
+.number-input-container button:focus {
+    outline: none;
+}
+
+.number-input-container button::after {
+    content: "";
+
+    position: absolute;
+
+    opacity: 1;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    transition: inherit;
+
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.number-input-container button:disabled {
+    pointer-events: none;
+}
+
+.number-input-container button:disabled::after {
+    opacity: 0.25;
+}
+
+.number-input-container .button-decrement::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17 12H7' stroke='%23112C34' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+.number-input-container .button-increment::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 7V17' stroke='%23112C34' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 12H7' stroke='%23112C34' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+.number-input-container .button-decrement {
+    border-right: none;
+}
+
+.number-input-container .button-increment {
+    border-left: none;
+}
+
+@media (hover: hover) {
+    .number-input-container input[type="number"]:hover,
+    .number-input-container button:hover {
+        background-color: white;
+    }
+
+    .number-input-container button:active {
+        background-color: var(--color-mustard-extra-light);
+        transform: translateY(1px);
+    }
+}
+
+@media (hover: none) {
+    .number-input-container button:active {
+        background-color: white;
+        transform: translateY(1px);
+    }
+}
+
+
+/* Chevrons/Arrows:
+ insert <i className="arr-left"></i>
+ where we want an arrow:*/
+[class^=arr-]{
+  border:       solid currentColor;
+  border-width: 0 .2em .2em 0;
+  display:      inline-block;
+  padding:      .20em;
+}
+.arr-right {transform:rotate(-45deg);}
+.arr-left  {transform:rotate(135deg);}
+.arr-up    {transform:rotate(-135deg);}
+.arr-down  {transform:rotate(45deg);}
+/* End chevrons/arrows */
+
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.increment-decrement-wrapper {
+  line-height: 50px;
+  display: flex;
+  float: left;
+}
+
+.increment-decrement-wrapper input[type="number"] {
+  text-align: center;
+  height: 4vh;
+  width: 4vh;
+  background: #F7CA18;
+  font-weight: bold;
+  font-size: 1.5em;
+  top: 0;
+}
+
+.increment-decrement-wrapper button {
+  /* top: -5px; */
+  border: 5px solid #F7CA18;
+  width: 4vh;
+  height: 4vh;
+  position: relative;
+  background-color: rgba(0,0,0,0);
+  color: #F7CA18;
+  font-size: 2em;
+}
