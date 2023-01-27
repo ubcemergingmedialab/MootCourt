@@ -2,9 +2,6 @@
 ## Project Description
 Practice Mooting Online!
 
-## Branch Description
-Typescript version of the branch, along with the updated UI.
-
 ## External Assets
 
 ### Included
