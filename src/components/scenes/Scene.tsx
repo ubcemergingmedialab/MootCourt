@@ -16,7 +16,7 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <SceneJudgeAvatar listOfUtterances={appConfig.playerPosition === "Appellant"? appConfig.AQuestions : appConfig.RQuestions}
+                <SceneJudgeAvatar config={appConfig}
                 appPaused={appPaused}></SceneJudgeAvatar>
                 <Model modelUrl="./models/courtroompropsNov17.glb"
                     pos={[0, -3, 3]}

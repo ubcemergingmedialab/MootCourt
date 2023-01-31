@@ -21,12 +21,14 @@ const SkinSelect = ({ updateSkin }) => {
 }
 
 
-function SceneJudgeAvatar({animated = true, listOfUtterances, appPaused}) {
+function SceneJudgeAvatar({animated = true, config, appPaused}) {
+    // const listOfUtterances = config.playerPosition === "Appellant"? config.AQuestions : config.RQuestions
+    // const utteranceListLength = listOfUtterances.length
+
     const [currentText, setText] = useState("initial text state")
     const [textIndex, setTextIndex] = useState(0)
     const [readyToSpeak, setReadyToSpeak] = useState(false)
-    const utteranceListLength = listOfUtterances.length
-    const [utterances, setUtterances] = useState(listOfUtterances)
+    // const [utterances, setUtterances] = useState(listOfUtterances)
     const [animationPaused, setAnimationPaused] = useState(true)
     const [skin, setSkin] = useState()
     const [skinState, setSkinState] = useState("")
