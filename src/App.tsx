@@ -26,6 +26,7 @@ function App() {
   const updateState = (appState) => {
     console.log("Change app state to:", appState)
     setAppState(appState)
+    console.log("current config is:", config)
   }
 
   // Upon being called, set the "isPaused" value to be opposite from the previous value

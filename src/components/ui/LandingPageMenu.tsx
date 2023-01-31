@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Html } from '@react-three/drei'
 import PropTypes from 'prop-types'
 import './LandingPage.css';
+import defaultData from '../general/default_settings.json';
 
 
 
@@ -32,11 +33,6 @@ function pressRespondant() {
 
 function pressCustomize() {
     resetDisplayedUI("SetUp", "Questions");
-}
-
-
-function pressDefault() {
-    resetDisplayedUI("SetUp", "Main");
 }
 
 
@@ -89,11 +85,6 @@ function pressBackFromTimer() {
     resetDisplayedUI("Timer", "Questions");
 }
 
-
-function pressStartMooting() {
-    resetDisplayedUI("Timer", "Main");
-}
-
 function incrementNumber(element) {
   element.parentNode.querySelector('input[type=number]').stepUp()
 }
@@ -102,55 +93,10 @@ function decrementNumber(element) {
   element.parentNode.querySelector('input[type=number]').stepDown()
 }
 
-function setDelay(updateConfig) {
-  /*  var setDelayelement = document.getElementById("setStopPresentation");
-    if (setDelayelement != null) {
-        updateConfig('7' + setDelayelement)
-    } */
-}
-
-function settotalTime() {
-     //updateConfig.settotalTime() = document.getElementById("settotalTime").value * 1000 * 60;
-
-
-}
-
-function settingfirstWarning(updateConfig) {
-   /* var firstwarningelement = document.getElementById("setfirstWarning");
-    if (firstwarningelement != null) {
-        //the value below should have firstwarningelment.value (but this input has issues)
-        var firstwarningtimecalc = 1000 * 60;
-        updateConfig('8' + firstwarningtimecalc.toString)
-    }*/
-
-}
-
-
-function setsecondwarning(updateConfig) {
-   /* var secondwarningelement = document.getElementById("setSecondWarning");
-    if (secondwarningelement != null) {
-        //the value below should have secondwarningelement.value (but this input has issues)
-        var firstwarningtimecalc = 1000 * 60;
-        updateConfig('9' + firstwarningtimecalc.toString)
-    } */
-}
-
-
-function setStopPresentation(updateConfig) {
-    /*var setStopPresentationelement = document.getElementById("setStopPresentation");
-    if (setStopPresentationelement != null) {
-        updateConfig('9' + setStopPresentationelement)
-    }*/
-
-}
-
-function setIntroductionTime() {
-    //updateConfig.setIntroductionTime() = (document.getElementById("setIntroductionMinutes").value * 1000 * 60) + (document.getElementById("setIntroductionSeconds").value * 1000);
-}
-
 
 function LandingPageMenu({updateAppState, updateConfig, config}) {
     // AppState : const Scene = 1
+    // !!Inputs can come in the form of minutes, but config time is always stored as seconds!!
 
     const setInterval = (e) => {
         updateConfig({...config, questionInterval: parseInt(e.target.value)})
@@ -164,6 +110,38 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
     const setDelay = () => {
         let checkBox = document.getElementById("setDelay") as HTMLInputElement
         updateConfig({...config, setDelay: checkBox.checked})
+    }
+
+    const setTotalTime = (e) => {
+        updateConfig({...config, totalTime: parseInt(e.target.value) * 60})
+    }
+
+    const setStopPresentation = () => {
+        let checkBox = document.getElementById("setStopPresentation") as HTMLInputElement
+        updateConfig({...config, stopPresentation: checkBox.checked})
+    }
+
+    const setIntroductionMinutes = (e) => {
+        let originalSeconds = document.getElementById("setIntroductionSeconds") as HTMLInputElement
+        let newMinute = parseInt(e.target.value)
+        let newIntroTime = newMinute * 60 + parseInt(originalSeconds.value)
+        updateConfig({...config, introductionTime: newIntroTime})
+    }
+
+    const setIntroductionSeconds = (e) => {
+        let originalMinutes = document.getElementById("setIntroductionMinutes") as HTMLInputElement
+        let newSeconds = parseInt(e.target.value)
+        let newIntroTime = parseInt(originalMinutes.value) * 60 + newSeconds
+        updateConfig({...config, introductionTime: newIntroTime})
+    }
+
+    const pressDefault = () => {
+        updateConfig(defaultData)
+        updateAppState(1)
+    }
+
+    const startApp = () => {
+        updateAppState(1)
     }
 
     return <>
@@ -213,7 +191,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <div className="buttonFlexBox">
                     <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
-                    <button className="button wide-button" type="button" onClick={(event) => updateAppState(1)}>Default</button>
+                    <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
                     </div>
                 </div>
             </div>
@@ -243,7 +221,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
                         <div className="toggle-container">
-                            <input name="Interval" type="checkbox" id="setDelay" onClick={setDelay} />
+                            <input name="Interval" type="checkbox" id="setDelay" onChange={setDelay} />
                             <div className="slider round"></div>
                         </div>
                     </div>
@@ -264,7 +242,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <div className="formitem">
                         <label htmlFor="TotalDuration">Total duration</label>
-                        <input type="number" min="1" defaultValue="20" id="settotalTime" onClick={(event) => settotalTime()}></input>
+                        <input type="number" min="1" defaultValue="20" id="settotalTime" onChange={setTotalTime}></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     {/* <div className="formitem">
@@ -279,25 +257,25 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="formitem">
                         <label htmlFor="StopPresentation">Stop presentation</label>
                         <div className="toggle-container">
-                            <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={(event) => setStopPresentation('0')}/>
+                            <input name="StopPresentation" type="checkbox" id="setStopPresentation" onClick={setStopPresentation}/>
                             <div className="slider round"></div>
                         </div>
                     </div>
                     <div className="formitem long-formitem">
                         <label htmlFor="IntroductionTime">Introduction time</label>
                         <div className="subformitem">
-                            <input name="IntroductionTime" type="number" min="1" id= "setIntroductionMinutes" onClick={(event) => setIntroductionTime()}></input>
+                            <input name="IntroductionTime" type="number" min="1" defaultValue="2" id= "setIntroductionMinutes" onChange={setIntroductionMinutes}></input>
                             <div className="FieldDescription">minutes</div>
                         </div>
                         <div className="subformitem">
-                            <input name="MinutesTime" type="number" min="1" id="setIntroductionSeconds" onClick={(event) => setIntroductionTime()}></input>
+                            <input name="MinutesTime" type="number" min="1" defaultValue="30" id="setIntroductionSeconds" onChange={setIntroductionSeconds}></input>
                             <div className="FieldDescription">seconds</div>
                         </div>
                     </div>
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button large-button" type="button" onClick={(event) => pressBackFromTimer()}>Back</button>
-                    <button className="button large-button" type="button" onClick={(event) => updateAppState(1)}>Start Mooting!</button>
+                    <button className="button large-button" type="button" onClick={startApp}>Start Mooting!</button>
                 </div>
             </div>
         </div>}
