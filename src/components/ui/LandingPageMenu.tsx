@@ -102,16 +102,6 @@ function decrementNumber(element) {
   element.parentNode.querySelector('input[type=number]').stepDown()
 }
 
-function settingrandomizeQuestions() {
-    //updateConfig.setrandomizeQuestions() = document.getElementById("setrandomizeQuestions").value;
-
-   /* if (document.getElementById("").value != null) {
-        if (document.getElementById("").value == false) {
-            setrandomizeQuestions(true);
-        } else false;
-    }*/
-}
-
 function setDelay(updateConfig) {
   /*  var setDelayelement = document.getElementById("setStopPresentation");
     if (setDelayelement != null) {
@@ -163,6 +153,11 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
     // AppState : const Scene = 1
     const setInterval = (e) => {
         updateConfig({...config, questionInterval: parseInt(e.target.value)})
+    }
+
+    const setRandomizeQuestions = (e) => {
+        let checkBox = document.getElementById("setrandomizeQuestions") as HTMLInputElement
+        updateConfig({...config, setRandomized: checkBox.checked})
     }
 
     return <>
@@ -236,7 +231,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                             <label htmlFor="Randomize">Randomize</label>
                         </div>
                         <div className="toggle-container">
-                            <input type="checkbox" id="setrandomizeQuestions" onClick={(event) => settingrandomizeQuestions()} />
+                            <input type="checkbox" id="setrandomizeQuestions" onChange={setRandomizeQuestions} />
                             <div className="slider round"></div>
                         </div>
                     </div>
