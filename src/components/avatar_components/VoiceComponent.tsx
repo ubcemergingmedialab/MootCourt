@@ -11,8 +11,6 @@ const SelectOptimalVoice = ({ updateVoice }) => {
     let defaultVoice = "Microsoft Linda - English (Canada)";
     let optimalVoice = {}
     let isMac = navigator.platform.toUpperCase().indexOf('MAC')>=0;
-
-    console.log("is this mac? " + isMac);
     if (isMac){
         defaultVoice = "Samantha"
         }else{
@@ -52,6 +50,7 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
 
     // 1) check if voice is available on the browser.
     // If voices are available, signal "setvoicesready". SelectOptimalVoice will run.
+    // TODO: this loads at each clock tick, refactor so it only triggers when needed
     useEffect(() => {
         const availableVoices = window.speechSynthesis.getVoices()
         if (availableVoices.length > 0) {

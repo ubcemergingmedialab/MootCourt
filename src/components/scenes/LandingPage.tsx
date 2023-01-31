@@ -4,7 +4,6 @@ import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
 import {Html, useTexture} from "@react-three/drei";
 import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
-import BackToSceneButton from '../buttons/BackToSceneButton'
 import LandingPageMenu from '../ui/LandingPageMenu'
 
 let appPaused = false
@@ -27,6 +26,6 @@ export default function LandingPage({updateAppState, updateConfig, config}) {
         <Html fullscreen>
             <LandingPageMenu updateAppState={updateAppState} updateConfig={updateConfig} config={config} ></LandingPageMenu>
         </Html>
-            </Canvas>
+        </Canvas>
     )
 }

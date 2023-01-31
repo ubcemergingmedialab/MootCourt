@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect} from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
 import {Html, useTexture} from "@react-three/drei";
@@ -9,9 +9,7 @@ import PauseButton from '../buttons/PauseButton'
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
 import BackToLandingButton from '../buttons/BackToLandingButton';
 import SceneMenu from '../ui/SceneMenu'
-import JudgeTimedSpeech from '../avatar_components/JudgeTimedSpeech.js';
-
-let appPaused = false
+import JudgeTimedSpeech from '../avatar_components/JudgeTimedSpeech';
 
 export default function GeneralScene({appConfig, appPaused, togglePause, updateAppState}) {
     // Scene Specific Elements are stored here
@@ -23,11 +21,22 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
     // 3: Stores the current global time of the scene since the beginning.
     // Starting value: config's total time (in seconds) converted to ms
     const [currentTime, setCurrentTime] = useState(appConfig.totalTime * 1000)
+    // 4: Track whether the judge interval should be updated or not.
+    const [shouldUpdateJudgeElapsedTime, setShouldUpdateJudgeElapsedTime] = useState(false);
+
+    useEffect(() => {
+        console.log("current judge time being updated:", judgeElapsedTime)
+    }, [judgeElapsedTime])
 
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <JudgeTimedSpeech config={appConfig} currentTime={currentTime} appPaused={appPaused} setJudgeSpeechText={setJudgeSpeechText}></JudgeTimedSpeech>
+                <JudgeTimedSpeech
+                config={appConfig}
+                judgeElapsedTime={judgeElapsedTime}
+                setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
+                setJudgeSpeechText={setJudgeSpeechText}>
+                </JudgeTimedSpeech>
                 <SceneJudgeAvatar config={appConfig} appPaused={appPaused}></SceneJudgeAvatar>
                 <Model modelUrl="./models/courtroompropsNov17.glb"
                     pos={[0, -3, 3]}
@@ -43,7 +52,16 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                     sca={[0.055, 0.055, 0.055]} />
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
-                <GlobalTimer appPaused={appPaused} updateAppState={updateAppState} currentTime={currentTime} setCurrentTime={setCurrentTime} noNegativeTime={appConfig.stopPresentation}></GlobalTimer>
+                <GlobalTimer
+                appPaused={appPaused}
+                updateAppState={updateAppState}
+                currentTime={currentTime}
+                setCurrentTime={setCurrentTime}
+                noNegativeTime={appConfig.stopPresentation}
+                judgeElapsedTime={judgeElapsedTime}
+                setJudgeElapsedTime={setJudgeElapsedTime}
+                setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
+                shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>
                 {/* <SceneMenu updateAppState={updateAppState}></SceneMenu> */}
                 <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>
