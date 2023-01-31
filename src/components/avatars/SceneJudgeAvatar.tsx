@@ -41,7 +41,7 @@ function SceneJudgeAvatar({animated = true, listOfUtterances, appPaused}) {
     useEffect(() => {
         const keyDownHandler = (e) => {
           console.log("pressed key: " + e.key)
-          setText(utterances[e.key])
+          setText("key was pressed. testing audio.")
         }
         document.addEventListener('keydown', keyDownHandler)
         return () => {

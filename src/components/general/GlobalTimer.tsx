@@ -77,7 +77,7 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     useEffect(() => {
         setElapsedTime(Date.now() - previousTime);
         setPreviousTime(Date.now());
-        console.log("current time", currentTime)
+        // console.log("current time", currentTime)
     }, [updateTimerInterval])
 
     // if no negative time is set to true, return to landing page

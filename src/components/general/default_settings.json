@@ -6,6 +6,7 @@
     "secondWarning": 300,
     "stopPresentation": false,
     "introductionTime": 150,
+    "judgeIntroSpeech": "Council, you may begin your presentation.",
     "AQuestions": [
         "Did not the trial court make some findings of fact that are contrary to your submissions, and should we not defer to those findings of fact?",
         "Should not we presume that the trial judge knows the law and applied the correct law?",
