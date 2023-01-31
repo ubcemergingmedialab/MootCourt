@@ -151,13 +151,19 @@ function setIntroductionTime() {
 
 function LandingPageMenu({updateAppState, updateConfig, config}) {
     // AppState : const Scene = 1
+
     const setInterval = (e) => {
         updateConfig({...config, questionInterval: parseInt(e.target.value)})
     }
 
-    const setRandomizeQuestions = (e) => {
+    const setRandomizeQuestions = () => {
         let checkBox = document.getElementById("setrandomizeQuestions") as HTMLInputElement
         updateConfig({...config, setRandomized: checkBox.checked})
+    }
+
+    const setDelay = () => {
+        let checkBox = document.getElementById("setDelay") as HTMLInputElement
+        updateConfig({...config, setDelay: checkBox.checked})
     }
 
     return <>
@@ -223,7 +229,6 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="formitem">
                         <label htmlFor="Interval">Interval</label>
                         <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onChange={setInterval}></input>
-                        {/* <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onClick={(event) => setInterval()}></input> */}
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">
@@ -238,7 +243,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
                         <div className="toggle-container">
-                            <input name="Interval" type="checkbox" id="setDelay" onClick={(event) => setDelay('7')} />
+                            <input name="Interval" type="checkbox" id="setDelay" onClick={setDelay} />
                             <div className="slider round"></div>
                         </div>
                     </div>
@@ -259,17 +264,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <div className="formitem">
                         <label htmlFor="TotalDuration">Total duration</label>
-                        <input type="number" min="1" id="settotalTime" onClick={(event) => settotalTime()}></input>
-                        <div className="FieldDescription">minutes</div>
-                    </div>
-                    <div className="formitem">
-                        <label htmlFor="FirstWarning">First warning</label>
-                        <input type="number" min="1" id="setfirstWarning" onClick={(event) => settingfirstWarning('8')} ></input>
-                        <div className="FieldDescription">minutes</div>
-                    </div>
-                    <div className="formitem">
-                        <label htmlFor="SecondWarning">Second warning</label>
-                        <input type="number" min="1" id="setsecondwarning" onClick={(event) => setsecondwarning('9')}></input>
+                        <input type="number" min="1" defaultValue="20" id="settotalTime" onClick={(event) => settotalTime()}></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     {/* <div className="formitem">

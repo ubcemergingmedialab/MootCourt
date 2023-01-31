@@ -2,6 +2,7 @@
     "playerPosition": "Appellant",
     "questionInterval": 5,
     "setRandomized": false,
+    "setDelay": false,
     "totalTime": 1200,
     "firstWarning": 600,
     "secondWarning": 300,
