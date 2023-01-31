@@ -21,16 +21,6 @@ function pressStart() {
 }
 
 
-function pressAppellant() {
-    resetDisplayedUI("Position", "SetUp");
-}
-
-
-function pressRespondant() {
-    resetDisplayedUI("Position", "SetUp");
-}
-
-
 function pressCustomize() {
     resetDisplayedUI("SetUp", "Questions");
 }
@@ -144,6 +134,16 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         updateAppState(1)
     }
 
+    const pressAppellant = () => {
+        updateConfig({...config, playerPosition: "Appellant"})
+        resetDisplayedUI("Position", "SetUp");
+    }
+    
+    const pressRespondent = () => {
+        updateConfig({...config, playerPosition: "Respondent"})
+        resetDisplayedUI("Position", "SetUp");
+    }
+
     return <>
         {<div className="logoOverlay">
           <img src={require('../images/PALSOL-1.2b-Primary-UBC-Shield.png')} />
@@ -175,8 +175,8 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 </div>
                 <div className="sideMenuContents">
                     <div className="buttonFlexBox buttonFlexBox-Position">
-                        <button className="button wide-button" type="button" onClick={(event) => pressAppellant()} >Appellant</button>
-                        <button className="button wide-button" type="button" onClick={(event) => pressRespondant()}>Respondent</button>
+                        <button className="button wide-button" type="button" onClick= {pressAppellant} >Appellant</button>
+                        <button className="button wide-button" type="button" onClick={pressRespondent}>Respondent</button>
                     </div>
                 </div>
             </div>
