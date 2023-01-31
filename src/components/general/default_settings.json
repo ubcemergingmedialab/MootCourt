@@ -1,6 +1,6 @@
 {
     "playerPosition": "Appellant",
-    "questionInterval": 5,
+    "questionInterval": 300,
     "setRandomized": false,
     "setDelay": false,
     "totalTime": 1200,

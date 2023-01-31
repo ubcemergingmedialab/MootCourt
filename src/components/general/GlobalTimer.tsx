@@ -6,17 +6,15 @@ import "./timer.css"
 // if app is active, 1) receive total required time 2) set warning times automatically
 // ** do not decrement when timer restarts
 // time received in seconds, convert to ms for more accurate time count
-function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
+function GlobalTimer({updateAppState, currentTime, setCurrentTime, appPaused, noNegativeTime}) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeText, setTimeText] = useState("");
     const [warningState, setWarningState] = useState(0);
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
-    const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
-    const [currentTime, setCurrentTime] = useState(totalTime * 1000)
-
-
+    // const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
+    // const [currentTime, setCurrentTime] = useState(totalTime * 1000)
     
     // Displaying remaining time in milliseconds as minute:second format. 
     // if negative values are enabled, keep counting down instead of going back to the landing page. 
@@ -51,13 +49,12 @@ function GlobalTimer({updateAppState, totalTime, appPaused, noNegativeTime}) {
     useEffect(() => {
         if (!appPaused) {
             setTimeText(msToTime(currentTime))
-
-            if (warningState < times.length) {
-                if (currentTime <= times[warningState].time) {
-                    setLightColor(times[warningState].color)
-                    setWarningState(warningState + 1);
-                }
-            }
+            // if (warningState < times.length) {
+            //     if (currentTime <= times[warningState].time) {
+            //         setLightColor(times[warningState].color)
+            //         setWarningState(warningState + 1);
+            //     }
+            // }
             // calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
         }
