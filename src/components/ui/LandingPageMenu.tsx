@@ -102,15 +102,6 @@ function decrementNumber(element) {
   element.parentNode.querySelector('input[type=number]').stepDown()
 }
 
-//minor issue with id and css
-function setInterval() {
-    /*if (document.getElementById("interval-field") != null) {
-        if (document.getElementById("interval-field").value != null) {
-            setquestionInterval(document.getElementById("interval-field").value * 1000 * 60);
-        }
-    }*/
-}
-
 function settingrandomizeQuestions() {
     //updateConfig.setrandomizeQuestions() = document.getElementById("setrandomizeQuestions").value;
 
@@ -168,8 +159,12 @@ function setIntroductionTime() {
 }
 
 
-function LandingPageMenu({updateAppState, updateConfig}) {
+function LandingPageMenu({updateAppState, updateConfig, config}) {
     // AppState : const Scene = 1
+    const setInterval = (e) => {
+        updateConfig({...config, questionInterval: parseInt(e.target.value)})
+    }
+
     return <>
         {<div className="logoOverlay">
           <img src={require('../images/PALSOL-1.2b-Primary-UBC-Shield.png')} />
@@ -232,7 +227,8 @@ function LandingPageMenu({updateAppState, updateConfig}) {
                 <div className="sideMenuContents">
                     <div className="formitem">
                         <label htmlFor="Interval">Interval</label>
-                        <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onClick={(event) => setInterval()}></input>
+                        <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onChange={setInterval}></input>
+                        {/* <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onClick={(event) => setInterval()}></input> */}
                         <div className="FieldDescription">minutes</div>
                     </div>
                     <div className="formitem">

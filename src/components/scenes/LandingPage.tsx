@@ -11,7 +11,7 @@ let appPaused = false
 
 const lou = []
 
-export default function LandingPage({updateAppState, updateConfig}) {
+export default function LandingPage({updateAppState, updateConfig, config}) {
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
@@ -25,7 +25,7 @@ export default function LandingPage({updateAppState, updateConfig}) {
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
         <Html fullscreen>
-            <LandingPageMenu updateAppState={updateAppState} updateConfig={updateConfig} ></LandingPageMenu>
+            <LandingPageMenu updateAppState={updateAppState} updateConfig={updateConfig} config={config} ></LandingPageMenu>
         </Html>
             </Canvas>
     )
