@@ -89,7 +89,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
     // !!Inputs can come in the form of minutes, but config time is always stored as seconds!!
 
     const setInterval = (e) => {
-        updateConfig({...config, questionInterval: parseInt(e.target.value)})
+        updateConfig({...config, questionInterval: parseInt(e.target.value) * 1})
     }
 
     const setRandomizeQuestions = () => {

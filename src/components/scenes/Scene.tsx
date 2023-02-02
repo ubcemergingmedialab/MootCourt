@@ -1,15 +1,12 @@
-import * as THREE from 'three'
-import React, { useRef, useState, useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
-import {Html, useTexture} from "@react-three/drei";
-import AppSettings from '../general/AppSettings.js'
+import {Html} from "@react-three/drei";
 import GlobalTimer from '../general/GlobalTimer'
 import PauseButton from '../buttons/PauseButton'
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
 import BackToLandingButton from '../buttons/BackToLandingButton';
-import SceneMenu from '../ui/SceneMenu'
-import JudgeTimedSpeech from '../avatar_components/JudgeTimedSpeech';
+import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 
 export default function GeneralScene({appConfig, appPaused, togglePause, updateAppState}) {
     // Scene Specific Elements are stored here
@@ -23,10 +20,12 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
     const [currentTime, setCurrentTime] = useState(appConfig.totalTime * 1000)
     // 4: Track whether the judge interval should be updated or not.
     const [shouldUpdateJudgeElapsedTime, setShouldUpdateJudgeElapsedTime] = useState(false);
+    // 5: Is the speech in intro mode?
+    const [isAppInIntro, setIsAppInIntro] = useState(false);
+    // 6: Has intro speech been started?
+    const [hasAppIntroStarted, setHasAppIntroStarted] = useState(false);
 
-    useEffect(() => {
-        console.log("current judge time being updated:", judgeElapsedTime)
-    }, [judgeElapsedTime])
+
 
     return (<Canvas>
                 <ambientLight />
@@ -35,9 +34,8 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                 config={appConfig}
                 judgeElapsedTime={judgeElapsedTime}
                 setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
-                setJudgeSpeechText={setJudgeSpeechText}>
-                </JudgeTimedSpeech>
-                <SceneJudgeAvatar config={appConfig} appPaused={appPaused}></SceneJudgeAvatar>
+                setJudgeSpeechText={setJudgeSpeechText}></JudgeTimedSpeech>
+                <SceneJudgeAvatar appPaused={appPaused} judgeSpeechText={judgeSpeechText}></SceneJudgeAvatar>
                 <Model modelUrl="./models/courtroompropsNov17.glb"
                     pos={[0, -3, 3]}
                     rot={[0, 0, 0]}
@@ -53,6 +51,12 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
                 <GlobalTimer
+                hasAppIntroStarted={hasAppIntroStarted}
+                setHasAppIntroStarted={setHasAppIntroStarted}
+                isAppInIntro={isAppInIntro}
+                setIsAppInIntro={setIsAppInIntro}
+                setJudgeSpeechText={setJudgeSpeechText}
+                config={appConfig}
                 appPaused={appPaused}
                 updateAppState={updateAppState}
                 currentTime={currentTime}
@@ -63,7 +67,6 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
                 setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
                 shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                 <PauseButton togglePause={togglePause}></PauseButton>
-                {/* <SceneMenu updateAppState={updateAppState}></SceneMenu> */}
                 <BackToLandingButton updateAppState={updateAppState}></BackToLandingButton>
                 </Html>
             </Canvas>

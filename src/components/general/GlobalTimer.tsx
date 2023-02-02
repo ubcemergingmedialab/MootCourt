@@ -1,12 +1,10 @@
 import { Suspense, useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import {Html} from '@react-three/drei'
 import "./timer.css"
 
 // if app is active, 1) receive total required time 2) set warning times automatically
 // ** do not decrement when timer restarts
 // time received in seconds, convert to ms for more accurate time count
-function GlobalTimer({appPaused, updateAppState, currentTime, setCurrentTime, noNegativeTime, judgeElapsedTime, setJudgeElapsedTime, shouldUpdateJudgeElapsedTime, setShouldUpdateJudgeElapsedTime}) {
+function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, setIsAppInIntro, config, setJudgeSpeechText, appPaused, updateAppState, currentTime, setCurrentTime, noNegativeTime, judgeElapsedTime, setJudgeElapsedTime, shouldUpdateJudgeElapsedTime, setShouldUpdateJudgeElapsedTime}) {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeText, setTimeText] = useState("");
@@ -14,6 +12,44 @@ function GlobalTimer({appPaused, updateAppState, currentTime, setCurrentTime, no
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
     // const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
+    
+    // judge time controller
+    const listOfUtterances = config.playerPosition === "Appellant"? config.AQuestions : config.RQuestions
+    const questionInterval = config.questionInterval * 1000
+    const [judgeQuestionIndex, setJudgeQuestionIndex] = useState(0);
+
+    function resetQuestionIndex() {
+        // loop back to initial quetion if the index is equal to the length of speech list.
+        // if not, increment the index by one. 
+        if (judgeQuestionIndex >= listOfUtterances.length) {
+            setJudgeQuestionIndex(0)
+        } else {
+            setJudgeQuestionIndex(judgeQuestionIndex + 1)
+        }
+    }
+
+    useEffect(() => {
+        // if the judge elapsed time exceeds the interval,
+        // inform the app that the judge elapsed time will be updated.
+        // console.log("updating time for judge")
+        if (!hasAppIntroStarted) {
+            setHasAppIntroStarted(true)
+            setJudgeSpeechText(config.judgeIntroSpeech)
+            setIsAppInIntro(true)
+        }
+        if (isAppInIntro) {
+            if (judgeElapsedTime >= config.introductionTime) {
+                setIsAppInIntro(false)
+            }
+        } else if (judgeElapsedTime >= questionInterval) {
+            console.log("judge elapsed time goes over interval")
+            setShouldUpdateJudgeElapsedTime(true)
+            resetQuestionIndex()
+            setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
+        }
+    }, [judgeElapsedTime])
+
+
 
     // Displaying remaining time in milliseconds as minute:second format. 
     // if negative values are enabled, keep counting down instead of going back to the landing page. 

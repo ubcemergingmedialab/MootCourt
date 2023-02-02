@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react'
+import {Suspense, useEffect, useState } from 'react'
 
 /**
  * Updates new speech to be said by judge according to the timer status and app setting.
@@ -24,16 +24,20 @@ function JudgeTimedSpeech(config, judgeElapsedTime, setShouldUpdateJudgeElapsedT
     useEffect(() => {
         // if the judge elapsed time exceeds the interval,
         // inform the app that the judge elapsed time will be updated.
-        console.log("updating time for judge")
+        // console.log("updating time for judge")
         if (judgeElapsedTime >= questionInterval) {
             console.log("judge elapsed time goes over interval")
             setShouldUpdateJudgeElapsedTime(true)
             resetQuestionIndex()
+            setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
         }
-        console.log("judge elapsed time:", judgeElapsedTime)
+        console.log("judge elapsed time updated in judgeTimedSpeech:", judgeElapsedTime)
+        console.log("judge question interval:", questionInterval)
+        console.log("lou:", listOfUtterances)
     }, [judgeElapsedTime])
 
-    return (<></>)
+    return (<Suspense fallback={null}>
+    </Suspense>)
 }
 
-export default JudgeTimedSpeech;
+export default JudgeTimedSpeech
