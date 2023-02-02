@@ -89,7 +89,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
     // !!Inputs can come in the form of minutes, but config time is always stored as seconds!!
 
     const setInterval = (e) => {
-        updateConfig({...config, questionInterval: parseInt(e.target.value) * 1})
+        updateConfig({...config, questionInterval: parseFloat(e.target.value) * 60})
     }
 
     const setRandomizeQuestions = () => {
@@ -161,7 +161,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={(event) => pressAbout()} > ABOUT</button>
                         <button className="button wide-button" type="button" onClick={(event) => pressTutorial()}> TUTORIAL </button>
                         <button className="button wide-button" type="button" onClick={(event) => pressMootingResources()}>MOOTING RESOURCES</button>
-                        <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>GIVE FEEDBACK</button>
+                        <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
+                            <a href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_2l3a4rVJhxIcKeq" target="_blank">GIVE FEEDBACK</a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -325,13 +327,13 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     </div>
                     <div className="sideMenuContents">
                         <button className="button large-button" type="button">
-                            <a href="./pdf/First-Year Moots Procedure Checklist 2020.pdf">First Year Moot Procedure Checklist</a>
+                            <a href="./pdf/First-Year Moots Procedure Checklist 2020.pdf" target="_blank">First Year Moot Procedure Checklist</a>
                         </button>
                         <button className="button large-button" type="button">
-                            <a href="./pdf/Compiled Moot Resources.pdf">General Mooting Tips and Argument Criteria</a>
+                            <a href="./pdf/Compiled Moot Resources.pdf" target="_blank">General Mooting Tips and Argument Criteria</a>
                         </button>
                         <button className="button large-button" type="button">
-                            <a href="./pdf/2021_Appearing_before_the_Court.pdf">Appearing before Court</a>
+                            <a href="./pdf/2021_Appearing_before_the_Court.pdf" target="_blank">Appearing before Court</a>
                         </button>
                     </div>
                     <div className="sideMenuBottom">

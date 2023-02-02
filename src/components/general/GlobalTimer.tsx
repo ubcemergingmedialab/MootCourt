@@ -21,7 +21,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     function resetQuestionIndex() {
         // loop back to initial quetion if the index is equal to the length of speech list.
         // if not, increment the index by one. 
-        if (judgeQuestionIndex >= listOfUtterances.length) {
+        if (judgeQuestionIndex >= listOfUtterances.length - 1) {
             setJudgeQuestionIndex(0)
         } else {
             setJudgeQuestionIndex(judgeQuestionIndex + 1)
@@ -32,7 +32,8 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // if the judge elapsed time exceeds the interval,
         // inform the app that the judge elapsed time will be updated.
         // console.log("updating time for judge")
-        if (!hasAppIntroStarted) {
+        // wait 10 seconds for judge
+        if (!hasAppIntroStarted && judgeElapsedTime > 1000) {
             setHasAppIntroStarted(true)
             setJudgeSpeechText(config.judgeIntroSpeech)
             setIsAppInIntro(true)

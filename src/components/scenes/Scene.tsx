@@ -30,11 +30,11 @@ export default function GeneralScene({appConfig, appPaused, togglePause, updateA
     return (<Canvas>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                <JudgeTimedSpeech
+                {/* <JudgeTimedSpeech
                 config={appConfig}
                 judgeElapsedTime={judgeElapsedTime}
                 setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
-                setJudgeSpeechText={setJudgeSpeechText}></JudgeTimedSpeech>
+                setJudgeSpeechText={setJudgeSpeechText}></JudgeTimedSpeech> */}
                 <SceneJudgeAvatar appPaused={appPaused} judgeSpeechText={judgeSpeechText}></SceneJudgeAvatar>
                 <Model modelUrl="./models/courtroompropsNov17.glb"
                     pos={[0, -3, 3]}

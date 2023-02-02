@@ -72,7 +72,7 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
         if (!appPaused) {
             console.log('speaking: ' + textToSay)
             cancel()
-            speak({ text: textToSay, voice: voice, rate: 1.0 })
+            speak({ text: textToSay, voice: voice, rate: 0.9 })
             startedSpeaking && textToSay !== "" && startedSpeaking()
         } else {
             console.log("global app state set as paused, speech input detected but not reading text")
