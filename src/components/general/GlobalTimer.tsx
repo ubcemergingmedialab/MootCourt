@@ -8,10 +8,11 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     const [elapsedTime, setElapsedTime] = useState(0);
     const [previousTime, setPreviousTime] = useState(Date.now());
     const [timeText, setTimeText] = useState("");
+    // set warning state to 1 if timer goes to negative
     const [warningState, setWarningState] = useState(0);
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
-    // const times = [{ time: totalTime / 3, message: "", color: "#FAB900" }, { time: totalTime * 2 / 3, message: "", color: "#FA646A" }]
+    const warningColor = "#FA646A"
     
     // judge time controller
     const listOfUtterances = config.playerPosition === "Appellant"? config.AQuestions : config.RQuestions
@@ -32,11 +33,12 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // if the judge elapsed time exceeds the interval,
         // inform the app that the judge elapsed time will be updated.
         // console.log("updating time for judge")
-        // wait 10 seconds for judge
-        if (!hasAppIntroStarted && judgeElapsedTime > 1000) {
+        // wait 5 seconds for judge
+        if (!hasAppIntroStarted && judgeElapsedTime > 5000) {
             setHasAppIntroStarted(true)
             setJudgeSpeechText(config.judgeIntroSpeech)
             setIsAppInIntro(true)
+            setJudgeElapsedTime(0)
         }
         if (isAppInIntro) {
             if (judgeElapsedTime >= config.introductionTime) {
@@ -85,12 +87,12 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     useEffect(() => {
         if (!appPaused) {
             setTimeText(msToTimeDisplay(currentTime))
-            // if (warningState < times.length) {
-            //     if (currentTime <= times[warningState].time) {
-            //         setLightColor(times[warningState].color)
-            //         setWarningState(warningState + 1);
-            //     }
-            // }
+            if (warningState === 0) {
+                if (currentTime <= 0) {
+                    setLightColor(warningColor)
+                    setWarningState(1)
+                }
+            }
             setJudgeElapsedTime(judgeElapsedTime + elapsedTime)
             // calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
