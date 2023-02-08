@@ -41,7 +41,7 @@ function App() {
     {/* Send in the app configuration to be edited by the Landing Page*/}
     {(appState === Landing) ? <LandingPage updateAppState={updateState} updateConfig={updateConfig} config={config}></LandingPage> : null}
     {/* Send in the app configuration and "paused" boolean to the main app*/}
-    {(appState === Scene) ? <GeneralScene appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState}></GeneralScene> : null}
+    {(appState === Scene) ? <GeneralScene setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState}></GeneralScene> : null}
     </div>
     </Suspense>
   );

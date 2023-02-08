@@ -3,12 +3,12 @@ import "../general/timer.css"
 import {Html} from '@react-three/drei'
 import PropTypes from 'prop-types'
 
-function BackToLandingButton({ updateAppState }) {
+function BackToLandingButton({ updateAppState, setPaused}) {
     // internal check of pause state to change button setting
 
     return <>
     {<div className={"pauseContainer"} style={{ bottom: "1em", left: 150 }}>
-        <button className="pause-button" onClick={() => { updateAppState(0)}}>
+        <button className="pause-button" onClick={() => { updateAppState(0); setPaused(false)}}>
             {"Back to Setup"}
         </button>
     </div>
