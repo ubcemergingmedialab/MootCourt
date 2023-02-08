@@ -138,7 +138,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         updateConfig({...config, playerPosition: "Appellant"})
         resetDisplayedUI("Position", "SetUp");
     }
-    
+
     const pressRespondent = () => {
         updateConfig({...config, playerPosition: "Respondent"})
         resetDisplayedUI("Position", "SetUp");
@@ -162,7 +162,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={(event) => pressTutorial()}> TUTORIAL </button>
                         <button className="button wide-button" type="button" onClick={(event) => pressMootingResources()}>MOOTING RESOURCES</button>
                         <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
-                            <a href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_2l3a4rVJhxIcKeq" target="_blank">GIVE FEEDBACK</a>
+                            <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_2l3a4rVJhxIcKeq" target="_blank">GIVE FEEDBACK</a>
                         </button>
                     </div>
                 </div>
@@ -326,15 +326,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <div className="hr-2"></div>
                     </div>
                     <div className="sideMenuContents">
-                        <button className="button large-button" type="button">
-                            <a href="./pdf/First-Year Moots Procedure Checklist 2020.pdf" target="_blank">First Year Moot Procedure Checklist</a>
-                        </button>
-                        <button className="button large-button" type="button">
-                            <a href="./pdf/Compiled Moot Resources.pdf" target="_blank">General Mooting Tips and Argument Criteria</a>
-                        </button>
-                        <button className="button large-button" type="button">
-                            <a href="./pdf/2021_Appearing_before_the_Court.pdf" target="_blank">Appearing before Court</a>
-                        </button>
+                        <a className="button large-button" href="./pdf/First-Year Moots Procedure Checklist 2020.pdf" target="_blank">First Year Moot Procedure Checklist</a>
+                        <a className="button large-button" href="./pdf/Compiled Moot Resources.pdf" target="_blank">General Mooting Tips and Argument Criteria</a>
+                        <a className="button large-button" href="./pdf/2021_Appearing_before_the_Court.pdf" target="_blank">Appearing before Court</a>
                     </div>
                     <div className="sideMenuBottom">
                         <button className="button" type="button" onClick={(event) => pressBackToMenu3()}>Back to Menu</button>

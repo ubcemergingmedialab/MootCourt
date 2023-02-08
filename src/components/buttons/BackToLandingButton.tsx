@@ -7,8 +7,8 @@ function BackToLandingButton({ updateAppState, setPaused}) {
     // internal check of pause state to change button setting
 
     return <>
-    {<div className={"pauseContainer"} style={{ bottom: "1em", left: 150 }}>
-        <button className="pause-button" onClick={() => { updateAppState(0); setPaused(false)}}>
+    {<div className={"sceneButtonContainer"}>
+        <button className="scene-button pause-button" onClick={() => { updateAppState(0); setPaused(false)}}>
             {"Back to Setup"}
         </button>
     </div>

@@ -1,5 +1,5 @@
 .timerContainer {
-    position: absolute;
+    /* position: absolute; */
     background-color:white;
     display: flex;
     align-items: stretch;
@@ -12,6 +12,7 @@
     font-size: 24px;
     text-align: center;
     width: 150px;
+    /* right: 1vw; */
 }
 
 .timerLight {
@@ -29,28 +30,67 @@
     font-style: normal;
     font-weight: normal;
     font-size: 24px;
-    margin-top: 10px;
+    margin-top: 7px;
     margin-bottom: 10px;
     margin-right: 30px;
     margin: auto;
     position: relative;
+    /* top: -3px; */
 }
 
-.pauseContainer {
-    position: absolute;
+.sceneButtonContainer {
+    /* position: absolute; */
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
     font-size: 24px;
     text-align: center;
     margin-right: 5px;
-    width: 180px;
+    /* width: 180px; */
+}
+.pauseContainer {
+  flex: 1;
+  text-align: right;
 }
 
-.pause-button {
-    width: 80%;
-    justify-content: center;
-    background-color: #14223C;
-    color: #F7E7D0;
-    /* box-shadow: 2px 2px 5px; */
+.scene-button {
+  background: #F5D247;
+  text-decoration: none;
+  /* width: 80%; */
+  justify-content: center;
+  border: 2px solid black;
+  color: black;
+  padding: 15px;
+  font-size: 24px;
+  transition: 0.4s;
+  border-radius: 100px;
+  padding: 5px 50px;
+  height: 56px;
+  white-space: nowrap;
+  align-self: end;
+  margin-right: 30px;
+}
+
+.scene-button:active,
+.scene-button:focus,
+.scene-button:hover {
+  background-color: white;
+}
+
+.scene-controls {
+  width: 100vw;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.scene-controls-inner {
+  /* width: 100vw;
+  height: 100vh; */
+  display: flex;
+  padding: 20px;
+  flex-shrink: 1;
+  align-self: bottom;
 }

@@ -12,7 +12,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
     // Scene Specific Elements are stored here
     // 1: Text that judge is supposed to say at given interval
     const [judgeSpeechText, setJudgeSpeechText] = useState("Default speech text for judge.")
-    // 2: Time elapsed since the start of the interval. Resets if the user delays speech. 
+    // 2: Time elapsed since the start of the interval. Resets if the user delays speech.
     // Moves onto next question when elapsed time equals the config interval
     const [judgeElapsedTime, setJudgeElapsedTime] = useState(0)
     // 3: Stores the current global time of the scene since the beginning.
@@ -50,24 +50,28 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     sca={[0.055, 0.055, 0.055]} />
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
-                <GlobalTimer
-                hasAppIntroStarted={hasAppIntroStarted}
-                setHasAppIntroStarted={setHasAppIntroStarted}
-                isAppInIntro={isAppInIntro}
-                setIsAppInIntro={setIsAppInIntro}
-                setJudgeSpeechText={setJudgeSpeechText}
-                config={appConfig}
-                appPaused={appPaused}
-                updateAppState={updateAppState}
-                currentTime={currentTime}
-                setCurrentTime={setCurrentTime}
-                noNegativeTime={appConfig.stopPresentation}
-                judgeElapsedTime={judgeElapsedTime}
-                setJudgeElapsedTime={setJudgeElapsedTime}
-                setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
-                shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
-                <PauseButton togglePause={togglePause}></PauseButton>
-                <BackToLandingButton updateAppState={updateAppState} setPaused={setPaused}></BackToLandingButton>
+                <div className="scene-controls">
+                    <div className="scene-controls-inner">
+                        <BackToLandingButton updateAppState={updateAppState} setPaused={setPaused}></BackToLandingButton>
+                        <PauseButton togglePause={togglePause}></PauseButton>
+                        <GlobalTimer
+                        hasAppIntroStarted={hasAppIntroStarted}
+                        setHasAppIntroStarted={setHasAppIntroStarted}
+                        isAppInIntro={isAppInIntro}
+                        setIsAppInIntro={setIsAppInIntro}
+                        setJudgeSpeechText={setJudgeSpeechText}
+                        config={appConfig}
+                        appPaused={appPaused}
+                        updateAppState={updateAppState}
+                        currentTime={currentTime}
+                        setCurrentTime={setCurrentTime}
+                        noNegativeTime={appConfig.stopPresentation}
+                        judgeElapsedTime={judgeElapsedTime}
+                        setJudgeElapsedTime={setJudgeElapsedTime}
+                        setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
+                        shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
+                    </div>
+                </div>
                 </Html>
             </Canvas>
     )

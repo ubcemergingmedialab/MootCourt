@@ -8,8 +8,8 @@ function PauseButton({ togglePause }) {
     const [isPaused, setIsPaused] = useState(false)
 
     return <>
-    {<div className={"pauseContainer"} style={{ bottom: "1em", right: 150 }}>
-        <button className="pause-button" onClick={() => { togglePause(); setIsPaused(!isPaused) }}>
+    {<div className={"pauseContainer sceneButtonContainer"}>
+        <button className="scene-button" onClick={() => { togglePause(); setIsPaused(!isPaused) }}>
             {isPaused ? "Continue App" : "Pause App"}
         </button>
     </div>}

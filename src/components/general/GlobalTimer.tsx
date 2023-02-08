@@ -3,19 +3,19 @@ import "./timer.css"
 
 function shuffle(array) {
     let currentIndex = array.length,  randomIndex;
-  
+
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
-  
+
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-  
+
       // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
     }
-  
+
     return array;
 }
 
@@ -31,7 +31,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
     const warningColor = "#FA646A"
-    
+
     // judge time controller
     if (config.setRandomized) {
         shuffle(config.AQuestions)
@@ -43,7 +43,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
 
     function resetQuestionIndex() {
         // loop back to initial quetion if the index is equal to the length of speech list.
-        // if not, increment the index by one. 
+        // if not, increment the index by one.
         if (judgeQuestionIndex >= listOfUtterances.length - 1) {
             setJudgeQuestionIndex(0)
         } else {
@@ -77,8 +77,8 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
 
 
 
-    // Displaying remaining time in milliseconds as minute:second format. 
-    // if negative values are enabled, keep counting down instead of going back to the landing page. 
+    // Displaying remaining time in milliseconds as minute:second format.
+    // if negative values are enabled, keep counting down instead of going back to the landing page.
     const msToTimeDisplay = function (duration) {
         let isTimeNegative = duration < 0;
         // use absolute time to calculate displayed time
@@ -122,7 +122,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         }
     }, [updateTimerInterval])
 
-    // if interval should be reset, this function runs. 
+    // if interval should be reset, this function runs.
     useEffect(() => {
         if (!appPaused && shouldUpdateJudgeElapsedTime) {
             setJudgeElapsedTime(0)
@@ -130,8 +130,8 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         }
     }, [shouldUpdateJudgeElapsedTime])
 
-    // Every 1000 milliseconds, update the timer. 
-    // Note that the frequency of this function running is not always 1000ms - 
+    // Every 1000 milliseconds, update the timer.
+    // Note that the frequency of this function running is not always 1000ms -
     // Store a separate counter to accurately calculate time elapsed between two frames of the app (see useEffect below)
     useEffect(() => {
         const timeUpdateInterval = window.setInterval(() => {
@@ -154,7 +154,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     }, [updateTimerInterval])
 
     return <>
-        {<div className={"timerContainer"} style={{ bottom: "1em", right: 0, backgroundColor: "white" }}>
+        {<div className={"timerContainer"}>
             <div className={"timerText"}>{timeText}</div>
             <div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
         </div>}

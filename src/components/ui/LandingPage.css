@@ -140,6 +140,7 @@ h1 {
 }
 
 #Main .buttonFlexBox button,
+#Main .buttonFlexBox .button,
 #Timer .formitem {
     flex: 1;
     /* margin: 0 4.5vw; */
@@ -217,25 +218,33 @@ h1 {
     font-weight: light;
     /* width: 20vw; */
     /* font-family: Verdana; */
-    height: 10vh;
+    /* height: 10vh; */
     font-size: 1.75vw;
+    padding: 2vh 4.5vw;
     text-transform: uppercase;
     border: 0;
     transition: 0.4s;
     border-radius: 20px;
+    color: black;
+    text-decoration: none;
+    /* display: block; */
+    text-align: center;
+
 }
 
 .button:hover {
     background: #F5D247;
+    color: black;
+    text-decoration: none;
 }
-
 
 .large-button {
     margin-right: 1vw;
     margin-left: 1vw;
-    height: 7vh;
-    padding: 0 4.5vw;
+    /* height: 7vh; */
+    /* padding: 0 4.5vw; */
     margin-top: 2vh;
+    height: auto;
 }
 
 /*.large-button:first-of-type {
