@@ -60,12 +60,15 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
             console.log(listOfUtterances)
             setHasAppIntroStarted(true)
             setJudgeSpeechText(config.judgeIntroSpeech)
-            setIsAppInIntro(true)
             setJudgeElapsedTime(0)
+            setIsAppInIntro(true)
         }
         if (isAppInIntro) {
-            if (judgeElapsedTime >= config.introductionTime) {
+            console.log("app is in intro")
+            if (judgeElapsedTime >= config.introductionTime * 1000) {
                 setIsAppInIntro(false)
+                setShouldUpdateJudgeElapsedTime(true)
+                setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
             }
         } else if (judgeElapsedTime >= questionInterval) {
             console.log("judge elapsed time goes over interval")
