@@ -259,7 +259,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="formitem">
                         <label htmlFor="StopPresentation">Stop presentation</label>
                         <div className="toggle-container">
-                            <input name="StopPresentation" type="checkbox" checked={true} id="setStopPresentation" onChange={setStopPresentation}/>
+                            <input name="StopPresentation" type="checkbox" defaultChecked={true} id="setStopPresentation" onChange={setStopPresentation}/>
                             <div className="slider round"></div>
                         </div>
                     </div>
