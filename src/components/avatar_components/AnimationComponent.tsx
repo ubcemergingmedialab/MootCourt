@@ -14,19 +14,20 @@ function AnimationComponent({isSpeaking, appPaused, position, rotation, modelUrl
     //const [skinState, setSkinState] = useState("modelUrl"); //identifies the skin as original (in no replacement is needed or new in which old model must be deleted)
     const [isAnimationPaused, setIsAnimationPaused] = useState(true)
 
-    useEffect(() => {
-        if (isSpeaking) {
-            setIsAnimationPaused(false)
-        } else {
-            setIsAnimationPaused(true)
-        }
-    }, [isSpeaking])
+    // useEffect(() => {
+    //     if (isSpeaking) {
+    //         setIsAnimationPaused(false)
+    //     } else {
+    //         setIsAnimationPaused(true)
+    //     }
+    // }, [isSpeaking])
 
     // Every time the value of appPaused is updated, make sure that the animation is paused if appstate is paused
     useEffect(() => {
         console.log("pausing animation (if it was playing earlier) since global app state is paused")
         setIsAnimationPaused(appPaused)
-    }, [appPaused])
+        setIsAnimationPaused(!isSpeaking)
+    }, [appPaused, isSpeaking])
     
     return (<>
         <Suspense fallback={null}>
