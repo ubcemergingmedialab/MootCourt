@@ -4,7 +4,7 @@
     "setRandomized": false,
     "setDelay": false,
     "totalTime": 1200,
-    "stopPresentation": false,
+    "stopPresentation": true,
     "introductionTime": 150,
     "judgeIntroSpeech": "Council, you may begin your presentation.",
     "AQuestions": [
