@@ -1,6 +1,24 @@
 import { Suspense, useEffect, useState } from 'react'
 import "./timer.css"
 
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+}
+
 // if app is active, 1) receive total required time 2) set warning times automatically
 // ** do not decrement when timer restarts
 // time received in seconds, convert to ms for more accurate time count
@@ -15,6 +33,10 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     const warningColor = "#FA646A"
     
     // judge time controller
+    if (config.setRandomized) {
+        shuffle(config.AQuestions)
+        shuffle(config.RQuestions)
+    }
     const listOfUtterances = config.playerPosition === "Appellant"? config.AQuestions : config.RQuestions
     const questionInterval = config.questionInterval * 1000
     const [judgeQuestionIndex, setJudgeQuestionIndex] = useState(0);
@@ -35,6 +57,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // console.log("updating time for judge")
         // wait 5 seconds for judge
         if (!hasAppIntroStarted && judgeElapsedTime > 5000) {
+            console.log(listOfUtterances)
             setHasAppIntroStarted(true)
             setJudgeSpeechText(config.judgeIntroSpeech)
             setIsAppInIntro(true)
