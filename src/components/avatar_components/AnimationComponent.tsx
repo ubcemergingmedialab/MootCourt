@@ -9,19 +9,23 @@ import Model from '../general/Model'
 import propTypes from 'prop-types';
 
 
-function AnimationComponent({appPaused, position, rotation, modelUrl, animated, animationPause = true}) {
+function AnimationComponent({isSpeaking, appPaused, position, rotation, modelUrl, animated, animationPause}) {
     const [blendShape, setBlendShape] = useState([0, 0, 0])  //blendshapes can be used for shaping mouth, currently unused
     //const [skinState, setSkinState] = useState("modelUrl"); //identifies the skin as original (in no replacement is needed or new in which old model must be deleted)
     const [isAnimationPaused, setIsAnimationPaused] = useState(true)
 
     useEffect(() => {
-        setIsAnimationPaused(animationPause)
-    }, [animationPause])
+        if (isSpeaking) {
+            setIsAnimationPaused(false)
+        } else {
+            setIsAnimationPaused(true)
+        }
+    }, [isSpeaking])
 
     // Every time the value of appPaused is updated, make sure that the animation is paused if appstate is paused
     useEffect(() => {
         console.log("pausing animation (if it was playing earlier) since global app state is paused")
-        setIsAnimationPaused(animationPause)
+        setIsAnimationPaused(appPaused)
     }, [appPaused])
     
     return (<>

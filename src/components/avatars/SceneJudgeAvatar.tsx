@@ -24,6 +24,7 @@ const SkinSelect = ({ updateSkin }) => {
 function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused}) {
     const [currentText, setText] = useState("initial text state")
     const [readyToSpeak, setReadyToSpeak] = useState(false)
+    const [isSpeaking, setIsSpeaking] = useState(false)
     const [animationPaused, setAnimationPaused] = useState(true)
     const [skin, setSkin] = useState()
     const [skinState, setSkinState] = useState("")
@@ -69,14 +70,14 @@ function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused}) {
         setAnimationPaused(true)
     }
 
-    // useEffect(() => {
-    //     if (appPaused) {
-    //         setAnimationPaused(false)
-    //     }
-    // }, [appPaused])
+    useEffect(() => {
+        if (appPaused) {
+            setAnimationPaused(false)
+        }
+    }, [appPaused])
 
     return (<Suspense fallback={null}>
-        <Avatar appPaused={appPaused} position={[0, -2.5, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0, -2.5, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
     </Suspense>)
 }
 

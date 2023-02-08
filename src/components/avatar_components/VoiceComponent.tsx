@@ -39,8 +39,9 @@ const SelectOptimalVoice = ({ updateVoice }) => {
 }
 
 // returns voice component of judge.
-function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaking, finishedSpeaking, appPaused}) {
+function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak, startedSpeaking, finishedSpeaking, appPaused}) {
     const onEnd = () => {
+        setIsSpeaking(false)
         finishedSpeaking()
     }
     // call "speak" to start speech, "cancel" to pause speech
@@ -73,6 +74,7 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
             console.log('speaking: ' + textToSay)
             cancel()
             speak({ text: textToSay, voice: voice, rate: 0.8 })
+            setIsSpeaking(true)
             startedSpeaking && textToSay !== "" && startedSpeaking()
         } else {
             console.log("global app state set as paused, speech input detected but not reading text")
@@ -84,6 +86,7 @@ function VoiceComponent({textToSay, utteranceRepeat, readyToSpeak, startedSpeaki
     useEffect(() => {
         if (appPaused) {
             cancel()
+            setIsSpeaking(false)
         }
     }, [appPaused])
         

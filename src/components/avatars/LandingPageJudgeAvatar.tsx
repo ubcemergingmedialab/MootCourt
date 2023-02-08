@@ -13,6 +13,7 @@ function LandingPageJudgeAvatar({animated = true, listOfUtterances}) {
     const [skinState, setSkinState] = useState("")
     const [appellantSelection, setAppellantSelection] = useState(false)
     const [respondentSelection, setRespondentSelection] = useState(false)
+    const [isSpeaking, setIsSpeaking] = useState(false)
 
 
     const updateSkin = (skinUpdate) => {
@@ -57,7 +58,7 @@ function LandingPageJudgeAvatar({animated = true, listOfUtterances}) {
     }
 
     return (<Suspense fallback={null}>
-        <Avatar appPaused={false} position={[-1.5, -3, 2.5]} rotation={[0, Math.PI/5, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused}finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[-1.5, -3, 2.5]} rotation={[0, Math.PI/5, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true}finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
     </Suspense>)
 }
 

@@ -42,6 +42,8 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     const utteranceListLength = listOfUtterances.length
     const [utterances, setUtterances] = useState(listOfUtterances)
     const [animationPaused, setAnimationPaused] = useState(true)
+    const [isSpeaking, setIsSpeaking] = useState(false)
+
     let questionInterval
 
     const [skin, setSkin] = useState()
@@ -81,7 +83,7 @@ function JudgeAvatar({ position, modelUrl, utteranceSplit, speaks, animated = tr
     }
 
     return (<Suspense fallback={null}>
-        <Avatar appPaused={false} position={position} modelUrl={'models/judge_avatar/' + skin} rotation={[0, 0, 0]} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={position} modelUrl={'models/judge_avatar/' + skin} rotation={[0, 0, 0]} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={repeatingQuestion} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
         {/* {subtitles ? <Subtitle textToSay={currentText} /> : null} */}
         {/* <SkinSelect updateSkin={updateSkin}></SkinSelect> */}
     </Suspense>)
