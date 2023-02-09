@@ -17,7 +17,8 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
     const [judgeElapsedTime, setJudgeElapsedTime] = useState(0)
     // 3: Stores the current global time of the scene since the beginning.
     // Starting value: config's total time (in seconds) converted to ms
-    const [currentTime, setCurrentTime] = useState(appConfig.totalTime * 1000)
+    // add 5 second delay
+    const [currentTime, setCurrentTime] = useState(appConfig.totalTime * 1000 + appConfig.introductionTime * 1000 + 5000)
     // 4: Track whether the judge interval should be updated or not.
     const [shouldUpdateJudgeElapsedTime, setShouldUpdateJudgeElapsedTime] = useState(false);
     // 5: Is the speech in intro mode?

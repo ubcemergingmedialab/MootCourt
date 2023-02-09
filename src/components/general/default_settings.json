@@ -3,7 +3,7 @@
     "questionInterval": 300,
     "setRandomized": false,
     "setDelay": false,
-    "totalTime": 1200,
+    "totalTime": 1500,
     "stopPresentation": true,
     "introductionTime": 150,
     "judgeIntroSpeech": "Council, you may begin your presentation.",

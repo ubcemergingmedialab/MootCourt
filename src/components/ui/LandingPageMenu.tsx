@@ -244,7 +244,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <div className="formitem">
                         <label htmlFor="TotalDuration">Total duration</label>
-                        <input type="number" min="1" defaultValue="20" id="settotalTime" onChange={setTotalTime}></input>
+                        <input type="number" min="1" defaultValue="25" id="settotalTime" onChange={setTotalTime}></input>
                         <div className="FieldDescription">minutes</div>
                     </div>
                     {/* <div className="formitem">
