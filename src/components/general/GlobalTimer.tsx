@@ -56,6 +56,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // inform the app that the judge elapsed time will be updated.
         // console.log("updating time for judge")
         // wait 5 seconds for judge
+        // console.log("judgeElapsedTime:", judgeElapsedTime / 1000)
         if (!hasAppIntroStarted && judgeElapsedTime > 5000) {
             console.log(listOfUtterances)
             setHasAppIntroStarted(true)
@@ -68,13 +69,19 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
             if (judgeElapsedTime >= config.introductionTime * 1000) {
                 setIsAppInIntro(false)
                 setShouldUpdateJudgeElapsedTime(true)
+                console.log("utterance: ", listOfUtterances[judgeQuestionIndex])
                 setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
+                resetQuestionIndex()
+                console.log("judge index", judgeQuestionIndex)
             }
         } else if (judgeElapsedTime >= questionInterval) {
             console.log("judge elapsed time goes over interval")
             setShouldUpdateJudgeElapsedTime(true)
-            resetQuestionIndex()
+            console.log("utterance: ", listOfUtterances[judgeQuestionIndex])
             setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
+            resetQuestionIndex()
+            console.log("judge index", judgeQuestionIndex)
+
         }
     }, [judgeElapsedTime])
 
