@@ -53,7 +53,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                 <Html fullscreen>
                 <div className="scene-controls">
                     <div className="scene-controls-inner">
-                        <BackToLandingButton updateAppState={updateAppState} setPaused={setPaused} config={appConfig}></BackToLandingButton>
+                        <BackToLandingButton updateAppState={updateAppState} setPaused={setPaused} updateConfig={updateConfig}></BackToLandingButton>
                         <PauseButton togglePause={togglePause}></PauseButton>
                         <GlobalTimer
                         hasAppIntroStarted={hasAppIntroStarted}
