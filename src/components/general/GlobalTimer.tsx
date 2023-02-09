@@ -81,7 +81,6 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
             setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
             resetQuestionIndex()
             console.log("judge index", judgeQuestionIndex)
-
         }
     }, [judgeElapsedTime])
 

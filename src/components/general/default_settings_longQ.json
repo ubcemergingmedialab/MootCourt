@@ -1,0 +1,24 @@
+{
+    "playerPosition": "Appellant",
+    "questionInterval": 300,
+    "setRandomized": false,
+    "setDelay": false,
+    "totalTime": 1500,
+    "stopPresentation": true,
+    "introductionTime": 150,
+    "judgeIntroSpeech": "Council, you may begin your presentation.",
+    "AQuestions": [
+        "You have made good arguments about why there was some evidence which supported finding that your client was not guilty of fraud. However, the trial judge saw and heard all the evidence in this case. Is it not the job of the trial judge to weigh the evidence and decide what conclusions to draw from the evidence?",
+        "You argue that the trial judge made some errors in the law and errors in the analysis of the evidence. Can you point me to the specific language of the trial judge which you say demonstrates those errors?",
+        "The Respondent’s Factum takes a different view of the cases you rely upon. Can you tell me why the Respondent’s view of those cases is not correct?",
+        "Even if the trial judge did make the errors set out in your argument, would they have made any difference in the result at trial? Do you not agree the case against the Appellant was very strong?",
+        "If we accept your argument that the Appellant was not specifically aware of the splitting of the money, or accept that this was not the worst example of fraud, would not a conviction in this case help deter business people from making unclear arrangements with their customers?"
+    ],
+    "RQuestions": [
+        "Do you agree that the trial judge could have been clearer in describing the particular legal standards and the particular evidence she used to convict the Appellant?",
+        "Do you agree that there was some evidence supporting a finding that the Appellant was not guilty of fraud and therefore, was this not a case where guilt could not be proven beyond a reasonable doubt?",
+        "From looking at the reasons of the trial judge, it is not possible that she convicted the Appellant on the basis that she found what happened to be negligent and a bad business practice, rather than on the basis of proof of the requirements of criminal fraud?",
+        "The Appellant’s factum takes a different view of the cases you relying upon. Can you tell me why the Appellant’s view of those cases is not correct?",
+        "The Appellant was clearly a person under a lot of time pressure during these events, and the conduct of some of the accused in the other cases we have before us was much worse. Is it really fair for the Appellant to have been convicted of the serious offence of fraud which will give him a criminal record for the rest of his life?"
+    ]
+}
