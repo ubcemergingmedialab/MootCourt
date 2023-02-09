@@ -126,7 +126,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
     }
 
     const pressDefault = () => {
-        updateConfig(defaultData)
+        // updateConfig(defaultData)
         updateAppState(1)
     }
 
