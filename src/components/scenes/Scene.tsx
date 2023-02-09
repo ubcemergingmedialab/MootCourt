@@ -8,7 +8,7 @@ import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
 import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 
-export default function GeneralScene({setPaused, appConfig, appPaused, togglePause, updateAppState}) {
+export default function GeneralScene({setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig}) {
     // Scene Specific Elements are stored here
     // 1: Text that judge is supposed to say at given interval
     const [judgeSpeechText, setJudgeSpeechText] = useState("Default speech text for judge.")
@@ -53,7 +53,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                 <Html fullscreen>
                 <div className="scene-controls">
                     <div className="scene-controls-inner">
-                        <BackToLandingButton updateAppState={updateAppState} setPaused={setPaused}></BackToLandingButton>
+                        <BackToLandingButton updateAppState={updateAppState} setPaused={setPaused} config={appConfig}></BackToLandingButton>
                         <PauseButton togglePause={togglePause}></PauseButton>
                         <GlobalTimer
                         hasAppIntroStarted={hasAppIntroStarted}
