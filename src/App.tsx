@@ -1,9 +1,9 @@
-import React, {Suspense, useState} from 'react'
+import React, {Suspense, useEffect, useState} from 'react'
 import './App.css';
 import GeneralScene from './components/scenes/Scene';
 import LandingPage from './components/scenes/LandingPage'
 import defaultData from './components/general/default_settings.json';
-
+import AppLoader from './components/general/AppLoader'
 
 function App() {
   // Define loadable pages
@@ -35,7 +35,15 @@ function App() {
     console.log("pause toggled, App Paused?", paused)
   }
 
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 6000)
+  }, [])
+
   return (
+    <>
+    {loading === false ? (
     <Suspense fallback={null}>
     <div style={{height: '100vh'}}>
     {/* Send in the app configuration to be edited by the Landing Page*/}
@@ -44,6 +52,9 @@ function App() {
     {(appState === Scene) ? <GeneralScene setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState} updateConfig={updateConfig}></GeneralScene> : null}
     </div>
     </Suspense>
+    ) : (
+      <AppLoader />
+    )} </>
   );
 }
 export default App;
