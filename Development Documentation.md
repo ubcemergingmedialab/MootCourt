@@ -21,3 +21,5 @@ Refer to the following instructions to understand the Moot Court codebase.
 - `Avatar.tsx` takes in all parameters required for the voice and animation component of the Avatar. 
 - `AnimationComponent.tsx` and `VoiceComponent.tsx` contain each respective components of the Avatar, and is rendered by `Avatar.tsx`. 
 - `VoiceComponent.tsx` finds the most optimal voice for the female judge (Samantha for Mac, Microsoft Linda for Windows, and Google English as fallback)
+
+#TODO: documentation on suspense @Juno
