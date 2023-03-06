@@ -1,6 +1,22 @@
 # Moot Court Development Documentation
 Refer to the following instructions to understand the Moot Court codebase. 
 
+## General Development Notes
+- Coming from a C# or Object-Oriented Programming, the way variables and functions are passed around in this project may not be intuitive immediately. The core principle that the development team of 2022W1-W2 focused on are the following:
+- 1) Minimize repetition. If data needs to be modified or accessed by multiple scripts, put it at the topmost level so it can be passed down in the return statements. For example, the config file used to control the entire app's setting is declared here, and whenever the config changes, this config is the one being modified. https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/App.tsx#L16
+- The default value for this config file is stored in a json file. If the app extends to support external databases, or if the app wants to support saving and loading config files from previous runs of the application, it can be easily updated without modifying the existing codebase and worrying about inconsistencies of repeated code. https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/components/general/default_settings.json#L1-L23
+- 2) If States of the app have to be modified by different scripts (ie. is the app in paused state? Is the app in the Landing or Scene state?), pass down the corresponding setting functions. 
+- For example, all scripts that can change the appState should receive the modifying function, setAppState as declared here: https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/App.tsx#L14 As the landing page needs to change the app state from Landing to Scene, it receives the function here: https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/App.tsx#L50 while Scene should be able to switch from Scene to Landing, it receives the function here: https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/App.tsx#L52
+- 3) If the setting function function needs to do extra things on top of modifying the state, you can create "helper functions" and pass those down instead. 
+- Say that, every time the app state changes, we want the console to indicate what the current config is and what app state we are changing to. You can write a helper to do this, when given a new app state as its parameter, it prints the appstate, config and changes the appState to the new parameter value.  https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/App.tsx#L26-L30
+- Sometimes the function may not take a parameter, but it could toggle the existing value. An example of this could be the pauseHandler: https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/App.tsx#L33-L36
+
+### Unit of Time
+- The project may use different measures of time: In our project, the users input time in minutes + times (as it is more intuitive for the users), while in the configuration it is stored in seconds (less prone to human error than ms), and the timer is handled using ms intervals (to increase accuracy). Make sure that you indicate which measure of time you are using and clearly separate the use cases to reduce errors. 
+
+### "Suspense" in return statements
+- Suspense allows one component to be loaded while we wait for a completed response from a different component. This allows "lazy loading" feature to load a "loading screen" and overlay it while we wait for the next component to be fully loaded: <Apploader> is loaded while we wait to see if Landing page and general scene has been fully loaded. 
+
 ## General files
 - Description of general project files
 
@@ -13,15 +29,8 @@ Refer to the following instructions to understand the Moot Court codebase.
 ### index.tsx
 - An index file (for example, index.tsx / index.html etc.) in web-development indicates the first file that will be opened by the browser.
 - In our index.tsx file, the root element renders the application within, with this line: 
-
-```
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-```
-- For more information on root elements for React, refer to documentations and online resources such as [this](https://reactjs.org/docs/rendering-elements.html#rendering-an-element-into-the-dom).
+https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/index.tsx#L10-L14
+- For more information on root elements for React, refer to the official documentation and online resources such as [this](https://reactjs.org/docs/rendering-elements.html#rendering-an-element-into-the-dom).
 
 ## App.tsx
 - The `App.tsx` file is the main file that displays the app page. Note that this is the uppermost component rendered. `index.tsx` renders `<App />` in the root. 
@@ -43,5 +52,3 @@ root.render(
 - `Avatar.tsx` takes in all parameters required for the voice and animation component of the Avatar. 
 - `AnimationComponent.tsx` and `VoiceComponent.tsx` contain each respective components of the Avatar, and is rendered by `Avatar.tsx`. 
 - `VoiceComponent.tsx` finds the most optimal voice for the female judge (Samantha for Mac, Microsoft Linda for Windows, and Google English as fallback)
-
-#TODO: documentation on suspense @Juno
