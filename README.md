@@ -58,3 +58,4 @@ Barbara Wang BA, JD
 ## Documentation
 - [Development Documentation](https://github.com/ubcemergingmedialab/MootCourt/blob/master/Development%20Documentation.md)
 - [Project Wiki](https://wiki.ubc.ca/Documentation:Moot_Court#Introduction)
+- [Revised App Structure](https://github.com/ubcemergingmedialab/MootCourt/blob/master/src/components/main-components/Revised%20App%20Structure.md): Needs to be updated with current code (March 2023)
