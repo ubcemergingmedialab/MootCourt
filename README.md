@@ -9,7 +9,8 @@ Practice Mooting Online!
 - [Judge Model](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
 
 ## Versioning
-- Refer to [this documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
+- Refer to [this documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository) on how to release projects on github. 
+- Moot court releases: https://github.com/ubcemergingmedialab/MootCourt/releases
 
 ## Getting Started
 
