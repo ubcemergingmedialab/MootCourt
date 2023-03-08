@@ -9,7 +9,7 @@ Practice Mooting Online!
 - [Judge Model](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
 
 ## Versioning
-- TBD
+- Refer to [this documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
 
 ## Getting Started
 
