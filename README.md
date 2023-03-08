@@ -9,7 +9,7 @@ Practice Mooting Online!
 - [Judge Model](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
 
 ## Versioning
-- TBD
+- Refer to [this documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
 
 ## Getting Started
 
@@ -56,5 +56,6 @@ Barbara Wang BA, JD
 - installing the above modules may lead to error *"unable to resolve dependency tree"*. Force install instead (overrides warning for incompatible react versions, shouldn't break the code)
 
 ## Documentation
-- [Development Documentation](https://github.com/ubcemergingmedialab/MootCourt/blob/typescript/Development%20Documentation.md)
+- [Development Documentation](https://github.com/ubcemergingmedialab/MootCourt/blob/master/Development%20Documentation.md)
 - [Project Wiki](https://wiki.ubc.ca/Documentation:Moot_Court#Introduction)
+- [Revised App Structure](https://github.com/ubcemergingmedialab/MootCourt/blob/master/src/components/main-components/Revised%20App%20Structure.md): Needs to be updated with current code (March 2023)
