@@ -1,4 +1,4 @@
-import React, {Suspense, useEffect, useState} from 'react'
+import React, {lazy, Suspense, useEffect, useState} from 'react'
 import './App.css';
 import GeneralScene from './components/scenes/Scene';
 import LandingPage from './components/scenes/LandingPage'
@@ -9,6 +9,8 @@ function App() {
   // Define loadable pages
   const Landing = 0
   const Scene = 1
+  const LazyLandingP = lazy(() => import('./components/scenes/LandingPage'));
+  const LazyGeneralS = lazy(() => import('./components/scenes/Scene'));
 
   // Define which page the app has currently loaded
   const [appState, setAppState] = useState(Landing)
@@ -35,21 +37,23 @@ function App() {
     console.log("pause toggled, App Paused?", paused)
   }
 
+  // Manual timer to ensure consistent minimum loading time
   const [loading, setLoading] = useState(true)
-
   useEffect(() => {
-    setTimeout(() => setLoading(false), 6000)
+    setTimeout(() => setLoading(false), 5000)
   }, [])
 
   return (
     <>
     {loading === false ? (
-    <Suspense fallback={null}>
+    <Suspense fallback={<AppLoader />}>
     <div style={{height: '100vh'}}>
     {/* Send in the app configuration to be edited by the Landing Page*/}
-    {(appState === Landing) ? <LandingPage updateAppState={updateState} updateConfig={updateConfig} config={config}></LandingPage> : null}
+    {(appState === Landing) ? 
+    <LazyLandingP updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyLandingP> : null}
     {/* Send in the app configuration and "paused" boolean to the main app*/}
-    {(appState === Scene) ? <GeneralScene setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState} updateConfig={updateConfig}></GeneralScene> : null}
+    {(appState === Scene) ?
+     <LazyGeneralS setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState} updateConfig={updateConfig}></LazyGeneralS> : null}
     </div>
     </Suspense>
     ) : (
