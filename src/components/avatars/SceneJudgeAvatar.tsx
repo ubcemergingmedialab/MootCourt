@@ -1,26 +1,6 @@
 import { Suspense, useEffect, useState, useRef } from 'react'
 import Avatar from "../avatar_components/Avatar"
 import { useControls } from 'leva'
-import { useFrame } from '@react-three/fiber'
-import PropTypes from 'prop-types'
-import { OrbitControls, Stats, Text } from "@react-three/drei";
-
-
-const SkinSelect = ({ updateSkin }) => {
-    const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
-    const judgeSkins = modelList;
-    const judgeSkinObject = {}
-    for (let i = 0; i < judgeSkins.length; i++) {
-        judgeSkinObject[judgeSkins[i]] = judgeSkins[i];
-    }
-    const { judge } = useControls({ judge: { options: judgeSkinObject } })
-    useEffect(() => {
-        updateSkin(judge)
-    }, [judge])
-    return null
-}
-
-
 function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused}) {
     const [currentText, setText] = useState("initial text state")
     const [readyToSpeak, setReadyToSpeak] = useState(false)
