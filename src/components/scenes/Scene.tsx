@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
-import {Html} from "@react-three/drei";
+import {Html, PerformanceMonitor} from "@react-three/drei";
 import GlobalTimer from '../general/GlobalTimer'
 import PauseButton from '../buttons/PauseButton'
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
@@ -26,9 +26,14 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
     // 6: Has intro speech been started?
     const [hasAppIntroStarted, setHasAppIntroStarted] = useState(false);
 
+    // trying performance tracking
+    const [dpr, setDpr] = useState(1.5)
 
 
-    return (<Canvas frameloop="demand">
+
+
+    return (<Canvas frameloop="demand" dpr={dpr}>
+              <PerformanceMonitor onIncline={() => setDpr(2)} onDecline={() => setDpr(1)}></PerformanceMonitor>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 {/* <JudgeTimedSpeech
