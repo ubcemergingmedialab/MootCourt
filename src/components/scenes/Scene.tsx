@@ -28,7 +28,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
 
 
 
-    return (<Canvas>
+    return (<Canvas frameloop="demand">
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 {/* <JudgeTimedSpeech

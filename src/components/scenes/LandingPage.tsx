@@ -11,7 +11,7 @@ let appPaused = false
 const lou = []
 
 export default function LandingPage({updateAppState, updateConfig, config}) {
-    return (<Canvas>
+    return (<Canvas frameloop="demand">
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 <LandingPageJudgeAvatar listOfUtterances={lou}></LandingPageJudgeAvatar>
