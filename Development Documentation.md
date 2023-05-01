@@ -1,6 +1,16 @@
 # Moot Court Development Documentation
 Refer to the following instructions to understand the Moot Court codebase. 
 
+## Suggestions on Project Strcuture
+*Regardless of the tech stack used, the following structure would be beneficial for reusable and easy-to-understand code.*
+- Separate components of avatar (voice, animation) to control them separately, while they reference some common values (whether the speech has started etc.)
+- A timer component whose time can be customized by user input from the UI, count down, able to be paused and restarted (+ can add additional time if the user presses snooze)
+- The judge's speech component, separate from the general timer, which can track the amount of time left in each interval, or what phrase the judge was speaking when she was paused etc.
+- Reusable structure for scenes / judges / speeches etc., using inheritance (or prefabs for unity)
+- Read the judge speech and customized app options from a JSON file instead of hardcoding it to reduce repetition
+- Organize similar / related files in one folder so it is easier to keep track of it
+- As with every software project, reusable code + readable documentation + frequent commits are *crucial* for project longevity
+
 ## General Development Notes
 - Coming from a C# or Object-Oriented Programming, the way variables and functions are passed around in this project may not be intuitive immediately. The core principle that the development team of 2022W1-W2 focused on are the following:
 - 1) Minimize repetition. If data needs to be modified or accessed by multiple scripts, put it at the topmost level so it can be passed down in the return statements. For example, the config object used to signify the entire app's setting is declared here, and whenever the config changes, this config is the one being modified. https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bbfbd3fad5819266/src/App.tsx#L16
