@@ -1,6 +1,6 @@
 # Moot Court
 ## Project Description
-Practice Mooting Online!
+Practice for Moot Court, built using Typescript + React. 
 
 ## External Assets
 
@@ -12,11 +12,7 @@ Practice Mooting Online!
 - Refer to [this documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository) on how to release projects on github. 
 - Moot court releases: https://github.com/ubcemergingmedialab/MootCourt/releases
 
-## Getting Started
-
-1. TBD Instructions for use here
-
-## Building
+## Getting Started & Building
 
 1. Download Node.js
 2. Clone project to local folder
@@ -32,11 +28,6 @@ Practice Mooting Online!
 - leva: `npm i --force leva`
 - react three fiber typescript: `npm install @types/three`
 - drei: `npm install @react-three/drei`
-
-## Contributing (Optional) 
-
-1. Instructions for public contributions here
-2. Create a wiki page if this is long
 
 ## Team
 
