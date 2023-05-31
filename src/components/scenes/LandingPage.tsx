@@ -5,6 +5,7 @@ import Model from '../general/Model.js'
 import {Html, useTexture} from "@react-three/drei";
 import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
 import LandingPageMenu from '../ui/LandingPageMenu'
+import ChatGPT from '../general/ChatGPT.js';
 
 let appPaused = false
 

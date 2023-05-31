@@ -56,7 +56,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
                 <Model modelUrl="./models/courtroomdesksNov17.glb"
-                    pos={[0, -3.25, 4.5]}
+                    pos={[0, -3.25, 4.5]} 
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
                 {/* Wrap all the HTML components here */}

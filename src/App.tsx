@@ -11,6 +11,8 @@ function App() {
   const Scene = 1
   const LazyLandingP = lazy(() => import('./components/scenes/LandingPage'));
   const LazyGeneralS = lazy(() => import('./components/scenes/Scene'));
+  const [subtitleText, setSubtitleText] = useState('');
+
 
   // Define which page the app has currently loaded
   const [appState, setAppState] = useState(Landing)
@@ -25,11 +27,18 @@ function App() {
   }
 
   // Change app state (use to travel from scene to setup page)
+  // const updateState = (appState) => {
+  //   console.log("Change app state to:", appState)
+  //   setAppState(appState)
+  //   console.log("current config is:", config)
+  // }
   const updateState = (appState) => {
-    console.log("Change app state to:", appState)
-    setAppState(appState)
-    console.log("current config is:", config)
-  }
+    setAppState(appState);
+    if (appState === Scene) {
+      setSubtitleText(config.judgeIntroSpeech); // Set the initial subtitle text to the judge's intro speech
+    }
+    console.log("current config is:", config);
+  };
 
   // Upon being called, set the "isPaused" value to be opposite from the previous value
   const pauseHandler = () => {
@@ -53,7 +62,7 @@ function App() {
     <LazyLandingP updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyLandingP> : null}
     {/* Send in the app configuration and "paused" boolean to the main app*/}
     {(appState === Scene) ?
-     <LazyGeneralS setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState} updateConfig={updateConfig}></LazyGeneralS> : null}
+    <LazyGeneralS setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState} updateConfig={updateConfig}></LazyGeneralS> : null}
     </div>
     </Suspense>
     ) : (
