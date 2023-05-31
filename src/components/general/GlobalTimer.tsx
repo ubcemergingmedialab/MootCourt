@@ -31,6 +31,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
     const warningColor = "#FA646A"
+    const pauseColor = "#FF0000" 
 
     // judge time controller
     if (config.setRandomized) {
@@ -123,13 +124,21 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
                 if (currentTime <= 0) {
                     setLightColor(warningColor)
                     setWarningState(1)
+                } else {
+                    // If timer is running, the state is set back to green
+                    setLightColor("#199E54")
                 }
             }
             setJudgeElapsedTime(judgeElapsedTime + elapsedTime)
             // calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
+        } else {
+            // Otherwise, when the app is paused, set timer to red
+            setLightColor(pauseColor)
         }
     }, [updateTimerInterval])
+
+ 
 
     // if interval should be reset, this function runs.
     useEffect(() => {
