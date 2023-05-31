@@ -12,7 +12,7 @@ const lou = []
 
 export default function LandingPage({updateAppState, updateConfig, config}) {
     return (<Canvas>
-                <ambientLight />
+                <ambientLight intensity={0.5} />
                 <pointLight position={[10, 10, 10]} />
                 <LandingPageJudgeAvatar listOfUtterances={lou}></LandingPageJudgeAvatar>
                 <Model modelUrl="./models/courtroompropsNov17.glb"

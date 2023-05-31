@@ -7,6 +7,16 @@ import PauseButton from '../buttons/PauseButton'
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
 import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
+import Captions from '../general/Captions';
+import '../ui/Captions.css';
+import SpeechAnalytics from '../general/SpeechAnalytics';
+import Dictaphone from '../general/Dictaphone.jsx';
+import ChatGPTAttach from '../general/ChatGPTexample';
+
+// Handle pause detected logic
+const DictaphonePauseDetected = () => {
+    console.log("DictaphonePauseDetected");
+};
 
 export default function GeneralScene({setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig}) {
     // Scene Specific Elements are stored here
@@ -29,8 +39,8 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
 
 
     return (<Canvas>
-                <ambientLight />
-                <pointLight position={[10, 10, 10]} />
+                <ambientLight intensity={0.5}/>
+                <pointLight position={[10, 0, 10]} />
                 {/* <JudgeTimedSpeech
                 config={appConfig}
                 judgeElapsedTime={judgeElapsedTime}
@@ -72,6 +82,15 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
                         shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                     </div>
+
+                    <div className="captions-container">
+                        <Captions></Captions>
+                    </div>
+
+                    <Dictaphone handlePauseDetected={DictaphonePauseDetected}></Dictaphone>
+                    <SpeechAnalytics></SpeechAnalytics>
+                    <ChatGPTAttach></ChatGPTAttach>
+                    
                 </div>
                 </Html>
             </Canvas>

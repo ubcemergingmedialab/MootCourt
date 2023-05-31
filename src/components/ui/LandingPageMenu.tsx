@@ -60,6 +60,10 @@ function pressBackToMenu3() {
     resetDisplayedUI("MootingResources", "Main");
 }
 
+function pressBackToMenu4() {
+    resetDisplayedUI("Position", "Main");
+}
+
 
 function pressBackFromQuestions() {
     resetDisplayedUI("Questions", "SetUp");
@@ -73,6 +77,10 @@ function pressNextFromQuestions() {
 
 function pressBackFromTimer() {
     resetDisplayedUI("Timer", "Questions");
+}
+
+function pressBackFromSetup() {
+    resetDisplayedUI("SetUp", "Position");
 }
 
 function incrementNumber(element) {
@@ -181,6 +189,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={pressRespondent}>Respondent</button>
                     </div>
                 </div>
+                <div className="sideMenuBottom">
+                    <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu4()}>Back to Menu</button>
+                </div>
             </div>
         </div>}
 
@@ -195,6 +206,10 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
                     <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
                     </div>
+                </div>
+                <div className="sideMenuBottom">
+                    <button className="button large-button" type="button" onClick={(event) => pressBackFromSetup()}>Back</button>
+                    {/*pressNextFromSetup function not needed as other options are presented*/}
                 </div>
             </div>
         </div>}

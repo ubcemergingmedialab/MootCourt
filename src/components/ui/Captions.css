@@ -1,0 +1,14 @@
+.captions-container{
+    background-color: white;
+    --side-padding: 50px;
+    margin-left: var(--side-padding);
+    margin-right: var(--side-padding);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 20px;
+
+}
+
+.captions-container>p{
+    font-size: 1.2rem;
+    margin: 10px;
+}

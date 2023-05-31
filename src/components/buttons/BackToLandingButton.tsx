@@ -10,7 +10,7 @@ function BackToLandingButton({ updateAppState, setPaused, updateConfig}) {
     return <>
     {<div className={"sceneButtonContainer"}>
         <button className="scene-button pause-button" onClick={() => { updateAppState(0); setPaused(false); updateConfig(defaultData)}}>
-            {"Back to Setup"}
+            {"Back to Menu"}
         </button>
     </div>
     }
