@@ -1,51 +1,43 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import { SpeechAnalytics } from "./SpeechAnalytics";
+import ChatGPT from "./ChatGPT";
+import * as openai from 'openai';
 
 /*
 PI's should take into consideration that chatGPT stores data
 https://privacymatters.ubc.ca/privacy-impact-assessment
 */
 
-function ChatGPT(input: object, configuration: object){
-    const response = "ChatGPT: I am judge";
-    console.log("ChatGPT Called");
-    return response;
-}
+function createConversation(prompt: string){
 
-function getChatGPTResponse(prompt: string){
+    function createMessage(messageRole: string, messageContent: string){
+        
+        let setrole: openai.ChatCompletionRequestMessageRoleEnum;
 
-    const messages = [
-        { role: 'system', content: 'You are a judge.' },
-        { role: 'user', content: 'I am giving my case.' },
-        { role: 'assistant', content: 'You will be a great laywer.' },
-        { role: 'user', content: 'Really?' },
-      ];
+        if(messageRole == 'assistant'){
+            setrole = openai.ChatCompletionRequestMessageRoleEnum.Assistant
+        }
+        if(messageRole == 'system'){
+            setrole = openai.ChatCompletionRequestMessageRoleEnum.System
+        }
+        if(messageRole == 'user'){
+            setrole = openai.ChatCompletionRequestMessageRoleEnum.User
+        }
+        else{
+            setrole = openai.ChatCompletionRequestMessageRoleEnum.User
+        }
 
-    // Need to store a history to keep memory of massages and append both the responses and new user prompts
+        const message: openai.ChatCompletionRequestMessage = {role: setrole, content: messageContent};
 
-    function countTokens(input: string){
-        //https://docs.openai.com/api/ find counting method
-        return 0;
-    }
-
-    
-    let totalTokens = 0;
-    const messageInputs = messages.map((message) => {
-        totalTokens += countTokens(message.content);
         return message;
-    });
-
-    const config = {
-        apiKey: "",
-        model: "",
-        temperature: 0.6, // consistent 0-1 random 
-        // Max tokens needs to be input tokens + the amount that chatGPT can respond
-        maxTokens: totalTokens + 50
     }
-
-    const response = ChatGPT(messageInputs, config);
-
-    return response;
+    
+    let systemMessage = createMessage('system', "You are a judge in a moot court. Do not provide a long response.");
+    let message = createMessage('user', prompt);
+    let messages: Array<openai.ChatCompletionRequestMessage> = [];
+    messages.push(message);
+    messages.push(systemMessage);
+    return messages;
 }
 
 export default function ChatGPTAttach(){
@@ -69,10 +61,13 @@ export default function ChatGPTAttach(){
     const speechData = SpeechAnalytics(10, 10);
 
     useEffect(() => {
-        
+    
         // Get response on enter pressed
         if(keyPressed == "Enter"){
-            const responseOnDemand = getChatGPTResponse(speechData.prompt);
+            const conversation = createConversation(speechData.prompt);
+
+            const responseOnDemand = ChatGPT(conversation);
+
             console.log("ChatGPT Response Received: ", responseOnDemand);
         }
 
