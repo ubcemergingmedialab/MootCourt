@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from 'openai';
 
 function ChatGPT() {
   const [response, setResponse] = useState(null);
-  const apiKey = "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";
+  const apiKey = "Put Key Here";
 
   useEffect(() => {
     async function fetchResponse() {
