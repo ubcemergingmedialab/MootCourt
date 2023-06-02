@@ -6,12 +6,11 @@ function ChatGPT(messageInputs: Array<openai.ChatCompletionRequestMessage>) {
   const blankResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: ""};
   const errorResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: "!ChatGPT did not respond correctly!"};
   const [response, setResponse] = useState(blankResponse);
-  const apiKey = "";
 
   useEffect(() => {
     async function fetchResponse() {
       const configuration = new Configuration({
-          apiKey: apiKey,
+        apiKey: process.env.API_KEY,
       });
 
       /*
@@ -54,7 +53,6 @@ function ChatGPT(messageInputs: Array<openai.ChatCompletionRequestMessage>) {
 
   useEffect(() => {
     console.log(response); // Print the response whenever it changes
-    console.log("hello");
   }, [response]);
 
   return(null);

@@ -36,7 +36,7 @@ function createConversation(prompt: string){
     let message = createMessage('user', prompt);
     let messages: Array<openai.ChatCompletionRequestMessage> = [];
     messages.push(message);
-    messages.push(systemMessage);
+    //messages.push(systemMessage);
     return messages;
 }
 
@@ -44,7 +44,8 @@ export default function ChatGPTAttach(){
     const [keyPressed, setkeyPressed] = useState();
     const [keyPressedCount, incrementKeyPressedCount] = useState(0);
 
-    const [chatResponse, setChatResponse] = useState("");
+    const blankResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: ""};
+    const [chatResponse, setChatResponse] = useState(blankResponse);
 
     useEffect(() => {
         const keyDownHandler = (e) => {
@@ -66,9 +67,10 @@ export default function ChatGPTAttach(){
         if(keyPressed == "Enter"){
             const conversation = createConversation(speechData.prompt);
 
-            const responseOnDemand = ChatGPT(conversation);
+            const responseOnDemand = ChatGPT(conversation) || blankResponse;
+            setChatResponse(responseOnDemand);
 
-            console.log("ChatGPT Response Received: ", responseOnDemand);
+            console.log("ChatGPT Response Received: ", chatResponse);
         }
 
     }, [keyPressedCount]);

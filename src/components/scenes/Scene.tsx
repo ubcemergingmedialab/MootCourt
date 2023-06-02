@@ -11,7 +11,7 @@ import Captions from '../general/Captions';
 import '../ui/Captions.css';
 import SpeechAnalytics from '../general/SpeechAnalytics';
 import Dictaphone from '../general/Dictaphone.jsx';
-import ChatGPTAttach from '../general/ChatGPTexample';
+import ChatGPTAttach from '../general/ChatGPTAttach.js';
 
 // Handle pause detected logic
 const DictaphonePauseDetected = () => {
