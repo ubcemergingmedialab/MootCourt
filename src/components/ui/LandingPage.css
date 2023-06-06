@@ -111,22 +111,46 @@ h1 {
     flex-direction: column;
 }
 
+.sideMenuContents p {
+    margin: 10px 55px; /* Adjust the pixel value for top and bottom margin */
+    font-size: 20px;
+    line-height: 1.5; /* Adjust the line height value */
+}
+
+.sideMenuContents li {
+    margin: 0 40px; /* Adjust the pixel value for top and bottom margin */
+    font-size: 20px;
+    line-height: 1.7; /* Adjust the line height value */
+}
+
 .sideMenuBottom {
     text-align: center;
 }
 
+.sideMenuSetUp {
+    padding-top: 5%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 
+}
+
+.sideMenuSetUp p {
+    font-size: 18px;
+    margin: 10px 1px;
+    line-height: 5px;
+}
 /* Individual form items; these are listed in linear order, in a single column. */
 .formitem {
     width: 100%;
-    margin: 0 4.5vw 4vh 4.5vw;
+    margin: 4vh 4.5vw 4vh 4.5vw;
     float: left;
     line-height: 3em;
 }
 
 @media only screen and (max-height: 850px) {
   .sideMenuContents {
-    padding-top: 5%
+    padding-top: 5%;
   }
   .formitem {
     margin-bottom: 1vh;
