@@ -151,9 +151,9 @@ export function SpeechAnalytics(chunksize: number, MeasureWPMLength: number) {
         SpeakingTimesContent.push(TranscriptDiff);
         SpeakingTimesWPM.push(MeasureWPM(SpeakingTimes, SpeakingTimesContent, MeasureWPMLength));
         
-        console.log('Speaking times: ', ArrayDifference(SpeakingTimes));
-        console.log('Speaking times content: ', SpeakingTimesContent);
-        console.log('Speaking times WPM: ', SpeakingTimesWPM);
+        //console.log('Speaking times: ', ArrayDifference(SpeakingTimes));
+        //console.log('Speaking times content: ', SpeakingTimesContent);
+        //console.log('Speaking times WPM: ', SpeakingTimesWPM);
 
         // Chunk calculations may be optimized by disregarding previous chunks and concatenating then updating
         //Array Difference has an edge case where the first index is a special value. If set to zero the first sentance may have a lower WPM than it should
@@ -167,9 +167,9 @@ export function SpeechAnalytics(chunksize: number, MeasureWPMLength: number) {
             return WordCount/((value/1000)/60);
         });
 
-        console.log('Speaking times collated: ', SpeakingTimesDiffCollated);
-        console.log('Speaking times content collated: ', SpeakingTimesContentCollated);
-        console.log('Speaking times WPM collated: ', SpeakingTimesWPMCollated);
+        //console.log('Speaking times collated: ', SpeakingTimesDiffCollated);
+        //console.log('Speaking times content collated: ', SpeakingTimesContentCollated);
+        //console.log('Speaking times WPM collated: ', SpeakingTimesWPMCollated);
 
 
         // Generate a list of times that have indexes which match the collated and starts at zero
@@ -194,7 +194,7 @@ export function SpeechAnalytics(chunksize: number, MeasureWPMLength: number) {
             timeInterlacedPrompt += `\n${promptPortion}`;
         }
         
-        console.log(timeInterlacedPrompt);
+        //console.log(timeInterlacedPrompt);
 
         setSpeechData({
             prompt: timeInterlacedPrompt,

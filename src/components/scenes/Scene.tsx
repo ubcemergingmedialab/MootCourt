@@ -84,12 +84,12 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     </div>
 
                     <div className="captions-container">
-                        <Captions></Captions>
+                        <Captions config={appConfig}></Captions>
                     </div>
 
                     <Dictaphone handlePauseDetected={DictaphonePauseDetected}></Dictaphone>
                     <SpeechAnalytics></SpeechAnalytics>
-                    <ChatGPTAttach></ChatGPTAttach>
+                    <ChatGPTAttach updateConfig={updateConfig} config={appConfig}></ChatGPTAttach>
                     
                 </div>
                 </Html>

@@ -56,9 +56,9 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // if the judge elapsed time exceeds the interval,
         // inform the app that the judge elapsed time will be updated.
         // console.log("updating time for judge")
-        // wait 5 seconds for judge
+        // wait 3 seconds for judge
         // console.log("judgeElapsedTime:", judgeElapsedTime / 1000)
-        if (!hasAppIntroStarted && judgeElapsedTime > 5000) {
+        if (!hasAppIntroStarted && judgeElapsedTime > 3000) {
             console.log(listOfUtterances)
             setHasAppIntroStarted(true)
             setJudgeSpeechText(config.judgeIntroSpeech)
@@ -130,7 +130,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
                 }
             }
             setJudgeElapsedTime(judgeElapsedTime + elapsedTime)
-            // calculate the remaining time after each tick
+            // Calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
         } else {
             // Otherwise, when the app is paused, set timer to red
@@ -140,7 +140,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
 
  
 
-    // if interval should be reset, this function runs.
+    // If interval should be reset, this function runs.
     useEffect(() => {
         if (!appPaused && shouldUpdateJudgeElapsedTime) {
             setJudgeElapsedTime(0)

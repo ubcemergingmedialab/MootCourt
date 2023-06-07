@@ -10,16 +10,150 @@ PI's should take into consideration that chatGPT stores data
 https://privacymatters.ubc.ca/privacy-impact-assessment
 */
 
+async function ServerRequestResponse(messages): Promise<openai.ChatCompletionResponseMessage>{
+
+    const blankResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: ''};
+    const errorResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: '!Middle server request failed!'};
+    try {
+        const response = await fetch('http://localhost:8000/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            messages: messages
+          }),
+        });
+        
+
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+  
+        const data = await response.json();
+        return(data.message);
+      } catch (error) {
+        console.error(error);
+        return(errorResponse);
+      }
+}
+
+// ChatGPT runs asynchronously. This function waits and resolves to get a non-promise type.
+function getResponse(messages: Array<openai.ChatCompletionRequestMessage>, callback:any) {
+
+    ServerRequestResponse(messages)
+      .then(response => {
+        callback(null, response);
+      })
+      .catch(error => {
+        console.error(error);
+        callback(error, null);
+      });
+}
 
 
-async function ChatGPT(messageInputs: Array<openai.ChatCompletionRequestMessage>) {
+function createMessage(messageRole: string, messageContent: string){
+        
+    let setrole: openai.ChatCompletionRequestMessageRoleEnum;
+
+    if(messageRole == 'assistant'){
+        setrole = openai.ChatCompletionRequestMessageRoleEnum.Assistant
+    } else if(messageRole == 'system'){
+        setrole = openai.ChatCompletionRequestMessageRoleEnum.System
+    } else if(messageRole == 'user'){
+        setrole = openai.ChatCompletionRequestMessageRoleEnum.User
+    } else{
+        setrole = openai.ChatCompletionRequestMessageRoleEnum.User
+    }
+
+    const message: openai.ChatCompletionRequestMessage = {role: setrole, content: messageContent};
+
+    return message;
+}
+
+function createConversation(conversation: Array<openai.ChatCompletionRequestMessage>, user: string, prompt: string){
+    let message = createMessage(user, prompt);
+    let messages = [...conversation]
+    messages.push(message);
+    return messages;
+}
+
+export default function ChatGPTAttach({updateConfig, config}){
+    const [keyPressed, setkeyPressed] = useState();
+    const [keyPressedCount, incrementKeyPressedCount] = useState(0);
 
     const blankResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: ""};
-    const errorResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: "!ChatGPT did not respond correctly!"};
+    const blankRequest: openai.ChatCompletionRequestMessage = {role: openai.ChatCompletionRequestMessageRoleEnum.System, content: ""};
+    const blankConversation: Array<openai.ChatCompletionRequestMessage> = [];
 
-    const configuration = new Configuration({
-        apiKey: process.env.REACT_APP_API_KEY
+    const [chatResponse, setChatResponse] = useState(blankResponse);
+
+    const systemPrompt = 'Play the role of a judge in a moot court. You will respond as a judge would. Consider the arguments of the appellant or respondent. The transcript provided to you will contain informat regarding their WPM and the [start-stop] time of speaking.'
+    const initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt)
+    const [conversation, setConversation] = useState(initJudgeConversation);
+
+    useEffect(() => {
+        const keyDownHandler = (e) => {
+          //console.log("pressed key: " + e.key);
+          setkeyPressed(e.key);
+          incrementKeyPressedCount(keyPressedCount + 1);
+        };
+        document.addEventListener('keydown', keyDownHandler);
+        return () => {
+          document.removeEventListener('keydown', keyDownHandler);
+        };
     });
+    
+    const speechData = SpeechAnalytics(10, 10);
+
+    useEffect(() => {
+
+        // Get response on enter pressed
+        if(keyPressed == 'Enter'){
+            if(conversation[conversation.length-1].role != 'user'){
+
+                let prompt = speechData.prompt
+                if(conversation.length > 2){
+                    prompt = prompt.slice((conversation[conversation.length-2].content||"").length)
+                }
+                console.log(prompt)
+                setConversation(createConversation(conversation, 'user', prompt));
+            }
+        }
+
+    }, [keyPressedCount]);
+
+    useEffect(() => {
+
+        // Only get a response if the conversation has changed and it is by the user
+        // Might casue issues if delelitions occure
+        if(conversation[conversation.length-1].role == 'user'){
+            // This changes the chatResponse which can later be detected. If you try to access the value of chatResponse continuously it may not be finshed.
+            console.log('Calling ChatGPT');
+            getResponse(conversation, (error:any, response:any) => {
+                setChatResponse(response.choices[0].message);
+            });
+        }
+        console.log('Conv: ', conversation)
+
+    }, [conversation]);
+
+    useEffect(() => {
+        // There may be times where a blank response should be returned and this will not allow that
+        // This is here to prevent setConversation to be called on the first frame when ChatResponse is intially set
+        if(chatResponse != blankResponse){
+            setConversation(createConversation(conversation, 'assistant', chatResponse.content));
+            config.ChatGPT = chatResponse.content;
+            updateConfig(config);
+            //config.ChatGPTConversation = conversation;
+            //updateConfig(config);
+        }
+    }, [chatResponse]);
+
+    
+    return(null);
+}
+
 
     /*
     function countTokens(input: string){
@@ -34,119 +168,3 @@ async function ChatGPT(messageInputs: Array<openai.ChatCompletionRequestMessage>
         return message;
     });
     */
-
-    const openaiProcess = new OpenAIApi(configuration);
-    
-    const completion = await openaiProcess.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: messageInputs,
-        temperature: 0.9,
-        max_tokens: 30
-    });
-
-    
-    if (completion.data.choices && completion.data.choices.length > 0) {
-        const newResponse = completion.data.choices[0]?.message || errorResponse;
-        return(newResponse);
-    }
-
-    return(blankResponse);
-}
-
-// ChatGPT runs asynchronously. This function waits and resolves to get a non-promise type.
-function getResponse(conversation){
-    const blankResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: ""};
-    let resolvedResponse = blankResponse;
-    
-    ChatGPT(conversation)
-    .then((response)=>{
-        resolvedResponse = response;
-    })
-    // .catch((error: any) => {
-    //     console.error(error);
-    // })
-
-    return resolvedResponse;
-}
-
-
-function createConversation(prompt: string){
-
-    function createMessage(messageRole: string, messageContent: string){
-        
-        let setrole: openai.ChatCompletionRequestMessageRoleEnum;
-
-        if(messageRole == 'assistant'){
-            setrole = openai.ChatCompletionRequestMessageRoleEnum.Assistant
-        }
-        if(messageRole == 'system'){
-            setrole = openai.ChatCompletionRequestMessageRoleEnum.System
-        }
-        if(messageRole == 'user'){
-            setrole = openai.ChatCompletionRequestMessageRoleEnum.User
-        }
-        else{
-            setrole = openai.ChatCompletionRequestMessageRoleEnum.User
-        }
-
-        const message: openai.ChatCompletionRequestMessage = {role: setrole, content: messageContent};
-
-        return message;
-    }
-    
-    let systemMessage = createMessage('system', "You are a judge in a moot court. Do not provide a long response.");
-    let message = createMessage('user', prompt);
-    let messages: Array<openai.ChatCompletionRequestMessage> = [];
-    messages.push(message);
-    //messages.push(systemMessage);
-    return messages;
-}
-
-export default function ChatGPTAttach(){
-    const [keyPressed, setkeyPressed] = useState();
-    const [keyPressedCount, incrementKeyPressedCount] = useState(0);
-
-    const blankResponse: openai.ChatCompletionResponseMessage = {role: openai.ChatCompletionResponseMessageRoleEnum.System, content: ""};
-    const blankRequest: openai.ChatCompletionRequestMessage = {role: openai.ChatCompletionRequestMessageRoleEnum.System, content: ""};
-    const blankConversation: Array<openai.ChatCompletionRequestMessage> = [];
-    const [chatResponse, setChatResponse] = useState(blankResponse);
-    const [conversation, setConversation] = useState(blankConversation);
-
-    useEffect(() => {
-        const keyDownHandler = (e) => {
-          //console.log("pressed key: " + e.key);
-          setkeyPressed(e.key);
-          incrementKeyPressedCount(keyPressedCount + 1);
-        };
-        document.addEventListener('keydown', keyDownHandler);
-        return () => {
-          document.removeEventListener('keydown', keyDownHandler);
-        };
-      });
-    
-    const speechData = SpeechAnalytics(10, 10);
-
-    useEffect(() => {
-
-        // Get response on enter pressed
-        if(keyPressed == 'Enter'){
-            setConversation(createConversation(speechData.prompt));
-            console.log('Key Check: ', (''+process.env.REACT_APP_API_KEY).slice(0,5));
-            /*
-            ChatGPT appears to be working however the request is being denied because of an issue with user authentication due to this being run on the front end
-            The API key will also be visible if this is run on the front end.
-            It seems the best method would be to send data to our server (backend). The server gets a ChatGPT response and then provides that back to the user (front end)
-            This will require the transcript to be temporarily stored on servers. Encryption and Decryption may be required for security.
-            ChatGPT implementation should be moved to a server
-            getResponse function should make requests of the server
-            A simpler solution may be to find a workaround for the User agent error and to ask users to generate their own API key to use ChatGPT functions
-            Check if calling it through a script like previously implemented could work
-            */
-            //setChatResponse(getResponse(conversation));
-            console.log('ChatGPT Response Received: ', chatResponse);
-        }
-
-    }, [keyPressedCount]);
-    
-    return(null);
-}
