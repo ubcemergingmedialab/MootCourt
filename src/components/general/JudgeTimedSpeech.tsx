@@ -1,5 +1,5 @@
 import {Suspense, useEffect, useState } from 'react'
-
+import Subtitle from '../avatars/Subtitle';
 /**
  * Updates new speech to be said by judge according to the timer status and app setting.
  */
@@ -37,6 +37,7 @@ function JudgeTimedSpeech(config, judgeElapsedTime, setShouldUpdateJudgeElapsedT
     }, [judgeElapsedTime])
 
     return (<Suspense fallback={null}>
+        <Subtitle textToSay={listOfUtterances[judgeQuestionIndex]} />
     </Suspense>)
 }
 

@@ -11,7 +11,7 @@ import Captions from '../general/Captions';
 import '../ui/Captions.css';
 import SpeechAnalytics from '../general/SpeechAnalytics';
 import Dictaphone from '../general/Dictaphone.jsx';
-import ChatGPTAttach from '../general/ChatGPTexample';
+import ChatGPTAttach from '../general/ChatGPTAttach';
 
 // Handle pause detected logic
 const DictaphonePauseDetected = () => {
@@ -56,7 +56,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
                 <Model modelUrl="./models/courtroomdesksNov17.glb"
-                    pos={[0, -3.25, 4.5]}
+                    pos={[0, -3.25, 4.5]} 
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
                 {/* Wrap all the HTML components here */}
@@ -84,12 +84,12 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     </div>
 
                     <div className="captions-container">
-                        <Captions></Captions>
+                        <Captions config={appConfig}></Captions>
                     </div>
 
                     <Dictaphone handlePauseDetected={DictaphonePauseDetected}></Dictaphone>
                     <SpeechAnalytics></SpeechAnalytics>
-                    <ChatGPTAttach></ChatGPTAttach>
+                    <ChatGPTAttach updateConfig={updateConfig} config={appConfig}></ChatGPTAttach>
                     
                 </div>
                 </Html>

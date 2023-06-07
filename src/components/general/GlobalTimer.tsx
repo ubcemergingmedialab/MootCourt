@@ -31,6 +31,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     const [updateTimerInterval, setUpdateTimerInterval] = useState(false)
     const [lightColor, setLightColor] = useState("#199E54")
     const warningColor = "#FA646A"
+    const pauseColor = "#FF0000" 
 
     // judge time controller
     if (config.setRandomized) {
@@ -55,9 +56,9 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // if the judge elapsed time exceeds the interval,
         // inform the app that the judge elapsed time will be updated.
         // console.log("updating time for judge")
-        // wait 5 seconds for judge
+        // wait 3 seconds for judge
         // console.log("judgeElapsedTime:", judgeElapsedTime / 1000)
-        if (!hasAppIntroStarted && judgeElapsedTime > 5000) {
+        if (!hasAppIntroStarted && judgeElapsedTime > 3000) {
             console.log(listOfUtterances)
             setHasAppIntroStarted(true)
             setJudgeSpeechText(config.judgeIntroSpeech)
@@ -123,15 +124,23 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
                 if (currentTime <= 0) {
                     setLightColor(warningColor)
                     setWarningState(1)
+                } else {
+                    // If timer is running, the state is set back to green
+                    setLightColor("#199E54")
                 }
             }
             setJudgeElapsedTime(judgeElapsedTime + elapsedTime)
-            // calculate the remaining time after each tick
+            // Calculate the remaining time after each tick
             setCurrentTime(prevTime => prevTime - elapsedTime)
+        } else {
+            // Otherwise, when the app is paused, set timer to red
+            setLightColor(pauseColor)
         }
     }, [updateTimerInterval])
 
-    // if interval should be reset, this function runs.
+ 
+
+    // If interval should be reset, this function runs.
     useEffect(() => {
         if (!appPaused && shouldUpdateJudgeElapsedTime) {
             setJudgeElapsedTime(0)

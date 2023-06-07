@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, {useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
-import {Html, useTexture} from "@react-three/drei";
+import {Html, useTexture} from "@react-three/drei"
 import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
 import LandingPageMenu from '../ui/LandingPageMenu'
 

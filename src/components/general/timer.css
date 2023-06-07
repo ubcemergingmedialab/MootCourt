@@ -71,8 +71,6 @@
   margin-right: 30px;
 }
 
-.scene-button:active,
-.scene-button:focus,
 .scene-button:hover {
   background-color: white;
 }
