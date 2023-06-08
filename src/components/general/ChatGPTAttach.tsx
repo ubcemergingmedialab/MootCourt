@@ -78,7 +78,7 @@ function createConversation(conversation: Array<openai.ChatCompletionRequestMess
     return messages;
 }
 
-export default function ChatGPTAttach({updateConfig, config}){
+export default function ChatGPTAttach({updateConfig, config, setJudgeSpeechText}){
     const [keyPressed, setkeyPressed] = useState();
     const [keyPressedCount, incrementKeyPressedCount] = useState(0);
 
@@ -88,9 +88,11 @@ export default function ChatGPTAttach({updateConfig, config}){
 
     const [chatResponse, setChatResponse] = useState(blankResponse);
 
-    const systemPrompt = 'Play the role of a judge in a moot court. You will respond as a judge would. Consider the arguments of the appellant or respondent. The transcript provided to you will contain informat regarding their WPM and the [start-stop] time of speaking.'
+    const systemPrompt = 'Play the role of a judge in a moot court. You will respond as a judge would. Use natural speech that would be used in a court but not provide unnecessary long responses. Consider the arguments of the appellant or respondent. As they speak a transcript will be provided to you containing information regarding their WPM and the [start-stop] time of speaking.'
     const initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt)
     const [conversation, setConversation] = useState(initJudgeConversation);
+
+    const [lastSpeechUpdate, setLastSpeechUpdate] = useState(new Date().getTime());
 
     useEffect(() => {
         const keyDownHandler = (e) => {
@@ -106,19 +108,54 @@ export default function ChatGPTAttach({updateConfig, config}){
     
     const speechData = SpeechAnalytics(10, 10);
 
-    useEffect(() => {
+    useEffect(()=>{
+        const now = new Date().getTime();
+        setLastSpeechUpdate(now);
+    }, [speechData])
 
+
+    function promptToConversation(){
+        if(conversation[conversation.length-1].role != 'user'){
+
+            let prompt = speechData.prompt
+            if(conversation.length > 2){
+                prompt = prompt.slice((conversation[conversation.length-2].content||"").length)
+            }
+            console.log(prompt)
+            setConversation(createConversation(conversation, 'user', prompt));
+        }
+    }
+
+    /*
+    function CheckSpeechPause() {
+
+        const now = new Date().getTime()
+        const speechPause = now - lastSpeechUpdate;
+
+        // Change prompt triggering ChatGTP if there is a pause in speech.
+        const delay = 10 * 1000;
+        console.log((delay-speechPause)>0);
+        if((delay-speechPause)>0){
+            //promptToConversation()
+            console.log('ChatGPT regcognizes the pause: ', delay-speechPause);
+            
+        }
+
+        // Check every 5s, does not have to be 5s
+        setTimeout(CheckSpeechPause, 1000);
+      }
+
+    // Avoid Rerendering this self looping function
+    useEffect(() => {
+        CheckSpeechPause();
+    },[]);*/
+      
+
+    useEffect(() => {
+        
         // Get response on enter pressed
         if(keyPressed == 'Enter'){
-            if(conversation[conversation.length-1].role != 'user'){
-
-                let prompt = speechData.prompt
-                if(conversation.length > 2){
-                    prompt = prompt.slice((conversation[conversation.length-2].content||"").length)
-                }
-                console.log(prompt)
-                setConversation(createConversation(conversation, 'user', prompt));
-            }
+            promptToConversation()
         }
 
     }, [keyPressedCount]);
@@ -145,6 +182,8 @@ export default function ChatGPTAttach({updateConfig, config}){
             setConversation(createConversation(conversation, 'assistant', chatResponse.content));
             config.ChatGPT = chatResponse.content;
             updateConfig(config);
+            
+            setJudgeSpeechText(config.ChatGPT);
             //config.ChatGPTConversation = conversation;
             //updateConfig(config);
         }

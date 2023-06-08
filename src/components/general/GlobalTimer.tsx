@@ -58,30 +58,35 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // console.log("updating time for judge")
         // wait 3 seconds for judge
         // console.log("judgeElapsedTime:", judgeElapsedTime / 1000)
-        if (!hasAppIntroStarted && judgeElapsedTime > 3000) {
-            console.log(listOfUtterances)
-            setHasAppIntroStarted(true)
-            setJudgeSpeechText(config.judgeIntroSpeech)
-            setJudgeElapsedTime(0)
-            setIsAppInIntro(true)
-        }
-        if (isAppInIntro) {
-            console.log("app is in intro")
-            if (judgeElapsedTime >= config.introductionTime * 1000) {
-                setIsAppInIntro(false)
+        if (config.InteliJudge){
+            console.log('InteliJudge active, GlobalTimer not used for speech control');
+        }else{
+
+            if (!hasAppIntroStarted && judgeElapsedTime > 3000) {
+                console.log(listOfUtterances)
+                setHasAppIntroStarted(true)
+                setJudgeSpeechText(config.judgeIntroSpeech)
+                setJudgeElapsedTime(0)
+                setIsAppInIntro(true)
+            }
+            if (isAppInIntro) {
+                console.log("app is in intro")
+                if (judgeElapsedTime >= config.introductionTime * 1000) {
+                    setIsAppInIntro(false)
+                    setShouldUpdateJudgeElapsedTime(true)
+                    console.log("utterance: ", listOfUtterances[judgeQuestionIndex])
+                    setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
+                    resetQuestionIndex()
+                    console.log("judge index", judgeQuestionIndex)
+                }
+            } else if (judgeElapsedTime >= questionInterval) {
+                console.log("judge elapsed time goes over interval")
                 setShouldUpdateJudgeElapsedTime(true)
                 console.log("utterance: ", listOfUtterances[judgeQuestionIndex])
                 setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
                 resetQuestionIndex()
                 console.log("judge index", judgeQuestionIndex)
             }
-        } else if (judgeElapsedTime >= questionInterval) {
-            console.log("judge elapsed time goes over interval")
-            setShouldUpdateJudgeElapsedTime(true)
-            console.log("utterance: ", listOfUtterances[judgeQuestionIndex])
-            setJudgeSpeechText(listOfUtterances[judgeQuestionIndex])
-            resetQuestionIndex()
-            console.log("judge index", judgeQuestionIndex)
         }
     }, [judgeElapsedTime])
 
