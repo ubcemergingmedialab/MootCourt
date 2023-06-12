@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Html } from '@react-three/drei'
+import { Center, Html } from '@react-three/drei'
 import PropTypes from 'prop-types'
 import './LandingPage.css';
 import defaultData from '../general/default_settings.json';
@@ -203,9 +203,31 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 </div>
                 <div className="sideMenuContents">
                     <div className="buttonFlexBox">
-                    <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
+                    <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button> 
+                    </div>
+                    <div className="sideMenuContents" >
+                        <p style={{fontSize: '22px'}}>This allows you to customize specific timer functions and questions that will be asked. </p>
+                        <p>This includes: </p>
+                        <ul>
+                            <li>Adjusting total time, introduction time and Intervals </li>
+                            <li> Randomizing or delaying questions </li>
+                            <li>Adding custom questions and captions</li>
+                        </ul>
+                    </div>           
+            <div className="hr-2"></div>
+                <div className="buttonFlexBox">
                     <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
                     </div>
+                <div className=" ">
+                    <p style={{fontSize: '22px'}}> Default set up includes: </p>
+                    <ul>
+                        <li>Total duration: 25 min </li>
+                        <li>Introduction time: 2 min 30 sec </li>
+                        <li>Interval: 5 min </li>
+                        <li>Approximate time between when questions will be asked</li>
+                        <li>No randomized questions</li>
+                    </ul>
+                </div>
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button large-button" type="button" onClick={(event) => pressBackFromSetup()}>Back</button>

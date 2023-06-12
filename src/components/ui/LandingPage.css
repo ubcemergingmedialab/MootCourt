@@ -111,10 +111,42 @@ h1 {
     flex-direction: column;
 }
 
+<<<<<<< Updated upstream
+=======
+.sideMenuContents p {
+    margin: 10px 55px; /* Adjust the pixel value for top and bottom margin */
+    font-size: 20px;
+    line-height: 1.5; /* Adjust the line height value */
+}
+
+.sideMenuContents ol li {
+    margin: 10px 55px; /* Adjust the pixel value for top and bottom margin */
+    font-size: 20px;
+    line-height: 1.5; /* Adjust the line height value */
+}
+
+>>>>>>> Stashed changes
 .sideMenuBottom {
     text-align: center;
 }
 
+<<<<<<< Updated upstream
+=======
+.sideMenuSetUp {
+    padding-top: 5%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sideMenuSetUp p {
+    font-size: 18px;
+    margin: 10px 0px;
+    line-height: 5px;    
+}
+
+
+>>>>>>> Stashed changes
 
 /* Individual form items; these are listed in linear order, in a single column. */
 .formitem {
