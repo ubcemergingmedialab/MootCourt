@@ -12,6 +12,7 @@ import '../ui/Captions.css';
 import SpeechAnalytics from '../general/SpeechAnalytics';
 import Dictaphone from '../general/Dictaphone.jsx';
 import ChatGPTAttach from '../general/ChatGPTAttach';
+import InitiateListening from '../general/WhisperSTT';
 
 // Handle pause detected logic
 const DictaphonePauseDetected = () => {
@@ -93,6 +94,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     updateConfig={updateConfig}
                     config={appConfig}
                     setJudgeSpeechText={setJudgeSpeechText}></ChatGPTAttach>
+                    <InitiateListening></InitiateListening>
                     
                 </div>
                 </Html>
