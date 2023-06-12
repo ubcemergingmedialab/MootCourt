@@ -89,7 +89,10 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
 
                     <Dictaphone handlePauseDetected={DictaphonePauseDetected}></Dictaphone>
                     <SpeechAnalytics></SpeechAnalytics>
-                    <ChatGPTAttach updateConfig={updateConfig} config={appConfig}></ChatGPTAttach>
+                    <ChatGPTAttach
+                    updateConfig={updateConfig}
+                    config={appConfig}
+                    setJudgeSpeechText={setJudgeSpeechText}></ChatGPTAttach>
                     
                 </div>
                 </Html>
