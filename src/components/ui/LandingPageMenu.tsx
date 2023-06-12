@@ -364,7 +364,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <li> You may choose to either go to the default or customize your moot court session.</li>
                         <li> During your mooting, you may pause the timer by clicking on the button on the bottom right corner, or return to home page by clicking on button the left corner</li>
                         <li> At the end of your session, you may choose to restart or look at your assessment of your mooting.</li>
-                        <p style={{marginTop: '35px', textAlign: 'center'}}> OPTIONAL: Once you’ve experienced JIS, please leave any feedback on your experience!</p>
+                        <p style={{marginTop: '35px', textAlign: 'center'}}> OPTIONAL: After using JIS, please leave any feedback on your experience!</p>
                     </ol>
                 </div>
                 <div className="sideMenuBottom">
