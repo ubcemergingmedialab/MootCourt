@@ -177,6 +177,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
             </div>
         </div>}
 
+
         {<div className="stayhidden" id="Position">
             <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
@@ -242,20 +243,23 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <h1>Questions</h1>
                     <div className="hr-2"></div>
                 </div>
-                <div className="sideMenuContents">
+                <div className="sideMenuSetUp">
                     <div className="formitem">
-                        <label htmlFor="Interval">Interval</label>
-                        <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onChange={setInterval}></input>
+                        <label htmlFor="Interval" >Interval</label>
+                        <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onChange={setInterval} ></input>
                         <div className="FieldDescription">minutes</div>
+                        <p>Approximate time between when questions will be asked</p>
                     </div>
                     <div className="formitem">
                         <div className="label-wrapper">
                             <label htmlFor="Randomize">Randomize</label>
                         </div>
-                        <div className="toggle-container">
+                        <div className="toggle-container" >
                             <input type="checkbox" id="setrandomizeQuestions" onChange={setRandomizeQuestions} />
                             <div className="slider round"></div>
                         </div>
+                        <div className="FieldDescription"></div>
+                        <p>Randomize the questions that will be asked</p>
                     </div>
                     <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
@@ -263,6 +267,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                             <input name="Interval" type="checkbox" id="setDelay" onChange={setDelay} />
                             <div className="slider round"></div>
                         </div>
+                        <div className="FieldDescription"></div>
+                        <p>Delay the next question for another interval</p>
+
                     </div>
                 </div>
                 <div className="sideMenuBottom">
@@ -278,11 +285,12 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <h1>Timer</h1>
                     <div className="hr-2"></div>
                 </div>
-                <div className="sideMenuContents">
+                <div className="sideMenuSetUp">
                     <div className="formitem">
                         <label htmlFor="TotalDuration">Total duration</label>
                         <input type="number" min="1" defaultValue="25" id="settotalTime" onChange={setTotalTime}></input>
                         <div className="FieldDescription">minutes</div>
+                        <p style={{ fontSize: '18px',  marginTop: '5px', lineHeight: '1' }}>Set the total time of your court session. </p>
                     </div>
                     {/* <div className="formitem">
                         <div className="number-input-container">
@@ -299,14 +307,18 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                             <input name="StopPresentation" type="checkbox" defaultChecked={true} id="setStopPresentation" onChange={setStopPresentation}/>
                             <div className="slider round"></div>
                         </div>
+                        <div className="FieldDescription"></div>
+                            <p style={{ fontSize: '18px',  marginTop: '5px', lineHeight: '1' }}>At the end of your session, you may extend your time if needed. </p>
                     </div>
-                    <div className="formitem long-formitem">
-                        <label htmlFor="IntroductionTime">Introduction time</label>
+                    <div className="formitem long-formitem" style={{marginBottom:'50px'}}>
+                        <label htmlFor="IntroductionTime" style={{ marginBottom: '-15px' }}>Introduction time</label>
+                        <div className="FieldDescription"></div>
+                            <p style={{ fontSize: '18px', marginTop:'-20px', lineHeight: '0'}}>Set the introduction time of your court session. </p>
                         <div className="subformitem">
                             <input name="IntroductionTime" type="number" min="1" defaultValue="2" id= "setIntroductionMinutes" onChange={setIntroductionMinutes}></input>
                             <div className="FieldDescription">minutes</div>
                         </div>
-                        <div className="subformitem">
+                        <div className="subformitem" style= {{marginTop: '10px'}}>
                             <input name="MinutesTime" type="number" min="1" defaultValue="30" id="setIntroductionSeconds" onChange={setIntroductionSeconds}></input>
                             <div className="FieldDescription">seconds</div>
                         </div>
@@ -326,8 +338,12 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="hr-2"></div>
                 </div>
                 <div className="sideMenuContents">
-                    <p>Moot Court is a virtual practice space for mooting by yourself. </p>
-                    <p>You can customize the settings according to your needs through the menu.</p>
+                    <p>Judicial Interrogatory Simulator, also previously known as Moot Court, is a virtual practice space for mooting by yourself</p>
+                    <p> This provides you both the personal space to practice with a set time and pace or as an Artificial intelligence tool, where you can practice your moot court with an OpenAI. </p>
+                    <p> You can customize the settings according to your needs through the menu. </p>
+                    <p> If you want to learn more about Judicial Interrogatory Simulator, check out the EML website: </p>
+                    <p style={{fontSize: '25px', textAlign: 'center'}}> <a href="https://eml.ubc.ca/projects/judicial-interrogatory-simulator/" target="_blank" rel="noopener noreferrer" style={{ color: 'white' }}>Judicial Interrogatory Simulator </a></p>
+                
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu()}>Back to Menu</button>
@@ -344,9 +360,11 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 </div>
                 <div className="sideMenuContents">
                     <ol>
-                        <li>Click Start to SetUp and click the customization options in a guided process.</li>
-                        <li>You can do default or customize the timer and questions before starting.</li>
-                        <li>Pause the timer in the bottom right corner</li>
+                        <li> Click Start to choose your difficulty level for your Moot Court session</li>
+                        <li> You may choose to either go to the default or customize your moot court session.</li>
+                        <li> During your mooting, you may pause the timer by clicking on the button on the bottom right corner, or return to home page by clicking on button the left corner</li>
+                        <li> At the end of your session, you may choose to restart or look at your assessment of your mooting.</li>
+                        <p style={{marginTop: '35px', textAlign: 'center'}}> OPTIONAL: Once you’ve experienced JIS, please leave any feedback on your experience!</p>
                     </ol>
                 </div>
                 <div className="sideMenuBottom">
