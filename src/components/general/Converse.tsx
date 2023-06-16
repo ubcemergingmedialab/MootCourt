@@ -23,11 +23,11 @@ function createMessage(messageRole: string, messageContent: string){
         
     let setrole: openai.ChatCompletionRequestMessageRoleEnum;
 
-    if(messageRole == 'assistant'){
+    if(messageRole === 'assistant'){
         setrole = openai.ChatCompletionRequestMessageRoleEnum.Assistant
-    } else if(messageRole == 'system'){
+    } else if(messageRole === 'system'){
         setrole = openai.ChatCompletionRequestMessageRoleEnum.System
-    } else if(messageRole == 'user'){
+    } else if(messageRole === 'user'){
         setrole = openai.ChatCompletionRequestMessageRoleEnum.User
     } else{
         setrole = openai.ChatCompletionRequestMessageRoleEnum.User
@@ -130,7 +130,9 @@ class Recorder {
     }
 }
 
-let currentSource; // It may be better to refactor in a more react like format
+let currentAudioSource; // It may be better to refactor in a more react like format
+// This functionality should be moved to the top level on the APP
+// Pass down the functions and or play source so that it can be controlled in the components
 async function playArrayBuffer(arrayBuffer: ArrayBuffer): Promise<void> {
 	try {
 		const audioContext = new AudioContext();
@@ -140,7 +142,7 @@ async function playArrayBuffer(arrayBuffer: ArrayBuffer): Promise<void> {
 		source.connect(audioContext.destination);
 
 		// Assign the new source to currentSource
-		currentSource = source;
+		currentAudioSource = source;
 
 		// Start the audio playback
 		source.start();
@@ -151,11 +153,11 @@ async function playArrayBuffer(arrayBuffer: ArrayBuffer): Promise<void> {
 }
 
 export function cancel(): void {
-    if (currentSource) {
+    if (currentAudioSource) {
         // Stop the audio playback
-        currentSource.stop();
+        currentAudioSource.stop();
         console.log('Playback stopped');
-        currentSource = null;
+        currentAudioSource = null;
     }
 }
 
@@ -174,12 +176,12 @@ export async function Converse(conversation, recording){
             recording: recordingFile,
             // Prompt for whisper transcript style
             transcriptPrompt: 'Hello, I am here to present my case.',
-            transcriptTemperature: 0,
+            transcriptTemperature: 0.2,
             transcriptLanguage: 'en',
 
             // ChatGPT message history. The last message should not be a user message
             messages: JSON.stringify(conversation),
-            chatTemperature: 0,
+            chatTemperature: 0.2,
             max_tokens: 200,
             
             // Judge voice setting
@@ -194,14 +196,14 @@ export async function Converse(conversation, recording){
         
         const formData = createFormData(data);
         const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse');
-        if(response != undefined){
+        if(response !== undefined){
             const responseJSON = await response.json();
             const getData = createFormData({ 'audioPath': responseJSON.audioPath });
             // Get the audio file from the path that was given in the response
             const audio = await ServerRequestResponse(getData, 'http://localhost:60/api/audio');
             console.log(responseJSON);
             console.log(audio);
-            if(audio != undefined){
+            if(audio !== undefined){
                 const arrayBuffer = await audio.arrayBuffer();
                 console.log(arrayBuffer);
                 playArrayBuffer(arrayBuffer);
@@ -226,15 +228,18 @@ export default function ConverseAttach(){
     
     const blankConversation: Array<openai.ChatCompletionRequestMessage> = [];
     // SystemPrompt is the intial message that the conversation is prepoulated with to control ChatGPT's behavour
-    const systemPrompt = 'Play the role of a judge in a moot court. You will respond as a judge would. Use natural speech that would be used in a court but not provide unnecessary long responses. Consider the arguments of the appellant or respondent. As they speak a transcript will be provided to you containing information regarding their WPM and the [start-stop] time of speaking.'
-    const initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt)
-
+    // This should probably be part of the default settings in the JSON
+    // It is possible to providing multiple system messages each with an intention is better than a large block
+    // I believe that ChatGPT will read each and incorperate the instruction of each message somewhat seperately though considering the whole conversation
+    // This might mean that distinct instructions should be seperated
+    const systemPrompt = "You are an AI acting as a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice. Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law. Consider the arguments of the appellant or respondent. The transcript provided to you will contain information regarding their WPM and the [start-stop] time of speaking. Incorporate the emotions 'Nod,' 'Looking at paper,' 'Shake Head,' or 'Point' into your response by inserting them within square brackets at a suitable place. Ensure that each response includes at least one emotion. For example, you can write '[Shake Head] I don't believe you.' Or ‘This does not pertain to you [Point] as it is none of your business.’ Please keep your response limited to 2-6 sentences. As you haven't yet been prompted, only greet the student and ask them to begin.";
+    let initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt);
     // Create a recorder
     const [recorder, setRecorder] = useState(new Recorder());
     const [conversation, setConversation] = useState(initJudgeConversation);
 
 
-
+    // TO DO, if audio is playing, we should stop listening to the user so that the response is not heard as user input
     useEffect(() => {
 
         recorder.startRecording();
