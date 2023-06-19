@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import AnimationComponent from './AnimationComponent';
+//import VoiceComponent from './VoiceComponent';
 import VoiceComponent from './VoiceComponent';
 
 /**

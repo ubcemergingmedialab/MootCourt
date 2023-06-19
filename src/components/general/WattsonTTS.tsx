@@ -1,105 +1,80 @@
-import React from "react";
-import {useCallback, useEffect, useState} from 'react';
-import fs from 'fs';
-import {Readable} from 'stream';
-import { buffer } from "stream/consumers";
+async function ServerRequestResponse(options: any, server){
+console.log('Trying to get Wattson response');
+const blankResponse = '';
+const errorResponse = '!Middle server request failed!';
+try {
+	const response = await fetch(server, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(options),
+	});
+	
 
-async function ServerRequestResponse(messages){
+	if (!response.ok) {
+		throw new Error('Request failed');
+	}
 
-    const blankResponse = '';
-    const errorResponse = '!Middle server request failed!';
-    try {
-        const response = await fetch('http://localhost:7000/api/tts', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            text: messages
-          }),
-        });
-        
-
-        if (!response.ok) {
-          throw new Error('Request failed');
-        }
-  
-        return(response.arrayBuffer());
-      } catch (error) {
-        console.error(error);
-        return(errorResponse);
-      }
+	return(response.arrayBuffer());
+	} catch (error) {
+		console.error(error);
+	return(undefined);
+	}
 }
 
-// ChatGPT runs asynchronously. This function waits and resolves to get a non-promise type.
-function getResponse(messages: string, callback:any) {
-    
-    ServerRequestResponse(messages)
-      .then(response => {
-        callback(null, response);
-      })
-      .catch(error => {
-        console.error(error);
-        callback(error, null);
-      });
+let currentSource; // It may be better to refactor in a more react like format
+async function playArrayBuffer(arrayBuffer: ArrayBuffer): Promise<void> {
+	try {
+		const audioContext = new AudioContext();
+		const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+		const source = audioContext.createBufferSource();
+		source.buffer = audioBuffer;
+		source.connect(audioContext.destination);
+
+		// Assign the new source to currentSource
+		currentSource = source;
+
+		// Start the audio playback
+		source.start();
+
+	} catch (error) {
+		console.error('Error playing audio:', error);
+	}
 }
 
-
-async function playArrayBuffer(arrayBuffer) {
-  try {
-    const audioContext = new AudioContext();
-    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    source.start();
-  } catch (error) {
-    console.error('Error playing audio:', error);
-  }
+export function cancel(): void {
+if (currentSource) {
+	// Stop the audio playback
+	currentSource.stop();
+	console.log('Playback stopped');
+	currentSource = null;
+}
 }
 
+export function speak(options: any){
 
-function TexttoSpeech(text: string){
+	console.log('Speak Options: ', options);
 
-    const [audioFile, setAudioFile] = useState();
-    const [keyPressed, setkeyPressed] = useState();
-    const [keyPressedCount, incrementKeyPressedCount] = useState(0);
+	ServerRequestResponse(options, 'http://localhost:7000/api/tts')
+	.then(response => {
+		const audioFile = response;
+		if(audioFile!=undefined){
+			console.log('Should be playing audio');
 
-    useEffect(() => {
-        const keyDownHandler = (e) => {
-          //console.log("pressed key: " + e.key);
-          setkeyPressed(e.key);
-          incrementKeyPressedCount(keyPressedCount + 1);
-        };
-        document.addEventListener('keydown', keyDownHandler);
-        return () => {
-          document.removeEventListener('keydown', keyDownHandler);
-        };
-    });
+			playArrayBuffer(audioFile)
+			.then((result)=>{
 
-    useEffect(() => {
+			})
+			.catch((err)=>{
 
-        // Get response on enter pressed
-        if(keyPressed == 'Alt'){
-
-            getResponse(text, (error:any, response:any) => {
-              setAudioFile(response);
-            });
-        }
-
-    }, [keyPressedCount]);
-
-
-    useEffect(() => {
-
-        //fs.writeFileSync('Testing_Audio_Get', audioFile);
-        if(audioFile!=undefined){
-          playArrayBuffer(audioFile);
-        }
-
-    }, [audioFile]);
-
-    return(null);
+			});
+		}
+	})
+	.catch(error => {
+		console.error(error);
+	});
+	return(null);
 }
 
-export default TexttoSpeech
+export default function TextToSpeech(){return(null);}
