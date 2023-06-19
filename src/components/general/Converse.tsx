@@ -18,6 +18,7 @@ async function ServerRequestResponse(data: FormData, server){
     }
 }
 
+
 // A single message with a role and content. In the future, the optional name could be added
 function createMessage(messageRole: string, messageContent: string){
         
@@ -224,7 +225,7 @@ export async function Converse(conversation, recording){
     return null;
 }
 
-export default function ConverseAttach(){
+export default function ConverseAttach(config){
     
     const blankConversation: Array<openai.ChatCompletionRequestMessage> = [];
     // SystemPrompt is the intial message that the conversation is prepoulated with to control ChatGPT's behavour
@@ -268,9 +269,11 @@ export default function ConverseAttach(){
 
     };
 
+   if(config.isInteliJudge == false) { 
+    return (null)} else {
     return (
-        <>
+       <>
             <button onClick={handleClick}>{'Converse'}</button>
         </>
-    );
+    )};
 }

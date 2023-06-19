@@ -97,7 +97,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     setJudgeSpeechText={setJudgeSpeechText}></ChatGPTAttach>
                     <InitiateListening></InitiateListening>
                     */}
-                    <ConverseAttach></ConverseAttach>
+                    <ConverseAttach config={appConfig}></ConverseAttach>
                     
                 </div>
                 </Html>

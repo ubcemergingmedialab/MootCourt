@@ -20,13 +20,6 @@ function pressStart() {
     resetDisplayedUI("Main", "Difficulty");
 }
 
-function pressClassic() {
-    resetDisplayedUI("Difficulty", "Position");
-}
-
-function pressIntellaJudge() {
-    resetDisplayedUI("Difficulty", "Position");
-}
 
 
 function pressCustomize() {
@@ -163,6 +156,18 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         resetDisplayedUI("Position", "SetUp");
     }
 
+    const pressClassic = () => {
+        resetDisplayedUI("Difficulty", "Position");
+        updateConfig({...config, isInteliJudge: false})
+        console.log("Classic enabled.")
+    }
+    
+    const pressIntellaJudge = () => {
+        resetDisplayedUI("Difficulty", "Position");
+        updateConfig({...config, isInteliJudge: true})
+        console.log("IntellaJudge enabled.")
+    }
+
     return <>
         {<div className="logoOverlay">
           <img src={require('../images/PALSOL-1.2b-Primary-UBC-Shield.png')} />
@@ -198,6 +203,24 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="buttonFlexBox buttonFlexBox-Position">
                         <button className="button wide-button" type="button" onClick= {pressAppellant} >Appellant</button>
                         <button className="button wide-button" type="button" onClick={pressRespondent}>Respondent</button>
+                    </div>
+                </div>
+                <div className="sideMenuBottom">
+                    <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu4()}>Back to Menu</button>
+                </div>
+            </div>
+        </div>}
+
+        {<div className="stayhidden" id="Difficulty">
+            <div className="sideMenuInner">
+                <div className="sideMenuTitleText">
+                    <h1>Position</h1>
+                    <div className="hr-2"></div>
+                </div>
+                <div className="sideMenuContents">
+                    <div className="buttonFlexBox buttonFlexBox-Position">
+                        <button className="button wide-button" type="button" onClick= {pressClassic} >Classic</button>
+                        <button className="button wide-button" type="button" onClick={pressIntellaJudge}>Intella-Judge</button>
                     </div>
                 </div>
                 <div className="sideMenuBottom">
