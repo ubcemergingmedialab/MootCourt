@@ -224,7 +224,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     </div>
                 </div>
                 <div className="sideMenuBottom">
-                    <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu4()}>Back to Menu</button>
+                    <button className="button wide-button" type="button" onClick={(event) => pressBackFromDifficulty()}>Back to Menu</button>
                 </div>
             </div>
         </div>}
