@@ -1,26 +1,16 @@
-async function ServerRequestResponse(options: any, server){
-console.log('Trying to get Wattson response');
-const blankResponse = '';
-const errorResponse = '!Middle server request failed!';
-try {
-	const response = await fetch(server, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(options),
-	});
-	
+async function ServerRequestResponse(data: FormData, server){
+    try {
+        const response = await fetch(server, {
+            method: 'POST',
+            body: data
+        });
 
-	if (!response.ok) {
-		throw new Error('Request failed');
-	}
+        return(response);
 
-	return(response.arrayBuffer());
-	} catch (error) {
-		console.error(error);
-	return(undefined);
-	}
+    }catch (err) {
+        console.error(err);
+        return(undefined);
+    }
 }
 
 let currentSource; // It may be better to refactor in a more react like format
@@ -52,29 +42,46 @@ if (currentSource) {
 }
 }
 
-export function speak(options: any){
+// Convert a dictionary into formData
+function createFormData(options: any): FormData {
+	const formData = new FormData();
+
+	for (const key in options) {
+		if (options.hasOwnProperty(key)) {
+			formData.append(key, options[key]);
+		}
+	}
+
+	return formData;
+}
+
+export async function speak(options: any){
 
 	console.log('Speak Options: ', options);
+	const formData = createFormData(options);
 
-	ServerRequestResponse(options, 'http://localhost:7000/api/tts')
-	.then(response => {
-		const audioFile = response;
-		if(audioFile!=undefined){
-			console.log('Should be playing audio');
+	// Generate audio file and get the file path from the server
+	const response = await ServerRequestResponse(formData, 'http://localhost:60/api/tts')
+	let responseJSON;
+	if(response !== undefined){
+		responseJSON = await response.json();
+	}
 
-			playArrayBuffer(audioFile)
-			.then((result)=>{
+	const getData = createFormData({ 'audioPath': responseJSON.audioPath });
 
-			})
-			.catch((err)=>{
+	// Get the file from the server at the file path 
+	const audio = await	ServerRequestResponse(getData, 'http://localhost:60/api/audio')
+	let arrayBuffer;
+	if(audio !== undefined){
+		arrayBuffer = await audio.arrayBuffer();
+	}
 
-			});
-		}
-	})
-	.catch(error => {
-		console.error(error);
-	});
+	console.log('Should be playing audio');
+	// Play the audio
+	await playArrayBuffer(arrayBuffer);
+
 	return(null);
 }
 
+// This is a dummy export because no DOM elements are generated
 export default function TextToSpeech(){return(null);}

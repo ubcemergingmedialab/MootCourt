@@ -9,10 +9,6 @@ import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 import Captions from '../general/Captions';
 import '../ui/Captions.css';
-import SpeechAnalytics from '../general/SpeechAnalytics';
-import Dictaphone from '../general/Dictaphone.jsx';
-import ChatGPTAttach from '../general/ChatGPTAttach';
-import InitiateListening from '../general/WhisperSTT';
 import ConverseAttach from '../general/Converse';
 
 // Handle pause detected logic
@@ -88,15 +84,6 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     <div className="captions-container">
                         <Captions config={appConfig}></Captions>
                     </div>
-                    {/* Wrap all the HTML components here 
-                    <Dictaphone handlePauseDetected={DictaphonePauseDetected}></Dictaphone>
-                    <SpeechAnalytics></SpeechAnalytics>
-                    <ChatGPTAttach
-                    updateConfig={updateConfig}
-                    config={appConfig}
-                    setJudgeSpeechText={setJudgeSpeechText}></ChatGPTAttach>
-                    <InitiateListening></InitiateListening>
-                    */}
                     <ConverseAttach></ConverseAttach>
                     
                 </div>
