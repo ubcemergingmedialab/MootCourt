@@ -20,6 +20,11 @@ body * {
     font-family: Whitney;
 }
 
+.sideMenuContentsWithButton, p{
+    margin-block-start: 0px;
+    margin-block-end: 10px;
+}
+
 h1 {
     text-transform: uppercase;
     font-size: 5.5vw;
@@ -105,10 +110,35 @@ h1 {
     /* position: relative;
     top: 7.5%;
     height: 92.5%; */
-    padding-top: 10%;
+    padding-top: 5%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    font-size: 20px;
+    margin-bottom: 5%;
+}
+
+.sideMenuContentsWithButtons {
+    /* position: relative;
+    top: 7.5%;
+    height: 92.5%; */
+    /* flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 8%;
+    margin-right: 8%;
+    margin-top: 5px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    text-align: center;
+    margin: 5px 8% 0;
+    overflow-x: auto;
+    max-height: 80vh;
 }
 
 .sideMenuBottom {
@@ -126,7 +156,7 @@ h1 {
 
 @media only screen and (max-height: 850px) {
   .sideMenuContents {
-    padding-top: 5%
+   padding-top: 5%
   }
   .formitem {
     margin-bottom: 1vh;
@@ -257,7 +287,7 @@ h1 {
 
 .wide-button {
     width: 73%;
-    margin-bottom: 4.65vh;
+    margin-bottom: 10px;
     padding: 20px;
     font-size: 2vw;
 }
@@ -684,3 +714,12 @@ input[type=number]::-webkit-outer-spin-button {
   color: #F7CA18;
   font-size: 2em;
 }
+
+.line {
+    border-bottom: solid;
+    height: 0.5vh;
+    width : 70%;
+    background-color: #F7CA18;
+    border-color: #F7CA18;
+    margin-bottom: 30px;
+  }

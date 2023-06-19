@@ -17,7 +17,15 @@ function resetDisplayedUI(ID1, ID2) {
 }
 
 function pressStart() {
-    resetDisplayedUI("Main", "Position");
+    resetDisplayedUI("Main", "Difficulty");
+}
+
+function pressClassic() {
+    resetDisplayedUI("Difficulty", "Position");
+}
+
+function pressIntellaJudge() {
+    resetDisplayedUI("Difficulty", "Position");
 }
 
 
@@ -50,6 +58,9 @@ function pressBackToMenu() {
     resetDisplayedUI("About", "Main");
 }
 
+function pressBackFromDifficulty() {
+    resetDisplayedUI("Difficulty", "Main");
+}
 
 function pressBackToMenu2() {
     resetDisplayedUI("Tutorial", "Main");
@@ -177,6 +188,31 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
             </div>
         </div>}
 
+        {<div className="stayhidden" id="Difficulty">
+            <div className="sideMenuInner">
+                <div className="sideMenuTitleText">
+                    <h1>Position</h1>
+                    <div className="hr-2"></div>
+                </div>
+                <div className="sideMenuContents">
+                    <div className="buttonFlexBox buttonFlexBox-Position">
+                        <button className="button wide-button" type="button" onClick= {pressClassic} >Classic</button>
+                        <div className="sideMenuContentsWithButtons">
+                        <p>Practice your moot court speech by setting specific time goals or personal questions. </p>
+                        </div>
+                        <div className="line"></div>
+                        <button className="button wide-button" type="button" onClick={pressIntellaJudge}>IntellaJudge</button>
+                        <div className="sideMenuContentsWithButtons">
+                        <p>Practice your moot court with an OpenAI for live communication and AI-generated questions. </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="sideMenuBottom">
+                    <button className="button wide-button" type="button" onClick={(event) => pressBackFromDifficulty()}>Back to Menu</button>
+                </div>
+            </div>
+        </div>}
+
         {<div className="stayhidden" id="Position">
             <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
@@ -204,7 +240,21 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <div className="buttonFlexBox">
                     <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
+                    <div className="sideMenuContentsWithButtons">
+                        <p><u>Default Set Up Includes:</u></p>
+                        <p>Total duration: <b>25 min</b> </p>
+                        <p>Introduction time: <b> 2 min 30 sec </b></p>
+                        <p>Interval: <b> 5 min </b>(Approximate time between when questions will be asked)</p>
+                        <p>         No Randomized Questions</p>
+                        </div>
+                    <div className="line"></div>
                     <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
+                    <div className="sideMenuContentsWithButtons">
+                    <p>This allows you to customize specific timer functions and questions that will be asked. </p>
+                        <p>Adjusting total time, introduction time and Intervals</p>
+                        <p>Randomizing or delaying questions</p>
+                        <p>Adding custom questions and captions</p>
+                    </div>
                     </div>
                 </div>
                 <div className="sideMenuBottom">
@@ -304,8 +354,11 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="hr-2"></div>
                 </div>
                 <div className="sideMenuContents">
-                    <p>Moot Court is a virtual practice space for mooting by yourself. </p>
-                    <p>You can customize the settings according to your needs through the menu.</p>
+                    <p>Judicial Interrogatory Simulator, also previously known as Moot Court, is a virtual practice space for mooting by yourself.  </p>
+                    <p>This provides you both the personal space to practice with a set time and pace or as an Artificial intelligence tool, where you can practice your moot court with an OpenAI.</p>
+                    <p>You can customize the settings according to your needs through the menu. </p>
+                    <p>If you want to learn more about Judicial Interrogatory Simulator, check out the EML website: 
+Judicial Interrogatory Simulator</p>
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu()}>Back to Menu</button>
@@ -323,9 +376,14 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <ol>
                         <li>Click Start to SetUp and click the customization options in a guided process.</li>
-                        <li>You can do default or customize the timer and questions before starting.</li>
-                        <li>Pause the timer in the bottom right corner</li>
+                        <p></p>
+                        <li>After selecting your difficulty, you can choose to either go to the default or customize your moot court session in settings.</li>
+                        <p></p>
+                        <li>During your mooting, you may pause the timer by clicking on the bottom right corner, or return to home page by clicking on the left corner</li>
+                        <p></p>
+                        <li>At the end of your session, you will be provided with an assessment of your mooting.</li>
                     </ol>
+                    <p><b>OPTIONAL</b>: Once you’ve experienced JIS, please leave any feedback on your experience!</p>
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu2()}>Back to Menu</button>
