@@ -57,6 +57,11 @@ function createFormData(options: any): FormData {
 
 export async function speak(options: any){
 
+	if(options.text == "Default speech text for judge." || options.text == "initial text state"){
+		// Return if initial states
+		return(null);
+	}
+
 	console.log('Speak Options: ', options);
 	const formData = createFormData(options);
 

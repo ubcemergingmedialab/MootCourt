@@ -81,18 +81,9 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                     </div>
 
-                    <div className="captions-container">
+                    {/*<div className="captions-container">
                         <Captions config={appConfig}></Captions>
-                    </div>
-                    {/* Wrap all the HTML components here 
-                    <Dictaphone handlePauseDetected={DictaphonePauseDetected}></Dictaphone>
-                    <SpeechAnalytics></SpeechAnalytics>
-                    <ChatGPTAttach
-                    updateConfig={updateConfig}
-                    config={appConfig}
-                    setJudgeSpeechText={setJudgeSpeechText}></ChatGPTAttach>
-                    <InitiateListening></InitiateListening>
-                    */}
+                    </div>*/}
                     <ConverseAttach></ConverseAttach>
                     
                 </div>

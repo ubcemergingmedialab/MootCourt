@@ -238,6 +238,7 @@ export default function ConverseAttach(config){
     // Create a recorder
     const [recorder, setRecorder] = useState(new Recorder());
     const [conversation, setConversation] = useState(initJudgeConversation);
+    const [keyDown, setKeyDown] = useState();
 
 
     // TO DO, if audio is playing, we should stop listening to the user so that the response is not heard as user input
@@ -247,33 +248,48 @@ export default function ConverseAttach(config){
         // Wait for the recording to start and then continue while it records in the background
         // Note that its possible to try and get a response before the recording starts because there is no await
 
-      }, []);
+    }, []);
 
 
-    const handleClick = async () => {
-        
-        const recordering = recorder.getRecording();
-        // Get the chat response to the recording
-        // Playing audio is done inside Converse but the memory is handled outside here
-        const chatResponse = await Converse(conversation, recordering);
-        // Add the user's transcript as their input to the chat bot
-        let conv = createConversation(conversation, 'user', chatResponse.transcript);
-        // Add the chat bot's response as to the history of the conversation
-        conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
-        // Set the higher scoped conversation variable
-        setConversation(conv);
-        recorder.stopRecording();
-        recorder.startRecording();
+    useEffect(() => {
+        const keyDownHandler = (e) => {
+            setKeyDown(e.key);
+        }
+        document.addEventListener('keydown', keyDownHandler)
+        return () => {
+            document.removeEventListener('keydown', keyDownHandler)
 
-    };
+        }
+    })
 
-   if(config.isInteliJudge == false) { 
-        return (null)
-    } else {
-        return (
-            <>
-                <button onClick={handleClick}>{'Converse'}</button>
-            </>
-        );
-    }
+    useEffect(()=>{
+
+        if(keyDown == 'Enter'){
+            
+            (async ()=>{
+                const recordering = recorder.getRecording();
+                // Get the chat response to the recording
+                // Playing audio is done inside Converse but the memory is handled outside here
+                const chatResponse = await Converse(conversation, recordering);
+                // Add the user's transcript as their input to the chat bot
+                let conv = createConversation(conversation, 'user', chatResponse.transcript);
+                // Add the chat bot's response as to the history of the conversation
+                conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
+                // Set the higher scoped conversation variable
+                setConversation(conv);
+                // Clear data from the recording and start a new one
+                // Ideally we should wait until after the judge is done responding to start recording
+                recorder.stopRecording();
+                recorder.startRecording();
+
+                return;
+            })();
+
+            // Clear the current key
+            setKeyDown(undefined);
+        }
+
+    }, [keyDown]);
+
+    return(null);
 }
