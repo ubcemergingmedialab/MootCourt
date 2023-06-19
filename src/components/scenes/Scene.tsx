@@ -9,10 +9,6 @@ import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 import Captions from '../general/Captions';
 import '../ui/Captions.css';
-import SpeechAnalytics from '../general/SpeechAnalytics';
-import Dictaphone from '../general/Dictaphone.jsx';
-import ChatGPTAttach from '../general/ChatGPTAttach';
-import InitiateListening from '../general/WhisperSTT';
 import ConverseAttach from '../general/Converse';
 
 // Handle pause detected logic
@@ -97,7 +93,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     setJudgeSpeechText={setJudgeSpeechText}></ChatGPTAttach>
                     <InitiateListening></InitiateListening>
                     */}
-                    <ConverseAttach config={appConfig}></ConverseAttach>
+                    <ConverseAttach></ConverseAttach>
                     
                 </div>
                 </Html>
