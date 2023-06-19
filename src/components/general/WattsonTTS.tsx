@@ -61,16 +61,23 @@ export async function speak(options: any){
 	const formData = createFormData(options);
 
 	// Generate audio file and get the file path from the server
-	const response = await ServerRequestResponse(formData, 'http://localhost:60/api/tts')
+	const response = await ServerRequestResponse(formData, 'http://localhost:60/api/tts');
+	console.log('audio file generated');
 	let responseJSON;
 	if(response !== undefined){
+		console.log('awaiting json');
 		responseJSON = await response.json();
+		console.log('json done');
 	}
-
+	
+	console.log('getting audio: ', responseJSON.audioPath);
 	const getData = createFormData({ 'audioPath': responseJSON.audioPath });
 
 	// Get the file from the server at the file path 
-	const audio = await	ServerRequestResponse(getData, 'http://localhost:60/api/audio')
+	const audio = await	ServerRequestResponse(getData, 'http://localhost:60/api/audio');
+	console.log('audio: ', audio);
+
+	// Convert to arrayBuffer
 	let arrayBuffer;
 	if(audio !== undefined){
 		arrayBuffer = await audio.arrayBuffer();

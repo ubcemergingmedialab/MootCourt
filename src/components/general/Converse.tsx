@@ -250,30 +250,30 @@ export default function ConverseAttach(config){
       }, []);
 
 
-    const handleClick = () => {
+    const handleClick = async () => {
         
-        const func = async ()=>{
-            const recordering = recorder.getRecording();
-            const chatResponse = await Converse(conversation, recordering);
-            // Add the user's transcript as their input to the chat bot
-            let conv = createConversation(conversation, 'user', chatResponse.transcript);
-            // Add the chat bot's response as to the history of the conversation
-            conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
-            // Set the higher scoped conversation variable
-            setConversation(conv);
-            recorder.stopRecording();
-            recorder.startRecording();
-        }
-        
-        func();
+        const recordering = recorder.getRecording();
+        // Get the chat response to the recording
+        // Playing audio is done inside Converse but the memory is handled outside here
+        const chatResponse = await Converse(conversation, recordering);
+        // Add the user's transcript as their input to the chat bot
+        let conv = createConversation(conversation, 'user', chatResponse.transcript);
+        // Add the chat bot's response as to the history of the conversation
+        conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
+        // Set the higher scoped conversation variable
+        setConversation(conv);
+        recorder.stopRecording();
+        recorder.startRecording();
 
     };
 
    if(config.isInteliJudge == false) { 
-    return (null)} else {
-    return (
-       <>
-            <button onClick={handleClick}>{'Converse'}</button>
-        </>
-    )};
+        return (null)
+    } else {
+        return (
+            <>
+                <button onClick={handleClick}>{'Converse'}</button>
+            </>
+        );
+    }
 }
