@@ -1,5 +1,4 @@
 import react from 'react';
-import * as openai from 'openai';
 import {Readable} from 'stream';
 import React, { useState, useEffect } from 'react';
 
@@ -21,26 +20,13 @@ async function ServerRequestResponse(data: FormData, server){
 
 // A single message with a role and content. In the future, the optional name could be added
 function createMessage(messageRole: string, messageContent: string){
-        
-    let setrole: openai.ChatCompletionRequestMessageRoleEnum;
-
-    if(messageRole === 'assistant'){
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.Assistant
-    } else if(messageRole === 'system'){
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.System
-    } else if(messageRole === 'user'){
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.User
-    } else{
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.User
-    }
-
-    const message: openai.ChatCompletionRequestMessage = {role: setrole, content: messageContent};
+    const message = {role: messageRole, content: messageContent};
 
     return message;
 }
 
 // Continue the previous conversation with a new message
-function createConversation(conversation: Array<openai.ChatCompletionRequestMessage>, user: string, prompt: string){
+function createConversation(conversation: Array<object>, user: string, prompt: string){
     let message = createMessage(user, prompt);
     let messages = [...conversation]
     messages.push(message);
@@ -227,7 +213,7 @@ export async function Converse(conversation, recording){
 
 export default function ConverseAttach(config){
     
-    const blankConversation: Array<openai.ChatCompletionRequestMessage> = [];
+    const blankConversation: Array<object> = [];
     // SystemPrompt is the intial message that the conversation is prepoulated with to control ChatGPT's behavour
     // This should probably be part of the default settings in the JSON
     // It is possible to providing multiple system messages each with an intention is better than a large block
