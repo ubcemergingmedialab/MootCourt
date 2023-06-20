@@ -1,15 +1,16 @@
-import {useState, useEffect} from 'react'
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
-import Model from '../general/Model.js'
+import {useState, useEffect} from 'react';
+import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
+import Model from '../general/Model.js';
 import {Html} from "@react-three/drei";
-import GlobalTimer from '../general/GlobalTimer'
-import PauseButton from '../buttons/PauseButton'
-import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
+import GlobalTimer from '../general/GlobalTimer';
+import PauseButton from '../buttons/PauseButton';
+import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar';
 import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
-import Captions from '../general/Captions';
+import Captions from '../ui/Captions.js';
 import '../ui/Captions.css';
 import ConverseAttach from '../general/Converse';
+import PausedMenu from '../ui/PausedMenu';
 
 // Handle pause detected logic
 const DictaphonePauseDetected = () => {
@@ -85,6 +86,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         <Captions config={appConfig}></Captions>
                     </div>*/}
                     <ConverseAttach></ConverseAttach>
+                    <PausedMenu appPaused={appPaused} togglePause={togglePause}></PausedMenu>
                     
                 </div>
                 </Html>

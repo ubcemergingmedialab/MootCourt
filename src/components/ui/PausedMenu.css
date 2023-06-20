@@ -1,0 +1,27 @@
+.PausedMenu {
+    background-color: hsla(219, 32%, 44%, 0.582);
+    border-radius: 30px;
+    margin: auto;
+    padding-left: 15vw;
+    padding-right: 15vw;
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+}
+
+h1, p {
+    color: white;
+    text-align: center;
+}
+
+p {
+    font-size: 1.8rem;
+}
+
+h1 {
+    padding-bottom: 20px;
+
+}
+
+button {
+    margin: auto
+}

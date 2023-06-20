@@ -21,7 +21,6 @@ function pressStart() {
 }
 
 
-
 function pressCustomize() {
     resetDisplayedUI("SetUp", "Questions");
 }
