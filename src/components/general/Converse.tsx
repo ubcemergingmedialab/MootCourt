@@ -17,17 +17,9 @@ async function ServerRequestResponse(data: FormData, server){
     }
 }
 
-
-// A single message with a role and content. In the future, the optional name could be added
-function createMessage(messageRole: string, messageContent: string){
-    const message = {role: messageRole, content: messageContent};
-
-    return message;
-}
-
 // Continue the previous conversation with a new message
-function createConversation(conversation: Array<object>, user: string, prompt: string){
-    let message = createMessage(user, prompt);
+function createConversation(conversation: Array<object>, role: string, content: string): Array<object> {
+    let message = {role: role, content: content};
     let messages = [...conversation]
     messages.push(message);
     return messages;
