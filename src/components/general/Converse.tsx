@@ -1,5 +1,4 @@
 import react from 'react';
-import * as openai from 'openai';
 import {Readable} from 'stream';
 import React, { useState, useEffect } from 'react';
 
@@ -18,30 +17,9 @@ async function ServerRequestResponse(data: FormData, server){
     }
 }
 
-
-// A single message with a role and content. In the future, the optional name could be added
-function createMessage(messageRole: string, messageContent: string){
-        
-    let setrole: openai.ChatCompletionRequestMessageRoleEnum;
-
-    if(messageRole === 'assistant'){
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.Assistant
-    } else if(messageRole === 'system'){
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.System
-    } else if(messageRole === 'user'){
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.User
-    } else{
-        setrole = openai.ChatCompletionRequestMessageRoleEnum.User
-    }
-
-    const message: openai.ChatCompletionRequestMessage = {role: setrole, content: messageContent};
-
-    return message;
-}
-
 // Continue the previous conversation with a new message
-function createConversation(conversation: Array<openai.ChatCompletionRequestMessage>, user: string, prompt: string){
-    let message = createMessage(user, prompt);
+function createConversation(conversation: Array<object>, role: string, content: string): Array<object> {
+    let message = {role: role, content: content};
     let messages = [...conversation]
     messages.push(message);
     return messages;
@@ -186,7 +164,7 @@ export async function Converse(conversation, recording){
             max_tokens: 200,
             
             // Judge voice setting
-            voice: 'en-US_EmmaExpressive',
+            voice: 'en-US_MichaelV3Voice',// 'en-US_EmmaExpressive',
             // Judge speaking rate percentage shift. It can be negative
             // ex 0 is normal, 100 is x2 speed
             ratePercentage: 0,
@@ -227,17 +205,18 @@ export async function Converse(conversation, recording){
 
 export default function ConverseAttach(config){
     
-    const blankConversation: Array<openai.ChatCompletionRequestMessage> = [];
+    const blankConversation: Array<object> = [];
     // SystemPrompt is the intial message that the conversation is prepoulated with to control ChatGPT's behavour
     // This should probably be part of the default settings in the JSON
     // It is possible to providing multiple system messages each with an intention is better than a large block
     // I believe that ChatGPT will read each and incorperate the instruction of each message somewhat seperately though considering the whole conversation
     // This might mean that distinct instructions should be seperated
-    const systemPrompt = "You are an AI acting as a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice. Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law. Consider the arguments of the appellant or respondent. The transcript provided to you will contain information regarding their WPM and the [start-stop] time of speaking. Incorporate the emotions 'Nod,' 'Looking at paper,' 'Shake Head,' or 'Point' into your response by inserting them within square brackets at a suitable place. Ensure that each response includes at least one emotion. For example, you can write '[Shake Head] I don't believe you.' Or ‘This does not pertain to you [Point] as it is none of your business.’ Please keep your response limited to 2-6 sentences. As you haven't yet been prompted, only greet the student and ask them to begin.";
+    const systemPrompt = "Play the role of a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice. Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law. Consider the arguments of the appellant or respondent. The transcript provided to you will contain information regarding their WPM and the [start-stop] time of speaking. Incorporate the emotions 'Nod,' 'Looking at paper,' 'Shake Head,' or 'Point' into your response by inserting them within square brackets at a suitable place. Ensure that each response includes at least one emotion. For example, you can write '[Shake Head] I don't believe you.' Or ‘This does not pertain to you [Point] as it is none of your business.’ Please keep your response limited to 2-6 sentences. As you haven't yet been prompted, only greet the student and ask them to begin.";
     let initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt);
     // Create a recorder
     const [recorder, setRecorder] = useState(new Recorder());
     const [conversation, setConversation] = useState(initJudgeConversation);
+    const [keyDown, setKeyDown] = useState();
 
 
     // TO DO, if audio is playing, we should stop listening to the user so that the response is not heard as user input
@@ -247,33 +226,48 @@ export default function ConverseAttach(config){
         // Wait for the recording to start and then continue while it records in the background
         // Note that its possible to try and get a response before the recording starts because there is no await
 
-      }, []);
+    }, []);
 
 
-    const handleClick = () => {
-        
-        const func = async ()=>{
-            const recordering = recorder.getRecording();
-            const chatResponse = await Converse(conversation, recordering);
-            // Add the user's transcript as their input to the chat bot
-            let conv = createConversation(conversation, 'user', chatResponse.transcript);
-            // Add the chat bot's response as to the history of the conversation
-            conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
-            // Set the higher scoped conversation variable
-            setConversation(conv);
-            recorder.stopRecording();
-            recorder.startRecording();
+    useEffect(() => {
+        const keyDownHandler = (e) => {
+            setKeyDown(e.key);
         }
-        
-        func();
+        document.addEventListener('keydown', keyDownHandler)
+        return () => {
+            document.removeEventListener('keydown', keyDownHandler)
 
-    };
+        }
+    })
 
-   if(config.isInteliJudge == false) { 
-    return (null)} else {
-    return (
-       <>
-            <button onClick={handleClick}>{'Converse'}</button>
-        </>
-    )};
+    useEffect(()=>{
+
+        if(keyDown == 'Enter'){
+            
+            (async ()=>{
+                const recordering = recorder.getRecording();
+                // Get the chat response to the recording
+                // Playing audio is done inside Converse but the memory is handled outside here
+                const chatResponse = await Converse(conversation, recordering);
+                // Add the user's transcript as their input to the chat bot
+                let conv = createConversation(conversation, 'user', chatResponse.transcript);
+                // Add the chat bot's response as to the history of the conversation
+                conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
+                // Set the higher scoped conversation variable
+                setConversation(conv);
+                // Clear data from the recording and start a new one
+                // Ideally we should wait until after the judge is done responding to start recording
+                recorder.stopRecording();
+                recorder.startRecording();
+
+                return;
+            })();
+
+            // Clear the current key
+            setKeyDown(undefined);
+        }
+
+    }, [keyDown]);
+
+    return(null);
 }

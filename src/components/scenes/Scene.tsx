@@ -1,15 +1,16 @@
-import {useState, useEffect} from 'react'
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
-import Model from '../general/Model.js'
+import {useState, useEffect} from 'react';
+import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
+import Model from '../general/Model.js';
 import {Html} from "@react-three/drei";
-import GlobalTimer from '../general/GlobalTimer'
-import PauseButton from '../buttons/PauseButton'
-import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar'
+import GlobalTimer from '../general/GlobalTimer';
+import PauseButton from '../buttons/PauseButton';
+import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar';
 import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
-import Captions from '../general/Captions';
+import Captions from '../ui/Captions.js';
 import '../ui/Captions.css';
 import ConverseAttach from '../general/Converse';
+import PausedMenu from '../ui/PausedMenu';
 
 // Handle pause detected logic
 const DictaphonePauseDetected = () => {
@@ -81,19 +82,11 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                     </div>
 
-                    <div className="captions-container">
+                    {/*<div className="captions-container">
                         <Captions config={appConfig}></Captions>
-                    </div>
-                    {/* Wrap all the HTML components here 
-                    <Dictaphone handlePauseDetected={DictaphonePauseDetected}></Dictaphone>
-                    <SpeechAnalytics></SpeechAnalytics>
-                    <ChatGPTAttach
-                    updateConfig={updateConfig}
-                    config={appConfig}
-                    setJudgeSpeechText={setJudgeSpeechText}></ChatGPTAttach>
-                    <InitiateListening></InitiateListening>
-                    */}
+                    </div>*/}
                     <ConverseAttach></ConverseAttach>
+                    <PausedMenu appPaused={appPaused} togglePause={togglePause}></PausedMenu>
                     
                 </div>
                 </Html>

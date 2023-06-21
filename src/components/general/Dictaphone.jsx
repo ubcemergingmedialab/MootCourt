@@ -1,15 +1,6 @@
-import {useEffect, useState} from 'react';
+/*import {useEffect, useState} from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-/*
-May need a googleAPiKey for cross browser support
-See: https://www.npmjs.com/package/react-hook-speech-to-text/v/0.1.0
-
-Note that documentation should be included on the git page regarding installation of react-speech-recognition
-npm install react-speech-recognition --force
-
-Whisper API may be more accurate
-*/
 
 const Dictaphone = ({ handlePauseDetected }) => {
     let {
@@ -69,4 +60,4 @@ const Dictaphone = ({ handlePauseDetected }) => {
 
     return(null);
 };
-export default Dictaphone;
+export default Dictaphone;*/

@@ -13,20 +13,39 @@ async function ServerRequestResponse(data: FormData, server){
     }
 }
 
-let currentSource; // It may be better to refactor in a more react like format
+// It may be better to refactor in a more react like format
+// This is currently assigned at the root so that cancel can be a sperately exported function and have access
+// It might be better to have it accessible even higher in the app and passed down
+let currentSource;
 async function playArrayBuffer(arrayBuffer: ArrayBuffer): Promise<void> {
 	try {
-		const audioContext = new AudioContext();
-		const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-		const source = audioContext.createBufferSource();
-		source.buffer = audioBuffer;
-		source.connect(audioContext.destination);
 
-		// Assign the new source to currentSource
-		currentSource = source;
+		let audioContext: AudioContext | null = null;
 
-		// Start the audio playback
-		source.start();
+		// Check if you AudioContext is availble in the current browser
+		if ('AudioContext' in window) {
+			audioContext = new AudioContext();
+		  } else if ('webkitAudioContext' in window) {
+			// Explicitly cast window to any to bypass TypeScript's type checking
+			audioContext = new (window as any).webkitAudioContext();
+		  } else {
+			// Browser doesn't support AudioContext
+			console.error('Web Audio API not supported');
+		  }
+
+		  // Check if not null
+		  if(audioContext){
+			const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+			const source = audioContext.createBufferSource();
+			source.buffer = audioBuffer;
+			source.connect(audioContext.destination);
+	
+			// Assign the new source to currentSource
+			currentSource = source;
+	
+			// Start the audio playback
+			source.start();
+		  }
 
 	} catch (error) {
 		console.error('Error playing audio:', error);
@@ -57,20 +76,32 @@ function createFormData(options: any): FormData {
 
 export async function speak(options: any){
 
+	if(options.text === "Default speech text for judge." || options.text === "initial text state"){
+		// Return if initial states
+		return(null);
+	}
+
 	console.log('Speak Options: ', options);
 	const formData = createFormData(options);
 
 	// Generate audio file and get the file path from the server
-	const response = await ServerRequestResponse(formData, 'http://localhost:60/api/tts')
+	const response = await ServerRequestResponse(formData, 'http://localhost:60/api/tts');
+	console.log('audio file generated');
 	let responseJSON;
 	if(response !== undefined){
+		console.log('awaiting json');
 		responseJSON = await response.json();
+		console.log('json done');
 	}
-
+	
+	console.log('getting audio: ', responseJSON.audioPath);
 	const getData = createFormData({ 'audioPath': responseJSON.audioPath });
 
 	// Get the file from the server at the file path 
-	const audio = await	ServerRequestResponse(getData, 'http://localhost:60/api/audio')
+	const audio = await	ServerRequestResponse(getData, 'http://localhost:60/api/audio');
+	console.log('audio: ', audio);
+
+	// Convert to arrayBuffer
 	let arrayBuffer;
 	if(audio !== undefined){
 		arrayBuffer = await audio.arrayBuffer();

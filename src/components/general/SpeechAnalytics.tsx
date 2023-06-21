@@ -214,3 +214,5 @@ export function SpeechAnalytics(chunksize: number, MeasureWPMLength: number) {
 export default function SpeechAnalytics_Dummy(){
     return(null);
 };
+
+export {}
