@@ -1,4 +1,4 @@
-/*import {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export function SpeechAnalytics(chunksize: number, MeasureWPMLength: number) {
@@ -213,6 +213,6 @@ export function SpeechAnalytics(chunksize: number, MeasureWPMLength: number) {
 // This tsx does not export HTML but a valid export type is required
 export default function SpeechAnalytics_Dummy(){
     return(null);
-};*/
+};
 
 export {}

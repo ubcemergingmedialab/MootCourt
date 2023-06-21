@@ -164,7 +164,7 @@ export async function Converse(conversation, recording){
             max_tokens: 200,
             
             // Judge voice setting
-            voice: 'en-US_EmmaExpressive',
+            voice: 'en-US_MichaelV3Voice',// 'en-US_EmmaExpressive',
             // Judge speaking rate percentage shift. It can be negative
             // ex 0 is normal, 100 is x2 speed
             ratePercentage: 0,
