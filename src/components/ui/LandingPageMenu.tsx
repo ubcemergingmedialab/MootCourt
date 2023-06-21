@@ -55,6 +55,10 @@ function pressBackFromDifficulty() {
     resetDisplayedUI("Difficulty", "Main");
 }
 
+function pressBackFromPosition() {
+    resetDisplayedUI("Position", "Difficulty");
+}
+
 function pressBackToMenu2() {
     resetDisplayedUI("Tutorial", "Main");
 }
@@ -67,6 +71,7 @@ function pressBackToMenu3() {
 function pressBackToMenu4() {
     resetDisplayedUI("Position", "Main");
 }
+
 
 
 function pressBackFromQuestions() {
@@ -206,7 +211,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     </div>
                 </div>
                 <div className="sideMenuBottom">
-                    <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu4()}>Back to Menu</button>
+                    <button className="button wide-button" type="button" onClick={(event) => pressBackFromPosition()}>Back</button>
                 </div>
             </div>
         </div>}
@@ -214,7 +219,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         {<div className="stayhidden" id="Difficulty">
             <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
-                    <h1>Position</h1>
+                    <h1>Difficulty</h1>
                     <div className="hr-2"></div>
                 </div>
                 <div className="sideMenuContents">
@@ -238,29 +243,31 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <div className="buttonFlexBox">
                     <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
-                    <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
+                    {/* <button className="button wide-button" type="button" onClick={pressDefault}>Default</button> */}
                     <div className="sideMenuContentsWithButtons">
                     <p>This allows you to customize specific timer functions and questions that will be asked. </p>
                         <p>Adjusting total time, introduction time and Intervals</p>
                         <p>Randomizing or delaying questions</p>
                         <p>Adding custom questions and captions</p>
                     </div>
-                    </div>
-                <div className=" ">
-                    <p style={{fontSize: '22px'}}> Default set up includes: </p>
-                    <ul>
-                        <li>Total duration: 25 min </li>
-                        <li>Introduction time: 2 min 30 sec </li>
-                        <li>Interval: 5 min </li>
-                        <li>Approximate time between when questions will be asked</li>
-                        <li>No randomized questions</li>
-                    </ul>
+                    
+                
+                <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
+                <div className="sideMenuContentsWithButtons">
+                        <p>Total duration: 25 min </p>
+                        <p>Introduction time: 2 min 30 sec </p>
+                        <p>Interval: 5 min </p>
+                        <p>Approximate time between when questions will be asked</p>
+                        <p>No randomized questions</p>
+                        </div>
+                
                 </div>
                 </div>
-                <div className="sideMenuBottom">
+                {/* <div className="sideMenuBottom"> */}
+                <div className="buttonFlexBox"></div>
                     <button className="button large-button" type="button" onClick={(event) => pressBackFromSetup()}>Back</button>
                     {/*pressNextFromSetup function not needed as other options are presented*/}
-                </div>
+                {/* </div> */}
             </div>
         </div>}
 
