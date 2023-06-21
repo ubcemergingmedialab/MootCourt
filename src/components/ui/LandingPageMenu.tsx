@@ -264,10 +264,12 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 </div>
                 </div>
                 {/* <div className="sideMenuBottom"> */}
-                <div className="buttonFlexBox"></div>
+                {/* <div className="buttonFlexBox"></div> */}
+                <div className="sideMenuBottom">                
                     <button className="button large-button" type="button" onClick={(event) => pressBackFromSetup()}>Back</button>
                     {/*pressNextFromSetup function not needed as other options are presented*/}
                 {/* </div> */}
+                </div>
             </div>
         </div>}
 
