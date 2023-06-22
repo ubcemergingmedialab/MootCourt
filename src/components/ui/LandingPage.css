@@ -25,6 +25,8 @@ body * {
     margin-block-end: 10px;
 }
 
+
+
 h1 {
     text-transform: uppercase;
     font-size: 5.5vw;
@@ -142,9 +144,9 @@ h1 {
 }
 
 .sideMenuContents p {
-    margin: 10px 55px; /* Adjust the pixel value for top and bottom margin */
+    margin: 5px 55px; /* Adjust the pixel value for top and bottom margin */
     font-size: 20px;
-    line-height: 1.5; /* Adjust the line height value */
+    line-height: 1.2; /* Adjust the line height value */
 }
 
 .sideMenuContents li {
