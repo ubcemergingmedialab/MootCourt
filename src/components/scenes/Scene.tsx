@@ -45,7 +45,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                 judgeElapsedTime={judgeElapsedTime}
                 setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
                 setJudgeSpeechText={setJudgeSpeechText}></JudgeTimedSpeech> */}
-                <SceneJudgeAvatar appPaused={appPaused} judgeSpeechText={judgeSpeechText}></SceneJudgeAvatar>
+                <SceneJudgeAvatar appPaused={appPaused} judgeSpeechText={judgeSpeechText} config={appConfig}></SceneJudgeAvatar>
                 <Model modelUrl="./models/courtroompropsNov17.glb"
                     pos={[0, -3, 3]}
                     rot={[0, 0, 0]}

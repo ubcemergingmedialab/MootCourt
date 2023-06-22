@@ -4,6 +4,7 @@ import { useControls } from 'leva'
 import { useFrame } from '@react-three/fiber'
 import PropTypes from 'prop-types'
 import { OrbitControls, Stats, Text } from "@react-three/drei";
+import AvatarStaticClassic from '../avatar_components/AvatarStaticClassic'
 
 
 const SkinSelect = ({ updateSkin }) => {
@@ -21,7 +22,7 @@ const SkinSelect = ({ updateSkin }) => {
 }
 
 
-function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused}) {
+function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused, config}) {
     const [currentText, setText] = useState("initial text state")
     const [readyToSpeak, setReadyToSpeak] = useState(false)
     const [isSpeaking, setIsSpeaking] = useState(false)
@@ -76,9 +77,18 @@ function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused}) {
         }
     }, [appPaused])
 
-    return (<Suspense fallback={null}>
-        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0, -2.5, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
-    </Suspense>)
+    if(config.isInteliJudge) {
+
+        return (<Suspense fallback={null}>
+            <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0, -2.5, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        </Suspense>)
+
+    } else {
+        return (<Suspense fallback={null}>
+            <AvatarStaticClassic isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0, -2.5, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></AvatarStaticClassic>
+        </Suspense>)
+    }
+
 }
 
 export default SceneJudgeAvatar;
