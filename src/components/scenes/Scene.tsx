@@ -86,7 +86,9 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         <Captions config={appConfig}></Captions>
                     </div>*/}
                     <ConverseAttach></ConverseAttach>
-                    <PausedMenu appPaused={appPaused} togglePause={togglePause}></PausedMenu>
+                    <PausedMenu appPaused={appPaused} 
+                    togglePause={setPaused}>
+                    </PausedMenu>
                     
                 </div>
                 </Html>
