@@ -202,6 +202,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
                             <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_2l3a4rVJhxIcKeq" target="_blank">GIVE FEEDBACK</a>
                         </button>
+                        <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
+                            <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_bQpPxMLkx4ShRZk" target="_blank">REPORT AN ISSUE</a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -383,8 +386,10 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="hr-2"></div>
                 </div>
                 <div className="sideMenuContents">
-                    <p>Moot Court is a virtual practice space for mooting by yourself. </p>
-                    <p>You can customize the settings according to your needs through the menu.</p>
+                    <p>Judicial Interrogatory Simulator, also previously known as Moot Court, is a virtual practice space for mooting by yourself. </p>
+                    <p>This provides you both the personal space to practice with a set time and pace or as an Artificial intelligence tool, where you can practice your moot court with an OpenAI.</p>
+                    <p>You can customize the settings according to your needs through the menu. </p>
+                    <p>If you want to learn more about Judicial Interrogatory Simulator, check out the EML website: <u>Judicial Interrogatory Simulator</u></p>
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu()}>Back to Menu</button>
