@@ -40,6 +40,10 @@ function pressMootingResources() {
     resetDisplayedUI("Main", "MootingResources");
 }
 
+function pressTroubleShooting() {
+    resetDisplayedUI("Main", "TroubleShooting");
+}
+
 
 function pressFeedback() {
     resetDisplayedUI("Main", "Feedback");
@@ -57,6 +61,11 @@ function pressBackFromDifficulty() {
 function pressBackFromPosition() {
     resetDisplayedUI("Position", "Difficulty");
 }
+
+function pressBackFromTroubleShooting() {
+    resetDisplayedUI("TroubleShooting", "Main");
+}
+
 
 function pressBackToMenu2() {
     resetDisplayedUI("Tutorial", "Main");
@@ -189,6 +198,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={(event) => pressAbout()} > ABOUT</button>
                         <button className="button wide-button" type="button" onClick={(event) => pressTutorial()}> TUTORIAL </button>
                         <button className="button wide-button" type="button" onClick={(event) => pressMootingResources()}>MOOTING RESOURCES</button>
+                        <button className="button wide-button" type="button" onClick={(event) => pressTroubleShooting()}>TROUBLE SHOOTING</button>
                         <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
                             <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_2l3a4rVJhxIcKeq" target="_blank">GIVE FEEDBACK</a>
                         </button>
@@ -392,8 +402,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <ol>
                         <li>Click Start to SetUp and click the customization options in a guided process.</li>
-                        <li>You can do default or customize the timer and questions before starting.</li>
-                        <li>Pause the timer in the bottom right corner</li>
+                        <li>After selecting your difficulty, you can choose to either go to the default or customize your moot court session in settings.</li>
+                        <li>During your mooting, you may pause the timer by clicking on the bottom right corner, or return to home page by clicking on the left corner</li>
+                        <li>At the end of your session, you will be provided with an assessment of your mooting.</li>
                     </ol>
                     <p><b>OPTIONAL</b>: Once you’ve experienced JIS, please leave any feedback on your experience!</p>
                 </div>
@@ -421,6 +432,30 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 </div>
             </div>
         }
+
+{<div className="stayhidden" id="TroubleShooting">
+            <div className="sideMenuInner">
+                <div className="sideMenuTitleText">
+                    <h1>Trouble Shooting</h1>
+                    <div className="hr-2"></div>
+                </div>
+                <div className="sideMenuContents">
+                    <p>If you expirence the following:</p>
+                    <ul>
+                        <li>No audio sound</li>
+                        <li>Audio cut off (Judge doesn’t complete sentence)</li>
+                        <li>White screen</li>
+                        <li>Frozen screen (Timer or judge isn’t moving)</li>
+                    </ul>
+                    <p>We recommend changing the browser to either <b>Firefox or Chrome</b>. You may also try changing your device.</p>
+                    <p>If you continue experiencing issues or have a different problem that wasn’t listed above, please report the bug for us to resolve.</p>
+                </div>
+                
+                <div className="sideMenuBottom">
+                    <button className="button wide-button" type="button" onClick={(event) => pressBackFromTroubleShooting()}>Back to Menu</button>
+                </div>
+            </div>
+        </div>}
     </>
 }
 
