@@ -10,7 +10,7 @@ function PauseButton({ togglePause }) {
     return <>
     {<div className={"pauseContainer sceneButtonContainer"}>
         <button className="scene-button" onClick={() => { togglePause(); setIsPaused(!isPaused) }}>
-            {isPaused ? "Continue App" : "Pause App"}
+            {isPaused ? "Pause App" : "Pause App"}
         </button>
     </div>}
     </>

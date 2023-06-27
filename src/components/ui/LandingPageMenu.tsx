@@ -450,10 +450,11 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <p>We recommend changing the browser to either <b>Firefox or Chrome</b>. You may also try changing your device.</p>
                     <p>If you continue experiencing issues or have a different problem that wasn’t listed above, please report the bug for us to resolve.</p>
                 </div>
-                
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackFromTroubleShooting()}>Back to Menu</button>
                 </div>
+                
+                
             </div>
         </div>}
     </>
