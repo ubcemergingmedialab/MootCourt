@@ -237,7 +237,20 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuContents">
                     <div className="buttonFlexBox buttonFlexBox-Position">
                         <button className="button wide-button" type="button" onClick= {pressClassic} >Classic</button>
+                        </div>
+                        <div className="sideMenuContentsWithButtons">
+                        <p>Practice your moot court speech by setting specific time goals or personal questions. </p>
+                          <p>  Under a given total time, you will be given set interval to provide your argument before asked a question. </p>
+        
+                    </div>
+                        <div className="buttonFlexBox buttonFlexBox-Position">
                         <button className="button wide-button" type="button" onClick={pressIntellaJudge}>Intella-Judge</button>
+                    </div>
+                    <div className="sideMenuContentsWithButtons">
+                        <p>Practice your moot court with an OpenAI for live communication and AI-generated questions.</p>  
+                        
+                        <p>  Press “Enter” when you’re done speaking to hear the IntellaJudge’s response. </p>
+        
                     </div>
                 </div>
                 <div className="sideMenuBottom">
