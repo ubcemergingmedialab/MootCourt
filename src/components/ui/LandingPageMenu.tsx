@@ -122,10 +122,10 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         updateConfig({...config, setRandomized: checkBox.checked})
     }
 
-    const setDelay = () => {
-        let checkBox = document.getElementById("setDelay") as HTMLInputElement
-        updateConfig({...config, setDelay: checkBox.checked})
-    }
+    // const setDelay = () => {
+    //     let checkBox = document.getElementById("setDelay") as HTMLInputElement
+    //     updateConfig({...config, setDelay: checkBox.checked})
+    // }
 
     const setTotalTime = (e) => {
         updateConfig({...config, totalTime: parseInt(e.target.value) * 60})
@@ -325,7 +325,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <div className="FieldDescription"></div>
                         <p>Randomize the questions that will be asked</p>
                     </div>
-                    <div className="formitem">
+                    {/* <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
                         <div className="toggle-container">
                             <input name="Interval" type="checkbox" id="setDelay" onChange={setDelay} />
@@ -334,7 +334,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <div className="FieldDescription"></div>
                         <p>Delay the next question for another interval</p>
 
-                    </div>
+                    </div> */}
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button large-button" type="button" onClick={(event) => pressBackFromQuestions()}>Back</button>
