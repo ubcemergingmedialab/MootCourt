@@ -110,15 +110,44 @@ h1 {
 
 .sideMenuContents {
     /* position: relative;
-    top: 7.5%;
-    height: 92.5%; */
-    padding-top: 5%;
+    top: 7.5%;*/
+
+    padding: 5%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    font-size: 20px;
-    margin-bottom: 5%;
+    line-height: 1.5;
+    /* margin-bottom: 5%; */
 }
+
+
+.sideMenuContents li {
+    margin-top: 0px;
+    font-size: calc(1vw + 0.3vh + 0.1vmin);
+    padding-left: 0;
+    line-height: calc(1.7vh + 2vmin);
+}
+
+.sideMenuContents ul {
+    margin: 5px 5px;
+    padding-left: 10%;
+    
+}
+.sideMenuContents ol {
+    margin-top: 0px;
+}
+
+.sideMenuContents p {
+    padding-left: 5%;
+    padding-right: 5%;
+
+    margin-top: 0%;
+    margin-bottom: 0%;
+
+    font-size: calc(1.2vw + 0.1vmin);
+    line-height: calc(1.7vh + 2vmin);
+}
+
 
 .sideMenuContentsWithButtons {
     /* position: relative;
@@ -135,26 +164,27 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    text-align: center;
-    margin: 5px 8% 0;
-    overflow-x: auto;
-    max-height: 80vh;
+    align-items: right;
+    text-align: left;
 }
 
-.sideMenuContents p {
-    margin: 5px 55px; /* Adjust the pixel value for top and bottom margin */
-    font-size: 20px;
-    line-height: 1.2; /* Adjust the line height value */
+.sideMenuContentsWithButtons p {
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    font-size: calc(1.2vw + 0.1vmin);
+    line-height: calc(1vh + 2vmin);
 }
 
-.sideMenuContents li {
-    margin: 0 40px; /* Adjust the pixel value for top and bottom margin */
-    font-size: 20px;
-    line-height: 1.7; /* Adjust the line height value */
-}
+.sideMenuContentsWithButtons li {
+    padding-left: 1%;
+    padding-right: 5%;
+    line-height: calc(1vh + 2vmin);
+    margin-top: 0%;
+    margin-bottom: 0%;
 
+}
 
 .sideMenuBottom {
     text-align: center;
@@ -195,14 +225,16 @@ h1 {
 
 #Main .buttonFlexBox {
     flex: 1;
+    min-height: 50%;
+    display: flex;
     justify-content: space-between;
 }
 
 #Main .buttonFlexBox button,
 #Main .buttonFlexBox .button,
 #Timer .formitem {
-    flex: 1;
-    /* margin: 0 4.5vw; */
+    flex: 1 1 auto;
+    font-size: calc(1vw + 0.5vh); /* Adjust the font-size as needed */
 }
 
 #Main .buttonFlexBox {
@@ -245,7 +277,8 @@ h1 {
     font-size: 1.5vw;
 }
 
-.sideMenuTitleText {
+.sideMenuTitleText h1{
+    font-size: clamp(2vw, 7vh, 10vw);
     /* font-size: 5vw;
     font-weight: bold;
     color: white;
@@ -355,6 +388,20 @@ h1 {
     margin-right : auto;
     background-color: #F7CA18;
     border-color: #F7CA18;
+}
+
+.hr-3 {
+    align-content : center;
+    height: 0.5vh;
+    width : 90%;
+    margin-top: 4%;
+    margin-bottom: 5%;
+    margin-left : auto;
+    margin-right : auto;
+    background-color: #F7CA18;
+    border-color: #F7CA18;
+    display: block;
+
 }
 
 .questionPageGrid {
