@@ -208,7 +208,7 @@ h1 {
 /* Individual form items; these are listed in linear order, in a single column. */
 .formitem {
     width: 100%;
-    margin: 4vh 4.5vw 4vh 4.5vw;
+    margin: 2vh 2.5vw 2vh 2.5vw;
     float: left;
     line-height: 3em;
 }

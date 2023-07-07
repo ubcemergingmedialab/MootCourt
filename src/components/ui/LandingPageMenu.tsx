@@ -312,7 +312,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <label htmlFor="Interval" >Interval</label>
                         <input id="interval-field" name="Interval" type="number" min="1" defaultValue="5" onChange={setInterval} ></input>
                         <div className="FieldDescription">minutes</div>
-                        <p>Approximate time between when questions will be asked</p>
+                        <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Approximate time between when questions will be asked</p>
                     </div>
                     <div className="formitem">
                         <div className="label-wrapper">
@@ -323,7 +323,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                             <div className="slider round"></div>
                         </div>
                         <div className="FieldDescription"></div>
-                        <p>Randomize the questions that will be asked</p>
+                        <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Randomize the questions that will be asked</p>
                     </div>
                     {/* <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
@@ -354,7 +354,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <label htmlFor="TotalDuration">Total duration</label>
                         <input type="number" min="1" defaultValue="25" id="settotalTime" onChange={setTotalTime}></input>
                         <div className="FieldDescription">minutes</div>
-                        <p style={{ fontSize: '18px',  marginTop: '5px', lineHeight: '1' }}>Set the total time of your court session. </p>
+                        <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the total time of your court session. </p>
                     </div>
                     {/* <div className="formitem">
                         <div className="number-input-container">
@@ -372,12 +372,12 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                             <div className="slider round"></div>
                         </div>
                         <div className="FieldDescription"></div>
-                            <p style={{ fontSize: '18px',  marginTop: '5px', lineHeight: '1' }}>At the end of your session, you may extend your time if needed. </p>
+                            <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>At the end of your session, you may extend your time if needed. </p>
                     </div>
-                    <div className="formitem long-formitem" style={{marginBottom:'50px'}}>
+                    <div className="formitem " >
                         <label htmlFor="IntroductionTime" style={{ marginBottom: '-15px' }}>Introduction time</label>
                         <div className="FieldDescription"></div>
-                            <p style={{ fontSize: '18px', marginTop:'-20px', lineHeight: '0'}}>Set the introduction time of your court session. </p>
+                            <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the introduction time of your court session. </p>
                         <div className="subformitem">
                             <input name="IntroductionTime" type="number" min="1" defaultValue="2" id= "setIntroductionMinutes" onChange={setIntroductionMinutes}></input>
                             <div className="FieldDescription">minutes</div>
