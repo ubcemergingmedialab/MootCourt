@@ -238,19 +238,22 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="buttonFlexBox buttonFlexBox-Position">
                         <button className="button wide-button" type="button" onClick= {pressClassic} >Classic</button>
                         </div>
-                        <div className="sideMenuContentsWithButtons">
-                        <p>Practice your moot court speech by setting specific time goals or personal questions. </p>
-                          <p>  Under a given total time, you will be given set interval to provide your argument before asked a question. </p>
-        
-                    </div>
-                        <div className="buttonFlexBox buttonFlexBox-Position">
-                        <button className="button wide-button" type="button" onClick={pressIntellaJudge}>Intella-Judge</button>
-                    </div>
                     <div className="sideMenuContentsWithButtons">
-                        <p>Practice your moot court with an OpenAI for live communication and AI-generated questions.</p>  
-                        
-                        <p>  Press “Enter” when you’re done speaking to hear the IntellaJudge’s response. </p>
-        
+                        <p>Practice your moot court by honing your speech delivery and time managment. </p>
+                        <ul>
+                            <li>  Under a given total time, you will be given set interval to provide your argument before asked a question. </li>
+                        </ul>
+                    </div>
+            <div className="hr-3"></div>
+                <div className="buttonFlexBox buttonFlexBox-Position">
+                        <button className="button wide-button" type="button" onClick={pressIntellaJudge}>Intella-Judge</button>
+                </div>
+                    <div className="sideMenuContentsWithButtons">
+                        <p>Practice your moot court with an OpenAI for live communication and custom AI-generated questions.</p>  
+                        <ul>
+                            <li>  Press “Enter” when you’re done speaking to hear the IntellaJudge’s response. </li>
+                        </ul>
+
                     </div>
                 </div>
                 <div className="sideMenuBottom">
@@ -269,14 +272,15 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="buttonFlexBox">
                     <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
                     {/* <button className="button wide-button" type="button" onClick={pressDefault}>Default</button> */}
+                    
+                    
                     <div className="sideMenuContentsWithButtons">
                     <p>This allows you to customize specific timer functions and questions that will be asked. </p>
                         <p>Adjusting total time, introduction time and Intervals</p>
                         <p>Randomizing or delaying questions</p>
                         <p>Adding custom questions and captions</p>
                     </div>
-                    
-                
+                        
                 <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
                 <div className="sideMenuContentsWithButtons">
                         <p>Total duration: 25 min </p>
@@ -284,8 +288,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <p>Interval: 5 min </p>
                         <p>Approximate time between when questions will be asked</p>
                         <p>No randomized questions</p>
-                        </div>
-                
+                    </div>
                 </div>
                 </div>
                 {/* <div className="sideMenuBottom"> */}
@@ -419,8 +422,13 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 </div>
                 <div className="sideMenuContents">
                     <ol>
-                        <li>Click Start to SetUp and click the customization options in a guided process.</li>
-                        <li>After selecting your difficulty, you can choose to either go to the default or customize your moot court session in settings.</li>
+                        <li>Click "Start" to begin your moot court after choosing your difficulty level and position. The options you are provided are:
+                            <ul>
+                                <li>Classic: Automated judge that allows you to practice on your time management and speech delievry</li>
+                                <li>IntellaJudge: AI judge whom you can communicate and get live-response in your moot session.  </li>
+                            </ul>
+                        </li>
+                        <li>In a guided process, you can choose to either go to the default or customize your moot court session in the settings.</li>
                         <li>During your mooting, you may pause the timer by clicking on the bottom right corner, or return to home page by clicking on the left corner</li>
                         <li>At the end of your session, you will be provided with an assessment of your mooting.</li>
                     </ol>
