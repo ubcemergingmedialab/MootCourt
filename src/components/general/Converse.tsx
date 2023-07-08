@@ -1,6 +1,7 @@
 import react from 'react';
 import {Readable} from 'stream';
 import React, { useState, useEffect } from 'react';
+import { useRef } from 'react';
 
 async function ServerRequestResponse(data: FormData, server){
     try {
@@ -18,7 +19,7 @@ async function ServerRequestResponse(data: FormData, server){
 }
 
 // Continue the previous conversation with a new message
-function createConversation(conversation: Array<object>, role: string, content: string): Array<object> {
+function createConversation(conversation: Array<object>, role: string, content: string): Array<any> {
     let message = {role: role, content: content};
     let messages = [...conversation]
     messages.push(message);
@@ -140,6 +141,170 @@ export function cancel(): void {
     }
 }
 
+
+// Play the queue continuously
+let audioContext = new (window.AudioContext)(); // may want to add webkit support
+let audioQueue: AudioBuffer[] = [];
+let source;
+function playQueue(){
+
+    // Check if there is a source
+    // If there is, return to avoid starting multiple tracks
+    if (source) {
+        console.log('Already playing');
+        return;
+    }
+
+    // Check if there are items in the queue
+    if(audioQueue.length === 0){
+        return;
+    }
+
+    // Get the next buffer
+    let nextBuffer = audioQueue.shift();
+
+    // Create a new sound source
+    source = audioContext.createBufferSource();
+    source.buffer = nextBuffer;
+
+    // Play the next item in the queue when this one has ended
+    source.onended = () => {
+        console.log('Starting next clip');
+        console.log(audioQueue.length);
+        
+        // Destroy this source so that a new one can start
+        source = null;
+        playQueue();
+    };
+
+    // Connect to the destination
+    source.connect(audioContext.destination);
+
+    // Start the source
+    source.start(0);
+}
+
+/**
+ * Gets audio from the server at an audio path then intiates continuous audio play
+ * @param {string} audioPath The audio file path on the server
+ */
+
+async function GetPlayAudio(audioPath){
+
+    const getData = createFormData({ 'audioPath': audioPath });
+    // Get the audio file from the path that was given in the response
+
+    console.log('Get audio: ', audioPath);
+
+    const audioResponse = await ServerRequestResponse(getData, 'http://localhost:60/api/audio');
+
+    if(audioResponse && audioResponse.ok){
+
+        const arrayBuffer = await audioResponse.arrayBuffer();
+
+        // Convert so that length can be read
+        const  int16View = new Int16Array(arrayBuffer);
+
+        // Note that when decodeAudioData gets the array buffer it takes "ownership" of it
+        // ArrayBuffer will be detatched and contain no audio data even if accessed earlier in this callback
+
+        const audioData = await audioContext.decodeAudioData(arrayBuffer);
+        
+        audioQueue.push(audioData);
+        
+        playQueue();
+    }
+    
+}
+
+export async function ConverseMultithread(conversation, recording): Promise<object>{
+
+    // Repetition every interval
+    //const intervalId = setInterval(async ()=>{
+
+        const recordingFile = new File([recording], 'user-recording', {
+            type: 'audio/webm',
+            lastModified: new Date().getTime()
+        });
+
+        const data = {
+            // Audio recording in .webm format
+            recording: recordingFile,
+            // Prompt for whisper transcript style
+            transcriptPrompt: 'Hello, I am here to present my case.',
+            transcriptTemperature: 0.2,
+            transcriptLanguage: 'en',
+
+            // ChatGPT message history. The last message should not be a user message
+            messages: JSON.stringify(conversation),
+            chatTemperature: 0.2,
+            max_tokens: 200,
+            
+            // Judge voice setting
+            voice: 'en-US_MichaelV3Voice',// 'en-US_EmmaExpressive',
+            // Judge speaking rate percentage shift. It can be negative
+            // ex 0 is normal, 100 is x2 speed
+            ratePercentage: 0,
+            // Judge pitch percentage shift. It can be negative
+            // ex 0 is normal, 100 is double pitch ie higher (check this)
+            pitchPercentage: 0
+        };
+        
+        const formData = createFormData(data);
+
+        // Send data to the server
+        const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse-multithread');
+        
+        // TO DO:
+        // This isn't quite correct. When no response is given the server should still send back some data and close the connection
+        // So that either listeners are not attached or the end event is statified with some special data for no response
+
+        if(response === undefined){
+            return conversation;
+        }
+        const responseJSON = await response.json();
+        const clientId = responseJSON.clientId;
+        console.log('My client Id: ', clientId);
+        
+        // Listen back for the server's response
+        const eventSource = new EventSource(`http://localhost:60/api/converse-multithread?clientId=${clientId}`);
+
+        eventSource.onerror = function(error) {
+            console.error('EventSource failed:', error);
+        };
+
+
+
+        // Listen for incoming data
+        eventSource.addEventListener('data', async (event) => {
+            
+            const responseJSON = JSON.parse(event.data);
+            console.log('Received data: ');
+            console.log(responseJSON);
+
+            GetPlayAudio(responseJSON.audioPath);
+
+        });
+
+        // Return the completed response
+        return new Promise(resolve => {
+            eventSource.addEventListener('end', (event) => { 
+                
+                const responseJSON = JSON.parse(event.data);
+                console.log('Received final data: ');
+                console.log(responseJSON);
+    
+                // This async function is not waited for so that audio can play in the background
+                GetPlayAudio(responseJSON.audioPath);
+
+                // Close the connection
+                eventSource.close();
+
+                resolve(responseJSON);
+            });
+        });
+}
+
 export async function Converse(conversation, recording){
 
     // Repetition every interval
@@ -216,7 +381,13 @@ export default function ConverseAttach(config){
     // Create a recorder
     const [recorder, setRecorder] = useState(new Recorder());
     const [conversation, setConversation] = useState(initJudgeConversation);
+    
+    // These are used to controll the conversation loop
+    // Pressing enter once starts sets the intervalId and starts looping
+    // Pressing it again turns stateToggle to false and stops the loop
     const [keyDown, setKeyDown] = useState();
+    const [stateToggle, setStateToggle] = useState(true);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
 
 
     // TO DO, if audio is playing, we should stop listening to the user so that the response is not heard as user input
@@ -244,24 +415,48 @@ export default function ConverseAttach(config){
 
         if(keyDown == 'Enter'){
             
-            (async ()=>{
+            setStateToggle(!stateToggle);
+            
+            const converseLoop = async ()=>{
                 const recordering = recorder.getRecording();
                 // Get the chat response to the recording
                 // Playing audio is done inside Converse but the memory is handled outside here
-                const chatResponse = await Converse(conversation, recordering);
+
+                let chatResponse;
+
+                if(false){
+                    chatResponse = await Converse(conversation, recordering);
+                } else {
+                    chatResponse = await ConverseMultithread(conversation, recordering);
+                }
+
                 // Add the user's transcript as their input to the chat bot
                 let conv = createConversation(conversation, 'user', chatResponse.transcript);
                 // Add the chat bot's response as to the history of the conversation
                 conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
                 // Set the higher scoped conversation variable
                 setConversation(conv);
+                console.log('Conversation: ', conv);
                 // Clear data from the recording and start a new one
                 // Ideally we should wait until after the judge is done responding to start recording
                 recorder.stopRecording();
                 recorder.startRecording();
 
                 return;
-            })();
+            }
+
+            if(stateToggle){
+
+                converseLoop();
+
+                // Repeat the conversation loop every x seconds
+                const curId = setInterval(converseLoop, 5000);
+                setIntervalId(curId);
+
+            }else {
+                // Stop the conversation loop
+                clearInterval(intervalId);
+            }
 
             // Clear the current key
             setKeyDown(undefined);
