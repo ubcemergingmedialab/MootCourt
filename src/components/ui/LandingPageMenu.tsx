@@ -122,6 +122,8 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         updateConfig({...config, setRandomized: checkBox.checked})
     }
 
+    
+
     // const setDelay = () => {
     //     let checkBox = document.getElementById("setDelay") as HTMLInputElement
     //     updateConfig({...config, setDelay: checkBox.checked})
@@ -161,12 +163,21 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
 
     const pressAppellant = () => {
         updateConfig({...config, playerPosition: "Appellant"})
-        resetDisplayedUI("Position", "SetUp");
+        if(config.isInteliJudge){
+            resetDisplayedUI("Position", "Timer");
+            } 
+            resetDisplayedUI("Position", "SetUp");
+            
     }
 
     const pressRespondent = () => {
         updateConfig({...config, playerPosition: "Respondent"})
-        resetDisplayedUI("Position", "SetUp");
+        if(config.isInteliJudge){
+            resetDisplayedUI("Position", "Timer");
+            } 
+            resetDisplayedUI("Position", "SetUp");
+            
+        
     }
 
     const pressClassic = () => {
