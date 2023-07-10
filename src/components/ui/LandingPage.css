@@ -162,9 +162,10 @@ h1 {
     margin-right: 8%;
     margin-top: 5px; */
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     justify-content: center;
-    align-items: right;
+    align-items: left;
     text-align: left;
 }
 
@@ -227,6 +228,7 @@ h1 {
     flex: 1;
     min-height: 50%;
     display: flex;
+    gap: 2.5vh;
     justify-content: space-between;
 }
 
@@ -296,13 +298,13 @@ h1 {
 }
 
 .buttonFlexBox-Position {
-    /* position: relative;
-    top: 10vh;
+    position: relative;
+
     height: 40%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: space-around; */
+    justify-content: space-around;
 }
 
 .button {
@@ -360,6 +362,13 @@ h1 {
   }
 }
 
+
+.narrow-button {
+    width: 60%;
+    margin-bottom: 10px;
+    padding: 20px;
+    font-size: 1.5vw;
+}
 
 .buttonFeedback {
     /* width: 20vw;
