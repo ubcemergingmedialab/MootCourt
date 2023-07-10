@@ -165,8 +165,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         updateConfig({...config, playerPosition: "Appellant"})
         if(config.isInteliJudge){
             resetDisplayedUI("Position", "Timer");
-            } 
+            } else {
             resetDisplayedUI("Position", "SetUp");
+            }
             
     }
 
@@ -174,8 +175,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         updateConfig({...config, playerPosition: "Respondent"})
         if(config.isInteliJudge){
             resetDisplayedUI("Position", "Timer");
-            } 
+            } else {
             resetDisplayedUI("Position", "SetUp");
+            }
             
         
     }
