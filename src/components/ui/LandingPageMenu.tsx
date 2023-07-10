@@ -248,13 +248,11 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={(event) => pressAbout()} > ABOUT</button>
                         <button className="button wide-button" type="button" onClick={(event) => pressTutorial()}> TUTORIAL </button>
                         <button className="button wide-button" type="button" onClick={(event) => pressMootingResources()}>MOOTING RESOURCES</button>
-                        <button className="button wide-button" type="button" onClick={(event) => pressTroubleShooting()}>TROUBLE SHOOTING</button>
                         <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
                             <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_2l3a4rVJhxIcKeq" target="_blank">GIVE FEEDBACK</a>
                         </button>
-                        <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
-                            <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_bQpPxMLkx4ShRZk" target="_blank">REPORT AN ISSUE</a>
-                        </button>
+                        <button className="button" type="button" onClick={(event) => pressTroubleShooting()}> Need Help? </button>
+
                     </div>
                 </div>
             </div>
@@ -303,7 +301,6 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <ul>
                             <li>  Press “Enter” when you’re done speaking to hear the IntellaJudge’s response. </li>
                         </ul>
-
                     </div>
                 </div>
                 <div className="sideMenuBottom">
@@ -319,35 +316,35 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="hr-2"></div>
                 </div>
                 <div className="sideMenuContents">
-                    <div className="buttonFlexBox">
-                    <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
-                    {/* <button className="button wide-button" type="button" onClick={pressDefault}>Default</button> */}
-                    
-                    
+                    <div className="buttonFlexBox buttonFlexBox-Position">
+                        <button className="button wide-button" type="button" onClick={(event) => pressCustomize()}>Customize</button>
+                        {/* <button className="button wide-button" type="button" onClick={pressDefault}>Default</button> */}
+                    </div>
                     <div className="sideMenuContentsWithButtons">
-                    <p>This allows you to customize specific timer functions and questions that will be asked. </p>
-                        <p>Adjusting total time, introduction time and Intervals</p>
-                        <p>Randomizing or delaying questions</p>
-                        <p>Adding custom questions and captions</p>
+                        <p>Customization allows you to adjust the follwing: </p>
+                            <ul>
+                                <li>Adjusting total time, introduction time and Intervals</li>
+                                <li>Randomizing or delaying questions</li>
+                            </ul>
                     </div>
-                        
-                <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
-                <div className="sideMenuContentsWithButtons">
-                        <p>Total duration: 25 min </p>
-                        <p>Introduction time: 2 min 30 sec </p>
-                        <p>Interval: 5 min </p>
-                        <p>Approximate time between when questions will be asked</p>
-                        <p>No randomized questions</p>
+                <div className="hr-3"></div>            
+                    <div className="buttonFlexBox buttonFlexBox-Position">
+                        <button className="button wide-button" type="button" onClick={pressDefault}>Default</button>
+                    </div>
+                    <div className="sideMenuContentsWithButtons">
+                        <p>In the default, these are the following features:</p>    
+                            <ul> 
+                                <li>Total duration: 25 min </li>
+                                <li>Introduction time: 2 min 30 sec </li>
+                                <li>Interval (Approximate time between questions): 5 min </li>
+                                <li>No randomized questions</li>
+                            </ul>
                     </div>
                 </div>
-                </div>
-                {/* <div className="sideMenuBottom"> */}
-                {/* <div className="buttonFlexBox"></div> */}
                 <div className="sideMenuBottom">                
-                    <button className="button large-button" type="button" onClick={(event) => pressBackFromSetup()}>Back</button>
-                    {/*pressNextFromSetup function not needed as other options are presented*/}
-                {/* </div> */}
-                </div>
+                            <button className="button wide-button" type="button" onClick={(event) => pressBackFromSetup()}>Back</button>
+
+                    </div>
             </div>
         </div>}
 
@@ -503,7 +500,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <a className="button large-button" href="./pdf/2021_Appearing_before_the_Court.pdf" target="_blank">Appearing before Court</a>
                     </div>
                     <div className="sideMenuBottom">
-                        <button className="button" type="button" onClick={(event) => pressBackToMenu3()}>Back to Menu</button>
+                        <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu3()}>Back to Menu</button>
                     </div>
                 </div>
             </div>
@@ -525,6 +522,13 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     </ul>
                     <p>We recommend changing the browser to either <b>Firefox or Chrome</b>. You may also try changing your device.</p>
                     <p>If you continue experiencing issues or have a different problem that wasn’t listed above, please report the bug for us to resolve.</p>
+
+                    <div className="buttonFlexBox buttonFlexBox-Position" >
+                        <button className="button narrow-button buttonFeedback" type="button" onClick={(event) => pressFeedback()} >
+                            <a className="button narrow-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_bQpPxMLkx4ShRZk" target="_blank">REPORT BUGS HERE</a>
+                        </button>
+                    </div>
+
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackFromTroubleShooting()}>Back to Menu</button>
