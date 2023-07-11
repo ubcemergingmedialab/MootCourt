@@ -254,10 +254,6 @@ export async function ConverseMultithread(conversation, recording): Promise<obje
 
         // Send data to the server
         const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse-multithread');
-        
-        // TO DO:
-        // This isn't quite correct. When no response is given the server should still send back some data and close the connection
-        // So that either listeners are not attached or the end event is statified with some special data for no response
 
         if(response === undefined){
             return conversation;
@@ -288,14 +284,23 @@ export async function ConverseMultithread(conversation, recording): Promise<obje
 
         // Return the completed response
         return new Promise(resolve => {
-            eventSource.addEventListener('end', (event) => { 
-                
+            eventSource.addEventListener('end', (event) => {
+
                 const responseJSON = JSON.parse(event.data);
                 console.log('Received final data: ');
                 console.log(responseJSON);
-    
-                // This async function is not waited for so that audio can play in the background
-                GetPlayAudio(responseJSON.audioPath);
+                
+                // Check if the expected data is in the response
+                // Could have a more explicit differentiation that this is a no-response type of response
+                if(responseJSON.audioPath !== undefined) {
+                    // This async function is not waited for so that audio can play in the background
+                    GetPlayAudio(responseJSON.audioPath);
+                    
+
+                }else {
+
+                    console.log('AI chose not to respond or audioPath undefined');
+                }
 
                 // Close the connection
                 eventSource.close();
@@ -368,7 +373,43 @@ export async function Converse(conversation, recording){
     return null;
 }
 
-export default function ConverseAttach(config){
+/**
+ * @param timestamps An array of array [word: string, start: number, end: number]
+ * @param interval The frame in seconds over which to accumulate data
+*/
+function STTAnalysis(timestamps, interval){
+
+    let frame = interval;
+    const duration = timestamps[2];
+    const WPM:Array<number> = [];
+
+    let wordCount = 0;
+    timestamps.map((timestamp:any)=>{
+        // There is a word for every index
+        wordCount += 1;
+        const start = timestamp[1];
+        const end = timestamp[2];
+
+        // This check does not seem to be working as intenteded
+        // It seems like more values are passing than they should
+        // Meaning that even if you wait awhile it will acount those words and have a higher word count
+        // Not lower as expected
+        if(end >= frame){
+            frame += interval;
+            // if interval is 60s then the WPM == wordCount but if 30s then WPM == WordCount * 2
+            WPM.push(wordCount/(60/interval));
+        }
+    });
+
+    return WPM;
+}
+
+export default function ConverseAttach(config) {
+
+    // Sets whether or not the event is triggered to toggled
+    const isManualTrigger = true;
+    // When isManualTrigger = false, this is how often a response from chatGTP will be triggered
+    const chatLoopInterval = 5 * 1000;
     
     const blankConversation: Array<object> = [];
     // SystemPrompt is the intial message that the conversation is prepoulated with to control ChatGPT's behavour
@@ -378,16 +419,117 @@ export default function ConverseAttach(config){
     // This might mean that distinct instructions should be seperated
     const systemPrompt = "Play the role of a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice. Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law. Consider the arguments of the appellant or respondent. The transcript provided to you will contain information regarding their WPM and the [start-stop] time of speaking. Incorporate the emotions 'Nod,' 'Looking at paper,' 'Shake Head,' or 'Point' into your response by inserting them within square brackets at a suitable place. Ensure that each response includes at least one emotion. For example, you can write '[Shake Head] I don't believe you.' Or ‘This does not pertain to you [Point] as it is none of your business.’ Please keep your response limited to 2-6 sentences. As you haven't yet been prompted, only greet the student and ask them to begin.";
     let initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt);
-    // Create a recorder
+    
+    // useRef does not re-render like useState does
+    const conversation = useRef(initJudgeConversation);
+    const runningResponse = useRef('');
+    const runningTranscript = useRef('');
+    const runningTimestamps = useRef([]);
+    const interval = useRef<NodeJS.Timeout>();
+    const interactTime = useRef(new Date().getTime());
+    
+    // Create a recorder -> it might be better to use useRef
     const [recorder, setRecorder] = useState(new Recorder());
-    const [conversation, setConversation] = useState(initJudgeConversation);
+
     
     // These are used to controll the conversation loop
     // Pressing enter once starts sets the intervalId and starts looping
     // Pressing it again turns stateToggle to false and stops the loop
     const [keyDown, setKeyDown] = useState();
     const [stateToggle, setStateToggle] = useState(true);
-    const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
+
+
+    // TODO: There seems to be issues with the state of some react varaiable being forgotten
+    // Perhaps the page is being reloaded by the timmer
+
+    const converseLoop = async ()=>{
+        const recordering = recorder.getRecording();
+        // Get the chat response to the recording
+        // Playing audio is done inside Converse but the memory is handled outside here
+
+        let chatResponse;
+
+        if(false){
+            chatResponse = await Converse(conversation.current, recordering);
+        } else {
+            chatResponse = await ConverseMultithread(conversation.current, recordering);
+        }
+
+        // *** Handle with timestamps ***
+
+        // Shift time stamps by the delay between requests
+        // Time stamps start from 0 so these need to have a relative shift
+        // -> I think this needs to be fixed it consider the case where the response is not back yet but a new one is requested first
+        // Ther deplay between might be smaller and it is not properlly offset
+        let endOfLast = 0;
+        if(runningTimestamps.current.length>0){
+            endOfLast = runningTimestamps.current[runningTimestamps.current.length-1][2];
+        }
+
+        const now = new Date().getTime();
+        const timestamps = chatResponse.timestamps
+        timestamps.map((timestamp)=>{
+            timestamp[1] += endOfLast + (now-interactTime.current)/1000;
+            timestamp[2] += endOfLast + (now-interactTime.current)/1000;
+        });
+
+        // Set interact time to current time 
+        interactTime.current = now;
+
+        // Join the timestamps together to maintain history
+        runningTimestamps.current = runningTimestamps.current.concat(timestamps);
+
+        console.log('Stamps: ', runningTimestamps.current);
+        console.log('Analysis: ', STTAnalysis(runningTimestamps.current, 10));
+
+        // *** Handle with transcript ***
+
+        console.log('conv: ', conversation.current);
+        const transcript = chatResponse.transcript + ' ';
+        console.log('transcript check: ', transcript);
+        // If the latest transcript is a continuation of the last one ie no messages inbetween
+        // Add this transcript onto the end of the last one
+
+
+        if(conversation.current[conversation.current.length-1].role === 'user'){
+            conversation.current[conversation.current.length-1].content += transcript;
+            console.log('user check:  ', conversation.current[conversation.current.length-1].content);
+            console.log('conv: ', conversation.current);
+            
+        } else {
+            // Add the user's transcript as their input to the chat bot in the history
+            conversation.current = createConversation(conversation.current, 'user', transcript);
+            console.log('conv: ', conversation.current);
+
+        }
+
+        // Either the last message was user or a new user message was set
+        // So by now the last message with be a user message
+
+        //Store a history of just the transcript
+        runningTranscript.current = runningTranscript.current + transcript;
+        console.log('runningTranscript: ', runningTranscript);
+        
+        
+        // *** Handle with chatResponse ***
+
+        if(chatResponse.chatResponse !== undefined){
+            // If this is true then the last message will be an assistant messsage
+            // This marks the end of any transcript changes and a history can be saved
+
+            // Add the chat bot's response to the history of the conversation
+            conversation.current = createConversation(conversation.current, 'assistant', chatResponse.chatResponse);
+            runningResponse.current = runningResponse.current + ' ' + chatResponse.chatResponse;
+            console.log('conv: ', conversation.current);
+        }
+
+        // Clear data from the recording and start a new one
+        // Ideally we should wait until after the judge is done responding to start recording
+        recorder.stopRecording();
+        recorder.startRecording();
+
+        return;
+    }
 
 
     // TO DO, if audio is playing, we should stop listening to the user so that the response is not heard as user input
@@ -410,53 +552,39 @@ export default function ConverseAttach(config){
 
         }
     })
-
+        
     useEffect(()=>{
 
         if(keyDown == 'Enter'){
             
-            setStateToggle(!stateToggle);
-            
-            const converseLoop = async ()=>{
-                const recordering = recorder.getRecording();
-                // Get the chat response to the recording
-                // Playing audio is done inside Converse but the memory is handled outside here
+        
+            if(isManualTrigger){
 
-                let chatResponse;
-
-                if(false){
-                    chatResponse = await Converse(conversation, recordering);
-                } else {
-                    chatResponse = await ConverseMultithread(conversation, recordering);
-                }
-
-                // Add the user's transcript as their input to the chat bot
-                let conv = createConversation(conversation, 'user', chatResponse.transcript);
-                // Add the chat bot's response as to the history of the conversation
-                conv = createConversation(conv, 'assistant', chatResponse.chatResponse);
-                // Set the higher scoped conversation variable
-                setConversation(conv);
-                console.log('Conversation: ', conv);
-                // Clear data from the recording and start a new one
-                // Ideally we should wait until after the judge is done responding to start recording
-                recorder.stopRecording();
-                recorder.startRecording();
-
-                return;
-            }
-
-            if(stateToggle){
-
+                // One time trigger of loop
+                // This name may be misleading
+                // It is a single loop process that can be looped infinitely but does not do so by default
                 converseLoop();
 
-                // Repeat the conversation loop every x seconds
-                const curId = setInterval(converseLoop, 5000);
-                setIntervalId(curId);
 
-            }else {
-                // Stop the conversation loop
-                clearInterval(intervalId);
+            } else{
+                
+                // Check the toggle state
+                if(stateToggle){
+
+                    // Repeat every x seconds
+                    interval.current = setInterval(() => {
+                        converseLoop();
+                    }, chatLoopInterval);
+    
+                }else {
+                    clearInterval(interval.current);
+                }
+
+                // Toggle the state
+                setStateToggle(!stateToggle);
             }
+
+
 
             // Clear the current key
             setKeyDown(undefined);
@@ -464,5 +592,33 @@ export default function ConverseAttach(config){
 
     }, [keyDown]);
 
-    return(null);
+
+    // // For caption purposes. It would be good to have live looking response
+    // // You can look for the change in the message and get the difference in the length
+    // // Use a slice and animate that over time to make it look like
+    // // Extra measures will be needed to handle when new data comes in and it is not done
+    // // Consider using a queue like method
+
+    // // not very react like
+    // let previous;
+    // useEffect(()=>{
+    //     const current = runningResponse.length;
+    //     const diff = current - previous;
+    //     previous = current;
+
+    //     diff
+    //     slice
+
+    // }, [runningResponse]);
+
+    return (
+        <>
+            <div className="captions-container">
+                <p> {runningResponse.current.slice(runningResponse.current.length-500)} </p>
+            </div>
+            <div className="captions-container">
+                <p> {runningTranscript.current.slice(runningTranscript.current.length-500)} </p>
+            </div>
+        </>
+    );
 }
