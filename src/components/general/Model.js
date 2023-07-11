@@ -1,95 +1,75 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react'
-import { useControls } from 'leva'
-import * as THREE from 'three'
+import React, { useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import * as THREE from 'three';
 
+function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, animated }) {
+  const [gltf, setGltf] = useState();
+  const [mixer, setMixer] = useState(null);
+  const [animations, setAnimations] = useState([]);
+  const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
 
-const AnimationSelect = ({ availableAnimations, updateAnimation }) => {
-    const [{ animation }, set] = useControls(() => ({ animation: { options: availableAnimations } }))
-    useEffect(() => {
-        //updateAnimation(animation)
-    }, [animation])
-    return null
-}
-
-function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, activeAnimation, animated }) {
-    const [gltf, setGltf] = useState();
-    const [mixer, setMixer] = useState(null);
-    const [animationClip, setAnimationClip] = useState(activeAnimation ? activeAnimation : "")
-    const [availableAnimations, setAvailableAnimations] = useState({})
-    useEffect(() => {
-        new GLTFLoader().load(modelUrl, (gltf) => {
-            setGltf(gltf);
-            if (gltf.animations.length > 0) {
-                let mixer = new THREE.AnimationMixer(gltf.scene)
-                setMixer(mixer)
-                let animationObject = {}
-                gltf.animations.forEach(clip => {
-                    const action = mixer.clipAction(clip)
-                    //console.log('existing animation: ', clip.name, clip.duration, clip.tracks)
-                    //animationObject[clip.name] = clip
-                    action.play()
-                    mixer.update(0.1)
-                })
-                //setAvailableAnimations(animationObject)
-            }
-            gltf.scene.traverse(child => {
-                if (child.isMesh) {
-                    child.castShadow = true
-                    child.receiveShadow = true
-                    child.material.side = THREE.FrontSide
-                }
-            })
-        }, (xhr) => {
-            // do nothing
-        }, (err) => {
-            console.log('error happend loading model', modelUrl)
+  useEffect(() => {
+    const loader = new GLTFLoader();
+    loader.load(modelUrl, (gltf) => {
+      setGltf(gltf);
+      if (gltf.animations.length > 0) {
+        const mixer = new THREE.AnimationMixer(gltf.scene);
+        setMixer(mixer);
+        const newAnimations = gltf.animations.map((clip) => {
+          const action = mixer.clipAction(clip);
+          action.clampWhenFinished = true;
+          action.setLoop(THREE.LoopOnce);
+          action.clampWhenFinished = true;
+          action.timeScale = 1;
+          return {
+            action,
+            duration: clip.duration, // Store the duration of each animation clip
+          };
         });
-    }, [modelUrl])
+        setAnimations(newAnimations);
+      }
+    });
+  }, [modelUrl]);
 
-    const updateAnimation = (anim) => {
-        setAnimationClip(anim)
+  useFrame((state, delta) => {
+    if (animated && mixer && !pauseAnimation) {
+      mixer.update(delta);
     }
+  });
 
-    useFrame((state, delta) => {
-        if (animated) {
-            if (!pauseAnimation && (typeof (pauseAnimation) !== "undefined")) {
-                mixer?.update(delta)
-            }
-        }
-    })
+  useEffect(() => {
+    if (animations.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentAnimationIndex((prevIndex) => {
+          const currentIndex = prevIndex + 1 >= animations.length ? 0 : prevIndex + 1;
+          const currentAnimation = animations[currentIndex];
+          const previousAnimation = animations[prevIndex];
+          previousAnimation.action.stop(); // Stop the previous animation
+          currentAnimation.action.reset(); // Reset the current animation
+          currentAnimation.action.play(); // Play the current animation
+          return currentIndex;
+        });
+      }, animations[currentAnimationIndex].duration * 1000); // Multiply duration by 1000 to convert to milliseconds
+      return () => clearInterval(interval);
+    }
+  }, [animations, currentAnimationIndex]);
 
-    /*(animated && gltf.animations.length > 0)?<AnimationSelect availableAnimations={availableAnimations} updateAnimation={updateAnimation}></AnimationSelect>:null*/
-    return gltf ?
-        (<group >
-            <primitive
-                position={pos}
-                rotation={rot}
-                scale={sca}
-                object={gltf.scene}>
-
-            </primitive>
-        </group >)
-        : null
+  return gltf ? (
+    <group position={pos} rotation={rot} scale={sca}>
+      <primitive object={gltf.scene} />
+    </group>
+  ) : null;
 }
 
 Model.propTypes = {
-    /** passed into glb model loader to load 3d model */
-    modelUrl: PropTypes.string,
-    /** passed into mesh to set position */
-    pos: PropTypes.any,
-    /** passed into mesh to set rotation */
-    rot: PropTypes.any,
-    /** passed into mesh to set scale */
-    sca: PropTypes.any,
-    /** will stop animation mixed updates if true */
-    pauseAnimation: PropTypes.bool,
-    /** sets the currently active animation on the 3d model */
-    activeAnimation: PropTypes.string,
-    /** configures Model component. If false, animations will not play */
-    animated: PropTypes.bool
-}
+  modelUrl: PropTypes.string,
+  pos: PropTypes.any,
+  rot: PropTypes.any,
+  sca: PropTypes.any,
+  pauseAnimation: PropTypes.bool,
+  animated: PropTypes.bool,
+};
 
 export default Model;
