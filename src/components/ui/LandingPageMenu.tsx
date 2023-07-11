@@ -92,9 +92,14 @@ function pressNextFromQuestions() {
 }
 
 
-function pressBackFromTimer() {
-    resetDisplayedUI("Timer", "Questions");
-}
+// function pressBackFromTimer() {
+//     if(config.isInteliJudge){
+//         resetDisplayedUI("Timer", "Position");
+//     }
+//     else{
+//     resetDisplayedUI("Timer", "Questions");
+//     }
+// }
 
 function pressBackFromSetup() {
     resetDisplayedUI("SetUp", "Position");
@@ -121,6 +126,8 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         let checkBox = document.getElementById("setrandomizeQuestions") as HTMLInputElement
         updateConfig({...config, setRandomized: checkBox.checked})
     }
+
+    
 
     // const setDelay = () => {
     //     let checkBox = document.getElementById("setDelay") as HTMLInputElement
@@ -161,12 +168,23 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
 
     const pressAppellant = () => {
         updateConfig({...config, playerPosition: "Appellant"})
-        resetDisplayedUI("Position", "SetUp");
+        if(config.isInteliJudge){
+            resetDisplayedUI("Position", "Timer");
+            } else {
+            resetDisplayedUI("Position", "SetUp");
+            }
+            
     }
 
     const pressRespondent = () => {
         updateConfig({...config, playerPosition: "Respondent"})
-        resetDisplayedUI("Position", "SetUp");
+        if(config.isInteliJudge){
+            resetDisplayedUI("Position", "Timer");
+            } else {
+            resetDisplayedUI("Position", "SetUp");
+            }
+            
+        
     }
 
     const pressClassic = () => {
@@ -180,6 +198,38 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         updateConfig({...config, isInteliJudge: true})
         console.log("IntellaJudge enabled.")
     }
+
+    function pressBackFromTimer() {
+        if(config.isInteliJudge){
+            resetDisplayedUI("Timer", "Position");
+        }
+        else{
+        resetDisplayedUI("Timer", "Questions");
+        }
+    }
+
+
+
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        let value = parseInt(event.target.value);
+        if (isNaN(value) || value < 1) {
+          value = value;
+        }
+        event.target.value = value.toString();
+        // Additional logic or state update based on the valid value
+        setTotalTime(value);
+      }
+      
+      function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+        const { key, currentTarget } = event;
+        const isNegative = key === "-" && currentTarget.value === "";
+        const isBackspace = key === "Backspace";
+        const isValidInput = /^[0-9]$/.test(key);
+      
+        if (!(isNegative || isBackspace || isValidInput)) {
+          event.preventDefault();
+        }
+      }
 
     return <>
         {<div className="logoOverlay">
@@ -241,7 +291,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <ul>
                             <li>  Under a given total time, you will be given set interval to provide your argument before asked a question. </li>
                         </ul>
-                    </div>
+                        </div>
             <div className="hr-3"></div>
                 <div className="buttonFlexBox buttonFlexBox-Position">
                         <button className="button wide-button" type="button" onClick={pressIntellaJudge}>Intella-Judge</button>
@@ -249,7 +299,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="sideMenuContentsWithButtons">
                         <p>Practice your moot court with an OpenAI for live communication and custom AI-generated questions.</p>  
                         <ul>
-                            <li>  Press “Enter” when you’re done speaking to hear the IntellaJudge’s response. </li>
+                            <li>To speak to the IntellaJ-Judge, press <b>"Enter"</b> after each argument and wait for the IntellaJudge's respond before proceeding with your next point. </li>
                         </ul>
                     </div>
                 </div>
@@ -349,9 +399,9 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuSetUp">
                     <div className="formitem">
                         <label htmlFor="TotalDuration">Total duration</label>
-                        <input type="number" min="1" defaultValue="25" id="settotalTime" onChange={setTotalTime}></input>
+                        <input type="number" min="1" defaultValue="25" id="settotalTime" onChange={handleChange} onKeyPress={handleKeyPress} ></input>
                         <div className="FieldDescription">minutes</div>
-                        <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the total time of your court session. </p>
+                        <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the total time of your court session </p>
                     </div>
                     {/* <div className="formitem">
                         <div className="number-input-container">
@@ -363,18 +413,18 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         </div>
                     </div> */}
                     <div className="formitem">
-                        <label htmlFor="StopPresentation">Stop presentation</label>
+                        <label htmlFor="StopPresentation">Extending Time</label>
                         <div className="toggle-container">
                             <input name="StopPresentation" type="checkbox" defaultChecked={true} id="setStopPresentation" onChange={setStopPresentation}/>
                             <div className="slider round"></div>
                         </div>
                         <div className="FieldDescription"></div>
-                            <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>At the end of your session, you may extend your time if needed. </p>
+                            <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Turn OFF to extend time, turn ON to end on the set duration of the timer </p>
                     </div>
                     <div className="formitem " >
                         <label htmlFor="IntroductionTime" style={{ marginBottom: '-15px' }}>Introduction time</label>
                         <div className="FieldDescription"></div>
-                            <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the introduction time of your court session. </p>
+                            <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the introduction time of your court session </p>
                         <div className="subformitem">
                             <input name="IntroductionTime" type="number" min="1" defaultValue="2" id= "setIntroductionMinutes" onChange={setIntroductionMinutes}></input>
                             <div className="FieldDescription">minutes</div>
@@ -402,8 +452,11 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <p>Judicial Interrogatory Simulator, also previously known as Moot Court, is a virtual practice space for mooting by yourself. </p>
                     <p>This provides you both the personal space to practice with a set time and pace or as an Artificial intelligence tool, where you can practice your moot court with an OpenAI.</p>
                     <p>You can customize the settings according to your needs through the menu. </p>
-                    <p>If you want to learn more about Judicial Interrogatory Simulator, check out the EML website: <u>Judicial Interrogatory Simulator</u></p>
-                </div>
+                    <p>If you want to learn more about Judicial Interrogatory Simulator, check out the EML website by clicking on the link below:</p> 
+                    <p style={{ textAlign: 'center' }}>
+                        <a href="https://eml.ubc.ca/projects/judicial-interrogatory-simulator/" target="_blank" rel="noopener noreferrer" style={{ color: 'white', display: 'block', fontWeight: 'bold', fontSize: '1.5vw' }}>Judicial Interrogatory Simulator</a>
+                    </p>              
+                    </div>
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackToMenu()}>Back to Menu</button>
                 </div>
@@ -421,8 +474,8 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <ol>
                         <li>Click "Start" to begin your moot court after choosing your difficulty level and position. The options you are provided are:
                             <ul>
-                                <li>Classic: Automated judge that allows you to practice on your time management and speech delievry</li>
-                                <li>IntellaJudge: AI judge whom you can communicate and get live-response in your moot session.  </li>
+                                <li><b>Classic:</b> Automated judge that allows you to practice time management and speech delievry</li>
+                                <li><b>IntellaJudge:</b> AI judge whom you can communicate and get live-response in your moot session.  </li>
                             </ul>
                         </li>
                         <li>In a guided process, you can choose to either go to the default or customize your moot court session in the settings.</li>
