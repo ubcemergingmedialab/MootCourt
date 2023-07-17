@@ -26,8 +26,17 @@ function AnimationComponent({isSpeaking, appPaused, position, rotation, modelUrl
     useEffect(() => {
         console.log("pausing animation (if it was playing earlier) since global app state is paused")
         setIsAnimationPaused(appPaused)
-        setIsAnimationPaused(!isSpeaking)
-    }, [appPaused, isSpeaking])
+        // setIsAnimationPaused(!isSpeaking)
+    }, [appPaused])
+
+    // useEffect(() => {
+    //     if (!isSpeaking) {
+    //         console.log("not speaking")
+    //     }
+    //     else (
+    //         console.log("speaking")
+    //     )
+    // })
     
     return (<>
         <Suspense fallback={null}>
@@ -36,6 +45,7 @@ function AnimationComponent({isSpeaking, appPaused, position, rotation, modelUrl
                     pos={[0, 0, 0]}
                     rot={[0, 0, 0]}
                     sca={[2, 2, 2]}
+                    isSpeaking={isSpeaking}
                     pauseAnimation={isAnimationPaused}
                     animated={animated}></Model>
                 </mesh>

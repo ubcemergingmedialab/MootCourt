@@ -1,13 +1,14 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import AnimationComponent from './AnimationComponent';
 //import VoiceComponent from './VoiceComponent';
-import VoiceComponent from './VoiceComponent API';
+import VoiceComponent from './VoiceComponent';
 
 /*
  * A general purpose Avatar component that makes use of web speech synthesis and glb model loading (Model component). Parent can configure/play/puase animation and uses prop functions
  * to communicate speech synthesis ready, started speaking and finished speaking.
  */
 function Avatar({isSpeaking, setIsSpeaking, appPaused, position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
+
 
     console.log('Normal avatar used');
 

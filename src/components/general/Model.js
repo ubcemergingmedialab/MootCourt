@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
 
-function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, animated }) {
+function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = true, animated }) {
   const [gltf, setGltf] = useState();
   const [mixer, setMixer] = useState(null);
   const [animations, setAnimations] = useState([]);
@@ -29,6 +29,7 @@ function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, animated }) {
           };
         });
         setAnimations(newAnimations);
+        console.log('Animation Clips:', gltf.animations);
       }
     });
   }, [modelUrl]);
@@ -41,20 +42,70 @@ function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, animated }) {
 
   useEffect(() => {
     if (animations.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentAnimationIndex((prevIndex) => {
-          const currentIndex = prevIndex + 1 >= animations.length ? 0 : prevIndex + 1;
-          const currentAnimation = animations[currentIndex];
-          const previousAnimation = animations[prevIndex];
-          previousAnimation.action.stop(); // Stop the previous animation
-          currentAnimation.action.reset(); // Reset the current animation
-          currentAnimation.action.play(); // Play the current animation
-          return currentIndex;
-        });
-      }, animations[currentAnimationIndex].duration * 1000); // Multiply duration by 1000 to convert to milliseconds
-      return () => clearInterval(interval);
+      const crossfadeDuration = 0.3; // Adjust the crossfade duration as needed
+      let interval;
+
+      if (isSpeaking) {
+        // If speaking is true, play the talking clip
+        const faceSpeakingClip = animations.find((clip) => clip.action.getClip().name === 'face_speaking');
+        const speakingClip = animations.find((clip) => clip.action.getClip().name === 'talking');
+
+        if (faceSpeakingClip && speakingClip) {
+          setCurrentAnimationIndex(0);
+          faceSpeakingClip.action.reset();
+          speakingClip.action.reset();
+
+          faceSpeakingClip.action.fadeIn(crossfadeDuration);
+          speakingClip.action.fadeIn(crossfadeDuration);
+
+          faceSpeakingClip.action.play();
+          speakingClip.action.play();
+
+          console.log('Current Animation Clips:', [faceSpeakingClip.action.getClip().name, speakingClip.action.getClip().name]);
+
+          interval = setInterval(() => {
+            faceSpeakingClip.action.reset();
+            speakingClip.action.reset();
+
+            faceSpeakingClip.action.fadeIn(crossfadeDuration);
+            speakingClip.action.fadeIn(crossfadeDuration);
+
+            faceSpeakingClip.action.play();
+            speakingClip.action.play();
+          }, faceSpeakingClip.duration * 1000);
+        }
+      } else {
+        // If speaking is false, play the random clips in a loop
+        const randomClips = animations.filter((clip) => clip.action.getClip().name !== 'face_speaking');
+
+        setCurrentAnimationIndex(0);
+
+        interval = setInterval(() => {
+          setCurrentAnimationIndex((prevIndex) => {
+            const nextIndex = (prevIndex + 1) % randomClips.length;
+            const currentClip = randomClips[nextIndex];
+
+            const previousClip = randomClips[prevIndex];
+            previousClip.action.fadeOut(crossfadeDuration);
+            previousClip.action.stop();
+
+            currentClip.action.reset();
+            currentClip.action.fadeIn(crossfadeDuration);
+            currentClip.action.play();
+
+            console.log('Current Animation Clip:', currentClip.action.getClip().name);
+
+            return nextIndex;
+          });
+        }, randomClips[0].duration * 1000);
+      }
+
+      return () => {
+        clearInterval(interval);
+        setCurrentAnimationIndex(0); // Reset current animation index
+      };
     }
-  }, [animations, currentAnimationIndex]);
+  }, [animations, isSpeaking]);
 
   return gltf ? (
     <group position={pos} rotation={rot} scale={sca}>
@@ -70,6 +121,65 @@ Model.propTypes = {
   sca: PropTypes.any,
   pauseAnimation: PropTypes.bool,
   animated: PropTypes.bool,
+  isSpeaking: PropTypes.bool,
 };
 
 export default Model;
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { useFrame } from '@react-three/fiber';
+// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+// import PropTypes from 'prop-types';
+// import * as THREE from 'three';
+
+// function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, animated, customAnimation }) {
+//   const [gltf, setGltf] = useState();
+//   const [mixer, setMixer] = useState(null);
+
+//   useEffect(() => {
+//     const loader = new GLTFLoader();
+//     loader.load(modelUrl, (gltf) => {
+//       setGltf(gltf);
+//       if (gltf.animations.length > 0) {
+//         const mixer = new THREE.AnimationMixer(gltf.scene);
+//         setMixer(mixer);
+//         const idleAnimation = gltf.animations.find((clip) => clip.name === 'idle');
+//         if (idleAnimation) {
+//           const idleAction = mixer.clipAction(idleAnimation);
+//           idleAction.setLoop(THREE.LoopRepeat);
+//           idleAction.play();
+//         }
+//       }
+//     });
+//   }, [modelUrl]);
+
+//   useFrame((state, delta) => {
+//     if (animated && mixer && !pauseAnimation) {
+//       if (customAnimation) {
+//         customAnimation.update(delta);
+//       } else {
+//         mixer.update(delta);
+//       }
+//     }
+//   });
+
+//   return gltf ? (
+//     <group position={pos} rotation={rot} scale={sca}>
+//       <primitive object={gltf.scene} />
+//     </group>
+//   ) : null;
+// }
+
+// Model.propTypes = {
+//   modelUrl: PropTypes.string,
+//   pos: PropTypes.any,
+//   rot: PropTypes.any,
+//   sca: PropTypes.any,
+//   pauseAnimation: PropTypes.bool,
+//   animated: PropTypes.bool,
+//   customAnimation: PropTypes.object, // New prop for the custom animation
+// };
+
+// export default Model;

@@ -516,7 +516,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                     <div className="hr-2"></div>
                 </div>
                 <div className="sideMenuContents">
-                    <p>If you expirence the following:</p>
+                    <p>If you experience the following:</p>
                     <ul>
                         <li>No audio sound</li>
                         <li>Audio cut off (Judge doesn’t complete sentence)</li>
@@ -524,7 +524,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <li>Frozen screen (Timer or judge isn’t moving)</li>
                     </ul>
                     <p>We recommend changing the browser to either <b>Firefox or Chrome</b>. You may also try changing your device.</p>
-                    <p>If you continue experiencing issues or have a different problem that wasn’t listed above, please report the bug for us to resolve.</p>
+                    <p>If you continue experiencing issues or have a different problem that isn't listed above, please report the bug for us to resolve.</p>
 
                     <div className="buttonFlexBox buttonFlexBox-Position" >
                         <button className="button narrow-button buttonFeedback" type="button" onClick={(event) => pressFeedback()} >

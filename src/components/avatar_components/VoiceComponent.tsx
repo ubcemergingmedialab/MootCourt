@@ -1,4 +1,4 @@
-/*import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useSpeechSynthesis } from 'react-speech-kit';
 import { useControls } from 'leva'
 
@@ -43,6 +43,8 @@ function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak
     const onEnd = () => {
         setIsSpeaking(false)
         finishedSpeaking()
+        console.log('finishedSpeaking callback called'); // Console log when finishedSpeaking is updated
+
     }
     // call "speak" to start speech, "cancel" to pause speech
     const {speak, cancel} = useSpeechSynthesis({ onEnd })
@@ -102,13 +104,11 @@ function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak
 
     return (<>
         <Suspense fallback={null}>
-            {/* 2) when the voice component is ready, the voice select will run and select the most optimal voice. *///}
-//             {voicesReady ? <SelectOptimalVoice updateVoice={updateVoice} /> : null}
-//         </Suspense>
-//     </>
-//     )
-// }
+            {/* 2) when the voice component is ready, the voice select will run and select the most optimal voice. */}
+            {voicesReady ? <SelectOptimalVoice updateVoice={updateVoice} /> : null}
+        </Suspense>
+    </>
+    )
+}
 
-// export default VoiceComponent;*/
-
-export {}
+export default VoiceComponent;
