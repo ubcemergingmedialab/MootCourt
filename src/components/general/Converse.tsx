@@ -2,6 +2,8 @@ import react from 'react';
 import {Readable} from 'stream';
 import React, { useState, useEffect } from 'react';
 import { useRef } from 'react';
+import * as d3 from 'd3';
+import { Svg } from '@react-three/drei';
 
 async function ServerRequestResponse(data: FormData, server){
     try {
@@ -49,7 +51,7 @@ class Recorder {
             // Get microgpone access
             this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             // Get stream
-            this.mediaRecorder = new MediaRecorder(this.stream);
+            this.mediaRecorder = new MediaRecorder(this.stream, { audioBitsPerSecond: 128000, mimeType: 'audio/webm; codecs=opus' });
             // Append data as it becomes available
             this.mediaRecorder.addEventListener('dataavailable', (event) => {
                 this.chunks.push(event.data);
@@ -188,12 +190,15 @@ function playQueue(){
  * Gets audio from the server at an audio path then intiates continuous audio play
  * @param {string} audioPath The audio file path on the server
  */
+async function GetPlayAudio(audioPath, clientId){
 
-async function GetPlayAudio(audioPath){
+    const getData = createFormData(
+        {
+            audioPath: audioPath,
+            clientId: clientId
+        });
 
-    const getData = createFormData({ 'audioPath': audioPath });
     // Get the audio file from the path that was given in the response
-
     console.log('Get audio: ', audioPath);
 
     const audioResponse = await ServerRequestResponse(getData, 'http://localhost:60/api/audio');
@@ -219,97 +224,93 @@ async function GetPlayAudio(audioPath){
 
 export async function ConverseMultithread(conversation, recording): Promise<object>{
 
-    // Repetition every interval
-    //const intervalId = setInterval(async ()=>{
+    const recordingFile = new File([recording], 'user-recording', {
+        type: 'audio/webm',
+        lastModified: new Date().getTime()
+    });
 
-        const recordingFile = new File([recording], 'user-recording', {
-            type: 'audio/webm',
-            lastModified: new Date().getTime()
-        });
-
-        const data = {
-            // Audio recording in .webm format
-            recording: recordingFile,
-            // Prompt for whisper transcript style
-            transcriptPrompt: 'Hello, I am here to present my case.',
-            transcriptTemperature: 0.2,
-            transcriptLanguage: 'en',
-
-            // ChatGPT message history. The last message should not be a user message
-            messages: JSON.stringify(conversation),
-            chatTemperature: 0.2,
-            max_tokens: 200,
-            
-            // Judge voice setting
-            voice: 'en-US_MichaelV3Voice',// 'en-US_EmmaExpressive',
-            // Judge speaking rate percentage shift. It can be negative
-            // ex 0 is normal, 100 is x2 speed
-            ratePercentage: 0,
-            // Judge pitch percentage shift. It can be negative
-            // ex 0 is normal, 100 is double pitch ie higher (check this)
-            pitchPercentage: 0
-        };
+    const data = {
+        // Audio recording
+        recording: recordingFile,
+        // Prompt for whisper transcript style
+        transcriptPrompt: 'Hello, I am here to present my case.',
+        transcriptTemperature: 0.2,
+        transcriptLanguage: 'en',
+        messages: JSON.stringify(conversation),
+        chatTemperature: 0.2,
+        max_tokens: 200,
         
-        const formData = createFormData(data);
+        // Judge voice setting
+        voice: 'en-US_MichaelV3Voice',// 'en-US_EmmaExpressive',
+        // Judge speaking rate percentage shift. It can be negative
+        // ex 0 is normal, 100 is x2 speed
+        ratePercentage: 0,
+        // Judge pitch percentage shift. It can be negative
+        // ex 0 is normal, 100 is double pitch ie higher (check this)
+        pitchPercentage: 0
+    };
+    
+    const formData = createFormData(data);
 
-        // Send data to the server
-        const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse-multithread');
+    // Send data to the server
+    const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse-multithread');
 
-        if(response === undefined){
-            return conversation;
-        }
-        const responseJSON = await response.json();
-        const clientId = responseJSON.clientId;
-        console.log('My client Id: ', clientId);
+    if(response === undefined){
+        return conversation;
+    }
+    const responseJSON = await response.json();
+    const clientId = responseJSON.clientId;
+    console.log('My client Id: ', clientId);
+    
+    // Listen back for the server's response
+    const eventSource = new EventSource(`http://localhost:60/api/converse-multithread?clientId=${clientId}`);
+
+    eventSource.onerror = function(error) {
+        console.error('EventSource failed:', error);
+    };
+
+
+
+    // Listen for incoming data
+    eventSource.addEventListener('data', async (event) => {
         
-        // Listen back for the server's response
-        const eventSource = new EventSource(`http://localhost:60/api/converse-multithread?clientId=${clientId}`);
+        const responseJSON = JSON.parse(event.data);
+        console.log('Received data: ');
+        console.log(responseJSON);
 
-        eventSource.onerror = function(error) {
-            console.error('EventSource failed:', error);
-        };
+        GetPlayAudio(responseJSON.audioPath, clientId);
 
+    });
 
+    // Return the completed response
+    return new Promise(resolve => {
+        eventSource.addEventListener('end', (event) => {
 
-        // Listen for incoming data
-        eventSource.addEventListener('data', async (event) => {
-            
             const responseJSON = JSON.parse(event.data);
-            console.log('Received data: ');
+            console.log('Received final data: ');
             console.log(responseJSON);
-
-            GetPlayAudio(responseJSON.audioPath);
-
-        });
-
-        // Return the completed response
-        return new Promise(resolve => {
-            eventSource.addEventListener('end', (event) => {
-
-                const responseJSON = JSON.parse(event.data);
-                console.log('Received final data: ');
-                console.log(responseJSON);
+            
+            // Check if the expected data is in the response
+            // Could have a more explicit differentiation that this is a no-response type of response
+            if(responseJSON.audioPath !== undefined) {
+                // This async function is not waited for so that audio can play in the background
+                GetPlayAudio(responseJSON.audioPath, clientId);
                 
-                // Check if the expected data is in the response
-                // Could have a more explicit differentiation that this is a no-response type of response
-                if(responseJSON.audioPath !== undefined) {
-                    // This async function is not waited for so that audio can play in the background
-                    GetPlayAudio(responseJSON.audioPath);
-                    
 
-                }else {
+            }else {
 
-                    console.log('AI chose not to respond or audioPath undefined');
-                }
+                console.log('AI chose not to respond or audioPath undefined');
+            }
 
-                // Close the connection
-                eventSource.close();
+            // Close the connection
+            eventSource.close();
 
-                resolve(responseJSON);
-            });
+            resolve(responseJSON);
         });
+    });
 }
 
+// Depreciated
 export async function Converse(conversation, recording){
 
     // Repetition every interval
@@ -373,41 +374,190 @@ export async function Converse(conversation, recording){
     return null;
 }
 
-/**
- * @param timestamps An array of array [word: string, start: number, end: number]
- * @param interval The frame in seconds over which to accumulate data
-*/
-function STTAnalysis(timestamps, interval){
+function Plot(svgContainer, data: Array<[number, number]>) {
 
-    let frame = interval;
-    const duration = timestamps[2];
-    const WPM:Array<number> = [];
+    // Clear the content of the SVG container before appending new graph
+    d3.select(svgContainer).selectAll("*").remove();
+    
+    // Set the dimensions of the SVG
+    const width = 400;
+    const height = 300;
+    const margin = {
+        top: 50,
+        bottom: 50,
+        left: 50,
+        right: 50
+    };
 
-    let wordCount = 0;
-    timestamps.map((timestamp:any)=>{
-        // There is a word for every index
-        wordCount += 1;
-        const start = timestamp[1];
-        const end = timestamp[2];
+    const graphWidth = width - (margin.left + margin.right);
+    const graphHeight = height - (margin.top + margin.bottom);
 
-        // This check does not seem to be working as intenteded
-        // It seems like more values are passing than they should
-        // Meaning that even if you wait awhile it will acount those words and have a higher word count
-        // Not lower as expected
-        if(end >= frame){
-            frame += interval;
-            // if interval is 60s then the WPM == wordCount but if 30s then WPM == WordCount * 2
-            WPM.push(wordCount/(60/interval));
+    // Create the svg
+    const svg = d3.select(svgContainer)
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+    // Create a sub grouping of graph which is transformed in ward
+    const graph = svg.append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
+
+    // Create scales for x and y axes
+    const xScale = d3.scaleLinear()
+    // Domain is set from min to the max range
+    .domain([d3.min(data, d=> d[0])||0 , d3.max(data, d=> d[0])||0 ])
+    // Domain is scaled onto this range
+    .range([0, graphWidth]);
+
+    // Don't allow a y axis to start greater than zero but could go below zero
+    // This may need to be changed based on the kind of graph you want
+    let minY = d3.min(data, d=> d[1])||0;
+    if(minY > 0){
+        minY = 0;
+    }
+
+    const yScale = d3.scaleLinear()
+    .domain([d3.min(data, d=> d[1])||0, d3.max(data, d=> d[1])||0 ])
+    .range([graphHeight, 0]);
+
+    // Create x and y axes
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+
+    // Append axes to the SVG
+    graph.append('g')
+    .attr('transform', `translate(${0}, ${graphHeight})`)
+    .call(xAxis);
+
+    graph.append('g')
+    .attr('transform', `translate(${0}, ${margin.top - margin.bottom})`)
+    .call(yAxis);
+
+    // Create and style the plot
+    graph.selectAll('circle')
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('cx', d => xScale(d[0]))
+    .attr('cy', d => yScale(d[1]))
+    .attr('r', 2)
+    .attr('fill', 'steelblue');
+
+    // Create the line generator function
+    const line = d3.line()
+    // The point of this is to change how the data is accessed
+    // Ie which index to retrieve and how to scale the data
+    .x(d => xScale(d[0]))
+    .y(d => yScale(d[1]));
+
+    // Create the line path and append it to the graph
+    graph.append('path')
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-width', 2)
+    .attr('d', line(data));
+};
+
+// Calculate the difference between neighbouring values (going backward)
+function ArrayDifference(array: number[]){
+    return array.map((value, index, array) => {
+        let diff = value - array[index - 1];
+        
+        // Sets value if NaN. The first index will check an index that does not exist with backward difference
+        if(Number.isNaN(diff)){
+            return 0;
         }
+
+        return diff;
+    });
+}
+
+function kernelDensityEstimator(xAxis, yAxis, bandWidth) {
+
+    const meanArray = xAxis.map((x, i) => {
+        // Do this for every value of x
+
+        // Calculate the sum of kernel values
+        const sum = yAxis.reduce((accumulator, y) => {
+            let diff = x - y;
+            let quotient = diff / bandWidth;
+            let absQuotient = Math.abs(quotient);
+
+            if (absQuotient <= 1) {
+                return accumulator + 0.75 * (1 - absQuotient * absQuotient);
+            } else {
+                return accumulator;
+            }
+        }, 0);
+
+        // Divide the sum by the bandWidth to get the mean
+        const mean = sum / (bandWidth * yAxis.length);
+
+        // Set the value of the array at this index to the mean
+        return mean;
     });
 
-    return WPM;
+    return meanArray;
+}
+
+/**
+ * Medthods for the analysis of speech data
+ * @param yAxisData A list of word timmings
+ * @param sampleRate The sample quality of the analysis, samples/unit time
+ * @param window The window overwhich to count WPM
+ * @returns 
+ */
+async function STTAnalysis(yAxisData, sampleRate, window, bandWidth?){
+
+    const zeroOffset = Math.min(...yAxisData);
+    const duration = Math.max(...yAxisData)-zeroOffset; //yAxisData[yAxisData.length-1];
+
+    // # of xSamples = Sample Rate * Duration. Ceil used to return an int that is inclusive of the end point.
+    const xSamples = Math.ceil(duration * sampleRate);
+    console.log('xSamples: ', xSamples);
+    const xAxisData  = new Array(xSamples).fill(0);
+    
+    // For every sample in x do the following
+    const windowedData = xAxisData.map((x, xi)=>{
+        // Fill the x-axis with the time of each sample.
+        x = zeroOffset + (xi / sampleRate);
+        xAxisData[xi] = x;
+
+        const lowerBound = x - window/2;
+        const upperBound = x + window/2;
+        let count = 0;
+        // Run over every data point in y
+        yAxisData.map((y, yi)=>{
+            // If you are in the window, increase the count
+            if(y >= lowerBound && y < upperBound){
+                count += 1;
+            }
+        });
+
+        // Return the count for the current window
+        // Normalize the array by dividing by the window
+        // ie a window twice as large that captures twice as many points will give about the same value as a smaller window 
+        return count/window;
+    })
+
+    let densities
+    if(bandWidth !== undefined){
+        densities = kernelDensityEstimator(xAxisData, yAxisData, bandWidth);
+    }
+
+    return (
+        {
+            xAxis: xAxisData,
+            windowedData: windowedData,
+            density: densities
+        }
+    );
 }
 
 export default function ConverseAttach(config) {
 
     // Sets whether or not the event is triggered to toggled
-    const isManualTrigger = true;
+    const isManualTrigger = false;
     // When isManualTrigger = false, this is how often a response from chatGTP will be triggered
     const chatLoopInterval = 5 * 1000;
     
@@ -424,7 +574,7 @@ export default function ConverseAttach(config) {
     const conversation = useRef(initJudgeConversation);
     const runningResponse = useRef('');
     const runningTranscript = useRef('');
-    const runningTimestamps = useRef([]);
+    const runningTimestamps = useRef<Array<any>>([]);
     const interval = useRef<NodeJS.Timeout>();
     const interactTime = useRef(new Date().getTime());
     
@@ -443,6 +593,10 @@ export default function ConverseAttach(config) {
     // Perhaps the page is being reloaded by the timmer
 
     const converseLoop = async ()=>{
+
+        // Set interact time to current time 
+        interactTime.current = Date.now();
+
         const recordering = recorder.getRecording();
         // Get the chat response to the recording
         // Playing audio is done inside Converse but the memory is handled outside here
@@ -466,21 +620,19 @@ export default function ConverseAttach(config) {
             endOfLast = runningTimestamps.current[runningTimestamps.current.length-1][2];
         }
 
-        const now = new Date().getTime();
         const timestamps = chatResponse.timestamps
         timestamps.map((timestamp)=>{
-            timestamp[1] += endOfLast + (now-interactTime.current)/1000;
-            timestamp[2] += endOfLast + (now-interactTime.current)/1000;
+            // Convert to milliseconds for this API specifically
+            timestamp[1] *= 1000;
+            timestamp[2] *= 1000;
+            // The referance point starts at 0 when the data comes in
+            // The time the data was sent + 0 == the time the first word was said
+            timestamp[1] += interactTime.current;
+            timestamp[2] += interactTime.current;
         });
-
-        // Set interact time to current time 
-        interactTime.current = now;
 
         // Join the timestamps together to maintain history
         runningTimestamps.current = runningTimestamps.current.concat(timestamps);
-
-        console.log('Stamps: ', runningTimestamps.current);
-        console.log('Analysis: ', STTAnalysis(runningTimestamps.current, 10));
 
         // *** Handle with transcript ***
 
@@ -611,6 +763,120 @@ export default function ConverseAttach(config) {
 
     // }, [runningResponse]);
 
+
+    // This maintains the same referance to the SVG
+    useEffect(()=>{
+
+        if(keyDown == 'a'){
+
+            // This may be slow and we don't want it holding up the API calls so do async
+            (async() => {
+
+
+                const overideArray = [
+                    ['hello', 1689637761396, 1689637761996],
+                    ['testing', 1689637762676, 1689637763376],
+                    ['one', 1689637763496, 1689637763756],
+                    ['nice', 1689637762335, 1689637762675],
+                    ['did', 1689637767496, 1689637767676],
+                    ['you', 1689637767696, 1689637767736],
+                    ['go', 1689637767816, 1689637767936],
+                    ['two', 1689637772176, 1689637772436],
+                    ['three', 1689637773396, 1689637773636],
+                    ['apple', 1689637776955, 1689637777355],
+                    ['yes', 1689637781997, 1689637782357],
+                    ['myself', 1689637788256, 1689637788696],
+                    ['one', 1689637791796, 1689637791996],
+                    ['two', 1689637792056, 1689637792296],
+                    ['three', 1689637792476, 1689637792736],
+                    ['four', 1689637793296, 1689637793536],
+                    ['the', 1689637796818, 1689637796858],
+                    ['twelve', 1689637796938, 1689637797178],
+                    ['thirteen', 1689637797238, 1689637797538],
+                    ['fourteen', 1689637797598, 1689637797918],
+                    ['fifteen', 1689637797978, 1689637798538],
+                    ['hello', 1689637802016, 1689637802296],
+                    ['hello', 1689637802396, 1689637802636],
+                    ['hello', 1689637802736, 1689637802996],
+                    ['six', 1689637806856, 1689637807036],
+                    ['seventy', 1689637807116, 1689637807416],
+                    ['eight', 1689637807536, 1689637807736],
+                    ['day', 1689637807816, 1689637808076],
+                    ['ten', 1689637808156, 1689637808376],
+                    ['eleven', 1689637808436, 1689637808696],
+                    ['words', 1689637812596, 1689637812916],
+                    ['for', 1689637813036, 1689637813156],
+                    ['a', 1689637813256, 1689637813336],
+                    ['second', 1689637813396, 1689637813716],
+                    ['two', 1689637816797, 1689637816917],
+                    ['three', 1689637817037, 1689637817277],
+                    ['jerry', 1689637823077, 1689637823337]
+                  ];
+
+                // Overide the timestamps for now !!!
+                runningTimestamps.current = overideArray;
+
+                // Make sure there is data
+                if(runningTimestamps.current.length > 0){
+
+                    console.log('Stamps: ', runningTimestamps.current);
+
+                    // Fill an array with the start time of each word
+                    const yAxisData = runningTimestamps.current.map((timestamp)=>{
+                        // Conversion to seconds may be needed for a different API
+                        return (timestamp[1]);
+
+                        // // Replace !!!
+                        // return (Math.random() * 50 * 1000);
+                    });
+                    
+                    console.log('Data:');
+                    console.log(yAxisData);
+                    const sampleRate = 0.001;
+                    const speekingData = await STTAnalysis(yAxisData, sampleRate, 5 * 1000, 100);
+                    console.log('Analysis: ');
+                    console.log(speekingData);
+
+                    // This div will be altered to contain the graph
+                    const svgContainer = document.getElementsByClassName("graph-container")[0];
+
+                    const xMin = Math.min(...speekingData.xAxis);
+                    const points: Array<[number, number]> = speekingData.xAxis.map((x, xi)=>{
+                        // Conver to (x, y) point format
+                        // Also x converted to seconds or munites for readability and zero it
+                        return [(x-xMin) / 1000, speekingData.windowedData[xi] * 60 * 1000];
+                    });
+
+                    // Plot function changes the div to include an SVG graph
+                    Plot(svgContainer, points);
+
+                    // Create a transcript formatted based on time
+                    // This is that a scroll can be used to map to the graph
+                    let timePin = runningTimestamps.current[0][1];
+                    const jump = 1 * 1000;
+                    let timeSpacedTranscript = '';
+                    
+                    runningTimestamps.current.map((stamp, i)=>{
+                        timePin += jump * i;
+                        let word = stamp[0] + ' ';
+                        if(stamp[1] > timePin ){
+                            word += '\n\n';
+                        }
+
+                        timeSpacedTranscript +=  word;
+                    });
+
+                    console.log('Time Spaced: ', timeSpacedTranscript);
+                }
+
+            })();
+
+            // Clear the current key
+            setKeyDown(undefined);
+        }
+
+    }, [keyDown]);
+
     return (
         <>
             <div className="captions-container">
@@ -619,6 +885,12 @@ export default function ConverseAttach(config) {
             <div className="captions-container">
                 <p> {runningTranscript.current.slice(runningTranscript.current.length-500)} </p>
             </div>
+
+            <div className="analysis-container">
+                <div className="graph-container">
+                </div>
+            </div>
+
         </>
     );
 }
