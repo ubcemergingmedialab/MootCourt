@@ -1,4 +1,4 @@
-import react from 'react';
+import react, { ReactElement, ReactFragment } from 'react';
 import {Readable} from 'stream';
 import React, { useState, useEffect } from 'react';
 import { useRef } from 'react';
@@ -374,11 +374,19 @@ export async function Converse(conversation, recording){
     return null;
 }
 
-function Plot(svgContainer, data: Array<[number, number]>) {
+/**
+ * Adds an SVG element of the plot of the data
+ * @param svgContainer  The HTML element to attach the SVG to
+ * @param data A set of points to plot
+ * @param clear  Clears the container before attaching the plot
+ */
+function Plot(svgContainer, data: Array<[number, number]>, clear?: Boolean) {
 
-    // Clear the content of the SVG container before appending new graph
-    d3.select(svgContainer).selectAll("*").remove();
-    
+    if(clear){
+        // Clear the content of the SVG container before appending new graph
+        d3.select(svgContainer).selectAll("*").remove();
+    }
+
     // Set the dimensions of the SVG
     const width = 400;
     const height = 300;
@@ -405,6 +413,8 @@ function Plot(svgContainer, data: Array<[number, number]>) {
     // Create scales for x and y axes
     const xScale = d3.scaleLinear()
     // Domain is set from min to the max range
+    // If you are unfamilar with this notation: d=> d[0] is an accessor function
+    // Which tells min() to iterate over the first index of the tuple point array ie. runs over the x component
     .domain([d3.min(data, d=> d[0])||0 , d3.max(data, d=> d[0])||0 ])
     // Domain is scaled onto this range
     .range([0, graphWidth]);
@@ -448,7 +458,8 @@ function Plot(svgContainer, data: Array<[number, number]>) {
     // The point of this is to change how the data is accessed
     // Ie which index to retrieve and how to scale the data
     .x(d => xScale(d[0]))
-    .y(d => yScale(d[1]));
+    .y(d => yScale(d[1]))
+    .curve(d3.curveNatural);
 
     // Create the line path and append it to the graph
     graph.append('path')
@@ -456,6 +467,8 @@ function Plot(svgContainer, data: Array<[number, number]>) {
     .attr('stroke', 'steelblue')
     .attr('stroke-width', 2)
     .attr('d', line(data));
+
+    return {line: line, xScale: xScale, yScale: yScale, svg: svg, graph: graph}
 };
 
 // Calculate the difference between neighbouring values (going backward)
@@ -763,7 +776,8 @@ export default function ConverseAttach(config) {
 
     // }, [runningResponse]);
 
-
+    const hoverableWords = useRef<[ReactElement]>([<></>]);
+    const hoveredWordIndex = useRef(0);
     // This maintains the same referance to the SVG
     useEffect(()=>{
 
@@ -810,7 +824,32 @@ export default function ConverseAttach(config) {
                     ['second', 1689637813396, 1689637813716],
                     ['two', 1689637816797, 1689637816917],
                     ['three', 1689637817037, 1689637817277],
-                    ['jerry', 1689637823077, 1689637823337]
+                    ['jerry', 1689637823077, 1689637823337],
+                    ['one', 1689637791796, 1689637791996],
+                    ['two', 1689637792056, 1689637792296],
+                    ['three', 1689637792476, 1689637792736],
+                    ['four', 1689637793296, 1689637793536],
+                    ['the', 1689637796818, 1689637796858],
+                    ['twelve', 1689637796938, 1689637797178],
+                    ['thirteen', 1689637797238, 1689637797538],
+                    ['fourteen', 1689637797598, 1689637797918],
+                    ['fifteen', 1689637797978, 1689637798538],
+                    ['hello', 1689637802016, 1689637802296],
+                    ['hello', 1689637802396, 1689637802636],
+                    ['hello', 1689637802736, 1689637802996],
+                    ['six', 1689637806856, 1689637807036],
+                    ['seventy', 1689637807116, 1689637807416],
+                    ['eight', 1689637807536, 1689637807736],
+                    ['day', 1689637807816, 1689637808076],
+                    ['ten', 1689637808156, 1689637808376],
+                    ['eleven', 1689637808436, 1689637808696],
+                    ['words', 1689637812596, 1689637812916],
+                    ['for', 1689637813036, 1689637813156],
+                    ['a', 1689637813256, 1689637813336],
+                    ['second', 1689637813396, 1689637813716],
+                    ['two', 1689637816797, 1689637816917],
+                    ['three', 1689637817037, 1689637817277],
+                    ['jerry', 1689637823077, 1689637823337],
                   ];
 
                 // Overide the timestamps for now !!!
@@ -832,8 +871,12 @@ export default function ConverseAttach(config) {
                     
                     console.log('Data:');
                     console.log(yAxisData);
+
                     const sampleRate = 0.001;
-                    const speekingData = await STTAnalysis(yAxisData, sampleRate, 5 * 1000, 100);
+                    const windoWidth = 5 * 1000;
+                    // It would be very interesting to expose these to the user
+                    // Restrictions should be placed to prevent long computation
+                    const speekingData = await STTAnalysis(yAxisData, sampleRate, windoWidth, 100);
                     console.log('Analysis: ');
                     console.log(speekingData);
 
@@ -848,25 +891,116 @@ export default function ConverseAttach(config) {
                     });
 
                     // Plot function changes the div to include an SVG graph
-                    Plot(svgContainer, points);
+                    const plotInfo = Plot(svgContainer, points, true);
 
-                    // Create a transcript formatted based on time
-                    // This is that a scroll can be used to map to the graph
-                    let timePin = runningTimestamps.current[0][1];
-                    const jump = 1 * 1000;
-                    let timeSpacedTranscript = '';
+                    // const points2: Array<[number, number]> = speekingData.xAxis.map((x, xi)=>{
+                    //     // Conver to (x, y) point format
+                    //     // Also x converted to seconds or munites for readability and zero it
+                    //     return [(x-xMin) / 1000, yAxisData[xi] * 60 * 1000];
+                    // });
+
+                    // Plot(svgContainer, points2);
+
+                    // // Create a transcript formatted based on time
+                    // // This is that a scroll can be used to map to the graph
+                    // let timePin = runningTimestamps.current[0][1];
+                    // const jump = 1 * 1000;
+                    // let timeSpacedTranscript = '';
                     
+                    // runningTimestamps.current.map((stamp, i)=>{
+                    //     timePin += jump * i;
+                    //     let word = stamp[0] + ' ';
+                    //     if(stamp[1] > timePin ){
+                    //         word += '\n\n';
+                    //     }
+
+                    //     timeSpacedTranscript +=  word;
+                    // });
+
+                    // console.log('Time Spaced: ', timeSpacedTranscript);
+
+
+                    const getCoordsFromWordIndex = (i)=>{
+                        const xMin = runningTimestamps.current[0][1];
+                        let sampledX = runningTimestamps.current[i][1];
+                        // Transform in the same way the oringial data was transformed
+                        sampledX = (sampledX-xMin) / 1000;
+
+                        // Find the index that splits the data given an x
+                        const bisect = d3.bisector((d:any) => d[0]).left;
+                        let index = bisect(points, sampledX);
+                        
+                        // Restrict to the allowed range
+                        index = Math.min(Math.max(index, 2), points.length-1);
+
+                        // Interpolate between the previous point and the current one
+                        const x0 = points[index - 1][0];
+                        const x1 = points[index][0];
+                        const y0 = points[index - 1][1];
+                        const y1 = points[index][1];
+                        const interpolate = d3.interpolateNumber(y0, y1);
+                        let retrievedY = interpolate((sampledX - x0) / (x1 - x0));
+
+                        return [sampledX, retrievedY];
+                    }
+                    
+                    const setHoveredWordIndex = (i, coords) => {
+                        hoveredWordIndex.current = i;
+
+                        // This function is additionally being used to set the pointer on the plot
+                        // This could be broken up by listening for a change in the hoveredWord index
+
+                        const svg = plotInfo.svg;
+                        // clear out old pointer
+                        d3.selectAll('.pointer').remove();
+                        const pointer = svg.select('g')
+                                        .append('g')
+                                            .attr('class', 'pointer')
+                                            .append('circle')
+                                                .attr('cx', plotInfo.xScale(coords[0]))
+                                                .attr('cy', plotInfo.yScale(coords[1]))
+                                                .attr('r', 4)
+                                                .attr('fill', 'red');
+                    }
+
+                    // Clear before hand
+                    hoverableWords.current = [<></>];
                     runningTimestamps.current.map((stamp, i)=>{
-                        timePin += jump * i;
-                        let word = stamp[0] + ' ';
-                        if(stamp[1] > timePin ){
-                            word += '\n\n';
+
+                        const lerp = (start, end, w) => {
+                            return start * (1 - w) + end * w;
                         }
 
-                        timeSpacedTranscript +=  word;
-                    });
+                        const fit = (value, sourceMin, sourceMax, targetMin, targetMax) => {
+                            const sourceRange = sourceMax - sourceMin;
+                            const targetRange = targetMax - targetMin;
+                            const normalizedValue = (value - sourceMin) / sourceRange;
+                            return targetMin + normalizedValue * targetRange;
+                        }
+                          
+                        const coords = getCoordsFromWordIndex(i);
+                        // Get a weight from 0 to 1 based on the data set
+                        const weight = fit(coords[1], 0, d3.max(points, d => d[0]), 0, 1);
 
-                    console.log('Time Spaced: ', timeSpacedTranscript);
+                        // Interpolate between these colours based on the weight
+                        // From 0 give the low colour and 1 gives the high colour
+
+                        // It may be better to use a gradient sampling method for finer control
+                        const Low = [255,255,255];
+                        const High = [255, 0, 0];
+                        const color = Low.map((v, i)=>{
+                            return lerp(v, High[i], weight);
+                        });
+
+                        // Get the current word and add a space
+                        const word = stamp[0] + ' ';
+
+                        // Attach a hover listener function that has i prefilled with the word's index
+                        const style = {color: `rgb(${color.join(', ')})`};
+                        const element: ReactElement = <span onMouseEnter={() => setHoveredWordIndex(i, coords)} style={style}>{word}</span>;
+
+                        hoverableWords.current.push(element);
+                    });
                 }
 
             })();
@@ -887,10 +1021,23 @@ export default function ConverseAttach(config) {
             </div>
 
             <div className="analysis-container">
-                <div className="graph-container">
+
+                <div className="sideMenuBackground" id="Main">
+                    <div className="sideMenuInner">
+                        <div className="sideMenuTitleText">
+                            <h1>ASSESSMENT</h1>
+                            <div className="hr-1"></div>
+                        </div>
+                            
+                        <div className="graph-container">
+                        </div>
+
+                        <div className="transcript-container">
+                            <p>{hoverableWords.current}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </>
     );
 }
