@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
   const [mixer, setMixer] = useState(null);
   const [animations, setAnimations] = useState([]);
   const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     const loader = new GLTFLoader();
@@ -25,7 +26,7 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
           action.timeScale = 1;
           return {
             action,
-            duration: clip.duration, // Store the duration of each animation clip
+            duration: clip.duration,
           };
         });
         setAnimations(newAnimations);
@@ -42,61 +43,56 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
 
   useEffect(() => {
     if (animations.length > 0) {
-      const crossfadeDuration = 0.3; // Adjust the crossfade duration as needed
-      let interval;
+      const crossfadeDuration = 1;
 
       if (isSpeaking) {
-        // If speaking is true, play the talking clip
         const speakingClip = animations.find((clip) => clip.action.getClip().name === 'talking');
 
         if (speakingClip) {
           setCurrentAnimationIndex(0);
           speakingClip.action.reset();
-
           speakingClip.action.fadeIn(crossfadeDuration);
-
           speakingClip.action.play();
-
-          console.log('Current Animation Clips:', [ speakingClip.action.getClip().name]);
-
-          interval = setInterval(() => {
-            speakingClip.action.reset();
-
-            speakingClip.action.fadeIn(crossfadeDuration);
-
-            speakingClip.action.play();
-          }, speakingClip.duration * 1000);
+          console.log('Current Animation Clips:', [speakingClip.action.getClip().name]);
         }
       } else {
-        // If speaking is false, play the random clips in a loop
-        const randomClips = animations.filter((clip) => clip.action.getClip().name !== 'talking');
+        const randomClips = animations.filter(
+          (clip) => clip.action.getClip().name !== 'talking');
 
         setCurrentAnimationIndex(0);
 
-        interval = setInterval(() => {
+        // Helper function to play the next random animation
+        const playNextRandomAnimation = () => {
           setCurrentAnimationIndex((prevIndex) => {
             const nextIndex = (prevIndex + 1) % randomClips.length;
-            const currentClip = randomClips[nextIndex];
+            const currentClip = randomClips[prevIndex];
+            const nextClip = randomClips[nextIndex];
 
-            const previousClip = randomClips[prevIndex];
-            previousClip.action.fadeOut(crossfadeDuration);
-            previousClip.action.stop();
+            currentClip.action.fadeOut(crossfadeDuration);
+            currentClip.action.stop();
 
-            currentClip.action.reset();
-            currentClip.action.fadeIn(crossfadeDuration);
-            currentClip.action.play();
+            nextClip.action.reset();
+            nextClip.action.fadeIn(crossfadeDuration);
+            nextClip.action.play();
 
-            console.log('Current Animation Clip:', currentClip.action.getClip().name);
+            console.log('Current Animation Clip:', nextClip.action.getClip().name);
 
             return nextIndex;
           });
-        }, randomClips[0].duration * 1000);
-      }
+        };
 
-      return () => {
-        clearInterval(interval);
-        setCurrentAnimationIndex(0); // Reset current animation index
-      };
+        // Start the interval to play the next random animation
+        intervalRef.current = setInterval(playNextRandomAnimation, randomClips[0].duration * 1000);
+
+        // Play the first random animation
+        randomClips[0].action.fadeIn(crossfadeDuration);
+        randomClips[0].action.play();
+
+        return () => {
+          clearInterval(intervalRef.current);
+          setCurrentAnimationIndex(0);
+        };
+      }
     }
   }, [animations, isSpeaking]);
 
@@ -118,6 +114,7 @@ Model.propTypes = {
 };
 
 export default Model;
+
 
 
 
