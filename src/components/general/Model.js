@@ -47,36 +47,29 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
 
       if (isSpeaking) {
         // If speaking is true, play the talking clip
-        const faceSpeakingClip = animations.find((clip) => clip.action.getClip().name === 'face_speaking');
         const speakingClip = animations.find((clip) => clip.action.getClip().name === 'talking');
 
-        if (faceSpeakingClip && speakingClip) {
+        if (speakingClip) {
           setCurrentAnimationIndex(0);
-          faceSpeakingClip.action.reset();
           speakingClip.action.reset();
 
-          faceSpeakingClip.action.fadeIn(crossfadeDuration);
           speakingClip.action.fadeIn(crossfadeDuration);
 
-          faceSpeakingClip.action.play();
           speakingClip.action.play();
 
-          console.log('Current Animation Clips:', [faceSpeakingClip.action.getClip().name, speakingClip.action.getClip().name]);
+          console.log('Current Animation Clips:', [ speakingClip.action.getClip().name]);
 
           interval = setInterval(() => {
-            faceSpeakingClip.action.reset();
             speakingClip.action.reset();
 
-            faceSpeakingClip.action.fadeIn(crossfadeDuration);
             speakingClip.action.fadeIn(crossfadeDuration);
 
-            faceSpeakingClip.action.play();
             speakingClip.action.play();
-          }, faceSpeakingClip.duration * 1000);
+          }, speakingClip.duration * 1000);
         }
       } else {
         // If speaking is false, play the random clips in a loop
-        const randomClips = animations.filter((clip) => clip.action.getClip().name !== 'face_speaking');
+        const randomClips = animations.filter((clip) => clip.action.getClip().name !== 'talking');
 
         setCurrentAnimationIndex(0);
 
