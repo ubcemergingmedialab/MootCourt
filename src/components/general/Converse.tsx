@@ -145,7 +145,7 @@ export function cancel(): void {
 
 
 // Play the queue continuously
-let audioContext = new (window.AudioContext)(); // may want to add webkit support
+let audioContext = new (window.AudioContext)(); // may want to add webkit support, its also best if this is shared and on the app
 let audioQueue: AudioBuffer[] = [];
 let source;
 function playQueue(){
@@ -163,7 +163,7 @@ function playQueue(){
     }
 
     // Get the next buffer
-    let nextBuffer = audioQueue.shift();
+    let nextBuffer = audioQueue[0];
 
     // Create a new sound source
     source = audioContext.createBufferSource();
@@ -172,6 +172,9 @@ function playQueue(){
     // Play the next item in the queue when this one has ended
     source.onended = () => {
         console.log('Starting next clip');
+
+        // Remove the audio that has been played from the list
+        audioQueue.shift();
         console.log(audioQueue.length);
         
         // Destroy this source so that a new one can start
@@ -222,7 +225,7 @@ async function GetPlayAudio(audioPath, clientId){
     
 }
 
-export async function ConverseMultithread(conversation, recording): Promise<object>{
+export async function ConverseMultithread(conversation, recording, lastResponseTime): Promise<object>{
 
     const recordingFile = new File([recording], 'user-recording', {
         type: 'audio/webm',
@@ -247,7 +250,9 @@ export async function ConverseMultithread(conversation, recording): Promise<obje
         ratePercentage: 0,
         // Judge pitch percentage shift. It can be negative
         // ex 0 is normal, 100 is double pitch ie higher (check this)
-        pitchPercentage: 0
+        pitchPercentage: 0,
+        // The last time that ChatGPT gave a response
+        lastResponseTime: lastResponseTime
     };
     
     const formData = createFormData(data);
@@ -466,6 +471,7 @@ function Plot(svgContainer, data: Array<[number, number]>, clear?: Boolean) {
     .attr('fill', 'none')
     .attr('stroke', 'steelblue')
     .attr('stroke-width', 2)
+    .attr("id", "svgpath")
     .attr('d', line(data));
 
     return {line: line, xScale: xScale, yScale: yScale, svg: svg, graph: graph}
@@ -485,32 +491,60 @@ function ArrayDifference(array: number[]){
     });
 }
 
-function kernelDensityEstimator(xAxis, yAxis, bandWidth) {
+// function kernelDensityEstimator(xAxis, yAxis, bandWidth) {
 
-    const meanArray = xAxis.map((x, i) => {
-        // Do this for every value of x
+//     const meanArray = xAxis.map((x, i) => {
+//         // Do this for every value of x
 
+//         // Calculate the sum of kernel values
+//         const sum = yAxis.reduce((accumulator, y) => {
+//             let diff = x - y;
+//             let quotient = diff / bandWidth;
+//             let absQuotient = Math.abs(quotient);
+
+//             if (absQuotient <= 1) {
+//                 return accumulator + 0.75 * (1 - absQuotient * absQuotient);
+//             } else {
+//                 return accumulator;
+//             }
+//         }, 0);
+
+//         // Divide the sum by the bandWidth to get the mean
+//         const mean = sum / (bandWidth * yAxis.length);
+
+//         // Set the value of the array at this index to the mean
+//         return mean;
+//     });
+
+//     return meanArray;
+// }
+
+function kernelDensityEstimator(xAxis, dataPoints, bandWidth) {
+
+    const kernel = (x) => {
+        const absQuotient = Math.abs(x / bandWidth);
+        if (absQuotient <= 1) {
+            return 0.75 * (1 - absQuotient * absQuotient);
+        } else {
+            return 0;
+        }
+    };
+
+    const densityArray = xAxis.map((x) => {
         // Calculate the sum of kernel values
-        const sum = yAxis.reduce((accumulator, y) => {
-            let diff = x - y;
-            let quotient = diff / bandWidth;
-            let absQuotient = Math.abs(quotient);
-
-            if (absQuotient <= 1) {
-                return accumulator + 0.75 * (1 - absQuotient * absQuotient);
-            } else {
-                return accumulator;
-            }
+        const sum = dataPoints.reduce((accumulator, dataPoint) => {
+            const diff = x - dataPoint;
+            return accumulator + kernel(diff);
         }, 0);
 
-        // Divide the sum by the bandWidth to get the mean
-        const mean = sum / (bandWidth * yAxis.length);
+        // Divide the sum by the total number of data points and the bandwidth to get the density estimate
+        const density = sum / (bandWidth * dataPoints.length);
 
-        // Set the value of the array at this index to the mean
-        return mean;
+        // Set the value of the array at this index to the density estimate
+        return density;
     });
 
-    return meanArray;
+    return densityArray;
 }
 
 /**
@@ -523,7 +557,8 @@ function kernelDensityEstimator(xAxis, yAxis, bandWidth) {
 async function STTAnalysis(yAxisData, sampleRate, window, bandWidth?){
 
     const zeroOffset = Math.min(...yAxisData);
-    const duration = Math.max(...yAxisData)-zeroOffset; //yAxisData[yAxisData.length-1];
+    const dataMax = Math.max(...yAxisData);
+    const duration = dataMax-zeroOffset; //yAxisData[yAxisData.length-1];
 
     // # of xSamples = Sample Rate * Duration. Ceil used to return an int that is inclusive of the end point.
     const xSamples = Math.ceil(duration * sampleRate);
@@ -548,9 +583,16 @@ async function STTAnalysis(yAxisData, sampleRate, window, bandWidth?){
         });
 
         // Return the count for the current window
-        // Normalize the array by dividing by the window
-        // ie a window twice as large that captures twice as many points will give about the same value as a smaller window 
-        return count/window;
+        // We need to normalize the array by dividing by the window
+        // ie a window twice as large that captures twice as many points will give about the same value as a smaller window
+        
+        // The window may actually be smaller if the edges of it are cuttof since there is no data at the ends
+        // (0 - -5) = 5 ie data starts at 0 but the window tried to sample below that. 5 is the length that was not sampled.
+        // Use max to ignore negative values ie where the window was inside the range of the data
+        // Repeat this for the upper range and combine to get the amount that the window is outside the range
+        // The expresion is flipped/negated because the higher value will be on the other side
+        const windCuttoff = Math.max(zeroOffset-lowerBound, 0) + Math.max(-(dataMax-upperBound), 0);
+        return count/(window-windCuttoff);
     })
 
     let densities
@@ -590,6 +632,7 @@ export default function ConverseAttach(config) {
     const runningTimestamps = useRef<Array<any>>([]);
     const interval = useRef<NodeJS.Timeout>();
     const interactTime = useRef(new Date().getTime());
+    const lastResponseTime = useRef(new Date().getTime());
     
     // Create a recorder -> it might be better to use useRef
     const [recorder, setRecorder] = useState(new Recorder());
@@ -619,7 +662,17 @@ export default function ConverseAttach(config) {
         if(false){
             chatResponse = await Converse(conversation.current, recordering);
         } else {
-            chatResponse = await ConverseMultithread(conversation.current, recordering);
+            // To DO
+            // Tell the server when the last time you got a response was
+            // On the server side use that to restrict how often chatGPT can respond
+            // Also save a verson of the last user message sent. Don't ask for a response if its not different enough
+            chatResponse = await ConverseMultithread(conversation.current, recordering, lastResponseTime.current);
+        }
+
+        // If there is an audio path then the chat bot did respond
+        if(chatResponse.audioPath !== undefined) {
+            // Set the last response time to the current time
+            lastResponseTime.current = interactTime.current;
         }
 
         // *** Handle with timestamps ***
@@ -652,10 +705,9 @@ export default function ConverseAttach(config) {
         console.log('conv: ', conversation.current);
         const transcript = chatResponse.transcript + ' ';
         console.log('transcript check: ', transcript);
+
         // If the latest transcript is a continuation of the last one ie no messages inbetween
         // Add this transcript onto the end of the last one
-
-
         if(conversation.current[conversation.current.length-1].role === 'user'){
             conversation.current[conversation.current.length-1].content += transcript;
             console.log('user check:  ', conversation.current[conversation.current.length-1].content);
@@ -669,9 +721,9 @@ export default function ConverseAttach(config) {
         }
 
         // Either the last message was user or a new user message was set
-        // So by now the last message with be a user message
+        // So by now the last message will be a user message
 
-        //Store a history of just the transcript
+        // Store a history of just the transcript
         runningTranscript.current = runningTranscript.current + transcript;
         console.log('runningTranscript: ', runningTranscript);
         
@@ -689,23 +741,29 @@ export default function ConverseAttach(config) {
         }
 
         // Clear data from the recording and start a new one
-        // Ideally we should wait until after the judge is done responding to start recording
         recorder.stopRecording();
+
+        // If some audio is waiting to be played then wait
+        if (audioQueue.length>0) {
+
+            // Await the resolution of this promise
+            await new Promise((resolve, reqject)=>{
+
+                // Resolve this promise when there is no audio to be played
+
+                // I think that this is not working as the audioQueue may not update within a promise
+                // Maybe switch to an event listener and emit one whent he audio ends on the recorder
+                if(audioQueue.length===0){
+                    resolve(null);
+                }
+            });
+        }
+
+        // Resume listening to the user
         recorder.startRecording();
 
         return;
     }
-
-
-    // TO DO, if audio is playing, we should stop listening to the user so that the response is not heard as user input
-    useEffect(() => {
-
-        recorder.startRecording();
-        // Wait for the recording to start and then continue while it records in the background
-        // Note that its possible to try and get a response before the recording starts because there is no await
-
-    }, []);
-
 
     useEffect(() => {
         const keyDownHandler = (e) => {
@@ -736,12 +794,17 @@ export default function ConverseAttach(config) {
                 // Check the toggle state
                 if(stateToggle){
 
+                    recorder.startRecording();
+
                     // Repeat every x seconds
-                    interval.current = setInterval(() => {
-                        converseLoop();
+                    interval.current = setInterval( async () => {
+                        await converseLoop();
                     }, chatLoopInterval);
     
                 }else {
+
+                    recorder.stopRecording();
+
                     clearInterval(interval.current);
                 }
 
@@ -824,32 +887,7 @@ export default function ConverseAttach(config) {
                     ['second', 1689637813396, 1689637813716],
                     ['two', 1689637816797, 1689637816917],
                     ['three', 1689637817037, 1689637817277],
-                    ['jerry', 1689637823077, 1689637823337],
-                    ['one', 1689637791796, 1689637791996],
-                    ['two', 1689637792056, 1689637792296],
-                    ['three', 1689637792476, 1689637792736],
-                    ['four', 1689637793296, 1689637793536],
-                    ['the', 1689637796818, 1689637796858],
-                    ['twelve', 1689637796938, 1689637797178],
-                    ['thirteen', 1689637797238, 1689637797538],
-                    ['fourteen', 1689637797598, 1689637797918],
-                    ['fifteen', 1689637797978, 1689637798538],
-                    ['hello', 1689637802016, 1689637802296],
-                    ['hello', 1689637802396, 1689637802636],
-                    ['hello', 1689637802736, 1689637802996],
-                    ['six', 1689637806856, 1689637807036],
-                    ['seventy', 1689637807116, 1689637807416],
-                    ['eight', 1689637807536, 1689637807736],
-                    ['day', 1689637807816, 1689637808076],
-                    ['ten', 1689637808156, 1689637808376],
-                    ['eleven', 1689637808436, 1689637808696],
-                    ['words', 1689637812596, 1689637812916],
-                    ['for', 1689637813036, 1689637813156],
-                    ['a', 1689637813256, 1689637813336],
-                    ['second', 1689637813396, 1689637813716],
-                    ['two', 1689637816797, 1689637816917],
-                    ['three', 1689637817037, 1689637817277],
-                    ['jerry', 1689637823077, 1689637823337],
+                    ['jerry', 1689637823077, 1689637823337]
                   ];
 
                 // Overide the timestamps for now !!!
@@ -872,11 +910,26 @@ export default function ConverseAttach(config) {
                     console.log('Data:');
                     console.log(yAxisData);
 
-                    const sampleRate = 0.001;
-                    const windoWidth = 5 * 1000;
+
+                    // A roungh estimate of what the sample rate should be
+                    // Is samples/sentance time ex 1 sample per senance time:
+                    // 2 second for a short sentance
+                    // 1 / 2 = 0.5 of a second to sample once per sentance
+                    let sampleRate = 0.5 / 1000;
+                    const windoWidth = 30 * 1000;
+
                     // It would be very interesting to expose these to the user
                     // Restrictions should be placed to prevent long computation
-                    const speekingData = await STTAnalysis(yAxisData, sampleRate, windoWidth, 100);
+                    //const samples = sampleRate * yAxisData.length;
+                    const samplesMax = 100;
+                    const samplesMin = 20;
+                    const yAxisDataMax = Math.max(...yAxisData)-Math.min(...yAxisData);
+                    const sampleRateMax = samplesMax/yAxisDataMax;
+                    const sampleRateMin = samplesMin/yAxisDataMax;
+
+                    sampleRate = Math.min(Math.max(sampleRate, sampleRateMin), sampleRateMax);
+
+                    const speekingData = await STTAnalysis(yAxisData, sampleRate, windoWidth, 10);
                     console.log('Analysis: ');
                     console.log(speekingData);
 
@@ -884,6 +937,7 @@ export default function ConverseAttach(config) {
                     const svgContainer = document.getElementsByClassName("graph-container")[0];
 
                     const xMin = Math.min(...speekingData.xAxis);
+                    const xMax = Math.max(...speekingData.xAxis);
                     const points: Array<[number, number]> = speekingData.xAxis.map((x, xi)=>{
                         // Conver to (x, y) point format
                         // Also x converted to seconds or munites for readability and zero it
@@ -941,8 +995,18 @@ export default function ConverseAttach(config) {
                         const interpolate = d3.interpolateNumber(y0, y1);
                         let retrievedY = interpolate((sampledX - x0) / (x1 - x0));
 
+                        // // Not working correctly currently but should get the y from the curve as it linear interpolation may not match the graph
+                        // const path = plotInfo.graph.select('path');
+                        // console.log(path);
+                        // const totalLength = (path.node() as SVGPathElement).getTotalLength();
+                        // const point = (path.node() as SVGPathElement).getPointAtLength(0.5 *totalLength);
+                        // console.log('point: ', point);
+                        // retrievedY = plotInfo.yScale.invert(point.y);
+                        // console.log(retrievedY);
+
                         return [sampledX, retrievedY];
                     }
+                    
                     
                     const setHoveredWordIndex = (i, coords) => {
                         hoveredWordIndex.current = i;
@@ -964,7 +1028,9 @@ export default function ConverseAttach(config) {
                     }
 
                     // Clear before hand
-                    hoverableWords.current = [<></>];
+                    // Seems to be having an issue with key in general
+                    // This is used be react for optimization reasons to idtentify the elements
+                    hoverableWords.current = [<span key={-1}></span>];
                     runningTimestamps.current.map((stamp, i)=>{
 
                         const lerp = (start, end, w) => {
@@ -986,8 +1052,8 @@ export default function ConverseAttach(config) {
                         // From 0 give the low colour and 1 gives the high colour
 
                         // It may be better to use a gradient sampling method for finer control
-                        const Low = [255,255,255];
-                        const High = [255, 0, 0];
+                        const Low = [0,255/2,255];
+                        const High = [255, 255/2, 0];
                         const color = Low.map((v, i)=>{
                             return lerp(v, High[i], weight);
                         });
@@ -997,7 +1063,7 @@ export default function ConverseAttach(config) {
 
                         // Attach a hover listener function that has i prefilled with the word's index
                         const style = {color: `rgb(${color.join(', ')})`};
-                        const element: ReactElement = <span onMouseEnter={() => setHoveredWordIndex(i, coords)} style={style}>{word}</span>;
+                        const element: ReactElement = <span key={i} onMouseEnter={() => setHoveredWordIndex(i, coords)} style={style}>{word}</span>;
 
                         hoverableWords.current.push(element);
                     });
