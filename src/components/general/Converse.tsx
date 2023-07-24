@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 
+const serverRoot = 'http://localhost';
 async function ServerRequestResponse(data: FormData, server){
     try {
         const response = await fetch(server, {
@@ -207,7 +208,7 @@ async function GetPlayAudio(audioPath, clientId){
     // Get the audio file from the path that was given in the response
     console.log('Get audio: ', audioPath);
 
-    const audioResponse = await ServerRequestResponse(getData, 'http://localhost:60/api/audio');
+    const audioResponse = await ServerRequestResponse(getData, `${serverRoot}/api/audio`);
 
     if(audioResponse && audioResponse.ok){
 
@@ -261,7 +262,7 @@ export async function ConverseMultithread(conversation, recording, lastResponseT
     const formData = createFormData(data);
 
     // Send data to the server
-    const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse-multithread');
+    const response = await ServerRequestResponse(formData, `${serverRoot}/api/converse-multithread`);
 
     if(response === undefined){
         return conversation;
@@ -271,7 +272,7 @@ export async function ConverseMultithread(conversation, recording, lastResponseT
     console.log('My client Id: ', clientId);
     
     // Listen back for the server's response
-    const eventSource = new EventSource(`http://localhost:60/api/converse-multithread?clientId=${clientId}`);
+    const eventSource = new EventSource(`${serverRoot}/api/converse-multithread?clientId=${clientId}`);
 
     eventSource.onerror = function(error) {
         console.error('EventSource failed:', error);
@@ -353,12 +354,12 @@ export async function Converse(conversation, recording){
         };
         
         const formData = createFormData(data);
-        const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse');
+        const response = await ServerRequestResponse(formData, `${serverRoot}/api/converse`);
         if(response !== undefined){
             const responseJSON = await response.json();
             const getData = createFormData({ 'audioPath': responseJSON.audioPath });
             // Get the audio file from the path that was given in the response
-            const audio = await ServerRequestResponse(getData, 'http://localhost:60/api/audio');
+            const audio = await ServerRequestResponse(getData, `${serverRoot}/api/audio`);
             console.log(responseJSON);
             console.log(audio);
             if(audio !== undefined){
