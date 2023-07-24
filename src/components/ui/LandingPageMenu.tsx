@@ -193,10 +193,10 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         console.log("Classic enabled.")
     }
     
-    const pressIntellaJudge = () => {
+    const pressIntelliJudge = () => {
         resetDisplayedUI("Difficulty", "Position");
         updateConfig({...config, isInteliJudge: true})
-        console.log("IntellaJudge enabled.")
+        console.log("IntelliJudge enabled.")
     }
 
     function pressBackFromTimer() {
@@ -294,12 +294,12 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         </div>
             <div className="hr-3"></div>
                 <div className="buttonFlexBox buttonFlexBox-Position">
-                        <button className="button wide-button" type="button" onClick={pressIntellaJudge}>Intella-Judge</button>
+                        <button className="button wide-button" type="button" onClick={pressIntelliJudge}>IntelliJudge</button>
                 </div>
                     <div className="sideMenuContentsWithButtons">
                         <p>Practice your moot court with an OpenAI for live communication and custom AI-generated questions.</p>  
                         <ul>
-                            <li>To speak to the IntellaJ-Judge, press <b>"Enter"</b> after each argument and wait for the IntellaJudge's respond before proceeding with your next point. </li>
+                            <li>To speak to the IntelliJudge, press <b>"Enter"</b> after each argument and wait for the IntelliJudge's respond before proceeding with your next point. </li>
                         </ul>
                     </div>
                 </div>
@@ -475,7 +475,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <li>Click "Start" to begin your moot court after choosing your difficulty level and position. The options you are provided are:
                             <ul>
                                 <li><b>Classic:</b> Automated judge that allows you to practice time management and speech delievry</li>
-                                <li><b>IntellaJudge:</b> AI judge whom you can communicate and get live-response in your moot session.  </li>
+                                <li><b>IntelliJudge:</b> AI judge whom you can communicate and get live-response in your moot session.  </li>
                             </ul>
                         </li>
                         <li>In a guided process, you can choose to either go to the default or customize your moot court session in the settings.</li>

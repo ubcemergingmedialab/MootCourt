@@ -70,7 +70,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
                 setIsAppInIntro(true)
             }
             if (isAppInIntro) {
-                console.log("app is in intro")
+                // console.log("app is in intro")
                 if (judgeElapsedTime >= config.introductionTime * 1000) {
                     setIsAppInIntro(false)
                     setShouldUpdateJudgeElapsedTime(true)
