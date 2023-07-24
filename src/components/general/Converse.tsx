@@ -4,7 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import * as d3 from 'd3';
 import { Svg } from '@react-three/drei';
+import ReactDOM from 'react-dom/client';
 
+const serverRoot = 'http://localhost';
 async function ServerRequestResponse(data: FormData, server){
     try {
         const response = await fetch(server, {
@@ -159,6 +161,8 @@ function playQueue(){
 
     // Check if there are items in the queue
     if(audioQueue.length === 0){
+        // Send out an event on the document that the queue has ended
+        document.dispatchEvent(new Event('audioQueueEnd'));
         return;
     }
 
@@ -204,7 +208,7 @@ async function GetPlayAudio(audioPath, clientId){
     // Get the audio file from the path that was given in the response
     console.log('Get audio: ', audioPath);
 
-    const audioResponse = await ServerRequestResponse(getData, 'http://localhost:60/api/audio');
+    const audioResponse = await ServerRequestResponse(getData, `${serverRoot}/api/audio`);
 
     if(audioResponse && audioResponse.ok){
 
@@ -258,7 +262,7 @@ export async function ConverseMultithread(conversation, recording, lastResponseT
     const formData = createFormData(data);
 
     // Send data to the server
-    const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse-multithread');
+    const response = await ServerRequestResponse(formData, `${serverRoot}/api/converse-multithread`);
 
     if(response === undefined){
         return conversation;
@@ -268,7 +272,7 @@ export async function ConverseMultithread(conversation, recording, lastResponseT
     console.log('My client Id: ', clientId);
     
     // Listen back for the server's response
-    const eventSource = new EventSource(`http://localhost:60/api/converse-multithread?clientId=${clientId}`);
+    const eventSource = new EventSource(`${serverRoot}/api/converse-multithread?clientId=${clientId}`);
 
     eventSource.onerror = function(error) {
         console.error('EventSource failed:', error);
@@ -350,12 +354,12 @@ export async function Converse(conversation, recording){
         };
         
         const formData = createFormData(data);
-        const response = await ServerRequestResponse(formData, 'http://localhost:60/api/converse');
+        const response = await ServerRequestResponse(formData, `${serverRoot}/api/converse`);
         if(response !== undefined){
             const responseJSON = await response.json();
             const getData = createFormData({ 'audioPath': responseJSON.audioPath });
             // Get the audio file from the path that was given in the response
-            const audio = await ServerRequestResponse(getData, 'http://localhost:60/api/audio');
+            const audio = await ServerRequestResponse(getData, `${serverRoot}/api/audio`);
             console.log(responseJSON);
             console.log(audio);
             if(audio !== undefined){
@@ -387,7 +391,7 @@ export async function Converse(conversation, recording){
  */
 function Plot(svgContainer, data: Array<[number, number]>, clear?: Boolean) {
 
-    if(clear){
+    if(clear && svgContainer){
         // Clear the content of the SVG container before appending new graph
         d3.select(svgContainer).selectAll("*").remove();
     }
@@ -491,33 +495,6 @@ function ArrayDifference(array: number[]){
     });
 }
 
-// function kernelDensityEstimator(xAxis, yAxis, bandWidth) {
-
-//     const meanArray = xAxis.map((x, i) => {
-//         // Do this for every value of x
-
-//         // Calculate the sum of kernel values
-//         const sum = yAxis.reduce((accumulator, y) => {
-//             let diff = x - y;
-//             let quotient = diff / bandWidth;
-//             let absQuotient = Math.abs(quotient);
-
-//             if (absQuotient <= 1) {
-//                 return accumulator + 0.75 * (1 - absQuotient * absQuotient);
-//             } else {
-//                 return accumulator;
-//             }
-//         }, 0);
-
-//         // Divide the sum by the bandWidth to get the mean
-//         const mean = sum / (bandWidth * yAxis.length);
-
-//         // Set the value of the array at this index to the mean
-//         return mean;
-//     });
-
-//     return meanArray;
-// }
 
 function kernelDensityEstimator(xAxis, dataPoints, bandWidth) {
 
@@ -622,7 +599,11 @@ export default function ConverseAttach(config) {
     // It is possible to providing multiple system messages each with an intention is better than a large block
     // I believe that ChatGPT will read each and incorperate the instruction of each message somewhat seperately though considering the whole conversation
     // This might mean that distinct instructions should be seperated
-    const systemPrompt = "Play the role of a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice. Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law. Consider the arguments of the appellant or respondent. The transcript provided to you will contain information regarding their WPM and the [start-stop] time of speaking. Incorporate the emotions 'Nod,' 'Looking at paper,' 'Shake Head,' or 'Point' into your response by inserting them within square brackets at a suitable place. Ensure that each response includes at least one emotion. For example, you can write '[Shake Head] I don't believe you.' Or ‘This does not pertain to you [Point] as it is none of your business.’ Please keep your response limited to 2-6 sentences. As you haven't yet been prompted, only greet the student and ask them to begin.";
+    const systemPrompt = `
+    Play the role of a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice.
+    Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law.
+    Consider the arguments of the appellant or respondent.
+    `
     let initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt);
     
     // useRef does not re-render like useState does
@@ -670,6 +651,7 @@ export default function ConverseAttach(config) {
         }
 
         // If there is an audio path then the chat bot did respond
+        // Note that when ConverseMultithread is playing audio then it is awaited and thus this interact time is when the chat bot stops talking
         if(chatResponse.audioPath !== undefined) {
             // Set the last response time to the current time
             lastResponseTime.current = interactTime.current;
@@ -744,18 +726,15 @@ export default function ConverseAttach(config) {
         recorder.stopRecording();
 
         // If some audio is waiting to be played then wait
-        if (audioQueue.length>0) {
+        if (audioQueue.length > 0) {
 
             // Await the resolution of this promise
             await new Promise((resolve, reqject)=>{
-
+                
                 // Resolve this promise when there is no audio to be played
-
-                // I think that this is not working as the audioQueue may not update within a promise
-                // Maybe switch to an event listener and emit one whent he audio ends on the recorder
-                if(audioQueue.length===0){
+                document.addEventListener('audioQueueEnd', () => {
                     resolve(null);
-                }
+                });
             });
         }
 
@@ -891,7 +870,7 @@ export default function ConverseAttach(config) {
                   ];
 
                 // Overide the timestamps for now !!!
-                runningTimestamps.current = overideArray;
+                //runningTimestamps.current = overideArray;
 
                 // Make sure there is data
                 if(runningTimestamps.current.length > 0){
@@ -1067,6 +1046,19 @@ export default function ConverseAttach(config) {
 
                         hoverableWords.current.push(element);
                     });
+
+                    // // Get the div where the transcript should be filled in
+                    // const transcriptContainer = document.getElementsByClassName("transcript-container")[0];
+                    // // Create a container on DOM
+                    // const containerElement = document.createElement('p');
+                    // // This converts from JSX to standard HTML
+                    // const root = ReactDOM.createRoot(containerElement);
+                    // root.render(hoverableWords.current);
+                    // // Clear the existing content
+                    // transcriptContainer.innerHTML = '';
+                    // // Append the container with the elements
+                    // transcriptContainer.appendChild(containerElement);
+                    // console.log('container: ', transcriptContainer);
                 }
 
             })();
@@ -1077,8 +1069,8 @@ export default function ConverseAttach(config) {
 
     }, [keyDown]);
 
-    return (
-        <>
+    return (<>
+
             <div className="captions-container">
                 <p> {runningResponse.current.slice(runningResponse.current.length-500)} </p>
             </div>
@@ -1086,24 +1078,5 @@ export default function ConverseAttach(config) {
                 <p> {runningTranscript.current.slice(runningTranscript.current.length-500)} </p>
             </div>
 
-            <div className="analysis-container">
-
-                <div className="sideMenuBackground" id="Main">
-                    <div className="sideMenuInner">
-                        <div className="sideMenuTitleText">
-                            <h1>ASSESSMENT</h1>
-                            <div className="hr-1"></div>
-                        </div>
-                            
-                        <div className="graph-container">
-                        </div>
-
-                        <div className="transcript-container">
-                            <p>{hoverableWords.current}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+        </>);
 }

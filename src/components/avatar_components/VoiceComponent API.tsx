@@ -20,6 +20,13 @@ function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak
         setIsSpeaking(false)
         finishedSpeaking()
     }
+
+    // Stop speaking when the audio queue is done
+    document.addEventListener('audioQueueEnd', () => {
+        console.log('Audio Ended');
+        onEnd();
+    });
+
     // call "speak" to start speech, "cancel" to pause speech
     const [voice, setVoice] = useState('en-US_EmmaExpressive')
     const [voicesReady, setVoicesReady] = useState<boolean>(false) // causes rerender on voices loaded
