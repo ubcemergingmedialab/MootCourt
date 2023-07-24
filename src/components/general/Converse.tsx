@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 
-const serverRoot = 'http://localhost';
+const serverRoot = 'http://localhost:60';
 async function ServerRequestResponse(data: FormData, server){
     try {
         const response = await fetch(server, {
