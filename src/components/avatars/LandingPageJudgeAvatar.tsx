@@ -58,7 +58,7 @@ function LandingPageJudgeAvatar({animated = true, listOfUtterances}) {
     }
 
     return (<Suspense fallback={null}>
-        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[-1.5, -3, 2.5]} rotation={[0, Math.PI/5, 0]} modelUrl={'models/judge_avatar/judge_model_6.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[-1.5, -3, 2.5]} rotation={[0, Math.PI/5, 0]} modelUrl={'models/judge_avatar/judge_model_9.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
     
     </Suspense>)
 }
