@@ -10,6 +10,7 @@ import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 import '../ui/Captions.css';
 import ConverseAttach from '../general/Converse';
 import PausedMenu from '../ui/PausedMenu';
+import AssessmentPage from '../ui/AssesmentPage';
 
 // Handle pause detected logic
 const DictaphonePauseDetected = () => {
@@ -81,6 +82,7 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                     </div>
 
+                    <AssessmentPage></AssessmentPage>
                     <ConverseAttach></ConverseAttach>
                     <PausedMenu appPaused={appPaused} 
                     togglePause={setPaused}>

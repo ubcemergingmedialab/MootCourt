@@ -35,7 +35,7 @@ function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak
         if (!appPaused) {
             console.log('speaking: ' + textToSay)
             cancel()
-            speak({ text: textToSay, voice: voice, rate: 1 })
+            speak({ text: textToSay, voice: voice, rate: 1 }, onEnd)
             setIsSpeaking(true)
             startedSpeaking && textToSay !== "" && startedSpeaking()
         } else {
