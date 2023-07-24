@@ -4,6 +4,15 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import PropTypes from 'prop-types';
 import * as THREE from 'three';
 
+// Helper function to shuffle the array randomly
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = true, animated }) {
   const [gltf, setGltf] = useState();
   const [mixer, setMixer] = useState(null);
@@ -40,15 +49,16 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
     }
   });
 
-  //Controls the animations clips that should be playing
+  // Controls the animations clips that should be playing
   useEffect(() => {
     if (animations.length > 0) {
       const crossfadeinDuration = 1;
-      const crossfadeoutDuration = 2;
+      const crossfadeoutDuration = 1;
       const speakingClip = animations.find((clip) => clip.action.getClip().name === 'talking');
 
-      //When the judge is speaking, the 'talking' animation will play by fading in, when it's not the talking will fade out (intensity will go down)
-      //Note: the talking animation will always be playing, the intensity will change depending when it should be speaking 
+      // When the judge is speaking, the 'talking' animation will play by fading in,
+      // when it's not, the talking will fade out (intensity will go down)
+      // Note: the talking animation will always be playing, the intensity will change depending on when it should be speaking 
       if (isSpeaking) {
         if (speakingClip) {
           setCurrentAnimationIndex(0);
@@ -59,15 +69,17 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
           console.log('Current Animation Clips:', [speakingClip.action.getClip().name]);
         }
       } else {
-        // speakingClip.action.fadeOut(crossfadeoutDuration);
-
         speakingClip.action.fadeOut(crossfadeoutDuration, () => {
           // Stop the currentClip once its fade-out is complete
           speakingClip.action.stop();
         });
 
         const randomClips = animations.filter(
-          (clip) => clip.action.getClip().name !== 'talking');
+          (clip) => clip.action.getClip().name !== 'talking'
+        );
+
+        // Shuffle the randomClips array to play animations randomly
+        shuffleArray(randomClips);
 
         setCurrentAnimationIndex(0);
 
@@ -83,7 +95,7 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
               currentClip.action.stop();
             });
             nextClip.action.reset();
-            nextClip.action.setLoop(THREE.LoopOnce)
+            nextClip.action.setLoop(THREE.LoopOnce);
             nextClip.action.fadeIn(crossfadeinDuration);
             nextClip.action.play();
 
@@ -94,7 +106,10 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
         };
 
         // Start the interval to play the next random animation
-        intervalRef.current = setInterval(playNextRandomAnimation, randomClips[0].duration * 1000);
+        intervalRef.current = setInterval(
+          playNextRandomAnimation,
+          randomClips[0].duration * 1000
+        );
 
         // Play the first random animation
         randomClips[0].action.fadeIn(crossfadeinDuration);
@@ -126,7 +141,6 @@ Model.propTypes = {
 };
 
 export default Model;
-
 
 
 
