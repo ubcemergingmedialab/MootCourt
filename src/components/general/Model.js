@@ -20,6 +20,19 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
   const [currentAnimationIndex, setCurrentAnimationIndex] = useState(0);
   const intervalRef = useRef(null);
 
+  // Function to stop all random animation clips
+  const stopRandomAnimations = () => {
+    const randomClips = animations.filter(
+      (clip) => clip.action.getClip().name !== 'talking'
+    );
+    randomClips.forEach((clip) => {
+      clip.action.fadeOut(1, () => {
+        clip.action.reset(); // Reset the animation state
+        clip.action.stop(); // Stop the currentClip once its fade-out is complete
+      });
+    });
+  };
+
   useEffect(() => {
     const loader = new GLTFLoader();
     loader.load(modelUrl, (gltf) => {
@@ -49,54 +62,48 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
     }
   });
 
-  // Controls the animations clips that should be playing
   useEffect(() => {
     if (animations.length > 0) {
-      const crossfadeinDuration = 1;
-      const crossfadeoutDuration = 1;
+      const crossfadeDuration = 1;
       const speakingClip = animations.find((clip) => clip.action.getClip().name === 'talking');
+      const randomClips = animations.filter(
+        (clip) => clip.action.getClip().name !== 'talking'
+      );
 
-      // When the judge is speaking, the 'talking' animation will play by fading in,
-      // when it's not, the talking will fade out (intensity will go down)
-      // Note: the talking animation will always be playing, the intensity will change depending on when it should be speaking 
       if (isSpeaking) {
         if (speakingClip) {
           setCurrentAnimationIndex(0);
           speakingClip.action.setLoop(THREE.LoopRepeat);
           speakingClip.action.reset();
-          speakingClip.action.fadeIn(crossfadeinDuration);
+          speakingClip.action.fadeIn(crossfadeDuration);
           speakingClip.action.play();
           console.log('Current Animation Clips:', [speakingClip.action.getClip().name]);
+
+          stopRandomAnimations();
         }
       } else {
-        speakingClip.action.fadeOut(crossfadeoutDuration, () => {
-          // Stop the currentClip once its fade-out is complete
+        speakingClip.action.fadeOut(crossfadeDuration, () => {
           speakingClip.action.stop();
         });
-
-        const randomClips = animations.filter(
-          (clip) => clip.action.getClip().name !== 'talking'
-        );
-
-        // Shuffle the randomClips array to play animations randomly
+        stopRandomAnimations();
         shuffleArray(randomClips);
 
         setCurrentAnimationIndex(0);
 
-        // Helper function to play the next random animation
         const playNextRandomAnimation = () => {
           setCurrentAnimationIndex((prevIndex) => {
             const nextIndex = (prevIndex + 1) % randomClips.length;
             const currentClip = randomClips[prevIndex];
             const nextClip = randomClips[nextIndex];
 
-            currentClip.action.fadeOut(crossfadeoutDuration, () => {
-              // Stop the currentClip once its fade-out is complete
-              currentClip.action.stop();
+            currentClip.action.fadeOut(crossfadeDuration, () => {
+              currentClip.action.reset(); // Reset the animation state
+              currentClip.action.stop(); // Stop the currentClip once its fade-out is complete
             });
-            nextClip.action.reset();
-            nextClip.action.setLoop(THREE.LoopOnce);
-            nextClip.action.fadeIn(crossfadeinDuration);
+
+            nextClip.action.reset(); // Reset the next animation state
+            nextClip.action.setLoop(THREE.LoopOnce); // Set looping mode
+            nextClip.action.fadeIn(crossfadeDuration);
             nextClip.action.play();
 
             console.log('Current Animation Clip:', nextClip.action.getClip().name);
@@ -105,14 +112,12 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
           });
         };
 
-        // Start the interval to play the next random animation
         intervalRef.current = setInterval(
           playNextRandomAnimation,
           randomClips[0].duration * 1000
         );
 
-        // Play the first random animation
-        randomClips[0].action.fadeIn(crossfadeinDuration);
+        randomClips[0].action.fadeIn(crossfadeDuration);
         randomClips[0].action.play();
 
         return () => {
@@ -141,61 +146,3 @@ Model.propTypes = {
 };
 
 export default Model;
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { useFrame } from '@react-three/fiber';
-// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-// import PropTypes from 'prop-types';
-// import * as THREE from 'three';
-
-// function Model({ modelUrl, pos, rot, sca, pauseAnimation = true, animated, customAnimation }) {
-//   const [gltf, setGltf] = useState();
-//   const [mixer, setMixer] = useState(null);
-
-//   useEffect(() => {
-//     const loader = new GLTFLoader();
-//     loader.load(modelUrl, (gltf) => {
-//       setGltf(gltf);
-//       if (gltf.animations.length > 0) {
-//         const mixer = new THREE.AnimationMixer(gltf.scene);
-//         setMixer(mixer);
-//         const idleAnimation = gltf.animations.find((clip) => clip.name === 'idle');
-//         if (idleAnimation) {
-//           const idleAction = mixer.clipAction(idleAnimation);
-//           idleAction.setLoop(THREE.LoopRepeat);
-//           idleAction.play();
-//         }
-//       }
-//     });
-//   }, [modelUrl]);
-
-//   useFrame((state, delta) => {
-//     if (animated && mixer && !pauseAnimation) {
-//       if (customAnimation) {
-//         customAnimation.update(delta);
-//       } else {
-//         mixer.update(delta);
-//       }
-//     }
-//   });
-
-//   return gltf ? (
-//     <group position={pos} rotation={rot} scale={sca}>
-//       <primitive object={gltf.scene} />
-//     </group>
-//   ) : null;
-// }
-
-// Model.propTypes = {
-//   modelUrl: PropTypes.string,
-//   pos: PropTypes.any,
-//   rot: PropTypes.any,
-//   sca: PropTypes.any,
-//   pauseAnimation: PropTypes.bool,
-//   animated: PropTypes.bool,
-//   customAnimation: PropTypes.object, // New prop for the custom animation
-// };
-
-// export default Model;
