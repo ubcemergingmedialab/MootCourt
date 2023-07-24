@@ -59,7 +59,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         // wait 3 seconds for judge
         // console.log("judgeElapsedTime:", judgeElapsedTime / 1000)
         if (config.isInteliJudge == true){
-            console.log('InteliJudge active, GlobalTimer not used for speech control');
+            //console.log('InteliJudge active, GlobalTimer not used for speech control');
         }else{
 
             if (!hasAppIntroStarted && judgeElapsedTime > 3000) {

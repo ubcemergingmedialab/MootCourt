@@ -7,7 +7,6 @@ import PauseButton from '../buttons/PauseButton';
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar';
 import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
-import Captions from '../ui/Captions.js';
 import '../ui/Captions.css';
 import ConverseAttach from '../general/Converse';
 import PausedMenu from '../ui/PausedMenu';
@@ -82,9 +81,6 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                     </div>
 
-                    {/*<div className="captions-container">
-                        <Captions config={appConfig}></Captions>
-                    </div>*/}
                     <ConverseAttach></ConverseAttach>
                     <PausedMenu appPaused={appPaused} 
                     togglePause={setPaused}>
