@@ -777,7 +777,12 @@ export default function ConverseAttach(config) {
 
                     // Repeat every x seconds
                     interval.current = setInterval( async () => {
-                        await converseLoop();
+                        try{
+                            await converseLoop();
+                        } catch (err){
+                            console.error(err);
+                        }
+
                     }, chatLoopInterval);
     
                 }else {
@@ -1046,6 +1051,8 @@ export default function ConverseAttach(config) {
 
                         hoverableWords.current.push(element);
                     });
+
+                    // This causing issues with rerendering causing mistimed API calls
 
                     // // Get the div where the transcript should be filled in
                     // const transcriptContainer = document.getElementsByClassName("transcript-container")[0];

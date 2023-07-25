@@ -8,7 +8,7 @@ export default function AssessmentPage(){
                 <div className="transcript-data">
                     <p>
                         {
-                           //SpeechData.prompt 
+                           //This will get filled by transcript-data being replaced
                         }
                     </p>
 
