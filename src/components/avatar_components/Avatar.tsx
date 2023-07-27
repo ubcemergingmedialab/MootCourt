@@ -9,7 +9,6 @@ import VoiceComponent from './VoiceComponent API';
  */
 function Avatar({isSpeaking, setIsSpeaking, appPaused, position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
 
-    //console.log('Normal avatar used');
 
     return (<>
         <Suspense fallback={null}>

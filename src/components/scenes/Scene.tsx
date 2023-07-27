@@ -10,12 +10,7 @@ import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 import '../ui/Captions.css';
 import ConverseAttach from '../general/Converse';
 import PausedMenu from '../ui/PausedMenu';
-import AssessmentPage from '../ui/AssesmentPage';
-
-// Handle pause detected logic
-const DictaphonePauseDetected = () => {
-    console.log("DictaphonePauseDetected");
-};
+import AssessmentPage from '../ui/AssessmentPage';
 
 export default function GeneralScene({setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig}) {
     // Scene Specific Elements are stored here
