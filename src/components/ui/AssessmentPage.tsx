@@ -22,7 +22,7 @@ function Plot(svgContainer, data: Array<[number, number]>, clear?: Boolean) {
 
     // Set the dimensions of the SVG
     const width = svgContainer.clientWidth; 
-    const height = 300;
+    const height = 200;
     const margin = {
         top: 50,
         bottom: 50,
@@ -243,6 +243,21 @@ async function STTAnalysis(yAxisData, sampleRate, window, bandWidth?){
 
 export default function AssessmentPage(){
 
+    const sampleRateMax = 0.002;
+    const sampleRateMin = 0;
+    const windowMax = 50000;
+    const windowMin = 1;
+
+    // Intialize the reference to be at the mid point
+    const sampleRateReff = useRef(0.001);
+    const windowReff = useRef(1000);
+
+    // Function to call when any bar changes value
+    const onChange = ()=>{
+        sampleRateReff.current = parseFloat((document.getElementById("sample-rate-slider") as HTMLInputElement).value);
+        windowReff.current = parseFloat((document.getElementById("window-slider") as HTMLInputElement).value);
+    }
+
     const runningTimestamps = useRef<Array<any>>([]);
     const runningTranscript = useRef('');
     const conversation = useRef([]);
@@ -357,14 +372,13 @@ export default function AssessmentPage(){
                 // Is samples/sentance time ex 1 sample per senance time:
                 // 2 second for a short sentance
                 // 1 / 2 = 0.5 of a second to sample once per sentance
-                let sampleRate = 0.5 / 1000;
-                const windoWidth = 30 * 1000;
 
-                // It would be very interesting to expose these to the user
-                // Restrictions should be placed to prevent long computation
+                let sampleRate = sampleRateReff.current;
+                const windoWidth = windowReff.current;
+                
                 //const samples = sampleRate * yAxisData.length;
-                const samplesMax = 100;
-                const samplesMin = 20;
+                const samplesMax = 500;
+                const samplesMin = 10;
                 const yAxisDataMax = Math.max(...yAxisData)-Math.min(...yAxisData);
                 const sampleRateMax = samplesMax/yAxisDataMax;
                 const sampleRateMin = samplesMin/yAxisDataMax;
@@ -564,7 +578,11 @@ export default function AssessmentPage(){
                 // const timeString = `${formattedHours}:${formattedMinutes}${period}`;
 
                 const name = `${message.role}-message`;
-                const tag = `${message.role.toUpperCase()}: `;
+                let tag = `${message.role.toUpperCase()}: `;
+                
+                // Rename the assistant
+                tag.replace('ASSISTANT', 'JUDGE');
+
                 const block = <p className={name}>{tag}{message.content}</p>;
                 displayConversation.current.push(block);
             }
@@ -577,7 +595,7 @@ export default function AssessmentPage(){
             lastRole = message.role;
         });
 
-    }, [runningTranscript.current]);
+    }, [runningTranscript.current, sampleRateReff.current, windowReff.current]);
 
 
     return (<>
@@ -592,9 +610,15 @@ export default function AssessmentPage(){
 
                     <div id="summary" className="drop-down">
                         <p>SUMMARY</p>
+                        <div className='graph-controls'>
+                            Sample Rate
+                            <input id="sample-rate-slider" type="range" min={sampleRateMin} max={sampleRateMax} step = "0.0001" onChange={onChange}/>
+                            <br></br>
+                            Smoothing <input id="window-slider" type="range" min={windowMin} max={windowMax} onChange={onChange}/>
+                        </div>
                         <div className="inner-box">
                             <div className="transcript-container"></div>
-                            <p>WPM: {Math.round(selectedWPM.current[0])||0} at {Math.round(selectedWPM.current[1])||0}s</p>
+                            <p>WPM: {Math.round(selectedWPM.current[1])||0} at {Math.round(Math.floor(selectedWPM.current[0]/60))||0}:{String(Math.round(selectedWPM.current[0] - (60*Math.floor(selectedWPM.current[0]/60)))).padStart(2, '0') ||0}</p>
                             <div className="graph-container"></div>
                         </div>
                     </div>

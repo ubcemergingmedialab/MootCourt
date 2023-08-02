@@ -63,9 +63,10 @@ function createFormData(options: any): FormData {
  * A controllable recorder
  */
 class Recorder {
-    private mediaRecorder: MediaRecorder | null = null;
+    public mediaRecorder: MediaRecorder | null = null;
     private chunks: Blob[] = [];
     private stream: MediaStream | null = null;
+    private sampleDelay = 500;
 
     async startRecording() {
             // Get microgpone access
@@ -77,12 +78,16 @@ class Recorder {
                 this.chunks.push(event.data);
             });
 
-        this.mediaRecorder.start(1000);
+        this.mediaRecorder.start(this.sampleDelay);
         console.log('recording started');
     }
 
     getRecording(): Blob {
         return new Blob(this.chunks, { type: 'audio/webm' });
+    }
+
+    getSampleDelay(): number {
+        return this.sampleDelay;
     }
 
     async stopRecording() {
@@ -239,10 +244,11 @@ async function GetPlayAudio(audioPath, clientId){
         const arrayBuffer = await audioResponse.arrayBuffer();
 
         // Convert so that length can be read
+        // A different type such as Float32Array may sound better but be slower
         const  int16View = new Int16Array(arrayBuffer);
 
         // Note that when decodeAudioData gets the array buffer it takes "ownership" of it
-        // ArrayBuffer will be detatched and contain no audio data even if accessed earlier in this callback
+        // ArrayBuffer will be detatched and contain no audio data even if accessed earlier
 
         const audioData = await audioContext.decodeAudioData(arrayBuffer);
         
@@ -281,7 +287,7 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
         max_tokens: 200,
         
         // Judge voice setting
-        voice: 'en-US_MichaelV3Voice',// 'en-US_EmmaExpressive',
+        voice: 'en-US_EmmaExpressive', //'en-US_MichaelV3Voice',// 
         // Judge speaking rate percentage shift. It can be negative
         // ex 0 is normal, 100 is x2 speed
         ratePercentage: 0,
@@ -291,6 +297,8 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
         // The last time that ChatGPT gave a response
         lastResponseTime: lastResponseTime
     };
+
+    console.log('data: ', data);
     
     const formData = createFormData(data);
 
@@ -310,8 +318,6 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
     eventSource.onerror = function(error) {
         console.error('EventSource failed:', error);
     };
-
-
 
     // Listen for incoming data
     eventSource.addEventListener('data', async (event) => {
@@ -434,8 +440,6 @@ export default function ConverseAttach(config) {
     const conversation = useRef(initJudgeConversation);
     const runningResponse = useRef('');
     const runningTranscript = useRef('');
-    const displayResponse = useRef('');
-    const displayTranscript = useRef('');
     const runningTimestamps = useRef<Array<any>>([]);
     const interval = useRef<NodeJS.Timeout>();
     const interactTime = useRef(new Date().getTime());
@@ -632,20 +636,131 @@ export default function ConverseAttach(config) {
 
             } else{
                 
+                const volumes: Array<number> = [];
                 // Check the toggle state
-                if(stateToggle){
+                if(stateToggle) {
 
                     recorder.startRecording();
 
-                    // Repeat every x seconds
-                    interval.current = setInterval( async () => {
-                        try{
-                            await converseLoop();
-                        } catch (err){
-                            console.error(err);
-                        }
+                    // Function to calculate the volume
+                    const calculateVolume = async () => {
+                        const blob = recorder.getRecording();
+                        const audioBuffer = await blob.arrayBuffer();
+                        try {
+                            // May or may not want to create a new audioContext
+                            const audioContext = new (window.AudioContext); //|| window.webkitAudioContext)();
+                            const audioSource = audioContext.createBufferSource();
+                            const decodedBuffer = await audioContext.decodeAudioData(audioBuffer);
+                            audioSource.buffer = decodedBuffer;
+                        
+                            // Create a gain node with zero gain ie muted
+                            const gainNode = audioContext.createGain();
+                            gainNode.gain.value = 0;
+                        
+                            // Connect the audio source to the gain node and gain node to the audio destination
+                            audioSource.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                        
+                            // Start the audio source
+                            // Would normally play audio but it is muted
+                            audioSource.start();
+                        
+                            // Wait for a short duration to allow audio processing
+                            await new Promise((resolve) => setTimeout(resolve, recorder.getSampleDelay()));
+                        
+                            // Get the channel data as mono audio
+                            let channelData = decodedBuffer.getChannelData(0);
+                            //let channelData = new Float32Array(audioBuffer); 
 
-                    }, chatLoopInterval);
+                            // Get the more recent portion of audio
+                            // Convert bits to bytes per second and multiply by seconds
+                            const readWindow = 2 * ((recorder.mediaRecorder?.audioBitsPerSecond || 0) / 8);
+                            const maxLength = Math.min(readWindow, channelData.length);
+                            const startIndex = channelData.length - maxLength;
+                            channelData = channelData.subarray(startIndex, channelData.length);
+
+                            // Calculate the root mean square volume
+                            const sumOfSquares = channelData.reduce((accumulator, sample) => accumulator + sample * sample, 0);
+                            const meanOfSquares = sumOfSquares / channelData.length;
+                            const rmsVolume = Math.sqrt(meanOfSquares);
+                        
+                            // Calculate volume in decibels (dB)
+                            const db = 20 * Math.log10(rmsVolume);
+
+                            if(Math.abs(db) === -Infinity){
+                                return null;
+                            }
+                        
+                            // Return the calculated volume in dB
+                            return db;
+
+                        } catch (error) {
+                            // TO DO find the source of the this Error:
+                            // DOMException: Failed to execute 'decodeAudioData' on 'BaseAudioContext': Unable to decode audio data
+                            // For now this can go unhandled and return null
+
+                            //console.error('Error calculating volume:', error);
+                            return null;
+                        }
+                    };
+                    
+                    // Repeat every x seconds
+                    let requests = 0;
+                    interval.current = setInterval( async () => {
+                        const volume = await calculateVolume();
+                        volumes.push(volume || 0);
+                        // The duration over which to take the average for slience
+                        // A larger value will both increase the lag and length of slience required
+                        const lookBackTime = 2 * 1000;
+                        // ex after every 10 seconds you push the array then if you want to look back 20 seconds then 20/10 = 2 indexes
+                        const volumeLookBack = Math.floor(lookBackTime/recorder.getSampleDelay());
+                        const volumePortion = volumes.slice(volumes.length-volumeLookBack);
+                        const volumePortionAverage = volumePortion.reduce((accumulator, v) => accumulator + v, 0)/volumePortion.length;
+
+                        // Average of first 5 sample will be the zero point reference
+                        // This should only be done once and stored
+                        // Not all of the volume needs to be stored and can but cuttoff
+                        const reffStart = 5;
+                        const reffEnd = 20;
+                        const volumeZeroReff = volumes.slice(reffStart, Math.min(volumes.length, reffEnd)).reduce((accumulator, v) => accumulator + v, 0)/(reffEnd-reffStart);
+                        const normalizedVolume =  volumePortionAverage - volumeZeroReff;
+
+
+
+                        // A volume less than this will trigger a potential response
+                        const minVolume = -40;
+
+                        const timeSinceLastInteraction = Date.now() - interactTime.current;
+                        // After this time a request will be made
+                        const maxTime = 30 * 1000;
+                        // Only after this time a request can be made
+                        const minTime = 5 * 1000;
+
+                        console.log('volAverage: ', normalizedVolume);
+                        console.log('reqs', requests);
+                        console.log('quiet: ', normalizedVolume < minVolume);
+                        console.log('min: ', timeSinceLastInteraction > minTime);
+                        console.log('max: ', timeSinceLastInteraction > maxTime);
+                        
+                        // Make a request if (the volume is low and some minimum time has passed)
+                        // Or it has been too long since the last request
+                        // And only make a request if there are no other unresolved requests
+                        if((((normalizedVolume < minVolume) && (timeSinceLastInteraction > minTime)) || timeSinceLastInteraction > maxTime) && requests === 0) {
+                            requests ++;
+                            try {
+                                // It seems that this await is not being respected for the interval
+                                // Using a counter is a fix for that
+                                await converseLoop();
+                            }
+                            catch (err){
+                                console.error(err);
+                            }
+                            // Request finished
+                            requests --;
+                        }
+                    // The frequency with which to check is determined by this
+                    // It does not make much sense to check more often than there is a change
+                    }, recorder.getSampleDelay());
     
                 }else {
 
@@ -676,11 +791,5 @@ export default function ConverseAttach(config) {
         console.log('event sent');
     }, [runningTranscript.current]);
 
-    return (
-        <>
-            <div className="captions-container">
-                <p> {runningResponse.current.slice(runningResponse.current.length-500)} </p>
-            </div>
-        </>
-    );
+    return (null);
 }
