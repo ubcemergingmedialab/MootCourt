@@ -8,7 +8,6 @@ import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar';
 import BackToLandingButton from '../buttons/BackToLandingButton';
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 import '../ui/Captions.css';
-import ConverseAttach from '../general/Converse';
 import PausedMenu from '../ui/PausedMenu';
 import AssessmentPage from '../ui/AssessmentPage';
 
@@ -78,7 +77,6 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                     </div>
 
                     <AssessmentPage></AssessmentPage>
-                    <ConverseAttach></ConverseAttach>
                     <PausedMenu appPaused={appPaused} 
                     togglePause={setPaused}>
                     </PausedMenu>
