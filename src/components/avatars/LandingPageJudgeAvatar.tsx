@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState, useRef } from 'react'
+import Avatar from "../avatar_components/Avatar"
 import PropTypes from 'prop-types'
-import Avatar_NPC from '../avatar_components/Avatar_NPC'
 
 function LandingPageJudgeAvatar({animated = true, listOfUtterances}) {
     const [currentText, setText] = useState("initial text state")
@@ -58,7 +58,7 @@ function LandingPageJudgeAvatar({animated = true, listOfUtterances}) {
     }
 
     return (<Suspense fallback={null}>
-        <Avatar_NPC appPaused={false} position={[-1.5, -3, 2.5]} rotation={[0, Math.PI/5, 0]} modelUrl={'models/judge_avatar/judge_landing_idle.glb'} animated={animated} animationPause={true} ></Avatar_NPC>
+        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[-1.5, -3, 2.5]} rotation={[0, Math.PI/5, 0]} modelUrl={'models/judge_avatar/model_main_judge.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
     
     </Suspense>)
 }

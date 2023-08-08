@@ -13,18 +13,17 @@
     display: block;
   } */
 
+h1, p {
+    color: white;
+    text-align: center;
+}
+
 p {
     font-size: 1.8rem;
 }
 
 h1 {
     padding-bottom: 20px;
-<<<<<<< Updated upstream
-=======
-    color: white;
-    text-align: center;
-
->>>>>>> Stashed changes
 }
 
 button {

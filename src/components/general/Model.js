@@ -26,7 +26,7 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
       (clip) => clip.action.getClip().name !== 'talking'
     );
     randomClips.forEach((clip) => {
-      clip.action.fadeOut(2, () => {
+      clip.action.fadeOut(1, () => {
         clip.action.reset(); // Reset the animation state
         clip.action.stop(); // Stop the currentClip once its fade-out is complete
       });
@@ -64,7 +64,7 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
 
   useEffect(() => {
     if (animations.length > 0) {
-      const crossfadeDuration = 2;
+      const crossfadeDuration = 1;
       const speakingClip = animations.find((clip) => clip.action.getClip().name === 'talking');
       const randomClips = animations.filter(
         (clip) => clip.action.getClip().name !== 'talking'
@@ -82,11 +82,9 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
           stopRandomAnimations();
         }
       } else {
-        
         speakingClip.action.fadeOut(crossfadeDuration, () => {
           speakingClip.action.stop();
         });
-
         stopRandomAnimations();
         shuffleArray(randomClips);
 
@@ -98,14 +96,13 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
             const currentClip = randomClips[prevIndex];
             const nextClip = randomClips[nextIndex];
 
-            nextClip.action.reset(); // Reset the next animation state
-            nextClip.action.setLoop(THREE.LoopOnce); // Set looping mode
-
             currentClip.action.fadeOut(crossfadeDuration, () => {
               currentClip.action.reset(); // Reset the animation state
               currentClip.action.stop(); // Stop the currentClip once its fade-out is complete
             });
 
+            nextClip.action.reset(); // Reset the next animation state
+            nextClip.action.setLoop(THREE.LoopOnce); // Set looping mode
             nextClip.action.fadeIn(crossfadeDuration);
             nextClip.action.play();
 
