@@ -132,13 +132,9 @@
 //     )
 // }
 
-
-import React, { useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Html } from "@react-three/drei"
-import { Vector3 } from 'three';
-
-import Model from '../general/Model';
+import {useState, useEffect} from 'react';
+import { Canvas, useFrame, ThreeElements } from '@react-three/fiber';
+import Model from '../general/Model.js';
 import GlobalTimer from '../general/GlobalTimer';
 import PauseButton from '../buttons/PauseButton';
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar';
@@ -153,10 +149,13 @@ import React, { useRef } from 'react';
 import '../ui/Captions.css';
 import './GeneralScene.css'; // Import your custom CSS file
 
+import {Html, PerspectiveCamera, useTexture} from "@react-three/drei"
+import { Vector3 } from 'three'; // Import Vector3 from three.js
+
 const cameraPosition = new Vector3(0, 0, 5);
 const cameraFov = 48;
 
-export default function Scene({ setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig }) {
+export default function GeneralScene({ setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig }) {
     // Scene Specific Elements are stored here
     // 1: Text that judge is supposed to say at given interval
     const [judgeSpeechText, setJudgeSpeechText] = useState("Default speech text for judge.")
