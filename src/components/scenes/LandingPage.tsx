@@ -1,31 +1,138 @@
-import * as THREE from 'three'
-import React, {useRef, useState } from 'react'
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
+// import * as THREE from 'three'
+// import React, {useRef, useState } from 'react'
+// import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Model from '../general/Model.js'
-import {Html, useTexture} from "@react-three/drei"
-import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
-import LandingPageMenu from '../ui/LandingPageMenu'
+// import {Html, PerspectiveCamera, useTexture} from "@react-three/drei"
+// import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar'
+// import LandingPageMenu from '../ui/LandingPageMenu'
+// import { Vector3 } from 'three'; // Import Vector3 from three.js
 
-let appPaused = false
+// import { PlaneGeometry, MeshBasicMaterial, Mesh, TextureLoader } from 'three';
 
-const lou = []
 
-export default function LandingPage({updateAppState, updateConfig, config}) {
-    return (<Canvas>
-                <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} />
-                <LandingPageJudgeAvatar listOfUtterances={lou}></LandingPageJudgeAvatar>
-                <Model modelUrl="./models/courtroompropsNov17.glb"
-                    pos={[0, -3, 3]}
+// let appPaused = false
+
+// const lou = []
+
+// const cameraPosition = new Vector3(0, 0, 5); // [x, y, z] coordinates of the camera
+// const cameraFov = 75; // Field of view in degrees
+
+
+// export default function LandingPage({updateAppState, updateConfig, config}) {
+//     return (<Canvas
+//                 camera={{
+//                     position: cameraPosition,
+//                     fov: cameraFov,
+//                 }}>
+//                 <ambientLight intensity={0.3}/>
+
+//                 <rectAreaLight
+//                         intensity={0.3}
+//                         position={[0, 0, 10]}
+//                         width={30}
+//                         height={20}
+//                         color="white"
+//                     />
+
+//                 <pointLight
+//                     position={[-6, 4, -2]} // Adjust the position of the light
+//                     intensity={2} // Adjust the intensity of the light (default is 1)
+//                     color="white" // Adjust the color of the light
+//                     distance={12} // Maximum distance the light will shine
+//                     decay={5}
+//                 />
+//                 <pointLight
+//                     position={[0, 4, -2]} // Adjust the position of the light
+//                     intensity={1.5} // Adjust the intensity of the light (default is 1)
+//                     color="white" // Adjust the color of the light
+//                     distance={15} // Maximum distance the light will shine
+//                     decay={3}
+//                 />
+
+//                 <spotLight
+//                     position={[0, 5, 10]} // Adjust the position of the light
+//                     angle={Math.PI / 8}
+//                     penumbra={1} // Smoothness of the spotlight edge
+//                     intensity={1.5} // Adjust the intensity of the light (default is 1)
+//                     color="white" // Adjust the color of the light
+//                     distance={100} // Maximum distance the light will shine
+                    
+//                 />
+
+//                 <LandingPageJudgeAvatar listOfUtterances={lou}></LandingPageJudgeAvatar>
+//                 {/* <Model modelUrl="./models/courtroom_props_updated.glb"
+//                     pos={[0, -3, 3]}
+//                     rot={[0, 0, 0]}
+//                     sca={[0.06, 0.06, 0.06]} />
+//                 <Model modelUrl="./models/courtroom_walls_updated.glb"
+//                     pos={[0, -3, 3.5]}
+//                     rot={[0, 0, 0]}
+//                     sca={[0.06, 0.06, 0.06]} />
+                // <Model modelUrl="./models/courtroom_tables_updated_landing.glb"
+                //     pos={[0, -3.25, 4.5]} 
+                //     rot={[0, 0, 0]}
+                //     sca={[0.055, 0.055, 0.055]} /> */}
+
+//         <Html fullscreen>
+//             <LandingPageMenu updateAppState={updateAppState} updateConfig={updateConfig} config={config} ></LandingPageMenu>
+//         </Html>
+//         </Canvas>
+//     );
+// }
+
+
+import React, { useRef, useState } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Html, PerspectiveCamera, useTexture } from '@react-three/drei';
+import LandingPageJudgeAvatar from '../avatars/LandingPageJudgeAvatar';
+import LandingPageMenu from '../ui/LandingPageMenu';
+import { Vector3 } from 'three';
+
+let appPaused = false;
+
+const lou = [];
+
+const cameraPosition = new Vector3(0, 0, 5);
+const cameraFov = 75;
+
+export default function LandingPage({ updateAppState, updateConfig, config }) {
+  return (
+    <Canvas
+      camera={{ position: cameraPosition, fov: cameraFov }}
+        style={{
+          backgroundImage: `url("textures/courtroom.png")`, // Replace with your background image path
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          width: '100%', // Make sure the canvas takes the full width of its container
+          height: '100%', // Make sure the canvas takes the full height of its container
+
+      }}
+    >
+      <ambientLight intensity={0.3} />
+
+      <rectAreaLight intensity={0.3} position={[0, 0, 10]} width={30} height={20} color="white" />
+{/* 
+      <Model modelUrl="./models/courtroom_tables_updated_landing.glb"
+                    pos={[0, -3.25, 4.5]} 
                     rot={[0, 0, 0]}
-                    sca={[0.06, 0.06, 0.06]} />
-                <Model modelUrl="./models/courtroomwallsJan25.glb"
-                    pos={[0, -3, 3.5]}
-                    rot={[0, 0, 0]}
-                    sca={[0.06, 0.06, 0.06]} />
-        <Html fullscreen>
-            <LandingPageMenu updateAppState={updateAppState} updateConfig={updateConfig} config={config} ></LandingPageMenu>
-        </Html>
-        </Canvas>
-    )
+                    sca={[0.055, 0.055, 0.055]} /> */}
+
+
+                <spotLight
+                    position={[0, 5, 10]} // Adjust the position of the light
+                    angle={Math.PI / 8}
+                    penumbra={1} // Smoothness of the spotlight edge
+                    intensity={1} // Adjust the intensity of the light (default is 1)
+                    color="white" // Adjust the color of the light
+                    distance={100} // Maximum distance the light will shine
+                    
+                />
+
+      <LandingPageJudgeAvatar listOfUtterances={lou} />
+
+      <Html fullscreen>
+        <LandingPageMenu updateAppState={updateAppState} updateConfig={updateConfig} config={config} />
+      </Html>
+    </Canvas>
+  );
 }
