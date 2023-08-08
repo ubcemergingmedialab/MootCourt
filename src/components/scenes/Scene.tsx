@@ -190,7 +190,6 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                     fov: cameraFov,
                 }}
 
-
                 className="canvas"
             >
                  <ambientLight intensity={0.2}/>
@@ -227,11 +226,9 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                 setJudgeSpeechText={setJudgeSpeechText}></JudgeTimedSpeech> */}
                 <SceneJudgeAvatar appPaused={appPaused} judgeSpeechText={judgeSpeechText} config={appConfig}></SceneJudgeAvatar>
                 {/* <Model modelUrl="./models/courtroom_props_updated.glb"
-                {/* <Model modelUrl="./models/courtroom_props_updated.glb"
                     pos={[0, -3, 3]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
-                <Model modelUrl="./models/courtroom_walls_updated.glb"
                 <Model modelUrl="./models/courtroom_walls_updated.glb"
                     pos={[0, -3, 3.5]}
                     rot={[0, 0, 0]}
@@ -264,14 +261,9 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                         shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                     </div>
 
-
                     <PausedMenu updateAppState={updateAppState}
                      appPaused={appPaused} 
                     togglePause={setPaused}>
-
-                    
-
-                        
                     </PausedMenu>
                     
                 </div>
