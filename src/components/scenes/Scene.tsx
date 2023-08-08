@@ -143,12 +143,9 @@ import GlobalTimer from '../general/GlobalTimer';
 import PauseButton from '../buttons/PauseButton';
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar';
 import BackToLandingButton from '../buttons/BackToLandingButton';
-<<<<<<< Updated upstream
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 import '../ui/Captions.css';
-=======
 import ConverseAttach from '../general/Converse';
->>>>>>> Stashed changes
 import PausedMenu from '../ui/PausedMenu';
 import AssessmentPage from '../ui/AssessmentPage';
 import React, { useRef } from 'react';
@@ -177,16 +174,15 @@ export default function Scene({ setPaused, appConfig, appPaused, togglePause, up
     // 6: Has intro speech been started?
     const [hasAppIntroStarted, setHasAppIntroStarted] = useState(false);
 
-<<<<<<< Updated upstream
     const displayConversation = useRef<React.ReactElement[]>([]);
 
-      const [conversationElements, setConversationElements] = useState<React.ReactElement[]>([]);
+    const [conversationElements, setConversationElements] = useState<React.ReactElement[]>([]);
 
   // Extract the conversation elements from displayConversation useRef and update the state
-  useEffect(() => {
-    setConversationElements(displayConversation.current);
-  }, [displayConversation.current]);
-=======
+        useEffect(() => {
+            setConversationElements(displayConversation.current);
+        }, [displayConversation.current]);
+            
     return (
         <div className="canvas-container" style={{ backgroundImage: 'url("textures/judge_courtroom.png")' }}>
             <Canvas
@@ -194,7 +190,6 @@ export default function Scene({ setPaused, appConfig, appPaused, togglePause, up
                     position: cameraPosition,
                     fov: cameraFov,
                 }}
->>>>>>> Stashed changes
 
 
                 className="canvas"
@@ -244,7 +239,6 @@ export default function Scene({ setPaused, appConfig, appPaused, togglePause, up
                     pos={[0, -3.25, 4.5]} 
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
-<<<<<<< Updated upstream
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
                 <div className="scene-controls">
@@ -281,8 +275,6 @@ export default function Scene({ setPaused, appConfig, appPaused, togglePause, up
                     
                 </div>
                 </Html>
-=======
->>>>>>> Stashed changes
             </Canvas>
         </div>
     )
