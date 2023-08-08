@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import * as d3 from 'd3';
 import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
+import {Html} from "@react-three/drei";
 
 const serverRoot = 'http://localhost:60';
 /**
@@ -63,9 +64,10 @@ function createFormData(options: any): FormData {
  * A controllable recorder
  */
 class Recorder {
-    private mediaRecorder: MediaRecorder | null = null;
+    public mediaRecorder: MediaRecorder | null = null;
     private chunks: Blob[] = [];
     private stream: MediaStream | null = null;
+    private sampleDelay = 500;
 
     async startRecording() {
             // Get microgpone access
@@ -77,12 +79,16 @@ class Recorder {
                 this.chunks.push(event.data);
             });
 
-        this.mediaRecorder.start(1000);
+        this.mediaRecorder.start(this.sampleDelay);
         console.log('recording started');
     }
 
     getRecording(): Blob {
         return new Blob(this.chunks, { type: 'audio/webm' });
+    }
+
+    getSampleDelay(): number {
+        return this.sampleDelay;
     }
 
     async stopRecording() {
@@ -239,10 +245,11 @@ async function GetPlayAudio(audioPath, clientId){
         const arrayBuffer = await audioResponse.arrayBuffer();
 
         // Convert so that length can be read
+        // A different type such as Float32Array may sound better but be slower
         const  int16View = new Int16Array(arrayBuffer);
 
         // Note that when decodeAudioData gets the array buffer it takes "ownership" of it
-        // ArrayBuffer will be detatched and contain no audio data even if accessed earlier in this callback
+        // ArrayBuffer will be detatched and contain no audio data even if accessed earlier
 
         const audioData = await audioContext.decodeAudioData(arrayBuffer);
         
@@ -269,6 +276,8 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
         lastModified: new Date().getTime()
     });
 
+    const voices = ['en-US_AllisonExpressive', 'en-US_AllisonV3Voice', 'en-US_EmilyV3Voice', 'en-US_EmmaExpressive', 'en-US_HenryV3Voice', 'en-US_KevinV3Voice', 'en-US_LisaExpresssive', 'en-US_LisaV3Voice', 'en-US_MichaelExpressive', 'en-US_MichaelV3Voice', 'en-US_OliviaV3Voice'];
+
     const data = {
         // Audio recording
         recording: recordingFile,
@@ -281,16 +290,18 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
         max_tokens: 200,
         
         // Judge voice setting
-        voice: 'en-US_MichaelV3Voice',// 'en-US_EmmaExpressive',
+        voice: voices[3],
         // Judge speaking rate percentage shift. It can be negative
         // ex 0 is normal, 100 is x2 speed
         ratePercentage: 0,
         // Judge pitch percentage shift. It can be negative
         // ex 0 is normal, 100 is double pitch ie higher (check this)
-        pitchPercentage: 0,
+        pitchPercentage: 10,
         // The last time that ChatGPT gave a response
         lastResponseTime: lastResponseTime
     };
+
+    console.log('data: ', data);
     
     const formData = createFormData(data);
 
@@ -310,8 +321,6 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
     eventSource.onerror = function(error) {
         console.error('EventSource failed:', error);
     };
-
-
 
     // Listen for incoming data
     eventSource.addEventListener('data', async (event) => {
@@ -410,8 +419,9 @@ export async function Converse(conversation, recording){
 }
 
 
-export default function ConverseAttach(config) {
+export default function ConverseAttach({ setIsSpeaking, appPaused }) {
 
+    const toggleKey = 'Enter';
     // Sets whether or not the event is triggered to toggled
     const isManualTrigger = false;
     // When isManualTrigger = false, this is how often a response from chatGTP will be triggered
@@ -434,8 +444,6 @@ export default function ConverseAttach(config) {
     const conversation = useRef(initJudgeConversation);
     const runningResponse = useRef('');
     const runningTranscript = useRef('');
-    const displayResponse = useRef('');
-    const displayTranscript = useRef('');
     const runningTimestamps = useRef<Array<any>>([]);
     const interval = useRef<NodeJS.Timeout>();
     const interactTime = useRef(new Date().getTime());
@@ -447,9 +455,9 @@ export default function ConverseAttach(config) {
     
     // These are used to controll the conversation loop
     // Pressing enter once starts sets the intervalId and starts looping
-    // Pressing it again turns stateToggle to false and stops the loop
-    const [keyDown, setKeyDown] = useState();
-    const [stateToggle, setStateToggle] = useState(true);
+    // Pressing it again switches the isListening to stops the loop
+    const [keyDown, setKeyDown] = useState<string>();
+    const [isListening, setIsListening] = useState(false);
 
 
     /**
@@ -574,7 +582,10 @@ export default function ConverseAttach(config) {
 
     useEffect(() => {
         const keyDownHandler = (e) => {
-            setKeyDown(e.key);
+            // Only allow user input while the app is unpaused
+            if(!appPaused){
+                setKeyDown(e.key);   
+            }
         }
         document.addEventListener('keydown', keyDownHandler)
         return () => {
@@ -619,8 +630,7 @@ export default function ConverseAttach(config) {
         
     useEffect(()=>{
 
-        if(keyDown == 'Enter'){
-            
+        if(keyDown === toggleKey){
         
             if(isManualTrigger){
 
@@ -632,20 +642,132 @@ export default function ConverseAttach(config) {
 
             } else{
                 
+                const volumes: Array<number> = [];
                 // Check the toggle state
-                if(stateToggle){
+                // If it is not listening then listen
+                if(!isListening) {
 
                     recorder.startRecording();
 
-                    // Repeat every x seconds
-                    interval.current = setInterval( async () => {
-                        try{
-                            await converseLoop();
-                        } catch (err){
-                            console.error(err);
-                        }
+                    // Function to calculate the volume
+                    const calculateVolume = async () => {
+                        const blob = recorder.getRecording();
+                        const audioBuffer = await blob.arrayBuffer();
+                        try {
+                            // May or may not want to create a new audioContext
+                            const audioContext = new (window.AudioContext); //|| window.webkitAudioContext)();
+                            const audioSource = audioContext.createBufferSource();
+                            const decodedBuffer = await audioContext.decodeAudioData(audioBuffer);
+                            audioSource.buffer = decodedBuffer;
+                        
+                            // Create a gain node with zero gain ie muted
+                            const gainNode = audioContext.createGain();
+                            gainNode.gain.value = 0;
+                        
+                            // Connect the audio source to the gain node and gain node to the audio destination
+                            audioSource.connect(gainNode);
+                            gainNode.connect(audioContext.destination);
+                        
+                            // Start the audio source
+                            // Would normally play audio but it is muted
+                            audioSource.start();
+                        
+                            // Wait for a short duration to allow audio processing
+                            await new Promise((resolve) => setTimeout(resolve, recorder.getSampleDelay()));
+                        
+                            // Get the channel data as mono audio
+                            let channelData = decodedBuffer.getChannelData(0);
+                            //let channelData = new Float32Array(audioBuffer); 
 
-                    }, chatLoopInterval);
+                            // Get the more recent portion of audio
+                            // Convert bits to bytes per second and multiply by seconds
+                            const readWindow = 2 * ((recorder.mediaRecorder?.audioBitsPerSecond || 0) / 8);
+                            const maxLength = Math.min(readWindow, channelData.length);
+                            const startIndex = channelData.length - maxLength;
+                            channelData = channelData.subarray(startIndex, channelData.length);
+
+                            // Calculate the root mean square volume
+                            const sumOfSquares = channelData.reduce((accumulator, sample) => accumulator + sample * sample, 0);
+                            const meanOfSquares = sumOfSquares / channelData.length;
+                            const rmsVolume = Math.sqrt(meanOfSquares);
+                        
+                            // Calculate volume in decibels (dB)
+                            const db = 20 * Math.log10(rmsVolume);
+
+                            if(Math.abs(db) === -Infinity){
+                                return null;
+                            }
+                        
+                            // Return the calculated volume in dB
+                            return db;
+
+                        } catch (error) {
+                            // TO DO find the source of the this Error:
+                            // DOMException: Failed to execute 'decodeAudioData' on 'BaseAudioContext': Unable to decode audio data
+                            // For now this can go unhandled and return null
+
+                            //console.error('Error calculating volume:', error);
+                            return null;
+                        }
+                    };
+                    
+                    // Repeat every x seconds
+                    let requests = 0;
+                    interval.current = setInterval( async () => {
+                        const volume = await calculateVolume();
+                        volumes.push(volume || 0);
+                        // The duration over which to take the average for slience
+                        // A larger value will both increase the lag and length of slience required
+                        const lookBackTime = 2 * 1000;
+                        // ex after every 10 seconds you push the array then if you want to look back 20 seconds then 20/10 = 2 indexes
+                        const volumeLookBack = Math.floor(lookBackTime/recorder.getSampleDelay());
+                        const volumePortion = volumes.slice(volumes.length-volumeLookBack);
+                        const volumePortionAverage = volumePortion.reduce((accumulator, v) => accumulator + v, 0)/volumePortion.length;
+
+                        // Average of first 5 sample will be the zero point reference
+                        // This should only be done once and stored
+                        // Not all of the volume needs to be stored and can but cuttoff
+                        const reffStart = 5;
+                        const reffEnd = 20;
+                        const volumeZeroReff = volumes.slice(reffStart, Math.min(volumes.length, reffEnd)).reduce((accumulator, v) => accumulator + v, 0)/(reffEnd-reffStart);
+                        const normalizedVolume =  volumePortionAverage - volumeZeroReff;
+
+
+
+                        // A volume less than this will trigger a potential response
+                        const minVolume = -40;
+
+                        const timeSinceLastInteraction = Date.now() - interactTime.current;
+                        // After this time a request will be made
+                        const maxTime = 60 * 1000;
+                        // Only after this time a request can be made
+                        const minTime = 5 * 1000;
+
+                        console.log('volAverage: ', normalizedVolume);
+                        console.log('reqs', requests);
+                        console.log('quiet: ', normalizedVolume < minVolume);
+                        console.log('min: ', timeSinceLastInteraction > minTime);
+                        console.log('max: ', timeSinceLastInteraction > maxTime);
+                        
+                        // Make a request if (the volume is low and some minimum time has passed)
+                        // Or it has been too long since the last request
+                        // And only make a request if there are no other unresolved requests
+                        if((((normalizedVolume < minVolume) && (timeSinceLastInteraction > minTime)) || timeSinceLastInteraction > maxTime) && requests === 0) {
+                            requests ++;
+                            try {
+                                // It seems that this await is not being respected for the interval
+                                // Using a counter is a fix for that
+                                await converseLoop();
+                            }
+                            catch (err){
+                                console.error(err);
+                            }
+                            // Request finished
+                            requests --;
+                        }
+                    // The frequency with which to check is determined by this
+                    // It does not make much sense to check more often than there is a change
+                    }, recorder.getSampleDelay());
     
                 }else {
 
@@ -655,7 +777,7 @@ export default function ConverseAttach(config) {
                 }
 
                 // Toggle the state
-                setStateToggle(!stateToggle);
+                setIsListening(!isListening);
             }
 
 
@@ -665,6 +787,26 @@ export default function ConverseAttach(config) {
         }
 
     }, [keyDown]);
+
+    // Simulate hitting the toggle key when the app is paused if it was on
+    const [wasListeningBeforePause, setwWsListeningBeforePause] = useState<Boolean>();
+    useEffect(()=>{
+
+        // If it is now paused and it is listening then stop listening
+        // Otherwise do nothing as it is already not listening
+        if(appPaused && isListening){
+            setwWsListeningBeforePause(true);
+            setKeyDown(toggleKey);
+        } else {
+            setwWsListeningBeforePause(false);
+        }
+
+        // When unpaused, turn listening back on if it was on before the pause
+        if(!appPaused && wasListeningBeforePause){
+            setKeyDown(toggleKey);
+        }
+
+    }, [appPaused]);
 
 
     useEffect(()=>{
@@ -676,11 +818,67 @@ export default function ConverseAttach(config) {
         console.log('event sent');
     }, [runningTranscript.current]);
 
+    // Openly sourced from https://iconoir.com/
+    const micNormal = <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#000000" stroke-width="1.5"></rect><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path></svg>
+    const micMute = <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3 3l18 18M9 9v0a5 5 0 005 5v0m1-3.5V5a3 3 0 00-3-3v0a3 3 0 00-3 3v.5" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path></svg>
+    const micWarn = <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M21 14v4M21 22.01l.01-.011" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path><rect x="7" y="2" width="6" height="12" rx="3" stroke="#000000" stroke-width="1.5"></rect><path d="M3 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M10 18v4m0 0H7m3 0h3" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path></svg>
+    
+    const [micIcon, setMicIcon] = useState<JSX.Element>();
+    useEffect(()=>{
+        if(recorder.mediaRecorder){
+            const recorderState = recorder.mediaRecorder.state;
+            console.log('recorderState: ', recorderState) 
+            if((recorderState === 'inactive') || (!isListening)){
+                setMicIcon(micMute);
+            } else if((recorderState === 'recording') || (isListening)){
+                setMicIcon(micNormal);
+            }
+        } else {
+            // May need to use a more clear micWarn
+            setMicIcon(micMute);
+        }
+
+    }, [isListening, recorder.mediaRecorder?.state]);
+
+    // Change the speaking state
+    useEffect(()=>{
+        // If the audioQueue is larget than zero it should be playing
+        if(audioQueue.length > 0){
+            setIsSpeaking(true);
+        }else {
+            setIsSpeaking(false);
+        }
+
+    }, [audioQueue.length]);
+
+    //return null
     return (
-        <>
-            <div className="captions-container">
-                <p> {runningResponse.current.slice(runningResponse.current.length-500)} </p>
-            </div>
-        </>
+        <Html fullscreen>
+            <div className='micIndicatorContainer' style={{
+                backgroundColor: 'white',
+                width: 'min-content',
+                height: 'min-content',
+                border: '2px solid black',
+                borderRadius: '50px',
+                position: 'absolute',
+                marginLeft: '50vw',
+                marginRight: '50vw',
+                marginBottom: '50px',
+                scale: '2',
+                bottom: 0,
+                }}>
+
+                <div style={{
+                    width: 'min-content',
+                    height: 'min-content',
+                    transform: 'translateY(2px)',
+                    position: 'relative',
+                    margin: 'auto',
+                    }}>
+
+                    {micIcon}
+                </div>
+            </div> 
+        </Html>
     );
 }
