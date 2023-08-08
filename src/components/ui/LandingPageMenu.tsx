@@ -210,26 +210,26 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
 
 
 
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        let value = parseInt(event.target.value);
-        if (isNaN(value) || value < 1) {
-          value = value;
-        }
-        event.target.value = value.toString();
-        // Additional logic or state update based on the valid value
-        setTotalTime(value);
-      }
+    // function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    //     let value = parseInt(event.target.value);
+    //     if (isNaN(value) || value < 1) {
+    //       value = value;
+    //     }
+    //     event.target.value = value.toString();
+    //     // Additional logic or state update based on the valid value
+    //     setTotalTime(value);
+    //   }
       
-      function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
-        const { key, currentTarget } = event;
-        const isNegative = key === "-" && currentTarget.value === "";
-        const isBackspace = key === "Backspace";
-        const isValidInput = /^[0-9]$/.test(key);
+    //   function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    //     const { key, currentTarget } = event;
+    //     const isNegative = key === "-" && currentTarget.value === "";
+    //     const isBackspace = key === "Backspace";
+    //     const isValidInput = /^[0-9]$/.test(key);
       
-        if (!(isNegative || isBackspace || isValidInput)) {
-          event.preventDefault();
-        }
-      }
+    //     if (!(isNegative || isBackspace || isValidInput)) {
+    //       event.preventDefault();
+    //     }
+    //   }
 
     return <>
         {<div className="logoOverlay">
@@ -399,7 +399,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                 <div className="sideMenuSetUp">
                     <div className="formitem">
                         <label htmlFor="TotalDuration">Total duration</label>
-                        <input type="number" min="1" defaultValue="25" id="settotalTime" onChange={handleChange} onKeyPress={handleKeyPress} ></input>
+                        <input type="number" min="1" defaultValue="25" id="settotalTime" onChange={setTotalTime}></input>
                         <div className="FieldDescription">minutes</div>
                         <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the total time of your court session </p>
                     </div>

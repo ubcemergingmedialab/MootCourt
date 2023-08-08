@@ -11,6 +11,7 @@ import '../ui/Captions.css';
 import ConverseAttach from '../general/Converse';
 import PausedMenu from '../ui/PausedMenu';
 import AssessmentPage from '../ui/AssessmentPage';
+import React, { useRef } from 'react';
 
 export default function GeneralScene({setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig}) {
     // Scene Specific Elements are stored here
@@ -30,6 +31,14 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
     // 6: Has intro speech been started?
     const [hasAppIntroStarted, setHasAppIntroStarted] = useState(false);
 
+    const displayConversation = useRef<React.ReactElement[]>([]);
+
+      const [conversationElements, setConversationElements] = useState<React.ReactElement[]>([]);
+
+  // Extract the conversation elements from displayConversation useRef and update the state
+  useEffect(() => {
+    setConversationElements(displayConversation.current);
+  }, [displayConversation.current]);
 
 
     return (<Canvas>
@@ -77,10 +86,15 @@ export default function GeneralScene({setPaused, appConfig, appPaused, togglePau
                         shouldUpdateJudgeElapsedTime={shouldUpdateJudgeElapsedTime}></GlobalTimer>
                     </div>
 
-                    <AssessmentPage></AssessmentPage>
+
                     <ConverseAttach></ConverseAttach>
-                    <PausedMenu appPaused={appPaused} 
+                    <PausedMenu updateAppState={updateAppState}
+                     appPaused={appPaused} 
                     togglePause={setPaused}>
+
+                    
+
+                        
                     </PausedMenu>
                     
                 </div>

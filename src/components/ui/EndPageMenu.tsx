@@ -1,10 +1,17 @@
+import { useEffect, useState } from 'react'
+import { Center, Html } from '@react-three/drei'
+import PropTypes from 'prop-types'
+import './LandingPage.css';
+import defaultData from '../general/default_settings.json';
+//import AssessmentPage from './AssessmentPage';
 import './AssessmentPage.css';
-import React, { useState, useEffect } from 'react';
 import react, { ReactElement, ReactFragment } from 'react';
 import * as d3 from 'd3';
 import { useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { findDOMNode } from 'react-dom';
+import React from 'react';
+
 
 /**
  * Adds an SVG element of the plot of the data
@@ -240,14 +247,24 @@ async function STTAnalysis(yAxisData, sampleRate, window, bandWidth?){
     );
 }
 
+let displayConversation;
 
-export default function AssessmentPage(){
+
+
+function EndPageMenu({updateAppState, updateConfig, config}) {
+    // AppState : const Scene = 1
+    // !!Inputs can come in the form of minutes, but config time is always stored as seconds!!
+
+  
+    const startApp = () => {
+        updateAppState(0)
+    }
 
     const runningTimestamps = useRef<Array<any>>([]);
     const runningTranscript = useRef('');
     const conversation = useRef([]);
 
-    const displayConversation = useRef<[ReactElement]>([<></>]);
+    displayConversation = useRef<[ReactElement]>([<></>]);
     const hoverableWords = useRef<[ReactElement]>([<></>]);
     const hoveredWordIndex = useRef(0);
 
@@ -579,17 +596,25 @@ export default function AssessmentPage(){
 
     }, [runningTranscript.current]);
 
+    
 
-    return (<>
-        <div className="analysis-container">
-            <div className="sideMenuBackground" id="Main">
-                <div className="sideMenuInner">
-                    <div className="sideMenuTitleText">
-                        <h1>ASSESSMENT</h1>
-                        <div className="hr-1"></div>
-                    </div>
-
-                    <div id="summary" className="drop-down">
+    // const setDelay = () => {
+    //     let checkBox = document.getElementById("setDelay") as HTMLInputElement
+    //     updateConfig({...config, setDelay: checkBox.checked})
+ 
+    return <>
+    
+        {<div className="logoOverlay">
+          <img src={require('../images/PALSOL-1.2b-Primary-UBC-Shield.png')} />
+          <img src={require('../images/EML_Alternate_colour.png')} />
+        </div>}
+        {<div className="sideMenuBackground" id="Main">
+            <div className="sideMenuInner">
+                <div className="sideMenuTitleText">
+                    <h1>ASSESSMENT</h1>
+                    <div className="hr-1"></div>
+                </div>
+                <div id="summary" className="drop-down">
                         <p>SUMMARY</p>
                         <div className="inner-box">
                             <div className="transcript-container"></div>
@@ -597,17 +622,29 @@ export default function AssessmentPage(){
                             <div className="graph-container"></div>
                         </div>
                     </div>
-
-
-                    <div id="transcript" className="drop-down">
-                        <p>TRANSCRIPT</p>
-                        <div className="inner-box">
+                <div className="sideMenuContents">
+                <div className="buttonFlexBox">
+                <button className="button" type="button" id="Start" onClick={(event) => startApp()}> BACK TO START </button>
+                </div>
+                <div className="inner-box">
                             <div className="full-transcript-container">{displayConversation.current}</div>
                         </div>
+                    
                     </div>
                 </div>
             </div>
-        </div>
-    </>);
+      }
 
+    
+    </>
 }
+
+export default EndPageMenu;
+
+export function displayConversationValue() {
+    if (displayConversation.current) {
+      return displayConversation.current;
+    } else {
+      return null; // or some default value
+    }
+  }
