@@ -139,7 +139,6 @@ import GlobalTimer from '../general/GlobalTimer';
 import PauseButton from '../buttons/PauseButton';
 import SceneJudgeAvatar from '../avatars/SceneJudgeAvatar';
 import BackToLandingButton from '../buttons/BackToLandingButton';
-<<<<<<< Updated upstream
 import JudgeTimedSpeech from '../general/JudgeTimedSpeech';
 import '../ui/Captions.css';
 import ConverseAttach from '../general/Converse';
@@ -174,7 +173,6 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
     // 6: Has intro speech been started?
     const [hasAppIntroStarted, setHasAppIntroStarted] = useState(false);
 
-<<<<<<< Updated upstream
     const displayConversation = useRef<React.ReactElement[]>([]);
 
     const [conversationElements, setConversationElements] = useState<React.ReactElement[]>([]);
@@ -239,12 +237,9 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} /> */}
                 <Model modelUrl="./models/courtroom_tables_updated_01.glb"
-                    sca={[0.06, 0.06, 0.06]} /> */}
-                <Model modelUrl="./models/courtroom_tables_updated_01.glb"
                     pos={[0, -3.25, 4.5]} 
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
-<<<<<<< Updated upstream
                 {/* Wrap all the HTML components here */}
                 <Html fullscreen>
                 <div className="scene-controls">
@@ -281,10 +276,7 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                     
                 </div>
                 </Html>
-=======
->>>>>>> Stashed changes
             </Canvas>
-        </div>
         </div>
     )
 }
