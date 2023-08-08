@@ -524,7 +524,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <li>Frozen screen (Timer or judge isn’t moving)</li>
                     </ul>
                     <p>We recommend changing the browser to either <b>Firefox or Chrome</b>. You may also try changing your device.</p>
-                    <p>If you continue experiencing issues or have a different problem that isn't listed above, please report the bug for us to resolve.</p>
+                    <p>If you continue experiencing issues or have a different problem that isn't listed above, please report the bugs here.</p>
 
                     <div className="buttonFlexBox buttonFlexBox-Position" >
                         <button className="button narrow-button buttonFeedback" type="button" onClick={(event) => pressFeedback()} >
