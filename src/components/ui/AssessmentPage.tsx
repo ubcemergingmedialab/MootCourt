@@ -600,7 +600,6 @@ export default function AssessmentPage(){
 
     return (<>
         <div className="analysis-container">
-
             <div className="sideMenuBackground" id="Main">
                 <div className="sideMenuInner">
                     <div className="sideMenuTitleText">
@@ -635,4 +634,5 @@ export default function AssessmentPage(){
             </div>
         </div>
     </>);
+
 }

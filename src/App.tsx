@@ -9,8 +9,10 @@ function App() {
   // Define loadable pages
   const Landing = 0
   const Scene = 1
+  const EndPage = 3
   const LazyLandingP = lazy(() => import('./components/scenes/LandingPage'));
   const LazyGeneralS = lazy(() => import('./components/scenes/Scene'));
+  const LazyGeneralE = lazy(() => import('./components/scenes/EndPage'));
   const [subtitleText, setSubtitleText] = useState('');
 
 
@@ -60,6 +62,8 @@ function App() {
     {/* Send in the app configuration to be edited by the Landing Page*/}
     {(appState === Landing) ? 
     <LazyLandingP updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyLandingP> : null}
+     {(appState === EndPage) ? 
+    <LazyGeneralE updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyGeneralE> : null}
     {/* Send in the app configuration and "paused" boolean to the main app*/}
     {(appState === Scene) ?
     <LazyGeneralS setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState} updateConfig={updateConfig}></LazyGeneralS> : null}

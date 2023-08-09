@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { OrbitControls, Stats, Text } from "@react-three/drei";
 import AvatarStaticClassic from '../avatar_components/AvatarStaticClassic'
 import AvatarChatbot from '../avatar_components/AvatarChatbot'
+import Avatar_NPC from '../avatar_components/Avatar_NPC'
 
 // const SkinSelect = ({ updateSkin }) => {
 //     const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
@@ -80,17 +81,17 @@ function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused, config})
     if(config.isInteliJudge) {
 
         return (<Suspense fallback={null}>
-            <AvatarChatbot isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0, -2.7, -3]} rotation={[0.1, 0, 0]} modelUrl={'models/judge_avatar/judge_model_9.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></AvatarChatbot>
-            {/* <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[2, -2.55, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/right_judge.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true}finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar> */}
-            {/* <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[-2, -2.55, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/left_judge.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true}finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar> */}
+            <AvatarChatbot isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0.03, -2.8, -3]} rotation={[0.1, 0, 0]} modelUrl={'models/judge_avatar/judge_model_9.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></AvatarChatbot>
+            <Avatar_NPC appPaused={false} position={[2, -2.8, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/right_judge.glb'} animated={animated} animationPause={true}></Avatar_NPC>
+            <Avatar_NPC appPaused={false} position={[-2, -2.8, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/left_judge.glb'} animated={animated} animationPause={true}></Avatar_NPC>
 
         </Suspense>)
 
     } else {
         return (<Suspense fallback={null}>
-            <AvatarStaticClassic isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0, -2.8, -3]} rotation={[0.1, 0, 0]} modelUrl={'models/judge_avatar/judge_model_9.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></AvatarStaticClassic>
-            {/* <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[2, -2.55, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/right_judge.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true}finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar> */}
-            {/* <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[-2, -2.55, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/left_judge.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={true}finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar> */}
+            <AvatarStaticClassic isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0.03, -2.8, -3]} rotation={[0.1, 0, 0]} modelUrl={'models/judge_avatar/judge_model_9.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></AvatarStaticClassic>
+            <Avatar_NPC appPaused={false} position={[2, -2.8, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/right_judge.glb'} animated={animated} animationPause={true}></Avatar_NPC>
+            <Avatar_NPC appPaused={false} position={[-2, -2.8, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/left_judge.glb'} animated={animated} animationPause={true}></Avatar_NPC>
 
         </Suspense>)
     }

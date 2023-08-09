@@ -172,7 +172,7 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
     // if no negative time is set to true, return to landing page
     useEffect(() => {
         if (currentTime <= 0 && noNegativeTime) {
-            updateAppState(0);
+            updateAppState(3);
         }
     }, [updateTimerInterval])
 
