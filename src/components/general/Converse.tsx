@@ -7,7 +7,7 @@ import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
-const serverRoot = 'http://localhost:60';
+const serverRoot = 'http://35.183.179.97:8889';
 /**
  * Makes post fetch request using FromData
  * @param data 
