@@ -181,6 +181,8 @@ let source;
  * @returns 
  */
 function playQueue(){
+    
+    console.log('Queue len: ', audioQueue.length);
 
     // Check if there is a source
     // If there is, return to avoid starting multiple tracks
@@ -243,10 +245,6 @@ async function GetPlayAudio(audioPath, clientId){
     if(audioResponse && audioResponse.ok){
 
         const arrayBuffer = await audioResponse.arrayBuffer();
-
-        // Convert so that length can be read
-        // A different type such as Float32Array may sound better but be slower
-        const  int16View = new Int16Array(arrayBuffer);
 
         // Note that when decodeAudioData gets the array buffer it takes "ownership" of it
         // ArrayBuffer will be detatched and contain no audio data even if accessed earlier
@@ -352,6 +350,9 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
 
                 console.log('AI chose not to respond or audioPath undefined');
             }
+
+            // I believe there is an issue were the event listeners close before all
+            // of the audio has actually been recieved and put into the audiobuffer array
 
             // Close the connection
             eventSource.close();
@@ -743,11 +744,11 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         // Only after this time a request can be made
                         const minTime = 5 * 1000;
 
-                        console.log('volAverage: ', normalizedVolume);
-                        console.log('reqs', requests);
-                        console.log('quiet: ', normalizedVolume < minVolume);
-                        console.log('min: ', timeSinceLastInteraction > minTime);
-                        console.log('max: ', timeSinceLastInteraction > maxTime);
+                        // console.log('volAverage: ', normalizedVolume);
+                        // console.log('reqs', requests);
+                        // console.log('quiet: ', normalizedVolume < minVolume);
+                        // console.log('min: ', timeSinceLastInteraction > minTime);
+                        // console.log('max: ', timeSinceLastInteraction > maxTime);
                         
                         // Make a request if (the volume is low and some minimum time has passed)
                         // Or it has been too long since the last request
@@ -819,9 +820,9 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
     }, [runningTranscript.current]);
 
     // Openly sourced from https://iconoir.com/
-    const micNormal = <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#000000" stroke-width="1.5"></rect><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path></svg>
-    const micMute = <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3 3l18 18M9 9v0a5 5 0 005 5v0m1-3.5V5a3 3 0 00-3-3v0a3 3 0 00-3 3v.5" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path></svg>
-    const micWarn = <svg width="24px" height="24px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M21 14v4M21 22.01l.01-.011" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path><rect x="7" y="2" width="6" height="12" rx="3" stroke="#000000" stroke-width="1.5"></rect><path d="M3 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M10 18v4m0 0H7m3 0h3" stroke="#000000" stroke-width="1.5" strokeLinecap="round" stroke-linejoin="round"></path></svg>
+    const micNormal = <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#000000" strokeWidth="1.5"></rect><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+    const micMute = <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M3 3l18 18M9 9v0a5 5 0 005 5v0m1-3.5V5a3 3 0 00-3-3v0a3 3 0 00-3 3v.5" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+    const micWarn = <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M21 14v4M21 22.01l.01-.011" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><rect x="7" y="2" width="6" height="12" rx="3" stroke="#000000" strokeWidth="1.5"></rect><path d="M3 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M10 18v4m0 0H7m3 0h3" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
     
     const [micIcon, setMicIcon] = useState<JSX.Element>();
     useEffect(()=>{

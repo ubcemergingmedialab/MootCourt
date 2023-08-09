@@ -614,7 +614,8 @@ export default function AssessmentPage(){
                             Sample Rate
                             <input id="sample-rate-slider" type="range" min={sampleRateMin} max={sampleRateMax} step = "0.0001" onChange={onChange}/>
                             <br></br>
-                            Smoothing <input id="window-slider" type="range" min={windowMin} max={windowMax} onChange={onChange}/>
+                            Smoothing
+                            <input id="window-slider" type="range" min={windowMin} max={windowMax} onChange={onChange}/>
                         </div>
                         <div className="inner-box">
                             <div className="transcript-container"></div>
