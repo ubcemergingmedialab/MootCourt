@@ -191,28 +191,32 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                 }}
 
                 className="canvas"
-                        >
-            <ambientLight intensity={0.3} />
-
-            <rectAreaLight intensity={0.3} position={[0, 0, 10]} width={30} height={20} color="white" />
-
-            <spotLight
-                position={[0, 5, 10]} // Adjust the position of the light
-                angle={Math.PI / 8}
-                penumbra={1} // Smoothness of the spotlight edge
-                intensity={0.5} // Adjust the intensity of the light (default is 1)
-                color="white" // Adjust the color of the light
-                distance={100} // Maximum distance the light will shine
-                
-            />
+            >
+                 <ambientLight intensity={0.2}/>
+                 <rectAreaLight
+                    intensity={2}
+                    position={[0, 0, 10]}
+                    width={10}
+                    height={10}
+                    color="white"
+                />
 
                 <spotLight
-                    position={[0, 5, 20]} // Adjust the position of the light
-                    angle={Math.PI / 8}
+                    position={[-7, 5, 0]} // Adjust the position of the light
+                    angle={Math.PI / 5}
+                    penumbra={1} // Smoothness of the spotlight edge
+                    intensity={1} // Adjust the intensity of the light (default is 1)
+                    color="white" // Adjust the color of the light
+                    distance={50} // Maximum distance the light will shine
+                />
+
+                <spotLight
+                    position={[0, -7, 20]} // Adjust the position of the light
+                    angle={Math.PI / 5}
                     penumbra={.5} // Smoothness of the spotlight edge
                     intensity={1} // Adjust the intensity of the light (default is 1)
                     color="white" // Adjust the color of the light
-                    distance={60} // Maximum distance the light will shine
+                    distance={70} // Maximum distance the light will shine
                 />
 
                 {/* <JudgeTimedSpeech
@@ -221,16 +225,15 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                 setShouldUpdateJudgeElapsedTime={setShouldUpdateJudgeElapsedTime}
                 setJudgeSpeechText={setJudgeSpeechText}></JudgeTimedSpeech> */}
                 <SceneJudgeAvatar appPaused={appPaused} judgeSpeechText={judgeSpeechText} config={appConfig}></SceneJudgeAvatar>
-                <Model modelUrl="./models/courtroom_walls_updated1.glb"
-            pos={[0, -3, 3.5]}
-            rot={[0, 0, 0]}
-            sca={[0.06, 0.06, 0.06]} />
-
-      <Model modelUrl="./models/courtroom_props_updated.glb"
-          pos={[0, -3, 3]}
-          rot={[0, 0, 0]}
-          sca={[0.06, 0.06, 0.06]} />
-                <Model modelUrl="./models/courtroom_tables_updated_02.glb"
+                {/* <Model modelUrl="./models/courtroom_props_updated.glb"
+                    pos={[0, -3, 3]}
+                    rot={[0, 0, 0]}
+                    sca={[0.06, 0.06, 0.06]} />
+                <Model modelUrl="./models/courtroom_walls_updated.glb"
+                    pos={[0, -3, 3.5]}
+                    rot={[0, 0, 0]}
+                    sca={[0.06, 0.06, 0.06]} /> */}
+                <Model modelUrl="./models/courtroom_tables_updated_01.glb"
                     pos={[0, -3.25, 4.5]} 
                     rot={[0, 0, 0]}
                     sca={[0.055, 0.055, 0.055]} />
