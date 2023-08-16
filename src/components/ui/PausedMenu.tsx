@@ -16,11 +16,17 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children }) => {
   };
 
   const EndSession = () => {
-    updateAppState(3);
+    const confirmRestart = window.confirm("You are about to end your session. This action will take you to the end page with the analyzed assessment from this session. Are you sure you want to proceed?");
+    if(confirmRestart){
+      updateAppState(3);
+    }
   };
 
   const SetUp = () => {
-    updateAppState(0);
+    const confirmRestart = window.confirm("You are about to restart your session. This action will return you to the home page and any progress in this session will be lost. Are you sure you want to proceed?");
+    if(confirmRestart){
+      updateAppState(0);
+    }
   };
 
   const Tutorial = () => {
@@ -98,18 +104,28 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children }) => {
           Back
         </button>
       </div>
-      <div id="paused-menu-transcript" style={{ display: 'none' }}>
-      {/* {displayConversationValue({
+      {/* <div id="paused-menu-transcript" style={{ display: 'none' }}>
+      {displayConversationValue({
       updateAppState: updateAppState,
       updateConfig:"",
       config: "",
-    })} */}
+    })}
 
                
         <button className="button large-button" type="button" onClick={BackFromTranscript}>
           Back
         </button>
-      </div>
+      </div> */}
+     <div id="paused-menu-transcript" style={{ display: 'none' }}>
+     {displayConversationValue({
+  updateAppState: updateAppState,
+  updateConfig: null,
+  config: null,
+})}
+  <button className="button large-button" type="button" onClick={BackFromTranscript}>
+    Back
+  </button>
+</div>
     </div>
   );
 };

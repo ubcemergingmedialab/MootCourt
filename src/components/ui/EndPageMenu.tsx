@@ -257,7 +257,10 @@ function EndPageMenu({updateAppState, updateConfig, config}) {
 
   
     const startApp = () => {
-        updateAppState(0)
+    const confirmRestart = window.confirm("You are about to end your session. This action will take you back to the start and you will no longer be able to see your assessment form. Are you sure you want to proceed?");
+    if(confirmRestart){
+      updateAppState(0);
+    }
     }
 
     const runningTimestamps = useRef<Array<any>>([]);
