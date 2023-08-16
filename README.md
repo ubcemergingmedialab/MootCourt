@@ -7,6 +7,7 @@ Practice for Moot Court, built using Typescript + React.
 ### Included
 - [DeepMotion Animation/Rigging](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
 - [Judge Model](https://docs.readyplayer.me/ready-player-me/#who-can-use-ready-player-me)
+- [Rokoko AI Motion Capture]
 
 ## Versioning
 - Refer to [this documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository) on how to release projects on github. 
@@ -24,10 +25,10 @@ Practice for Moot Court, built using Typescript + React.
 - ESLint: `npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin`
 - react three fiber: `npm install three @react-three/fiber`
 - React XR: `npm install @react-three/xr`
-- react speech kit: `npm install --force react-speech-kit`
 - leva: `npm i --force leva`
 - react three fiber typescript: `npm install @types/three`
 - drei: `npm install @react-three/drei`
+- d3: 'npm install d3 --force
 
 ## Team
 
@@ -38,10 +39,9 @@ Barbara Wang BA, JD
 
 ### Current EML Student Team:
 
-- Rosaline - Developer/Lead
-- Michelle - Developer
-- Juno - Developer
-- Jena - Designer
+- Jiho - Designer/Lead
+- William - Developer
+- Leah - Developer
 
 ## Troubleshooting
 - High severity vulnerability regarding *Inefficient Regular Expression Complexity in nth-check* is likely a false alarm. Can ignore, do not force fix as it may break the project.

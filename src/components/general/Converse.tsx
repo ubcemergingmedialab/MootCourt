@@ -7,7 +7,9 @@ import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
-const serverRoot = 'http://localhost:60';
+const CustomAPIRefs = require('../../CustomAPIRefs.json');
+const serverRoot = CustomAPIRefs.Intellijudge_Server;
+console.log('serverRoot:', serverRoot);
 /**
  * Makes post fetch request using FromData
  * @param data 
@@ -314,7 +316,8 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
     console.log('My client Id: ', clientId);
     
     // Listen back for the server's response
-    const eventSource = new EventSource(`${serverRoot}/api/converse-multithread?clientId=${clientId}`);
+    // normally "?" is used to search for filled in parameters but aws API gateway or some redirects seem to have broken that
+    const eventSource = new EventSource(`${serverRoot}/api/converse-multithread/${clientId}`); //?clientId=${clientId}`);
 
     eventSource.onerror = function(error) {
         console.error('EventSource failed:', error);
@@ -744,11 +747,11 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         // Only after this time a request can be made
                         const minTime = 5 * 1000;
 
-                        // console.log('volAverage: ', normalizedVolume);
-                        // console.log('reqs', requests);
-                        // console.log('quiet: ', normalizedVolume < minVolume);
-                        // console.log('min: ', timeSinceLastInteraction > minTime);
-                        // console.log('max: ', timeSinceLastInteraction > maxTime);
+                        console.log('volAverage: ', normalizedVolume);
+                        console.log('reqs', requests);
+                        console.log('quiet: ', normalizedVolume < minVolume);
+                        console.log('min: ', timeSinceLastInteraction > minTime);
+                        console.log('max: ', timeSinceLastInteraction > maxTime);
                         
                         // Make a request if (the volume is low and some minimum time has passed)
                         // Or it has been too long since the last request

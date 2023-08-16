@@ -39,12 +39,13 @@ export async function speak(options: any, onEnd){
     // Get the audio file with a name based on the text that is to be said
     // The first 30 characters is currently used
 
-    let filepath = `http://localhost:3000/Audio/Judge Questions/judge-audio_${options.text.slice(0, 30)}.wav`;
+	const currentURL = window.location.href;
+	const differentiator = options.text.slice(0, 30);
+    let filepath = `${currentURL}Audio/Judge Questions/judge-audio_${differentiator}.wav`;
 	filepath = filepath.replaceAll(' ', '%20');
 	console.log(filepath);
 
-	
-	if(filepath==='http://localhost:3000/Audio/Judge%20Questions/judge-audio_Default%20speech%20text%20for%20judge..wav'){
+	if(differentiator==='Default speech text for judge..wav'){
 		// This quick fix should not be used in the future
 		return;
 	}
