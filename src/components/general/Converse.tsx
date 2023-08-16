@@ -7,8 +7,9 @@ import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
-const testing = false;
-const serverRoot = testing ? 'http://localhost:8889' : 'https://ubc.intellijudge.ca';
+const CustomAPIRefs = require('../../CustomAPIRefs.json');
+const serverRoot = CustomAPIRefs.Intellijudge_Server;
+console.log('serverRoot:', serverRoot);
 /**
  * Makes post fetch request using FromData
  * @param data 
