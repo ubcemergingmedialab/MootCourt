@@ -239,6 +239,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         {<div className="sideMenuBackground" id="Main">
             <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
+                    <h2>Virtual</h2>
                     <h1>Moot Court</h1>
                     <div className="hr-1"></div>
                 </div>
