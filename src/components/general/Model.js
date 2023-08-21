@@ -33,6 +33,8 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
     });
   };
 
+// Set up an effect to load and initialize animations for a 3D model based on a given model URL.
+// This effect runs whenever the 'modelUrl' dependency changes.
   useEffect(() => {
     const loader = new GLTFLoader();
     loader.load(modelUrl, (gltf) => {
@@ -40,6 +42,7 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
       if (gltf.animations.length > 0) {
         const mixer = new THREE.AnimationMixer(gltf.scene);
         setMixer(mixer);
+         // Create an array of animation data objects based on the loaded animation clips
         const newAnimations = gltf.animations.map((clip) => {
           const action = mixer.clipAction(clip);
           action.clampWhenFinished = true;
@@ -50,6 +53,7 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
             duration: clip.duration,
           };
         });
+        // Set the array of animation data objects in the component's state
         setAnimations(newAnimations);
         console.log('Animation Clips:', gltf.animations);
       }
@@ -71,6 +75,8 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
         (clip) => clip.action.getClip().name !== 'talking'
       );
 
+      // If the character is speaking, smoothly transition to and play the specified speaking animation clip,
+      // while logging its name, and ensure any random animations are stopped.
       if (isSpeaking) {
         if (speakingClip) {
           setCurrentAnimationIndex(0);
