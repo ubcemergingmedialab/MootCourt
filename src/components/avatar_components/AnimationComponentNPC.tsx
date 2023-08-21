@@ -7,6 +7,7 @@ import { useControls } from 'leva'
 import propTypes from 'prop-types';
 import ModelNPC from '../general/ModelNPC';
 
+//Contols the animation component for AvatarNPC, plays the main animation that's with the model
 
 function AnimationComponentNPC({appPaused, position, rotation, modelUrl, animated, animationPause}) {
    

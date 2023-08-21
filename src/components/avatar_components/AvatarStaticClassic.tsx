@@ -4,7 +4,7 @@ import VoiceComponent from './VoiceComponent SavedAudio';
 
 /*
  * This Avatar uses saved audio to play back questions
- *
+ * Used for Classic version
  */
 function Avatar({isSpeaking, setIsSpeaking, appPaused, position, rotation, modelUrl, textToSay, utteranceRepeat, readyToSpeak, animated, animationPause = true, startedSpeaking, finishedSpeaking }) {
 

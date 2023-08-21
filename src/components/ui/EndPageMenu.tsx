@@ -643,8 +643,11 @@ export default EndPageMenu;
 
 export function displayConversationValue() {
     if (displayConversation.current) {
-      return displayConversation.current;
+      return displayConversation.current.map((conversationElement, index) => (
+        <div key={index}>{conversationElement}</div>
+      ));
     } else {
       return null; // or some default value
     }
   }
+  
