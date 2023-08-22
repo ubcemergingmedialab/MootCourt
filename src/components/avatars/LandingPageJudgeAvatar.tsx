@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
-import Avatar_NPC from '../avatar_components/Avatar_NPC'
+import Avatar_NPC from '../avatar_components/AvatarNPC'
 
 function LandingPageJudgeAvatar({animated = true, listOfUtterances}) {
     const [currentText, setText] = useState("initial text state")

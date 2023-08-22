@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import { OrbitControls, Stats, Text } from "@react-three/drei";
 import AvatarStaticClassic from '../avatar_components/AvatarStaticClassic'
 import AvatarChatbot from '../avatar_components/AvatarChatbot'
-import Avatar_NPC from '../avatar_components/Avatar_NPC'
+import Avatar_NPC from '../avatar_components/AvatarNPC'
 
 // const SkinSelect = ({ updateSkin }) => {
 //     const modelList = ['human_female.glb', 'human_female_walking_default.glb', 'human_male.glb', 'human_male2.glb', 'testvid_default.glb']
