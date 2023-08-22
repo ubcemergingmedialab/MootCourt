@@ -426,7 +426,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <div className="FieldDescription"></div>
                             <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Set the introduction time of your court session </p>
                         <div className="subformitem">
-                            <input name="IntroductionTime" type="number" min="1" defaultValue="2" id= "setIntroductionMinutes" onChange={setIntroductionMinutes}></input>
+                            <input name="IntroductionTime" type="number" min="1" defaultValue="0" id= "setIntroductionMinutes" onChange={setIntroductionMinutes}></input>
                             <div className="FieldDescription">minutes</div>
                         </div>
                         <div className="subformitem" style= {{marginTop: '10px'}}>

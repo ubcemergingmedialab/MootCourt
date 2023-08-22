@@ -5,7 +5,7 @@
     "setDelay": false,
     "totalTime": 1500,
     "stopPresentation": true,
-    "introductionTime": 150,
+    "introductionTime": 30,
     "judgeIntroSpeech": "Council, you may begin your presentation.",
     "AQuestions": [
         "You have made good arguments about why there was some evidence which supported finding that your client was not guilty of fraud. However, the trial judge saw and heard all the evidence in this case. Is it not the job of the trial judge to weigh the evidence and decide what conclusions to draw from the evidence?",
