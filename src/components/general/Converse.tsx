@@ -8,8 +8,8 @@ import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
 console.log('v1.0.2');
-// Use process.env.REACT_APP_Server_URL when deploying
-const serverRoot = process.env.REACT_APP_Local_Server_URL; //process.env.REACT_APP_Server_URL;
+// TODO: use process.env.REACT_APP_Server_URL when deploying
+const serverRoot = process.env.REACT_APP_Server_URL //process.env.REACT_APP_Local_Server_URL;
 console.log('serverRoot:', serverRoot);
 /**
  * Makes post fetch request using FromData
@@ -279,6 +279,17 @@ async function ConverseMultithread(conversation, recording, lastResponseTime, op
 
     const voices = ['en-US_AllisonExpressive', 'en-US_AllisonV3Voice', 'en-US_EmilyV3Voice', 'en-US_EmmaExpressive', 'en-US_HenryV3Voice', 'en-US_KevinV3Voice', 'en-US_LisaExpresssive', 'en-US_LisaV3Voice', 'en-US_MichaelExpressive', 'en-US_MichaelV3Voice', 'en-US_OliviaV3Voice'];
 
+    // TODO: Switch to judge prompting
+    const determineRespondingInstructions = 
+                `
+                Given the available data, give an assessment on how likely it is that the judge named "assistant" will respond to the user's last message.
+                Consider that "assistant" is a judge in a moot court and should be looking for points in the argument to reply to or may ask for more information.
+                Consider that the transcript provided may not have correct punctuation so questions are not always indicated with a quesiton mark.
+                Consider that the user is making an argument for practice and is being timed. The judge as a respect the user's time.
+                Be very reserved about if the judge will respond, the user has prepared their arguments and would like to get through them in the time given.
+                Provide your assessment as a probabilty from 0 to 100 where 0 is a low likely hood of response and 100 is a high likely hood of response.
+                `; //'You are a friendly person and should try to respond when you feel that the other person expects you to. Try not to interrupt them though.'
+
     const data = {
         // Audio recording
         recording: recordingFile,
@@ -302,7 +313,9 @@ async function ConverseMultithread(conversation, recording, lastResponseTime, op
         lastResponseTime: lastResponseTime, 
 
         // This essentially enables just stt when false
-        isResponseDesired: options.isResponseDesired || true
+        isResponseDesired: options.isResponseDesired,
+        determineRespondingInstructions: determineRespondingInstructions,
+        minimumResponseDelay: options.minimumResponseDelay
     };
 
     console.log('data: ', data);
@@ -334,8 +347,11 @@ async function ConverseMultithread(conversation, recording, lastResponseTime, op
         console.log('Received data: ');
         console.log(responseJSON);
 
-        GetPlayAudio(responseJSON.audioPath, clientId);
-
+        try{
+            GetPlayAudio(responseJSON.audioPath, clientId);
+        } catch(err){
+            console.error(err);
+        }
     });
 
     // Return the completed response
@@ -441,11 +457,15 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
     // It is possible to providing multiple system messages each with an intention is better than a large block
     // I believe that ChatGPT will read each and incorperate the instruction of each message somewhat seperately though considering the whole conversation
     // This might mean that distinct instructions should be seperated
-    const systemPrompt = `
+
+    //TODO: Switch to judge prompting
+    const systemPrompt = 
+    `
     Play the role of a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice.
     Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law.
     Consider the arguments of the appellant or respondent.
-    `
+    `; //'Play the role of a friendly person. Have a nice conversation with the user. You can make up facts about yourself to respond as a person would.'
+    
     let initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt);
     
     // useRef does not re-render like useState does
@@ -736,7 +756,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         if(volume !== null){
                             maxVolume = Math.max(maxVolume, volume);
                             minVolume = Math.min(minVolume, volume);
-                            console.log('vol:', volume);
+
                             volumes.push(volume);
                             // Set max volume history length
                             // This could actually be set to volumeLookBack and skip the slice below
@@ -746,7 +766,6 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                             }
                         }
 
-                        console.log('vols:', volumes);
                         // The duration over which to take the average for slience
                         // A larger value will both increase the lag and length of slience required
                         const lookBackTime = 2 * 1000;
@@ -776,13 +795,14 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         // Prevents breaking sentances mid word and constant API requests when silent
                         const minTime = 5 * 1000;
 
-                        console.log('vols:', volumes);
-                        console.log('volAv: ', volumePortionAverage);
+                        // console.log('vols:', volumes);
+                        // console.log('vol:', volume);
+                        // console.log('volAv: ', volumePortionAverage);
                         console.log('volNorm: ', normalizedVolume);
                         console.log('reqs', requests);
                         console.log('quiet: ', normalizedVolume < minTriggerVolume);
-                        console.log('vmin: ', minVolume);
-                        console.log('vmax: ', maxVolume);
+                        // console.log('vmin: ', minVolume);
+                        // console.log('vmax: ', maxVolume);
                         console.log('min: ', timeSinceLastInteraction > minTime);
                         console.log('max: ', timeSinceLastInteraction > maxTime);
                         
@@ -795,7 +815,15 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                             try {
                                 // It seems that this await is not being respected for the interval
                                 // Using a counter is a fix for that
-                                await converseLoop({isResponseDesired: isResponseDesired});
+
+                                // It doesn't make a whole lot of sense for the server to have to handle the mimum response delay
+                                // I already know how long its been and I am the one making a request
+                                // Why I am sending the information over to the server whether or not to accept my request for a response
+                                // When I can just say that I don't want a response
+                                await converseLoop({
+                                    isResponseDesired: isResponseDesired,
+                                    minimumResponseDelay: 20*1000,
+                                });
                             }
                             catch (err){
                                 console.error(err);
@@ -847,14 +875,14 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
     }, [appPaused]);
 
 
-    useEffect(()=>{
-        const sendDataEvent = new CustomEvent('timestampsUpdated', {detail: {
-            runningTimestamps: runningTimestamps.current,
-            conversation: conversation.current
-        }});
-        document.dispatchEvent(sendDataEvent);
-        console.log('event sent');
-    }, [runningTranscript.current]);
+    // useEffect(()=>{
+    //     const sendDataEvent = new CustomEvent('timestampsUpdated', {detail: {
+    //         runningTimestamps: runningTimestamps.current,
+    //         conversation: conversation.current
+    //     }});
+    //     document.dispatchEvent(sendDataEvent);
+    //     console.log('event sent');
+    // }, [runningTranscript.current]);
 
     // Openly sourced from https://iconoir.com/
     const micNormal = <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#000000" strokeWidth="1.5"></rect><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
