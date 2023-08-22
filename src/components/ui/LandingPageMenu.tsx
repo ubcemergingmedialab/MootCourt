@@ -239,6 +239,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         {<div className="sideMenuBackground" id="Main">
             <div className="sideMenuInner">
                 <div className="sideMenuTitleText">
+                    <h2>Virtual</h2>
                     <h1>Moot Court</h1>
                     <div className="hr-1"></div>
                 </div>
@@ -287,9 +288,10 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick= {pressClassic} >Classic</button>
                         </div>
                     <div className="sideMenuContentsWithButtons">
-                        <p>Practice your moot court by honing your speech delivery and time managment. </p>
+                        <p>Practice your moot court presentation by honing your speech delivery and time management.</p>
                         <ul>
-                            <li>  Under a given total time, you will be given set interval to provide your argument before asked a question. </li>
+                            <li>You will be given or can set a total time for your moot presentation. 
+                                Within that time you will be given or can set intervals to provide your argument before being asked a question.</li>
                         </ul>
                         </div>
             <div className="hr-3"></div>
@@ -297,9 +299,10 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={pressIntelliJudge}>IntelliJudge</button>
                 </div>
                     <div className="sideMenuContentsWithButtons">
-                        <p>Practice your moot court with an OpenAI for live communication and custom AI-generated questions.</p>  
+                        <p>Practice your moot court with custom AI-generated follow-up questions.</p>  
                         <ul>
-                            <li>To speak to the IntelliJudge, press <b>"Enter"</b> after each argument and wait for the IntelliJudge's respond before proceeding with your next point. </li>
+                            <li>To speak to the IntelliJudge, press <b>"Enter"</b> when you feel you have adequately made part of your
+                                 argument and wait for the IntelliJudge's response before proceeding with your next point.</li>
                         </ul>
                     </div>
                 </div>
@@ -335,7 +338,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <p>In the default, these are the following features:</p>    
                             <ul> 
                                 <li>Total duration: 25 min </li>
-                                <li>Introduction time: 2 min 30 sec </li>
+                                <li>Introduction time: 30 sec </li>
                                 <li>Interval (Approximate time between questions): 5 min </li>
                                 <li>No randomized questions</li>
                             </ul>
