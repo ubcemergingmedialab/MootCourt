@@ -7,8 +7,9 @@ import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
-const CustomAPIRefs = require('../../CustomAPIRefs.json');
-const serverRoot = CustomAPIRefs.Intellijudge_Server;
+console.log('v1.0.2');
+// Use process.env.REACT_APP_Server_URL when deploying
+const serverRoot = process.env.REACT_APP_Local_Server_URL; //process.env.REACT_APP_Server_URL;
 console.log('serverRoot:', serverRoot);
 /**
  * Makes post fetch request using FromData
@@ -269,7 +270,7 @@ async function GetPlayAudio(audioPath, clientId){
  * @param lastResponseTime 
  * @returns 
  */
-async function ConverseMultithread(conversation, recording, lastResponseTime): Promise<object>{
+async function ConverseMultithread(conversation, recording, lastResponseTime, options?): Promise<object>{
 
     const recordingFile = new File([recording], 'user-recording', {
         type: 'audio/webm',
@@ -298,7 +299,10 @@ async function ConverseMultithread(conversation, recording, lastResponseTime): P
         // ex 0 is normal, 100 is double pitch ie higher (check this)
         pitchPercentage: 10,
         // The last time that ChatGPT gave a response
-        lastResponseTime: lastResponseTime
+        lastResponseTime: lastResponseTime, 
+
+        // This essentially enables just stt when false
+        isResponseDesired: options.isResponseDesired || true
     };
 
     console.log('data: ', data);
@@ -468,7 +472,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
      * This is a single loop which tracks the conversation state after making a new interaction
      * @returns 
      */
-    const converseLoop = async ()=>{
+    const converseLoop = async (options?: any)=>{
 
         // Set interact time to current time 
         interactTime.current = Date.now();
@@ -486,7 +490,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
             // Tell the server when the last time you got a response was
             // On the server side use that to restrict how often chatGPT can respond
             // Also save a verson of the last user message sent. Don't ask for a response if its not different enough
-            chatResponse = await ConverseMultithread(conversation.current, recordering, lastResponseTime.current);
+            chatResponse = await ConverseMultithread(conversation.current, recordering, lastResponseTime.current, options);
         }
 
         // If there is an audio path then the chat bot did respond
@@ -646,7 +650,6 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
 
             } else{
                 
-                const volumes: Array<number> = [];
                 // Check the toggle state
                 // If it is not listening then listen
                 if(!isListening) {
@@ -685,10 +688,17 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
 
                             // Get the more recent portion of audio
                             // Convert bits to bytes per second and multiply by seconds
-                            const readWindow = 2 * ((recorder.mediaRecorder?.audioBitsPerSecond || 0) / 8);
+                            const readSeconds = 2;
+                            const readWindow = readSeconds * ((recorder.mediaRecorder?.audioBitsPerSecond || 0) / 8);
                             const maxLength = Math.min(readWindow, channelData.length);
                             const startIndex = channelData.length - maxLength;
                             channelData = channelData.subarray(startIndex, channelData.length);
+
+                            // // Maximum value for 16-bit audio
+                            // const maxVolume = 32767;
+
+                            // // Normalize the audio data
+                            // channelData = channelData.map(sample => sample / maxVolume);
 
                             // Calculate the root mean square volume
                             const sumOfSquares = channelData.reduce((accumulator, sample) => accumulator + sample * sample, 0);
@@ -698,12 +708,12 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                             // Calculate volume in decibels (dB)
                             const db = 20 * Math.log10(rmsVolume);
 
-                            if(Math.abs(db) === -Infinity){
+                            if(Number.isNaN(db) || db === -Infinity || db === Infinity){
                                 return null;
                             }
                         
                             // Return the calculated volume in dB
-                            return db;
+                            return rmsVolume;
 
                         } catch (error) {
                             // TO DO find the source of the this Error:
@@ -715,11 +725,28 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         }
                     };
                     
-                    // Repeat every x seconds
+                    const volumes: Array<number> = [];
                     let requests = 0;
+                    let maxVolume = -Infinity;
+                    let minVolume = Infinity;
+
+                    // Repeat every x seconds
                     interval.current = setInterval( async () => {
                         const volume = await calculateVolume();
-                        volumes.push(volume || 0);
+                        if(volume !== null){
+                            maxVolume = Math.max(maxVolume, volume);
+                            minVolume = Math.min(minVolume, volume);
+                            console.log('vol:', volume);
+                            volumes.push(volume);
+                            // Set max volume history length
+                            // This could actually be set to volumeLookBack and skip the slice below
+                            const volumesMaxLength = Math.floor((5*1000)/recorder.getSampleDelay());
+                            if(volumes.length>volumesMaxLength){
+                                volumes.shift();
+                            }
+                        }
+
+                        console.log('vols:', volumes);
                         // The duration over which to take the average for slience
                         // A larger value will both increase the lag and length of slience required
                         const lookBackTime = 2 * 1000;
@@ -727,41 +754,48 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         const volumeLookBack = Math.floor(lookBackTime/recorder.getSampleDelay());
                         const volumePortion = volumes.slice(volumes.length-volumeLookBack);
                         const volumePortionAverage = volumePortion.reduce((accumulator, v) => accumulator + v, 0)/volumePortion.length;
-
-                        // Average of first 5 sample will be the zero point reference
-                        // This should only be done once and stored
-                        // Not all of the volume needs to be stored and can but cuttoff
-                        const reffStart = 5;
-                        const reffEnd = 20;
-                        const volumeZeroReff = volumes.slice(reffStart, Math.min(volumes.length, reffEnd)).reduce((accumulator, v) => accumulator + v, 0)/(reffEnd-reffStart);
-                        const normalizedVolume =  volumePortionAverage - volumeZeroReff;
-
-
+                        const normalizedVolume =  (volumePortionAverage - minVolume)/(maxVolume - minVolume);
 
                         // A volume less than this will trigger a potential response
-                        const minVolume = -40;
+                        // Should be normalized 0-1, ie 0.1 is 10% of the max volume heard
+                        const minTriggerVolume = 0.1;
 
                         const timeSinceLastInteraction = Date.now() - interactTime.current;
+
                         // After this time a request will be made
-                        const maxTime = 60 * 1000;
+                        // This forces an update even if the user has been talking
+                        // This prevents the audio clip from becoming too long
+                        const maxTime = 30 * 1000;
+                        // Using undefined to avoid overwriting any defaults
+                        let isResponseDesired:boolean|undefined = undefined;
+                        if(timeSinceLastInteraction > maxTime){
+                            // We don't really need a response but are just trying to update the transcript
+                            isResponseDesired = false;
+                        }
                         // Only after this time a request can be made
+                        // Prevents breaking sentances mid word and constant API requests when silent
                         const minTime = 5 * 1000;
 
-                        console.log('volAverage: ', normalizedVolume);
+                        console.log('vols:', volumes);
+                        console.log('volAv: ', volumePortionAverage);
+                        console.log('volNorm: ', normalizedVolume);
                         console.log('reqs', requests);
-                        console.log('quiet: ', normalizedVolume < minVolume);
+                        console.log('quiet: ', normalizedVolume < minTriggerVolume);
+                        console.log('vmin: ', minVolume);
+                        console.log('vmax: ', maxVolume);
                         console.log('min: ', timeSinceLastInteraction > minTime);
                         console.log('max: ', timeSinceLastInteraction > maxTime);
                         
                         // Make a request if (the volume is low and some minimum time has passed)
                         // Or it has been too long since the last request
                         // And only make a request if there are no other unresolved requests
-                        if((((normalizedVolume < minVolume) && (timeSinceLastInteraction > minTime)) || timeSinceLastInteraction > maxTime) && requests === 0) {
+
+                        if((((normalizedVolume < minTriggerVolume) && (timeSinceLastInteraction > minTime)) || timeSinceLastInteraction > maxTime) && requests === 0) {
                             requests ++;
                             try {
                                 // It seems that this await is not being respected for the interval
                                 // Using a counter is a fix for that
-                                await converseLoop();
+                                await converseLoop({isResponseDesired: isResponseDesired});
                             }
                             catch (err){
                                 console.error(err);
