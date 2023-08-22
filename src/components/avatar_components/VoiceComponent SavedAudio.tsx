@@ -3,6 +3,45 @@ import React, { Suspense, useEffect, useState } from 'react'
 import {speak, cancel} from '../general/Play Audio'
 import { useControls } from 'leva'
 
+const serverRoot = process.env.REACT_APP_Server_URL;
+console.log('serverRoot:', serverRoot);
+/**
+ * Makes post fetch request using FromData
+ * @param data 
+ * @param server 
+ * @returns 
+ */
+async function ServerRequestResponse(data: FormData, server){
+    try {
+        const response = await fetch(server, {
+            method: 'POST',
+            body: data
+        });
+
+        return(response);
+
+    }catch (err) {
+        console.error(err);
+        return(undefined);
+    }
+}
+
+/**
+ * Converts a dictonary like object to FormData
+ * @param options 
+ * @returns 
+ */
+function createFormData(options: any): FormData {
+	const formData = new FormData();
+
+	for (const key in options) {
+		if (options.hasOwnProperty(key)) {
+			formData.append(key, options[key]);
+		}
+	}
+
+	return formData;
+}
 
 const SelectOptimalVoice = ({ updateVoice }) => {
 
@@ -36,6 +75,17 @@ function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak
             console.log('speaking: ' + textToSay)
             cancel()
             speak({ text: textToSay, voice: voice, rate: 1 }, onEnd)
+            
+            // /// Temp - creates voice audiofiles on the server
+            // /// These are then uploaded to the client manually for static audio
+            // /// Lower the spacing between questions and let them play through to auto generate
+            // const data = createFormData({
+            //     text: textToSay,
+            //     pitchPercentage: 10,
+            // });
+            // ServerRequestResponse(data, 'http://localhost:8889/api/tts');
+            // ///
+
             setIsSpeaking(true)
             startedSpeaking && textToSay !== "" && startedSpeaking()
         } else {
