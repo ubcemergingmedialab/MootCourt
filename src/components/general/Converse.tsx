@@ -7,7 +7,7 @@ import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
-console.log('v1.0.2');
+console.log('v1.0.3');
 // TODO: use process.env.REACT_APP_Server_URL when deploying
 const serverRoot = process.env.REACT_APP_Server_URL //process.env.REACT_APP_Local_Server_URL;
 console.log('serverRoot:', serverRoot);
@@ -336,10 +336,6 @@ async function ConverseMultithread(conversation, recording, lastResponseTime, op
     // normally "?" is used to search for filled in parameters but aws API gateway or some redirects seem to have broken that
     const eventSource = new EventSource(`${serverRoot}/api/converse-multithread/${clientId}`); //?clientId=${clientId}`);
 
-    eventSource.onerror = function(error) {
-        console.error('EventSource failed:', error);
-    };
-
     // Listen for incoming data
     eventSource.addEventListener('data', async (event) => {
         
@@ -356,6 +352,19 @@ async function ConverseMultithread(conversation, recording, lastResponseTime, op
 
     // Return the completed response
     return new Promise(resolve => {
+
+        new Promise<any>((resolve, reject) => {
+            // wait x seconds and then return a failure
+            setTimeout(()=>{
+                resolve({isDone: true, failed: true})
+            }, 10000);
+        })
+
+        eventSource.onerror = function(error) {
+            console.error('EventSource failed:', error);
+            resolve({isDone: true, failed: true});
+        };
+
         eventSource.addEventListener('end', (event) => {
 
             const responseJSON = JSON.parse(event.data);
@@ -510,7 +519,11 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
             // Tell the server when the last time you got a response was
             // On the server side use that to restrict how often chatGPT can respond
             // Also save a verson of the last user message sent. Don't ask for a response if its not different enough
-            chatResponse = await ConverseMultithread(conversation.current, recordering, lastResponseTime.current, options);
+            try{
+                chatResponse = await ConverseMultithread(conversation.current, recordering, lastResponseTime.current, options);
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         // If there is an audio path then the chat bot did respond
@@ -532,15 +545,22 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
         }
 
         const timestamps = chatResponse.timestamps
-        timestamps.map((timestamp)=>{
-            // Convert to milliseconds for this API specifically
-            timestamp[1] *= 1000;
-            timestamp[2] *= 1000;
-            // The referance point starts at 0 when the data comes in
-            // The time the data was sent + 0 == the time the first word was said
-            timestamp[1] += interactTime.current;
-            timestamp[2] += interactTime.current;
-        });
+        try{
+            timestamps.map((timestamp)=>{
+                // Convert to milliseconds for this API specifically
+                timestamp[1] *= 1000;
+                timestamp[2] *= 1000;
+                // The referance point starts at 0 when the data comes in
+                // The time the data was sent + 0 == the time the first word was said
+                timestamp[1] += interactTime.current;
+                timestamp[2] += interactTime.current;
+            });
+        } catch (err) {
+            // Some edge case is not being handled properly
+            // TypeError: Cannot create property '1' on string ''
+            // It seems like it is possible for chatResponse.timestamps to be a string instead of an array
+            console.error(err);
+        }
 
         // Join the timestamps together to maintain history
         runningTimestamps.current = runningTimestamps.current.concat(timestamps);
