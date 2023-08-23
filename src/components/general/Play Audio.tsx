@@ -45,7 +45,7 @@ export async function speak(options: any, onEnd){
 	filepath = filepath.replaceAll(' ', '%20');
 	console.log(filepath);
 
-	if(differentiator==='Default speech text for judge..wav'){
+	if(differentiator==='Default speech text for judge.'){
 		// This quick fix should not be used in the future
 		return;
 	}

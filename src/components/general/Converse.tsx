@@ -7,7 +7,7 @@ import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
-console.log('v1.0.3');
+console.log('v1.0.4');
 // TODO: use process.env.REACT_APP_Server_URL when deploying
 const serverRoot = process.env.REACT_APP_Server_URL //process.env.REACT_APP_Local_Server_URL;
 console.log('serverRoot:', serverRoot);
