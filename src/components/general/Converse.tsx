@@ -465,7 +465,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
     Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law.
     Consider the arguments of the appellant or respondent.
     `; //'Play the role of a friendly person. Have a nice conversation with the user. You can make up facts about yourself to respond as a person would.'
-    
+
     let initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt);
     
     // useRef does not re-render like useState does
