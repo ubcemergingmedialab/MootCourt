@@ -90,8 +90,6 @@ import { Vector3 } from 'three';
 import * as THREE from 'three';
 
 
-let appPaused = false;
-
 const lou = [];
 
 const cameraPosition = new Vector3(0, 0, 5);
@@ -102,19 +100,22 @@ const targetObjectback = new THREE.Object3D();
 // Set the position of the targetObject
 targetObjectback.position.set(0, 0, -8);
 
-export default function LandingPage({ updateAppState, updateConfig, config }) {
-  return (
-    <Canvas
-      camera={{ position: cameraPosition, fov: cameraFov }}
-        // style={{
-        //   backgroundImage: `url("textures/courtroom.png")`, // Replace with your background image path
-        //   backgroundSize: 'cover',
-        //   backgroundPosition: 'center',
-        //   width: '100%', // Make sure the canvas takes the full width of its container
-        //   height: '100%', // Make sure the canvas takes the full height of its container
+export default function LandingPage({setPaused, updateAppState, updateConfig, config}) {
 
-      // }}
-    >
+    // Force unpaused as default
+    setPaused(false);
+    return (
+<Canvas
+camera={{ position: cameraPosition, fov: cameraFov }}
+    // style={{
+    //   backgroundImage: `url("textures/courtroom.png")`, // Replace with your background image path
+    //   backgroundSize: 'cover',
+    //   backgroundPosition: 'center',
+    //   width: '100%', // Make sure the canvas takes the full width of its container
+    //   height: '100%', // Make sure the canvas takes the full height of its container
+
+// }}
+>
 
       
 <ambientLight intensity={0.4} />
