@@ -61,7 +61,7 @@ function App() {
     <div style={{height: '100vh'}}>
     {/* Send in the app configuration to be edited by the Landing Page*/}
     {(appState === Landing) ? 
-    <LazyLandingP updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyLandingP> : null}
+    <LazyLandingP setPaused={setPaused} updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyLandingP> : null}
      {(appState === EndPage) ? 
     <LazyGeneralE updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyGeneralE> : null}
     {/* Send in the app configuration and "paused" boolean to the main app*/}

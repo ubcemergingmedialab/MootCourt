@@ -23,7 +23,7 @@ export default function EndPage({updateAppState, updateConfig, config}) {
 
 <primitive object={targetObjectback}/>
 <spotLight //focus light towards the judge
-    position={[0, .5, -7.5]} // Adjust the position of the light
+    position={[0, 0.5, -7.5]} // Adjust the position of the light
     angle={Math.PI /2}
     penumbra={1} // Smoothness of the spotlight edge
     intensity={3} // Adjust the intensity of the light (default is 1)
