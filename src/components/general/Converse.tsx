@@ -9,7 +9,9 @@ import {Html} from "@react-three/drei";
 
 console.log('v1.0.4');
 // TODO: use process.env.REACT_APP_Server_URL when deploying
-const serverRoot = process.env.REACT_APP_Server_URL //process.env.REACT_APP_Local_Server_URL;
+// Can use this toggle but there is a slight danger of this going wrong when compiling
+const useLocal = true;
+const serverRoot = useLocal ? process.env.REACT_APP_Local_Server_URL:process.env.REACT_APP_Server_URL;
 console.log('serverRoot:', serverRoot);
 /**
  * Makes post fetch request using FromData
@@ -530,6 +532,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
         // Note that when ConverseMultithread is playing audio then it is awaited and thus this interact time is when the chat bot stops talking
         if(chatResponse.audioPath !== undefined) {
             // Set the last response time to the current time
+            console.log('Audio Response Finished');
             lastResponseTime.current = interactTime.current;
         }
 
@@ -617,7 +620,10 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                 
                 // Resolve this promise when there is no audio to be played
                 document.addEventListener('audioQueueEnd', () => {
-                    resolve(null);
+                    // Give some breathing room to when the judge stops speaking
+                    setTimeout(()=>{
+                        resolve(null);
+                    }, 2 * 1000);
                 });
             });
         }
@@ -755,7 +761,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                             // Return the calculated volume in dB
                             return rmsVolume;
 
-                        } catch (error) {
+                        } catch (err) {
                             // TO DO find the source of the this Error:
                             // DOMException: Failed to execute 'decodeAudioData' on 'BaseAudioContext': Unable to decode audio data
                             // For now this can go unhandled and return null
@@ -769,6 +775,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                     let requests = 0;
                     let maxVolume = -Infinity;
                     let minVolume = Infinity;
+                    let isQuietLocked = true;
 
                     // Repeat every x seconds
                     interval.current = setInterval( async () => {
@@ -815,23 +822,46 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         // Prevents breaking sentances mid word and constant API requests when silent
                         const minTime = 5 * 1000;
 
+                        const quiet = normalizedVolume < minTriggerVolume;
+
+                        // If you become loud the quiet lock is unlocked
+                        if(!quiet){
+                            isQuietLocked = false;
+                        }
+
                         // console.log('vols:', volumes);
                         // console.log('vol:', volume);
                         // console.log('volAv: ', volumePortionAverage);
-                        console.log('volNorm: ', normalizedVolume);
-                        console.log('reqs', requests);
-                        console.log('quiet: ', normalizedVolume < minTriggerVolume);
+                        console.log('volNorm:', normalizedVolume);
+                        console.log('reqs:', requests);
+                        console.log('quiet:', quiet);
+                        console.log('isQuietLocked:', isQuietLocked);
                         // console.log('vmin: ', minVolume);
                         // console.log('vmax: ', maxVolume);
-                        console.log('min: ', timeSinceLastInteraction > minTime);
-                        console.log('max: ', timeSinceLastInteraction > maxTime);
+                        console.log('min:', timeSinceLastInteraction > minTime);
+                        console.log('max:', timeSinceLastInteraction > maxTime);
+
+                        // const minTimeAfterResponse = 20 * 1000;
+                        // const timeSinceLastResopnse = Date.now() - lastResponseTime.current;
+                        // console.log('timeSinceResponse:', timeSinceLastResopnse/1000);
+                        // console.log('minAfter:', timeSinceLastResopnse>minTimeAfterResponse);
                         
                         // Make a request if (the volume is low and some minimum time has passed)
+                        // And it is not too soon after the judge spoke. This ensures that a new request is not immediately made because you will likely not be talking immediately.
                         // Or it has been too long since the last request
                         // And only make a request if there are no other unresolved requests
 
-                        if((((normalizedVolume < minTriggerVolume) && (timeSinceLastInteraction > minTime)) || timeSinceLastInteraction > maxTime) && requests === 0) {
+                        // If the max time has elepased reset the request count
+                        if(timeSinceLastInteraction > maxTime && requests>0){
+                            requests = 0;
+                        }
+
+                        if((((quiet && !isQuietLocked) && (timeSinceLastInteraction > minTime)) || timeSinceLastInteraction > maxTime) && requests === 0) {
                             requests ++;
+                            
+                            // Reset this lock when an AI req is sent
+                            // This lock will be on more than needed if no audio response is given but shouldn't be an issue as we want to wait until the person becomes loud again
+                            isQuietLocked = true;
                             try {
                                 // It seems that this await is not being respected for the interval
                                 // Using a counter is a fix for that
@@ -840,6 +870,9 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                                 // I already know how long its been and I am the one making a request
                                 // Why I am sending the information over to the server whether or not to accept my request for a response
                                 // When I can just say that I don't want a response
+
+                                // -> this wait may not be working as intended
+                                // I think thats set interval is not respecting awaits
                                 await converseLoop({
                                     isResponseDesired: isResponseDesired,
                                     minimumResponseDelay: 20*1000,
