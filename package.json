@@ -5,8 +5,8 @@
   "type": "module",
   "dependencies": {
     "@mediapipe/tasks-vision": "^0.10.3",
-    "@react-three/drei": "^9.80.5",
-    "@react-three/fiber": "^8.13.7",
+    "@react-three/drei": "^9.80.3",
+    "@react-three/fiber": "^8.13.0",
     "@react-three/xr": "^5.6.2",
     "@testing-library/jest-dom": "^6.0.1",
     "@testing-library/react": "^14.0.0",
@@ -23,7 +23,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "stream": "^0.0.2",
-    "three": "^0.155.0",
+    "three": "^0.145.0",
     "typescript": "^5.1.6",
     "web-vitals": "^2.1.4"
   },
