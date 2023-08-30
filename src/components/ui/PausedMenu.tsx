@@ -1,7 +1,7 @@
 import React from 'react';
 import './PausedMenu.css';
 import './AssessmentPage';
-import {displayConversationValue} from './EndPageMenu';
+import {displayConversationValue} from './AssessmentPage';
 
  
 

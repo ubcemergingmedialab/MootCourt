@@ -241,7 +241,7 @@ async function STTAnalysis(yAxisData, sampleRate, window, bandWidth?){
 }
 
 
-export default function AssessmentPage({config, backButtonCallback}){
+export default function AssessmentPage({config, updateConfig, updateAppState}){
 
     const sampleRateMax = 0.002;
     const sampleRateMin = 0;
@@ -252,10 +252,20 @@ export default function AssessmentPage({config, backButtonCallback}){
     const sampleRateReff = useRef(0.001);
     const windowReff = useRef(1000);
 
+    // Settup sliders
+    const sampleRateSlider = useRef<HTMLInputElement>(null);
+    const windowSlider = useRef<HTMLInputElement>(null);
+
     // Function to call when any bar changes value
     const onChange = ()=>{
-        sampleRateReff.current = parseFloat((document.getElementById("sample-rate-slider") as HTMLInputElement).value);
-        windowReff.current = parseFloat((document.getElementById("window-slider") as HTMLInputElement).value);
+        if(sampleRateSlider.current){
+            sampleRateReff.current = parseFloat(sampleRateSlider.current.value);
+            console.log('slider1: ', sampleRateReff.current);
+        }
+        if(windowSlider.current){
+            windowReff.current = parseFloat(windowSlider.current.value);
+            console.log('slider2: ', windowReff.current);
+        }
     }
 
     const runningTimestamps = useRef<Array<any>>([]);
@@ -350,7 +360,7 @@ export default function AssessmentPage({config, backButtonCallback}){
                 ];
 
             // Overide the timestamps for now !!!
-            //runningTimestamps.current = overideArray;
+            runningTimestamps.current = overideArray;
 
             // Make sure there is data
             if(runningTimestamps.current.length > 0){
@@ -553,52 +563,61 @@ export default function AssessmentPage({config, backButtonCallback}){
         })();
 
 
-        // Clear the elements
-        displayConversation.current = [<></>];
-        let lastRole = '';
-        conversation.current.map((message: any)=>{
+        // // Clear the elements
+        // displayConversation.current = [<></>];
+        // let lastRole = '';
+        // conversation.current.map((message: any)=>{
 
-            console.log(message.role)
-            // Do not add system messages
-            if(message.role !== 'system'){
+        //     console.log(message.role)
+        //     // Do not add system messages
+        //     if(message.role !== 'system'){
 
-                // const currentTime = new Date();
-                // let hours = currentTime.getHours();
-                // const minutes = currentTime.getMinutes();
-                // const seconds = currentTime.getSeconds();
+        //         // const currentTime = new Date();
+        //         // let hours = currentTime.getHours();
+        //         // const minutes = currentTime.getMinutes();
+        //         // const seconds = currentTime.getSeconds();
 
-                // let period = 'AM';
-                // if(hours > 12){
-                //     period = 'PM';
-                // }
-                // hours =  hours === 12 ? 12 : hours - 12;
+        //         // let period = 'AM';
+        //         // if(hours > 12){
+        //         //     period = 'PM';
+        //         // }
+        //         // hours =  hours === 12 ? 12 : hours - 12;
 
-                // let formattedHours = hours.toString();
-                // const formattedMinutes = minutes.toString().padStart(2, '0');
-                // //const formattedSeconds = seconds.toString().padStart(2, '0');
+        //         // let formattedHours = hours.toString();
+        //         // const formattedMinutes = minutes.toString().padStart(2, '0');
+        //         // //const formattedSeconds = seconds.toString().padStart(2, '0');
 
-                // const timeString = `${formattedHours}:${formattedMinutes}${period}`;
+        //         // const timeString = `${formattedHours}:${formattedMinutes}${period}`;
 
-                const name = `${message.role}-message`;
-                let tag = `${message.role.toUpperCase()}: `;
+        //         const name = `${message.role}-message`;
+        //         let tag = `${message.role.toUpperCase()}: `;
                 
-                // Rename the assistant
-                tag.replace('ASSISTANT', 'JUDGE');
+        //         // Rename the assistant
+        //         tag.replace('ASSISTANT', 'JUDGE');
 
-                const block = <p className={name}>{tag}{message.content}</p>;
-                displayConversation.current.push(block);
-            }
+        //         const block = <p className={name}>{tag}{message.content}</p>;
+        //         displayConversation.current.push(block);
+        //     }
 
-            // Break line if it is from a different user
-            if(message.role !== lastRole ){
-                displayConversation.current.push(<><br></br></>);
-            }
+        //     // Break line if it is from a different user
+        //     if(message.role !== lastRole ){
+        //         displayConversation.current.push(<><br></br></>);
+        //     }
 
-            lastRole = message.role;
-        });
+        //     lastRole = message.role;
+        // });
+
+        console.log('reftest', sampleRateReff.current);
 
     }, [runningTranscript.current, sampleRateReff.current, windowReff.current]);
 
+
+    const startApp = () => {
+        const confirmRestart = window.confirm("You are about to end your session. This action will take you back to the start and you will no longer be able to see your assessment form. Are you sure you want to proceed?");
+        if(confirmRestart){
+            updateAppState(0);
+        }
+    }
 
     return (<>
         <div className="analysis-container">
@@ -613,10 +632,10 @@ export default function AssessmentPage({config, backButtonCallback}){
                         <p>SUMMARY</p>
                         <div className='graph-controls'>
                             Sample Rate
-                            <input id="sample-rate-slider" type="range" min={sampleRateMin} max={sampleRateMax} step = "0.0001" onChange={onChange}/>
+                            <input id="sample-rate-slider" type="range" min={sampleRateMin} max={sampleRateMax} step = "0.0001" onChange={onChange} ref={sampleRateSlider}/>
                             <br></br>
                             Smoothing
-                            <input id="window-slider" type="range" min={windowMin} max={windowMax} onChange={onChange}/>
+                            <input id="window-slider" type="range" min={windowMin} max={windowMax} onChange={onChange} ref={windowSlider}/>
                         </div>
                         <div className="inner-box">
                             <div className="transcript-container"></div>
@@ -627,7 +646,7 @@ export default function AssessmentPage({config, backButtonCallback}){
 
                     <div className="sideMenuContents">
                         <div className="buttonFlexBox">
-                            <button className="button" type="button" id="Start" onClick={backButtonCallback}> BACK TO START </button>
+                            <button className="button" type="button" id="Start" onClick={startApp}> BACK TO START </button>
                         </div>
                     </div>;
 
@@ -639,6 +658,61 @@ export default function AssessmentPage({config, backButtonCallback}){
                     </div> */}
                 </div>
             </div>
+        </div>
+    </>);
+}
+
+export function displayConversationValue({config}) {
+
+    // Using the object to preserve the structure of the method without using react
+    const displayConversation = {current: [<></>]};
+    const conversation = {current: []};
+
+    // Clear the elements
+    displayConversation.current = [<></>];
+    let lastRole = '';
+  
+    conversation.current = config.conversation || [];
+    conversation.current.map((message: any)=>{
+
+        console.log(message.role);
+        // Do not add system messages
+        if(message.role !== 'system'){
+
+            // const currentTime = new Date();
+            // let hours = currentTime.getHours();
+            // const minutes = currentTime.getMinutes();
+            // const seconds = currentTime.getSeconds();
+
+            // let period = 'AM';
+            // if(hours > 12){
+            //     period = 'PM';
+            // }
+            // hours =  hours === 12 ? 12 : hours - 12;
+
+            // let formattedHours = hours.toString();
+            // const formattedMinutes = minutes.toString().padStart(2, '0');
+            // //const formattedSeconds = seconds.toString().padStart(2, '0');
+
+            // const timeString = `${formattedHours}:${formattedMinutes}${period}`;
+
+            const name = `${message.role}-message`;
+            const tag = `${message.role.toUpperCase()}: `;
+            const block = <p className={name}>{tag}{message.content}</p>;
+            displayConversation.current.push(block);
+        }
+
+        // Break line if it is from a different user
+        if(message.role !== lastRole ){
+            displayConversation.current.push(<><br></br></>);
+        }
+
+        lastRole = message.role;
+    });
+
+    return(<>
+        <div className="inner-box">
+            <div className="full-transcript-container">{displayConversation?.current}</div>
         </div>
     </>);
 }
