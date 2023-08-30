@@ -241,7 +241,7 @@ async function STTAnalysis(yAxisData, sampleRate, window, bandWidth?){
 }
 
 
-export default function AssessmentPage(){
+export default function AssessmentPage({config, backButtonCallback}){
 
     const sampleRateMax = 0.002;
     const sampleRateMin = 0;
@@ -270,19 +270,21 @@ export default function AssessmentPage(){
     const plotRoot = useRef<ReactDOM.Root>();
     const selectedWPM = useRef([0,0]);
 
-    // Listen for a new timestamp transcript
-    document.addEventListener('timestampsUpdated', (event)=>{
-        console.log('event recieved');
-        const data = (event as CustomEvent).detail;
-        runningTimestamps.current = data.runningTimestamps;
-        conversation.current = data.conversation;
+    runningTimestamps.current = config.runningTimestamps;
+    conversation.current = config.conversation;
+    // // Listen for a new timestamp transcript
+    // document.addEventListener('timestampsUpdated', (event)=>{
+    //     console.log('event recieved');
+    //     const data = (event as CustomEvent).detail;
+    //     runningTimestamps.current = data.runningTimestamps;
+    //     conversation.current = data.conversation;
 
-        // Load the running transcript from the timestamps
-        runningTranscript.current = '';
-        runningTimestamps.current.map((stamp)=>{
-            runningTranscript.current += stamp[0];
-        });
-    });
+    //     // Load the running transcript from the timestamps
+    //     runningTranscript.current = '';
+    //     runningTimestamps.current.map((stamp)=>{
+    //         runningTranscript.current += stamp[0];
+    //     });
+    // });
 
 
     const [keyDown, setKeyDown] = useState();
@@ -623,16 +625,20 @@ export default function AssessmentPage(){
                         </div>
                     </div>
 
+                    <div className="sideMenuContents">
+                        <div className="buttonFlexBox">
+                            <button className="button" type="button" id="Start" onClick={backButtonCallback}> BACK TO START </button>
+                        </div>
+                    </div>;
 
-                    <div id="transcript" className="drop-down">
+                    {/* <div id="transcript" className="drop-down">
                         <p>TRANSCRIPT</p>
                         <div className="inner-box">
                             <div className="full-transcript-container">{displayConversation.current}</div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
     </>);
-
 }

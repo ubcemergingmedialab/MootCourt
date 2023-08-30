@@ -39,8 +39,8 @@
 
 .full-transcript-container{
     padding: 10px;
-    height: min-content;
-    max-height: 100px;
+    height: max-content;
+    max-height: 400px;
     overflow-y: scroll;
     border: 5px solid  #F7CA18;
     border-radius: 10px;

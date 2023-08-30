@@ -23,7 +23,7 @@ import Avatar_NPC from '../avatar_components/AvatarNPC'
 // }
 
 
-function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused, config}) {
+function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused, config, updateConfig}) {
     const [currentText, setText] = useState("initial text state")
     const [readyToSpeak, setReadyToSpeak] = useState(false)
     const [isSpeaking, setIsSpeaking] = useState(false)
@@ -81,7 +81,7 @@ function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused, config})
     if(config.isInteliJudge) {
 
         return (<Suspense fallback={null}>
-            <AvatarChatbot isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0.03, -2.8, -3]} rotation={[0.1, 0, 0]} modelUrl={'models/judge_avatar/judge_model_main.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></AvatarChatbot>
+            <AvatarChatbot config={config} updateConfig={updateConfig} isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={appPaused} position={[0.03, -2.8, -3]} rotation={[0.1, 0, 0]} modelUrl={'models/judge_avatar/judge_model_main.glb'} textToSay={judgeSpeechText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></AvatarChatbot>
             <Avatar_NPC appPaused={false} position={[2, -2.8, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/right_judge.glb'} animated={animated} animationPause={true}></Avatar_NPC>
             <Avatar_NPC appPaused={false} position={[-2, -2.8, -3]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/left_judge.glb'} animated={animated} animationPause={true}></Avatar_NPC>
 

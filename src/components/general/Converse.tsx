@@ -454,7 +454,7 @@ export async function Converse(conversation, recording){
 }
 
 
-export default function ConverseAttach({ setIsSpeaking, appPaused }) {
+export default function ConverseAttach({ setIsSpeaking, appPaused, config, updateConfig}) {
 
     const toggleKey = 'Enter';
     // Sets whether or not the event is triggered to toggled
@@ -836,8 +836,8 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
                         console.log('reqs:', requests);
                         console.log('quiet:', quiet);
                         console.log('isQuietLocked:', isQuietLocked);
-                        // console.log('vmin: ', minVolume);
-                        // console.log('vmax: ', maxVolume);
+                        console.log('vmin: ', minVolume);
+                        console.log('vmax: ', maxVolume);
                         console.log('min:', timeSinceLastInteraction > minTime);
                         console.log('max:', timeSinceLastInteraction > maxTime);
 
@@ -928,14 +928,18 @@ export default function ConverseAttach({ setIsSpeaking, appPaused }) {
     }, [appPaused]);
 
 
-    // useEffect(()=>{
-    //     const sendDataEvent = new CustomEvent('timestampsUpdated', {detail: {
-    //         runningTimestamps: runningTimestamps.current,
-    //         conversation: conversation.current
-    //     }});
-    //     document.dispatchEvent(sendDataEvent);
-    //     console.log('event sent');
-    // }, [runningTranscript.current]);
+
+    useEffect(()=>{
+        config.runningTimestamps = runningTimestamps.current;
+        config.conversation = conversation.current;
+        updateConfig(config);
+        // const sendDataEvent = new CustomEvent('timestampsUpdated', {detail: {
+        //     runningTimestamps: runningTimestamps.current,
+        //     conversation: conversation.current
+        // }});
+        // document.dispatchEvent(sendDataEvent);
+        // console.log('event sent');
+    }, [runningTranscript.current]);
 
     // Openly sourced from https://iconoir.com/
     const micNormal = <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><rect x="9" y="2" width="6" height="12" rx="3" stroke="#000000" strokeWidth="1.5"></rect><path d="M5 10v1a7 7 0 007 7v0a7 7 0 007-7v-1M12 18v4m0 0H9m3 0h3" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path></svg>
