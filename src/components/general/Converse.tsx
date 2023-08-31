@@ -7,7 +7,7 @@ import { Svg } from '@react-three/drei';
 import ReactDOM from 'react-dom/client';
 import {Html} from "@react-three/drei";
 
-console.log('v1.0.4');
+console.log('v1.0.5');
 // TODO: use process.env.REACT_APP_Server_URL when deploying
 // Can use this toggle but there is a slight danger of this going wrong when compiling
 const useLocal = false;
