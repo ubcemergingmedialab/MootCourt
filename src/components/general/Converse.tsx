@@ -10,7 +10,7 @@ import {Html} from "@react-three/drei";
 console.log('v1.0.4');
 // TODO: use process.env.REACT_APP_Server_URL when deploying
 // Can use this toggle but there is a slight danger of this going wrong when compiling
-const useLocal = true;
+const useLocal = false;
 const serverRoot = useLocal ? process.env.REACT_APP_Local_Server_URL:process.env.REACT_APP_Server_URL;
 console.log('serverRoot:', serverRoot);
 /**
@@ -787,7 +787,9 @@ export default function ConverseAttach({ setIsSpeaking, appPaused, config, updat
                             volumes.push(volume);
                             // Set max volume history length
                             // This could actually be set to volumeLookBack and skip the slice below
-                            const volumesMaxLength = Math.floor((5*1000)/recorder.getSampleDelay());
+                            // ie only store the history needed
+                            const volumeHistoryTime = 5*1000;
+                            const volumesMaxLength = Math.floor((volumeHistoryTime)/recorder.getSampleDelay());
                             if(volumes.length>volumesMaxLength){
                                 volumes.shift();
                             }
@@ -795,7 +797,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused, config, updat
 
                         // The duration over which to take the average for slience
                         // A larger value will both increase the lag and length of slience required
-                        const lookBackTime = 2 * 1000;
+                        const lookBackTime = 3 * 1000;
                         // ex after every 10 seconds you push the array then if you want to look back 20 seconds then 20/10 = 2 indexes
                         const volumeLookBack = Math.floor(lookBackTime/recorder.getSampleDelay());
                         const volumePortion = volumes.slice(volumes.length-volumeLookBack);
@@ -803,7 +805,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused, config, updat
                         const normalizedVolume =  (volumePortionAverage - minVolume)/(maxVolume - minVolume);
 
                         // A volume less than this will trigger a potential response
-                        // Should be normalized 0-1, ie 0.1 is 10% of the max volume heard
+                        // Expects a normalized value 0-1, ie 0.1 is 10% of the max volume heard
                         const minTriggerVolume = 0.1;
 
                         const timeSinceLastInteraction = Date.now() - interactTime.current;
