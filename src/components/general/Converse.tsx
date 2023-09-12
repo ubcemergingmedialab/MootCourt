@@ -10,7 +10,7 @@ import {Html} from "@react-three/drei";
 console.log('v1.0.5');
 // TODO: use process.env.REACT_APP_Server_URL when deploying
 // Can use this toggle but there is a slight danger of this going wrong when compiling
-const useLocal = false;
+const useLocal = true;
 const serverRoot = useLocal ? process.env.REACT_APP_Local_Server_URL:process.env.REACT_APP_Server_URL;
 console.log('serverRoot:', serverRoot);
 /**
@@ -475,6 +475,9 @@ export default function ConverseAttach({ setIsSpeaking, appPaused, config, updat
     Play the role of a Judge in Canada in a Judicial Interrogation System practiced in the Socratic method and the user is orally presenting at a Moot Court practice.
     Find their weakest point and ask questions about that single idea to challenge, provoke thought, and deepen the student's understanding of law.
     Consider the arguments of the appellant or respondent.
+    Do not give an overly long response as the presenter needs to get through their points but do pose engaging questions.
+    Avoid taking strong person stances but you can make logical objections.
+    Try to keep your responses short but natural.
     `; //'Play the role of a friendly person. Have a nice conversation with the user. You can make up facts about yourself to respond as a person would.'
 
     let initJudgeConversation  = createConversation(blankConversation, 'system', systemPrompt);
@@ -683,6 +686,13 @@ export default function ConverseAttach({ setIsSpeaking, appPaused, config, updat
     // }, [runningResponse.current, runningTranscript.current]);
         
     useEffect(()=>{
+        // if (keyDown === 'a'){
+        //     setIsSpeaking(true)
+        // }
+
+        // if (keyDown === 's'){
+        //     setIsSpeaking(false)
+        // }
 
         if(keyDown === toggleKey){
         
@@ -813,7 +823,7 @@ export default function ConverseAttach({ setIsSpeaking, appPaused, config, updat
                         // After this time a request will be made
                         // This forces an update even if the user has been talking
                         // This prevents the audio clip from becoming too long
-                        const maxTime = 30 * 1000;
+                        const maxTime = 120 * 1000;
                         // Using undefined to avoid overwriting any defaults
                         let isResponseDesired:boolean|undefined = undefined;
                         if(timeSinceLastInteraction > maxTime){

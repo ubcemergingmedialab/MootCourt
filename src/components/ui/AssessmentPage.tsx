@@ -360,7 +360,7 @@ export default function AssessmentPage({config, updateConfig, updateAppState}){
                 ];
 
             // Overide the timestamps for now !!!
-            runningTimestamps.current = overideArray;
+            // runningTimestamps.current = overideArray;
 
             // Make sure there is data
             if(runningTimestamps.current.length > 0){
