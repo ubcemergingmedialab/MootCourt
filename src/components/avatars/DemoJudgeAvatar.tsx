@@ -76,7 +76,20 @@ function DemoJudgeAvatar({animated = true, listOfUtterances}) {
     }
 
     return (<Suspense fallback={null}>
-        <Avatar isSpeaking={isSpeaking} setIsSpeaking={setIsSpeaking} appPaused={false} position={[0, -3, 2.5]} rotation={[0, 0, 0]} modelUrl={'models/judge_avatar/human_female.glb'} textToSay={currentText} readyToSpeak={readyToSpeakHandler} utteranceRepeat={false} animated={animated} animationPause={animationPaused} finishedSpeaking={finishedSpeakingHandler} startedSpeaking={startedSpeakingHandler}></Avatar>
+        <Avatar
+            isSpeaking={isSpeaking}
+            setIsSpeaking={setIsSpeaking}
+            appPaused={false}
+            position={[0, -3, 2.5]}
+            rotation={[0, 0, 0]}
+            modelUrl={'models/judge_avatar/human_female.glb'}
+            textToSay={currentText}
+            readyToSpeak={readyToSpeakHandler}
+            utteranceRepeat={false}
+            animated={animated}
+            animationPause={animationPaused}
+            finishedSpeaking={finishedSpeakingHandler}
+            startedSpeaking={startedSpeakingHandler}></Avatar>
         {/* <Text
         position={[0, 1.3, 3]}
         scale={[1, 1, 0.5]}

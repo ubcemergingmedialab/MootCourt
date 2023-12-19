@@ -84,7 +84,6 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
           speakingClip.action.reset();
           speakingClip.action.fadeIn(crossfadeDuration);
           speakingClip.action.play();
-          console.log('Current Animation Clips:', [speakingClip.action.getClip().name]);
 
           stopRandomAnimations();
         }
@@ -116,8 +115,6 @@ function Model({ modelUrl, pos, rot, sca, isSpeaking = true, pauseAnimation = tr
             nextClip.action.setLoop(THREE.LoopOnce);
             nextClip.action.fadeIn(crossfadeDuration);
             nextClip.action.play();
-      
-            console.log('Current Animation Clip:', nextClip.action.getClip().name);
       
             return nextIndex;
           });

@@ -674,8 +674,6 @@ export function displayConversationValue({config}) {
   
     conversation.current = config.conversation || [];
     conversation.current.map((message: any)=>{
-
-        console.log(message.role);
         // Do not add system messages
         if(message.role !== 'system'){
 

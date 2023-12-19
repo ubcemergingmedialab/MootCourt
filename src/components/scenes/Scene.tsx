@@ -161,9 +161,10 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                     </div>
 
                     <PausedMenu updateAppState={updateAppState}
-                    appPaused={appPaused} 
-                    togglePause={setPaused}
-                    config={appConfig}>
+                    appPaused={appPaused}
+                    togglePause={togglePause}
+                    config={appConfig}
+                    children={undefined}>
                     </PausedMenu>
                     
                 </div>
