@@ -4,7 +4,7 @@ import {ServerUtility} from '../server/ServerUtility';
 
 let socket: WebSocket;
 
-export default function Converse({setIsSpeaking, appPaused, config, updateConfig, userSpeechToTextInput}) {
+export default function ConverseComponent({setIsSpeaking, appPaused, config, updateConfig, userSpeechToTextInput}) {
     const [socketReady, setSocketReady] = useState(false);
     const isAISpeaking = ServerUtility.isAudioPlaying;
 

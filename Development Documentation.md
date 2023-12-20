@@ -75,7 +75,7 @@ https://github.com/ubcemergingmedialab/MootCourt/blob/201ee9ae5dd767645f785b54bb
 ## Scene.tsx
 - Main scene with timer, pause button, and random questions being asked by the judge
 
-## Converse.tsx
+## ConverseComponent.tsx
 ### Conversational Interaction:
 - The code interacts with a server-side API for conversation using ChatGPT. It sends a user's audio recording, conversation history, and other options to the server to receive a conversational response.
 - The responses received from the server are processed and incorporated into the ongoing conversation history.
