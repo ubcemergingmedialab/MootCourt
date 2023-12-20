@@ -1,10 +1,4 @@
 import React, { Suspense, useEffect, useState } from 'react'
-import ReactDOM from 'react-dom';
-import { Box, Stage } from '@react-three/drei'
-import { useFrame, useThree } from '@react-three/fiber'
-import * as THREE from 'three'
-import { useControls } from 'leva'
-import propTypes from 'prop-types';
 import ModelNPC from '../general/ModelNPC';
 
 //Contols the animation component for AvatarNPC, plays the main animation that's with the model
