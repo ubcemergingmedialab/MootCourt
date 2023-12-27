@@ -14,7 +14,7 @@ const targetObjectback = new THREE.Object3D();
 // Set the position of the targetObject
 targetObjectback.position.set(0, 0, -8);
 
-export default function EndPage({updateAppState, updateConfig, config}) {
+export default function EndPage({updateAppState, updateConfig, config, judgeElapsedTime}) {
     return (<Canvas>
 <ambientLight intensity={0.4} />
 
@@ -109,7 +109,12 @@ export default function EndPage({updateAppState, updateConfig, config}) {
         <LandingPageJudgeAvatar listOfUtterances={lou} />
 
         <Html fullscreen>
-            <EndPageMenu updateAppState={updateAppState} updateConfig={updateConfig} config={config} ></EndPageMenu>
+            <EndPageMenu
+                updateAppState={updateAppState}
+                updateConfig={updateConfig}
+                config={config}
+                judgeElapsedTime={judgeElapsedTime}
+            ></EndPageMenu>
         </Html>
         </Canvas>
     )

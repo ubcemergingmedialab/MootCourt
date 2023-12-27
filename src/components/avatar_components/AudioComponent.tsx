@@ -5,16 +5,18 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 
 interface PushToTalkProps {
     onStartPushToTalk: () => void;
-    onStopPushToTalk: () => void;
+    onStopPushToTalk: (audioBlob: Blob, recordTime: number) => void;
+    elapsedTime: number;
 }
 
-const PushToTalk = ({onStartPushToTalk, onStopPushToTalk} : PushToTalkProps) =>
+const PushToTalk = ({onStartPushToTalk, onStopPushToTalk, elapsedTime} : PushToTalkProps) =>
 {
     const [isEnterHeld, setEnterHeld] = useState(false);
-    //const [isRecording, setIsRecording] = useState(false);
-    //const recorder = useRef<Recorder | null>(null);
+    const [isRecording, setIsRecording] = useState(false);
+    const [recordKeyHeldTime, setRecordKeyHeldTime] = useState(elapsedTime);
+    const recorder = useRef<Recorder | null>(null);
 
-    /*useEffect(() => {
+    useEffect(() => {
        recorder.current = new Recorder();
        return () => {
            if (recorder.current)
@@ -22,25 +24,34 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk} : PushToTalkProps) =>
                recorder.current.cleanup();
            }
        }
-    }, []);*/
+    }, []);
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            setEnterHeld(true);
-            /*if (!isRecording)
-            {
-                setIsRecording(true);
-            }*/
+        if (event.key !== 'Enter')
+        {
+            return;
         }
+
+        setEnterHeld(true);
+        if (!isRecording)
+        {
+            setIsRecording(true);
+        }
+        setRecordKeyHeldTime(Date.now());
     };
 
     const handleKeyUp = (event) => {
-        if (event.key === 'Enter')
+        if (event.key !== 'Enter')
         {
-            setEnterHeld(false);
-            //setIsRecording(false);
+            return;
         }
+
+        setEnterHeld(false);
+        setIsRecording(false);
+
+        setRecordKeyHeldTime(Date.now() - recordKeyHeldTime);
     }
+
     useEffect(() =>
     {
         window.addEventListener('keydown', handleKeyDown);
@@ -53,27 +64,23 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk} : PushToTalkProps) =>
     }, []);
 
     useEffect(() => {
-        /*if (!recorder.current)
+        if (!recorder.current)
         {
             console.error("Did you instantiate recorder?");
             return;
         }
-        if (isRecording) {
-            recorder.current.startRecording();
-            onStartRecording();
-            return;
-        }
 
-        if (recorder.current.mediaRecorder)
-        {
-            recorder.current.stopRecording();
-            onStopRecording(recorder.current.getRecording());
-        }*/
         if (isEnterHeld)
         {
+            recorder.current.startRecording();
             onStartPushToTalk();
-        }else{
-            onStopPushToTalk();
+        }else
+        {
+            if (recorder.current.mediaRecorder)
+            {
+                recorder.current.stopRecording();
+            }
+            onStopPushToTalk(recorder.current.getRecording(), recordKeyHeldTime);
         }
     }, [isEnterHeld]);
 
@@ -86,7 +93,7 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk} : PushToTalkProps) =>
 //
 //----------------------------------------------------------------------------------------------------------------------
 
-function AudioComponent({appPaused, onTranscriptChange})
+function AudioComponent({config, appPaused, onTranscriptChange, elapsedTime})
 {
     //----------------------------------------------------------------------------------------------------------------------
     // TODO: Move these into one big asset file, consolidate the other assets in the project
@@ -132,7 +139,9 @@ function AudioComponent({appPaused, onTranscriptChange})
     //----------------------------------------------------------------------------------------------------------------------
 
     const {transcript, resetTranscript} = useSpeechRecognition();
-    const [micIcon, setMicIcon] = useState<JSX.Element>();
+    const [micIcon, setMicIcon] = useState<JSX.Element>(micMute);
+    const conversation = useRef<Array<any>>([]);
+    const runningTimestamps = useRef<Array<any>>([]);
 
     const handleStartPTT = () => {
         SpeechRecognition.startListening();
@@ -140,16 +149,41 @@ function AudioComponent({appPaused, onTranscriptChange})
         setMicIcon(micNormal);
     };
 
-    const handleStopPTT = () => {
+    const handleStopPTT = (audioBlob : Blob, recordTime : number) => {
+        /**
+         * NOTE: The recordTime here is based on how long "Enter" key was held, this greatly simplifies how we process the audio data
+         * and it assumes that the duration of the speech === how long the button was held. Although not accurate, it is good enough for
+         * our purposes. The other alternative would be to process the audio volume, if it passes a minimum threshold, then we can assume
+         * there is speech in that region.
+         ***/
+        if (!audioBlob || audioBlob.size <= 0)
+        {
+            return;
+        }
+
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audioElement = new Audio();
+        audioElement.src = audioUrl;
+
+        sendToAssessment(transcript, elapsedTime, recordTime);
+
         SpeechRecognition.stopListening();
         onTranscriptChange(transcript);
         setMicIcon(micMute);
     };
 
+    const sendToAssessment = (transcript, elapsedTime, recordTime) =>
+    {
+        runningTimestamps.current.push([transcript, elapsedTime, elapsedTime + recordTime]);
+        config.runningTimestamps = runningTimestamps.current;
+        conversation.current = createConversation(conversation.current, 'user', transcript);
+        config.conversation = conversation.current;
+    }
+
     return (
         <Html fullscreen>
             {!appPaused && (
-                <PushToTalk onStartPushToTalk={handleStartPTT} onStopPushToTalk={handleStopPTT}></PushToTalk>)
+                <PushToTalk onStartPushToTalk={handleStartPTT} onStopPushToTalk={handleStopPTT} elapsedTime={elapsedTime}></PushToTalk>)
             }
             <div className='micIndicatorContainer' style={{
                 backgroundColor: 'white',
@@ -180,3 +214,18 @@ function AudioComponent({appPaused, onTranscriptChange})
     );
 }
 export default AudioComponent;
+
+
+/**
+ * Creates a new message and appends it to the conversation
+ * @param conversation List of OpenAI conversation messages
+ * @param role One of 'user', 'assistant', 'system'
+ * @param content The message to be appended
+ * @returns List of OpenAI conversation messages
+ */
+function createConversation(conversation: Array<object>, role: string, content: string): Array<any> {
+    let message = {role: role, content: content};
+    let messages = [...conversation]
+    messages.push(message);
+    return messages;
+}

@@ -21,28 +21,25 @@ import * as THREE from 'three';
 const cameraPosition = new Vector3(0, 0, 5);
 const cameraFov = 48;
 
-export default function GeneralScene({ setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig }) {
+export default function GeneralScene({ setPaused, appConfig, appPaused, togglePause, updateAppState, updateConfig, judgeElapsedTime, setJudgeElapsedTime}) {
     // Scene Specific Elements are stored here
-    // 1: Text that judge is supposed to say at given interval
+    // Text that judge is supposed to say at given interval
     const [judgeSpeechText, setJudgeSpeechText] = useState("Default speech text for judge.")
-    // 2: Time elapsed since the start of the interval. Resets if the user delays speech.
-    // Moves onto next question when elapsed time equals the config interval
-    const [judgeElapsedTime, setJudgeElapsedTime] = useState(0)
-    // 3: Stores the current global time of the scene since the beginning.
+
+    // Stores the current global time of the scene since the beginning.
     // Starting value: config's total time (in seconds) converted to ms
     // add 5 second delay
     const [currentTime, setCurrentTime] = useState(appConfig.totalTime * 1000 + appConfig.introductionTime * 1000 + 5000)
-    // 4: Track whether the judge interval should be updated or not.
+    // Track whether the judge interval should be updated or not.
     const [shouldUpdateJudgeElapsedTime, setShouldUpdateJudgeElapsedTime] = useState(false);
-    // 5: Is the speech in intro mode?
+    // Is the speech in intro mode?
     const [isAppInIntro, setIsAppInIntro] = useState(false);
-    // 6: Has intro speech been started?
+    // Has intro speech been started?
     const [hasAppIntroStarted, setHasAppIntroStarted] = useState(false);
 
     const displayConversation = useRef<React.ReactElement[]>([]);
 
     const [conversationElements, setConversationElements] = useState<React.ReactElement[]>([]);
-
     
     const targetObjectback = new THREE.Object3D();
     // Set the position of the targetObject
@@ -133,7 +130,12 @@ export default function GeneralScene({ setPaused, appConfig, appPaused, togglePa
                     pos={[0, -3, 3]}
                     rot={[0, 0, 0]}
                     sca={[0.06, 0.06, 0.06]} />
-                <SceneJudgeAvatar appPaused={appPaused} judgeSpeechText={judgeSpeechText} config={appConfig} updateConfig={updateConfig}></SceneJudgeAvatar>
+                <SceneJudgeAvatar
+                    appPaused={appPaused}
+                    judgeSpeechText={judgeSpeechText}
+                    judgeElapsedTime = {judgeElapsedTime}
+                    config={appConfig}
+                    updateConfig={updateConfig}/>
 
                 {/* Wrap all the HTML components here */}
 

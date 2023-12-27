@@ -3,7 +3,7 @@ import AvatarStaticClassic from '../avatar_components/AvatarStaticClassic'
 import AvatarChatbot from '../avatar_components/AvatarChatbot'
 import Avatar_NPC from '../avatar_components/AvatarNPC'
 
-function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused, config, updateConfig}) {
+function SceneJudgeAvatar({animated = true, judgeSpeechText, judgeElapsedTime, appPaused, config, updateConfig}) {
     const [currentText, setText] = useState("initial text state")
     const [readyToSpeak, setReadyToSpeak] = useState(false)
     const [isSpeaking, setIsSpeaking] = useState(false)
@@ -57,6 +57,7 @@ function SceneJudgeAvatar({animated = true, judgeSpeechText, appPaused, config, 
                 updateConfig={updateConfig}
                 isSpeaking={isSpeaking}
                 setIsSpeaking={setIsSpeaking}
+                judgeElapsedTime={judgeElapsedTime}
                 appPaused={appPaused}
                 position={[0.03, -2.8, -3]}
                 rotation={[0.1, 0, 0]}

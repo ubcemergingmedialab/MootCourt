@@ -22,6 +22,7 @@ function App() {
   const [config, setConfig] = useState(defaultData);
   // global check for app pause
   const [paused, setPaused] = useState(false);
+  const [judgeElapsedTime, setJudgeElapsedTime] = useState(0);
 
   const updateConfig = (config) => {
     console.log('New Configuration: ', JSON.stringify(config))
@@ -61,12 +62,32 @@ function App() {
     <div style={{height: '100vh'}}>
     {/* Send in the app configuration to be edited by the Landing Page*/}
     {(appState === Landing) ? 
-    <LazyLandingP setPaused={setPaused} updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyLandingP> : null}
+    <LazyLandingP
+        setPaused={setPaused}
+        updateAppState={updateState}
+        updateConfig={updateConfig}
+        config={config}>
+    </LazyLandingP> : null}
      {(appState === EndPage) ? 
-    <LazyGeneralE updateAppState={updateState} updateConfig={updateConfig} config={config}></LazyGeneralE> : null}
+    <LazyGeneralE
+        updateAppState={updateState}
+        updateConfig={updateConfig}
+        config={config}
+        judgeElapsedTime={judgeElapsedTime}>
+    </LazyGeneralE> : null
+     }
     {/* Send in the app configuration and "paused" boolean to the main app*/}
     {(appState === Scene) ?
-    <LazyGeneralS setPaused={setPaused} appConfig={config} appPaused={paused} togglePause={pauseHandler} updateAppState={updateState} updateConfig={updateConfig}></LazyGeneralS> : null}
+    <LazyGeneralS
+        setPaused={setPaused}
+        appConfig={config}
+        appPaused={paused}
+        togglePause={pauseHandler}
+        updateAppState={updateState}
+        updateConfig={updateConfig}
+        judgeElapsedTime={judgeElapsedTime}
+        setJudgeElapsedTime ={setJudgeElapsedTime}>
+    </LazyGeneralS> : null}
     </div>
     </Suspense>
     ) : (

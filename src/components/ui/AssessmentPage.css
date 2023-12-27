@@ -1,10 +1,16 @@
-.inner-box{
+#assessment-page.sideMenuBackground
+{
+    width: min-content;
+    height: min-content;
+}
+
+.assessment-page-inner-box{
     box-shadow: inset 0 0 0 10px #F7CA18;
     border-radius: 10px;
     background-color: white;
 }
 
-.inner-box>p{
+.assessment-page-inner-box>p{
     margin: 0px;
     padding: 0px;
     color: black;
@@ -13,14 +19,18 @@
 .transcript-container{
     padding: 10px;
     height: min-content;
-    max-height: 100px;
+    max-height: 200px;
     overflow-y: scroll;
     border: 5px solid  #F7CA18;
     border-radius: 10px;
     font-size: 1rem;
 
 }
-
+#error-text
+{
+    color: red;
+    white-space: nowrap;
+}
 .full-transcript-container{
     height: min-content;
     overflow-y: scroll;
@@ -31,10 +41,27 @@
     font-size: 1rem;
 }
 
-
-.graph-container{
+#vis-lineplot
+{
     border: 5px solid  #F7CA18;
     border-radius: 10px;
+}
+
+/* Tooltip */
+#lineplot-tooltip {
+    position: absolute;
+    opacity: 0;
+    background: #fff;
+    box-shadow: 2px 2px 3px 0px rgb(92 92 92 / 0.5);
+    border: 1px solid #ddd;
+    font-size: 10px;
+    font-weight: 400;
+    padding: 2px 8px;
+}
+.lineplot-tooltip-label {
+    color: #000;
+    font-size: 15px;
+    white-space: nowrap;
 }
 
 .full-transcript-container{
@@ -55,16 +82,23 @@
     color: black;
 }
 
+/* Line plot */
 circle{
     fill: #F7CA18;
 }
 
-.pointer>circle{
-    fill: green;
+circle:hover{
+    fill: #5c4c0d;
 }
 
-#svgpath{
-    stroke: #F7CA18;
+circle.hovered
+{
+    fill: #5c4c0d;
+    stroke: #000;
+}
+
+.pointer>circle{
+    fill: green;
 }
 
 .graph-controls>input {
