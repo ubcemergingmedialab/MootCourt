@@ -101,18 +101,18 @@ const GraphPlot = ({data, rangeToHighlight, dispatcher, windowWidth} : GraphPlot
     }, [data]);
 
     useEffect(() => {
-        if (!rangeToHighlight)
-        {
-            return;
-        }
-
-        if (chart)
-        {
-            chart.highlightedRange  = rangeToHighlight;
+        if (rangeToHighlight && chart) {
+            chart.highlightedRange = rangeToHighlight;
             chart.updateVis();
         }
+    }, [rangeToHighlight, chart]);
 
-    }, [rangeToHighlight])
+    useEffect(() => {
+        if (windowWidth && chart) {
+            chart.interval = windowWidth;
+            chart.updateVis();
+        }
+    }, [windowWidth, chart]);
 
     return (
         <div className="linePlot">
@@ -190,7 +190,6 @@ export default function AssessmentPage({config, updateConfig, updateAppState, ju
             const normalizedXTimeInMinutes = convertToMinutes(x - xMin);
             return [normalizedXTimeInMinutes, speakingData.windowedData[index]];
         });
-
         setPoints([...dataPoints]);
     });
 
@@ -272,7 +271,7 @@ export default function AssessmentPage({config, updateConfig, updateAppState, ju
                                defaultValue={windowWidth}
                                onChange={onSmoothingSliderChange}
                                ref={smoothingSlider}
-                               step="10000"/>
+                               step="1000"/>
                             <span>Value: {windowWidth} ms ({convertToMinutes(windowWidth).toFixed(2)} minutes)</span>
                         </div>
                         <div className="assessment-page-inner-box">
@@ -419,8 +418,6 @@ function updateTranscriptHighlightedWords(hoveredWord, windowWidth, setHighlight
 
                 startRange = Math.floor(startTimeInMins / intervalInMins) * intervalInMins;
                 endRange = startRange + intervalInMins;
-                console.log("startRange", startRange)
-                console.log("endRange", endRange)
 
                 setHighlightedRange([startRange, endRange]);
                 break;

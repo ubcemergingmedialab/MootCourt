@@ -1,11 +1,11 @@
 import {Html} from "@react-three/drei";
 import React, {useEffect, useRef, useState} from "react";
 import Recorder from "../general/Recorder";
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import {createModel, KaldiRecognizer, Model} from 'vosk-browser';
 
 interface PushToTalkProps {
     onStartPushToTalk: () => void;
-    onStopPushToTalk: (audioBlob: Blob, recordTime: number) => void;
+    onStopPushToTalk: (audioBlob: Blob) => void;
     elapsedTime: number;
 }
 
@@ -13,7 +13,6 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk, elapsedTime} : PushToT
 {
     const [isEnterHeld, setEnterHeld] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
-    const [recordKeyHeldTime, setRecordKeyHeldTime] = useState(elapsedTime);
     const recorder = useRef<Recorder | null>(null);
 
     useEffect(() => {
@@ -37,7 +36,6 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk, elapsedTime} : PushToT
         {
             setIsRecording(true);
         }
-        setRecordKeyHeldTime(Date.now());
     };
 
     const handleKeyUp = (event) => {
@@ -48,8 +46,6 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk, elapsedTime} : PushToT
 
         setEnterHeld(false);
         setIsRecording(false);
-
-        setRecordKeyHeldTime(Date.now() - recordKeyHeldTime);
     }
 
     useEffect(() =>
@@ -80,7 +76,7 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk, elapsedTime} : PushToT
             {
                 recorder.current.stopRecording();
             }
-            onStopPushToTalk(recorder.current.getRecording(), recordKeyHeldTime);
+            onStopPushToTalk(recorder.current.getRecording());
         }
     }, [isEnterHeld]);
 
@@ -92,6 +88,15 @@ const PushToTalk = ({onStartPushToTalk, onStopPushToTalk, elapsedTime} : PushToT
 //----------------------------------------------------------------------------------------------------------------------
 //
 //----------------------------------------------------------------------------------------------------------------------
+interface VoskResult {
+    result: Array<{
+        conf: number;
+        start: number;
+        end: number;
+        word: string;
+    }>;
+    text: string;
+}
 
 function AudioComponent({config, appPaused, onTranscriptChange, elapsedTime})
 {
@@ -138,43 +143,85 @@ function AudioComponent({config, appPaused, onTranscriptChange, elapsedTime})
     //
     //----------------------------------------------------------------------------------------------------------------------
 
-    const {transcript, resetTranscript} = useSpeechRecognition();
+    const [userInput, setUserInput] = useState('');
     const [micIcon, setMicIcon] = useState<JSX.Element>(micMute);
+    const [loadedModel, setLoadedModel] = useState<{ model: Model; }>();
+    const [recognizer, setRecognizer] = useState<KaldiRecognizer>();
+    const [resultIndex, setResultIndex] = useState(0);
+
     const conversation = useRef<Array<any>>([]);
     const runningTimestamps = useRef<Array<any>>([]);
 
+    useEffect(() => {
+        const loadModel = async () =>
+        {
+            loadedModel?.model.terminate();
+            const currentURL = window.location.href;
+            const model = await createModel(`${currentURL}models/vosk-model-small-en-us-0.15.tar.gz`);
+
+            setLoadedModel({model});
+
+            const newRecognizer = new model.KaldiRecognizer(48000);
+            newRecognizer.setWords(true);
+
+            newRecognizer.on("result", (message: any) => {
+                setUserInput(message.result.text);
+                console.log('message', message);
+                const result: VoskResult = message.result;
+                for (let index = resultIndex; index < result.result.length; index++)
+                {
+                    const res = message.result.result[index];
+                    const word = res.word;
+                    const startTimeInMS = res.start * 1000;
+
+                    sendToAssessment(word, startTimeInMS);
+                    setResultIndex(resultIndex + 1);
+                }
+            });
+
+            setRecognizer(newRecognizer);
+        };
+
+        loadModel();
+
+        return () => {
+            if (loadedModel && loadedModel.model) {
+                loadedModel.model.terminate();
+            }
+        };
+    }, []);
+
     const handleStartPTT = () => {
-        SpeechRecognition.startListening();
-        resetTranscript();
         setMicIcon(micNormal);
     };
 
-    const handleStopPTT = (audioBlob : Blob, recordTime : number) => {
-        /**
-         * NOTE: The recordTime here is based on how long "Enter" key was held, this greatly simplifies how we process the audio data
-         * and it assumes that the duration of the speech === how long the button was held. Although not accurate, it is good enough for
-         * our purposes. The other alternative would be to process the audio volume, if it passes a minimum threshold, then we can assume
-         * there is speech in that region.
-         ***/
-        if (!audioBlob || audioBlob.size <= 0)
-        {
+    const handleStopPTT = async (audioBlob: Blob) => {
+        if (!audioBlob || audioBlob.size <= 0) {
             return;
         }
 
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audioElement = new Audio();
-        audioElement.src = audioUrl;
+        if (!recognizer)
+        {
+            console.error("Did you instantiate the speech recognizer?");
+            return;
+        }
 
-        sendToAssessment(transcript, elapsedTime, recordTime);
+        recognizer.acceptWaveform(await blobToAudioBuffer(audioBlob));
+        recognizer.retrieveFinalResult();
 
-        SpeechRecognition.stopListening();
-        onTranscriptChange(transcript);
         setMicIcon(micMute);
     };
 
-    const sendToAssessment = (transcript, elapsedTime, recordTime) =>
+    useEffect(() => {
+        if (userInput.length > 0)
+        {
+            onTranscriptChange(userInput);
+        }
+    }, [userInput]);
+
+    const sendToAssessment = (transcript, startTime) =>
     {
-        runningTimestamps.current.push([transcript, elapsedTime, elapsedTime + recordTime]);
+        runningTimestamps.current.push([transcript, startTime]);
         config.runningTimestamps = runningTimestamps.current;
         conversation.current = createConversation(conversation.current, 'user', transcript);
         config.conversation = conversation.current;
@@ -215,7 +262,6 @@ function AudioComponent({config, appPaused, onTranscriptChange, elapsedTime})
 }
 export default AudioComponent;
 
-
 /**
  * Creates a new message and appends it to the conversation
  * @param conversation List of OpenAI conversation messages
@@ -228,4 +274,10 @@ function createConversation(conversation: Array<object>, role: string, content: 
     let messages = [...conversation]
     messages.push(message);
     return messages;
+}
+
+async function blobToAudioBuffer(blob) {
+    const arrayBuffer = await blob.arrayBuffer();
+    const audioContext = new window.AudioContext;
+    return audioContext.decodeAudioData(arrayBuffer);
 }
