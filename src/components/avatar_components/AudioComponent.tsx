@@ -157,7 +157,8 @@ function AudioComponent({config, appPaused, onTranscriptChange, elapsedTime})
         {
             loadedModel?.model.terminate();
             const currentURL = window.location.href;
-            const model = await createModel(`${currentURL}models/vosk-model-small-en-us-0.15.tar.gz`);
+            // Note: To enable logs from vosk-browser, change the second parameter of createModel to 0
+            const model = await createModel(`${currentURL}models/vosk-model-small-en-us-0.15.tar.gz`, -1);
 
             setLoadedModel({model});
 
@@ -166,7 +167,6 @@ function AudioComponent({config, appPaused, onTranscriptChange, elapsedTime})
 
             newRecognizer.on("result", (message: any) => {
                 setUserInput(message.result.text);
-                console.log('message', message);
                 const result: VoskResult = message.result;
                 for (let index = resultIndex; index < result.result.length; index++)
                 {
