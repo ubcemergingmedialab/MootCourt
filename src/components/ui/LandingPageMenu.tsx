@@ -197,6 +197,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
         resetDisplayedUI("Difficulty", "Position");
         updateConfig({...config, isInteliJudge: true})
         console.log("IntelliJudge enabled.")
+        window.alert("This is the IntelliJudge version. Please note that, as of now, it has not undergone thorough testing, and we cannot guarantee its full functionality. You may encounter unexpected behavior or issues while using this version")
     }
 
     function pressBackFromTimer() {
