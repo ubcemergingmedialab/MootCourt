@@ -300,7 +300,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={pressIntelliJudge}>IntelliJudge</button>
                 </div>
                     <div className="sideMenuContentsWithButtons">
-                        <p>Practice your moot court with custom AI-generated follow-up questions.</p>  
+                        <p>Prototype: Practice your moot court with custom AI-generated follow-up questions.</p>  
                         <ul>
                             <li>To speak to the IntelliJudge, press <b>"Enter"</b> when you feel you have adequately made part of your
                                  argument and wait for the IntelliJudge's response before proceeding with your next point.</li>
