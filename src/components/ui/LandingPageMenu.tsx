@@ -295,17 +295,6 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                                 Within that time you will be given or can set intervals to provide your argument before being asked a question.</li>
                         </ul>
                         </div>
-            <div className="hr-3"></div>
-                <div className="buttonFlexBox buttonFlexBox-Position">
-                        <button className="button wide-button" type="button" onClick={pressIntelliJudge}>IntelliJudge</button>
-                </div>
-                    <div className="sideMenuContentsWithButtons">
-                        <p>Prototype: Practice your moot court with custom AI-generated follow-up questions.</p>  
-                        <ul>
-                            <li>To speak to the IntelliJudge, press <b>"Enter"</b> when you feel you have adequately made part of your
-                                 argument and wait for the IntelliJudge's response before proceeding with your next point.</li>
-                        </ul>
-                    </div>
                 </div>
                 <div className="sideMenuBottom">
                     <button className="button wide-button" type="button" onClick={(event) => pressBackFromDifficulty()}>Back to Menu</button>
