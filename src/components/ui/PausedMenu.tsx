@@ -22,7 +22,7 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children, config }
     const EndSession = () => {
         const confirmRestart = window.confirm("You are about to end your session. This action will take you to the end page with the analyzed assessment from this session. Are you sure you want to proceed?");
             if(confirmRestart){
-                updateAppState(3);
+                updateAppState(0);
             }
         };
 
