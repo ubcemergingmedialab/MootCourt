@@ -5,7 +5,7 @@
     "setDelay": false,
     "totalTime": 1500,
     "stopPresentation": true,
-    "introductionTime": 30,
+    "introductionTime": 90,
     "judgeIntroSpeech": "Council, you may begin your presentation.",
     "AQuestions": [
         "Counsel, the trial judge saw and heard all the evidence in this case. Is it not the job of the trial judge to weigh the evidence and decide what conclusions to draw from the evidence?",
