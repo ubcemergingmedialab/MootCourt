@@ -83,9 +83,9 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children, config }
             <button className="button paused-menu-buttons" type="button" onClick={() => resetDisplayedUI('pausedmenucontents', 'paused-menu-tutorial')}>
             Tutorial
             </button>
-            <button className="button paused-menu-buttons" type="button" onClick={SetUp}>
+            {/* <button className="button paused-menu-buttons" type="button" onClick={SetUp}>
             Restart
-            </button>
+            </button> */}
             <button className="button paused-menu-buttons" type="button" onClick={EndSession}>
             End The Session
             </button>
