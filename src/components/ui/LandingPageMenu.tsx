@@ -491,8 +491,8 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <div className="hr-2"></div>
                     </div>
                     <div className="sideMenuContents">
-                        <a className="button large-button" href="./pdf/First-Year Moots Procedure Checklist (2023).pdf" target="_blank">First Year Moot Procedure Checklist</a>
-                        <a className="button large-button" href="./pdf/Compiled Moot Resources.pdf" target="_blank">General Mooting Tips and Argument Criteria</a>
+                        <a className="button large-button" href="./pdf/FYM-Procedure_Checklist(2024).pdf" target="_blank">First Year Moot Procedure Checklist</a>
+                        <a className="button large-button" href="./pdf/General Mooting Tips.pdf" target="_blank">General Mooting Tips and Argument Criteria</a>
                         <a className="button large-button" href="./pdf/2021_Appearing_before_the_Court.pdf" target="_blank">Appearing before Court</a>
                     </div>
                     <div className="sideMenuBottom">
