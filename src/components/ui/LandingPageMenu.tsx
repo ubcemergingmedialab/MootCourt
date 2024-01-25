@@ -251,7 +251,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <button className="button wide-button" type="button" onClick={(event) => pressTutorial()}> TUTORIAL </button>
                         <button className="button wide-button" type="button" onClick={(event) => pressMootingResources()}>MOOTING RESOURCES</button>
                         <button className="button wide-button buttonFeedback" type="button" onClick={(event) => pressFeedback()}>
-                            <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_2l3a4rVJhxIcKeq" target="_blank">GIVE FEEDBACK</a>
+                            <a className="button wide-button buttonFeedback" href=" https://ubc.ca1.qualtrics.com/jfe/form/SV_6ED5kdNkIyybpTo" target="_blank">GIVE FEEDBACK</a>
                         </button>
                         <button className="button" type="button" onClick={(event) => pressTroubleShooting()}> Need Help? </button>
 
