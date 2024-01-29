@@ -8,17 +8,17 @@
     "introductionTime": 90,
     "judgeIntroSpeech": "Council, you may begin your presentation.",
     "AQuestions": [
-        "Counsel, the trial judge saw and heard all the evidence in this case. Is it not the job of the trial judge to weigh the evidence and decide what conclusions to draw from the evidence?",
-        "You argue that the trial judge made some errors in the law and errors in the analysis of the evidence.  Can you point me to the specific language of the trial judge which you say demonstrates those errors?",
-        "The Respondent’s Factum takes a different view of the cases you rely upon on.  Can you tell me why the Respondent’s view of those cases is not correct?",
-        "Even if the trial judge did make the errors set out in your argument, would they have made any difference in the result at trial?  Do you not agree the case against the Appellant was very strong?",
-        "Counsel, would not a conviction in this case help deter business people from making unclear arrangements with their customers?"],
+        "The trial judge found that the store employee closed the door to the office and stood with his back to it. Can you explain me to why you say that didn’t prevent the Respondent and his children from leaving?",
+        "Why do you say there was no psychological imprisonment in this case?",
+        "Can you please tell me where you are in your factum?",
+        "The evidence was that the store employee didn’t intervene to avoid the problem when he saw that some of the grocery items hadn’t been scanned. In light of that, I am troubled by finding the employee’s conduct justified under s. 494(1). What do you have to say about that?",
+        "Shouldn’t we be worried about giving private security personnel the power to detain members of the public whenever they want?"],
     "RQuestions": [
-        "Do you agree that the trial judge could have been clearer in describing the particular legal standards and the particular evidence she used to convict the Appellant?",
-        "Do you agree that there was some evidence that the Appellant was not guilty of fraud and therefore, was this not a case where guilt could not be proven beyond a reasonable doubt?  ",
-        "Is it not possible that the trial judge convicted the Appellant on the basis that she found what happened to be negligent and a bad business practice, rather than on the basis of proof of the requirements of criminal fraud?",
-        "The Appellant’s factum takes a different view of the cases you are relying upon.  Can you tell me why the Appellant’s view of those cases is not correct?",
-        "The Appellant was under a lot of time pressure during these events, and his conduct was not as bad as some of the accused in the other cases we have before us.  Is it fair to have convicted the Appellant for fraud, resulting in a criminal record for the rest of his life?"
+        "Can you remind me what the trial judge’s findings were regarding who pushed the shopping cart into the office near the Store exit?",
+        "Doesn’t the fact that the Respondent and his children ultimately left the store on their own demonstrate that he always had that option open to him?",
+        "If the Respondent was on his way out of the store with goods he hadn’t paid for, wasn’t he in the process of committing an offence?",
+        "The trial judge concluded that s. 494(1)(b) did not apply. Can you tell us why you do or don’t agree with that conclusion?",
+        "Couldn’t the Respondent have avoided the whole situation if he produced his receipt when he was first asked to do so?"
     ],
     "isInteliJudge": true
 }
