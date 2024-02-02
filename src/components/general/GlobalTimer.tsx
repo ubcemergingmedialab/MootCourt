@@ -176,11 +176,26 @@ function GlobalTimer({hasAppIntroStarted, setHasAppIntroStarted, isAppInIntro, s
         }
     }, [updateTimerInterval])
 
+    // const SubtitleComponent = ({ text }) => {
+    //     return (
+    //       <div className="subtitle-container">
+    //         <div className="subtitle">{text}</div>
+    //       </div>
+    //     );
+    //   };
+
     return <>
-        {<div className={"timerContainer"}>
+        {<div className={"timerandsubs"}>
+            <div className={"timerContainer"}>
             <div className={"timerText"}>{timeText}</div>
             <div className={"timerLight"} style={{ backgroundColor: lightColor }}></div>
+            {/* <SubtitleComponent text= {listOfUtterances[judgeQuestionIndex]}/> */}
+            
+        </div>
+        <div className={"subtitle"}>{listOfUtterances[judgeQuestionIndex - 1]}</div>
         </div>}
+
+        
     </>
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import './PausedMenu.css';
 import './AssessmentPage';
 import {displayConversationValue} from './AssessmentPage';
+import textToSay from '../avatar_components/VoiceComponent SavedAudio';
 
  
 
@@ -113,7 +114,8 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children, config }
             </button>
             </div>
             <div id="paused-menu-transcript" style={{ display: 'none' }}>
-                {displayConversationValue(config={config})}
+                {/* {displayConversationValue(config={config})} */}
+                <p>{String(textToSay)}</p>
 
                 <button className="button paused-menu-buttons" type="button" onClick={() => resetDisplayedUI('paused-menu-transcript', 'pausedmenucontents')}>
                 Back

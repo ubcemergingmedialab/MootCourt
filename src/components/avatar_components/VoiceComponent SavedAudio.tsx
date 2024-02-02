@@ -54,6 +54,8 @@ const SelectOptimalVoice = ({ updateVoice }) => {
     return null
 }
 
+let textToSay: null;
+
 // returns voice component of judge.
 function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak, startedSpeaking, finishedSpeaking, appPaused}) {
     const onEnd = () => {
@@ -76,15 +78,7 @@ function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak
             cancel()
             speak({ text: textToSay, voice: voice, rate: 1 }, onEnd)
             
-            // /// Temp - creates voice audiofiles on the server
-            // /// These are then uploaded to the client manually for static audio
-            // /// Lower the spacing between questions and let them play through to auto generate
-            // const data = createFormData({
-            //     text: textToSay,
-            //     pitchPercentage: 10,
-            // });
-            // ServerRequestResponse(data, 'http://localhost:8889/api/tts');
-            // ///
+            
 
             setIsSpeaking(true)
             startedSpeaking && textToSay !== "" && startedSpeaking()
@@ -116,9 +110,13 @@ function VoiceComponent({setIsSpeaking, textToSay, utteranceRepeat, readyToSpeak
         <Suspense fallback={null}>
             {/* 2) when the voice component is ready, the voice select will run and select the most optimal voice. */}
             {voicesReady ? <SelectOptimalVoice updateVoice={updateVoice} /> : null}
+            {textToSay}
         </Suspense>
     </>
     )
 }
 
+
+
 export default VoiceComponent;
+export {textToSay}
