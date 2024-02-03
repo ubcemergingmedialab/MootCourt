@@ -3,6 +3,7 @@ import './PausedMenu.css';
 import './AssessmentPage';
 import {displayConversationValue} from './AssessmentPage';
 import textToSay from '../avatar_components/VoiceComponent SavedAudio';
+import GlobalTimer from '../general/GlobalTimer';
 
  
 
@@ -38,18 +39,18 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children, config }
         resetDisplayedUI('paused-menu-buttons', 'paused-menu-tutorial');
     };
 
-    const Transcript = () => {
-        resetDisplayedUI('paused-menu-buttons', 'paused-menu-transcript');
-        const conversationValue = displayConversationValue(config={config});
-    };
+    // const Transcript = () => {
+    //     resetDisplayedUI('paused-menu-buttons', 'paused-menu-transcript');
+    //     const conversationValue = displayConversationValue(config={config});
+    // };
 
     const BackFromTutorial = () => {
         resetDisplayedUI('paused-menu-tutorial', 'paused-menu-buttons');
     };
 
-    const BackFromTranscript = () => {
-        resetDisplayedUI('paused-menu-transcript', 'paused-menu-buttons');
-    };
+    // const BackFromTranscript = () => {
+    //     resetDisplayedUI('paused-menu-transcript', 'paused-menu-buttons');
+    // };
 
 
     const resetDisplayedUI = (hideID, showID) => {
@@ -78,9 +79,9 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children, config }
             <button className="button paused-menu-buttons" type="button" onClick={handleTogglePause}>
             Continue Session
             </button>
-            <button className="button paused-menu-buttons" type="button" onClick={() => resetDisplayedUI('pausedmenucontents', 'paused-menu-transcript')}>
+            {/* <button className="button paused-menu-buttons" type="button" onClick={() => resetDisplayedUI('pausedmenucontents', 'paused-menu-transcript')}>
             Transcript
-            </button>
+            </button> */}
             <button className="button paused-menu-buttons" type="button" onClick={() => resetDisplayedUI('pausedmenucontents', 'paused-menu-tutorial')}>
             Tutorial
             </button>
@@ -114,18 +115,15 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children, config }
             </button>
             </div>
             <div id="paused-menu-transcript" style={{ display: 'none' }}>
-                {/* {displayConversationValue(config={config})} */}
-                <p>{String(textToSay)}</p>
+               
 
+               
                 <button className="button paused-menu-buttons" type="button" onClick={() => resetDisplayedUI('paused-menu-transcript', 'pausedmenucontents')}>
                 Back
                 </button>
                 </div> 
                 <div id="paused-menu-transcript" style={{ display: 'none' }}>
                 {displayConversationValue(config={config})}
-                <button className="button large-button" type="button" onClick={BackFromTranscript}>
-                    Back
-                </button>
             </div>
         </div>
     );
