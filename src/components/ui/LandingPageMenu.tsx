@@ -354,7 +354,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         <div className="FieldDescription">minutes</div>
                         <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Approximate time between when questions will be asked</p>
                     </div>
-                    <div className="formitem">
+                    {/* <div className="formitem">
                         <div className="label-wrapper">
                             <label htmlFor="Randomize">Randomize</label>
                         </div>
@@ -364,7 +364,7 @@ function LandingPageMenu({updateAppState, updateConfig, config}) {
                         </div>
                         <div className="FieldDescription"></div>
                         <p style={{ fontSize: '18px', marginTop: '5px', lineHeight: '1', textAlign: 'left' }}>Randomize the questions that will be asked</p>
-                    </div>
+                    </div> */}
                     {/* <div className="formitem">
                         <label htmlFor="Interval">Delay</label>
                         <div className="toggle-container">
