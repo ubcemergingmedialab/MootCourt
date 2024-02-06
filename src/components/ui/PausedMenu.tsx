@@ -117,7 +117,7 @@ const PausedMenu = ({ updateAppState, appPaused, togglePause, children, config }
                 <ul>
                     <li> Questions for Appellants:
                         <ol>
-                            <li>The trial judge found that the store employee closed the door to the office and stood with his back to it. Can you explain me to why you say that didn't prevent the Respondent and his children from leaving? </li>
+                            <li>The trial judge found that the store employee closed the door to the office and stood with his back to it. Can you explain to me why you say that didn't prevent the Respondent and his children from leaving? </li>
                             <li>Why do you say there was no psychological imprisonment in this case?</li>
                             <li>Can you please tell me where you are in your factum?</li>
                             <li>The evidence was that the store employee didn't intervene to avoid the problem when he saw that some of the grocery items hadn't been scanned. In light of that, I am troubled by finding the employee's conduct justified under s. 494(1). What do you have to say about that?</li>
