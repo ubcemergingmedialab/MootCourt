@@ -15,7 +15,7 @@ export class ServerUtility
         const socket = new WebSocket('ws://127.0.0.1:60001');
         socket.onopen = function(event)
         {
-            socket.send('authorization_request secret_password');
+            //socket.send('authorization_request secret_password');
             console.log('WebSocket connection opened:', event);
         };
 
@@ -49,7 +49,8 @@ export class ServerUtility
         }
         if (socket.readyState === WebSocket.OPEN)
         {
-            socket.send(message);
+            console.log("sending message: " + message);
+            socket.send("[CSS]" + message);
         }else
         {
             console.error("Error sending message to web socket. Web socket state is " , socket.readyState);
@@ -58,6 +59,7 @@ export class ServerUtility
 
     static playResponseAsAudio (data: string | Blob | string[], audioPlaybackType: AudioStreamType = AudioStreamType.Chunks)
     {
+        console.log("PlayResponseAsAudio called");
         let blobCounter = 0;
         if (data instanceof Blob)
         {
@@ -98,6 +100,7 @@ export class ServerUtility
 
     static playBlobsSequentially(index: number)
     {
+        console.log("Playing Blobs Sequentially");
         const data = ServerUtility.Blobs;
         if (index >= data.length)
         {

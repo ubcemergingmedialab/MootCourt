@@ -277,6 +277,7 @@ function createConversation(conversation: Array<object>, role: string, content: 
 }
 
 async function blobToAudioBuffer(blob) {
+    console.log("BlobToAudioBuffer called");
     const arrayBuffer = await blob.arrayBuffer();
     const audioContext = new window.AudioContext;
     return audioContext.decodeAudioData(arrayBuffer);
